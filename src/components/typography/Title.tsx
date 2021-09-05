@@ -14,10 +14,13 @@ const Text = styled.h1<TitleProps>`
     bold ? theme.fontWeight.bold : theme.fontWeight.regular};
 `;
 
-const Title: React.FC<TitleProps> = ({ bold, className, children, mb }) => (
+export const Title: React.FC<TitleProps> = ({
+  bold,
+  className,
+  children,
+  mb,
+}) => (
   <Text bold={bold} className={className} mb={mb}>
     {children}
   </Text>
 );
-
-export default Title;

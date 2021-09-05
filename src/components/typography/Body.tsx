@@ -14,10 +14,13 @@ const BodyText = styled.p<Omit<BodyProps, 'children'>>`
   margin-bottom: ${({ theme, mb = 0 }) => `${theme.spacing[mb]}`};
 `;
 
-const Body: React.FC<BodyProps> = ({ children, className, bold, mb }) => (
+export const Body: React.FC<BodyProps> = ({
+  children,
+  className,
+  bold,
+  mb,
+}) => (
   <BodyText bold={bold} className={className} mb={mb}>
     {children}
   </BodyText>
 );
-
-export default Body;

@@ -4,7 +4,7 @@ type HeadProps = {
   title?: string;
 };
 
-const Head: React.FC<HeadProps> = ({ title = 'CHANGE ME' }) => (
+export const Head: React.FC<HeadProps> = ({ title = 'CHANGE ME' }) => (
   <NextHead>
     {/* Uncomment the following lines if using google fonts */}
     {/* <link
@@ -19,5 +19,3 @@ const Head: React.FC<HeadProps> = ({ title = 'CHANGE ME' }) => (
     <meta content="Troy Chryssos' Next JS template" name="description" />
   </NextHead>
 );
-
-export default Head;

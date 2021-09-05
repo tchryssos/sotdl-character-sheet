@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { BoxProps } from './types';
 
-const Box = styled.div<BoxProps>(
+export const Box = styled.div<BoxProps>(
   ({
     p = 0,
     m = 0,
@@ -44,5 +44,3 @@ const Box = styled.div<BoxProps>(
     display,
   })
 );
-
-export default Box;

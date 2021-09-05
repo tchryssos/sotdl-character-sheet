@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 
-import Layout from '~/components/meta/Layout';
-import Body from '~/components/typography/Body';
+import { Layout } from '~/components/meta/Layout';
+import { Body } from '~/components/typography/Body';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
   const breakpoints = useContext(BreakpointsContext);
   return (
     <Layout>
@@ -18,5 +18,3 @@ const Home: React.FC = () => {
     </Layout>
   );
 };
-
-export default Home;

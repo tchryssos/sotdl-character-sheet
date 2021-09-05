@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import type { AppProps /* , AppContext */ } from 'next/app';
 import { useEffect, useState } from 'react';
 
-import FlexBox from '~/components/box/FlexBox';
+import { FlexBox } from '~/components/box/FlexBox';
 import theme from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { BreakpointSize } from '~/typings/theme';
@@ -91,4 +91,5 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
   );
 };
 
+// eslint-disable-next-line import/no-default-export
 export default Page;

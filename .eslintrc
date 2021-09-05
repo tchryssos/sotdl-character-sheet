@@ -43,6 +43,7 @@
     "import/no-anonymous-default-export": "error",
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn",
+    "import/no-default-export": "warn",
 
     // jsx-a11y
     "jsx-a11y/href-no-hash": "off",
