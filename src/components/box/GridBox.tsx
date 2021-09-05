@@ -14,6 +14,7 @@ export type GridBoxProps = BoxProps & {
   className?: string;
   columnGap?: Spacing;
   rowGap?: Spacing;
+  gridTemplateColumns?: string;
 };
 
 const Grid = styled(Box)<GridBoxProps>(
@@ -27,6 +28,7 @@ const Grid = styled(Box)<GridBoxProps>(
     columnGap,
     rowGap,
     theme,
+    gridTemplateColumns,
   }) => ({
     justifyItems,
     alignItems,
@@ -41,7 +43,7 @@ const Grid = styled(Box)<GridBoxProps>(
       display: 'inline-grid',
     }),
     [theme.breakpoints.md]: {
-      gridTemplateColumns: `repeat(${columns}, 1fr)`,
+      gridTemplateColumns: gridTemplateColumns || `repeat(${columns}, 1fr)`,
     },
   })
 );

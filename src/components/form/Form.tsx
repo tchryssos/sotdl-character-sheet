@@ -1,7 +1,10 @@
+import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '~/components/Button';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
+
+import { FlexBox } from '../box/FlexBox';
 
 interface FormProps {
   onSubmit: () => void;
@@ -11,6 +14,17 @@ interface FormProps {
   defaultValues?: Record<string, string | number | boolean>;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
 }
+
+const FormWrapper = styled(FlexBox)`
+  width: 100%;
+`;
+
+const StyledForm = styled.form`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export const Form: React.FC<FormProps> = ({
   onSubmit,
@@ -31,11 +45,13 @@ export const Form: React.FC<FormProps> = ({
   });
 
   return (
-    <form className={className} onSubmit={handleSubmit(onSubmit)}>
-      <ReactHookFormContext.Provider value={{ register, watch, errors }}>
-        {children}
-        <Button label={submitLabel} type="submit" />
-      </ReactHookFormContext.Provider>
-    </form>
+    <FormWrapper center>
+      <StyledForm className={className} onSubmit={handleSubmit(onSubmit)}>
+        <ReactHookFormContext.Provider value={{ register, watch, errors }}>
+          {children}
+          <Button label={submitLabel} type="submit" />
+        </ReactHookFormContext.Provider>
+      </StyledForm>
+    </FormWrapper>
   );
 };

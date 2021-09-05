@@ -1,9 +1,17 @@
+import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { SelectInputProps, SelectOption } from '~/typings/form';
 
 import { Label } from './Label';
+
+const Selecter = styled.select(({ theme }) => ({
+  height: theme.spacing[40],
+  padding: theme.spacing[4],
+  fontSize: theme.fontSize.body,
+  width: '100%',
+}));
 
 const Option: React.FC<SelectOption> = ({ value, label }) => (
   <option key={value} value={value}>
@@ -35,7 +43,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   const { register } = useContext(ReactHookFormContext);
   return (
     <Label label={label} labelFor={name}>
-      <select
+      <Selecter
         className={className}
         disabled={disabled || readOnly}
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -45,7 +53,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
         {options.map(({ value, label: optionLabel }) => (
           <Option key={value} label={optionLabel} value={value} />
         ))}
-      </select>
+      </Selecter>
     </Label>
   );
 };

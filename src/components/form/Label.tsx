@@ -1,3 +1,5 @@
+import styled from '@emotion/styled';
+
 import { Body } from '~/components/typography/Body';
 
 interface LabelProps {
@@ -7,6 +9,10 @@ interface LabelProps {
   children: React.ReactNode;
 }
 
+const StyledLabel = styled.label`
+  width: 100%;
+`;
+
 export const Label: React.FC<LabelProps> = ({
   labelFor,
   label,
@@ -14,10 +20,10 @@ export const Label: React.FC<LabelProps> = ({
   children,
 }) =>
   label && labelFor ? (
-    <label className={className} htmlFor={labelFor}>
+    <StyledLabel className={className} htmlFor={labelFor}>
       <Body>{label}</Body>
       {children}
-    </label>
+    </StyledLabel>
   ) : (
     <>{children}</>
   );

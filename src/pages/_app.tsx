@@ -32,7 +32,9 @@ const globalStyles = css`
   #app {
     ${baseStyle};
   }
-  div {
+  div,
+  input,
+  select {
     box-sizing: border-box;
   }
   p {

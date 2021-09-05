@@ -43,7 +43,7 @@ const theme = {
     },
   },
   fontSize: {
-    body: '1rem',
+    body: '1.2rem',
     title: '2rem',
   },
   fontFamily: 'sans-serif',

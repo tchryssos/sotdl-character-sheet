@@ -6,8 +6,8 @@ type LayoutProps = {
 };
 
 export const Layout: React.FC<LayoutProps> = ({ children, title }) => (
-  <div>
+  <>
     <Head title={title} />
     {children}
-  </div>
+  </>
 );
