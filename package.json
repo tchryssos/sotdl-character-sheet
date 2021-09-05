@@ -1,0 +1,69 @@
+{
+  "name": "next-typescript-template",
+  "version": "0.1.1",
+  "private": false,
+  "author": "<troychryssos@gmail.com>",
+  "description": "A website by Troy Chryssos",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:serve": "yarn build && yarn next start -p 3003",
+    "prepare": "husky install",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "test": "jest",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "next": "^11.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@emotion/babel-plugin": "^11.2.0",
+    "@emotion/eslint-plugin": "^11.2.0",
+    "@storybook/addon-actions": "^6.3.2",
+    "@storybook/addon-docs": "^6.3.2",
+    "@storybook/addon-essentials": "^6.3.2",
+    "@storybook/addon-links": "^6.3.2",
+    "@storybook/react": "^6.3.2",
+    "@testing-library/react": "^12.0.0",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^14.14.35",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.2",
+    "@types/rebass": "^4.0.8",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-next": "^11.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "husky": "^7.0.0",
+    "jest": "^27.0.6",
+    "lint-staged": "^10.5.4",
+    "prettier": "2.3.2",
+    "typescript": "^4.3.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --fix"
+    ]
+  }
+}

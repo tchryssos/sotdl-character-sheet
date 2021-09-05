@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig",
+    "GitHub.vscode-pull-request-github"
+  ]
+}
