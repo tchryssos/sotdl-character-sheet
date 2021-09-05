@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+
+import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { SelectInputProps, SelectOption } from '~/typings/form';
 
 import { Label } from './Label';
@@ -25,23 +28,24 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   readOnly,
   className,
   disabled,
-  register,
-  errors,
   validations,
   options,
   placeholder,
-}) => (
-  <Label label={label} labelFor={name}>
-    <select
-      className={className}
-      disabled={disabled || readOnly}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...register(name, validations)}
-    >
-      <Placeholder placeholder={placeholder} />
-      {options.map(({ value, label: optionLabel }) => (
-        <Option key={value} label={optionLabel} value={value} />
-      ))}
-    </select>
-  </Label>
-);
+}) => {
+  const { register } = useContext(ReactHookFormContext);
+  return (
+    <Label label={label} labelFor={name}>
+      <select
+        className={className}
+        disabled={disabled || readOnly}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...register?.(name, validations)}
+      >
+        <Placeholder placeholder={placeholder} />
+        {options.map(({ value, label: optionLabel }) => (
+          <Option key={value} label={optionLabel} value={value} />
+        ))}
+      </select>
+    </Label>
+  );
+};

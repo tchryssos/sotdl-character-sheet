@@ -1,17 +1,12 @@
-import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '~/components/Button';
-import { RHFErrors, RHFRegister, RHFWatch } from '~/typings/form';
+import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 interface FormProps {
   onSubmit: () => void;
   submitLabel?: string;
-  children: (renderProps: {
-    register: RHFRegister;
-    errors: RHFErrors;
-    watch: RHFWatch;
-  }) => ReactElement;
+  children: React.ReactNode;
   className?: string;
   defaultValues?: Record<string, string | number | boolean>;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
@@ -37,8 +32,10 @@ export const Form: React.FC<FormProps> = ({
 
   return (
     <form className={className} onSubmit={handleSubmit(onSubmit)}>
-      {children({ register, errors, watch })}
-      <Button label={submitLabel} type="submit" />
+      <ReactHookFormContext.Provider value={{ register, watch, errors }}>
+        {children}
+        <Button label={submitLabel} type="submit" />
+      </ReactHookFormContext.Provider>
     </form>
   );
 };

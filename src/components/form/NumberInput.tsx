@@ -17,20 +17,16 @@ export const NumberInput: React.FC<NumberInputComponentProps> = ({
   readOnly,
   className,
   disabled,
-  register,
-  errors,
   validations,
 }) => (
   <Input
     className={className}
     disabled={disabled}
-    errors={errors}
     label={label}
     max={max}
     min={min}
     name={name}
     readOnly={readOnly}
-    register={register}
     type="number"
     validations={{ min, max, ...validations }}
   />

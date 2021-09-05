@@ -22,8 +22,6 @@ type BaseInputProps<T> = T & {
   type: 'checkbox' | 'text' | 'textarea' | 'number';
   className?: string;
   disabled?: boolean;
-  register: RHFRegister;
-  errors: RHFErrors;
 };
 
 export type TextInputProps = BaseInputProps<{

@@ -14,14 +14,12 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <Form defaultValues={{ level: 1 }} onSubmit={() => undefined}>
-        {(fieldProps) => (
-          <FlexBox column>
-            <FlexBox>
-              <TextInput {...fieldProps} name="name" />
-              <NumberInput {...fieldProps} max={10} min={1} name="level" />
-            </FlexBox>
+        <FlexBox column>
+          <FlexBox>
+            <TextInput name="name" />
+            <NumberInput max={10} min={1} name="level" />
           </FlexBox>
-        )}
+        </FlexBox>
       </Form>
     </Layout>
   );

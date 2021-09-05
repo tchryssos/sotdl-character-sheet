@@ -8,18 +8,14 @@ export const TextInput: React.FC<Omit<TextInputProps, 'type'>> = ({
   readOnly,
   className,
   disabled,
-  register,
-  errors,
   validations,
 }) => (
   <Input
     className={className}
     disabled={disabled}
-    errors={errors}
     label={label}
     name={name}
     readOnly={readOnly}
-    register={register}
     type="text"
     validations={validations}
   />
