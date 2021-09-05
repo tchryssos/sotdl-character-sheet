@@ -1,4 +1,4 @@
-import { ReactChildren } from 'react';
+import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '~/components/Button';
@@ -11,9 +11,9 @@ interface FormProps {
     register: RHFRegister;
     errors: RHFErrors;
     watch: RHFWatch;
-  }) => ReactChildren;
+  }) => ReactElement;
   className?: string;
-  defaultValues: Record<string, string | number | boolean>;
+  defaultValues?: Record<string, string | number | boolean>;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
 }
 

@@ -11,7 +11,7 @@ export type RHFRegister = UseFormRegister<FieldValues>;
 export type RHFErrors = DeepMap<FieldValues, FieldErrors>;
 export type RHFWatch = UseFormWatch<FieldValues>;
 
-type Validations<T> = {
+export type Validations<T> = {
   required?: boolean;
 } & T;
 
@@ -36,6 +36,8 @@ export type TextInputProps = BaseInputProps<{
 
 export type NumberInputProps = BaseInputProps<{
   type: 'number';
+  min?: number;
+  max?: number;
   validations?: Validations<{
     min?: number;
     max?: number;
