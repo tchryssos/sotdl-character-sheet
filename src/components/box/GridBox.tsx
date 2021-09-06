@@ -3,12 +3,12 @@ import styled from '@emotion/styled';
 import { Spacing } from '~/typings/theme';
 
 import { Box } from './Box';
-import { AlignItems, BoxProps } from './types';
+import { AlignItemsBase, BoxProps } from './types';
 
 export type GridBoxProps = BoxProps & {
   center?: boolean;
   justifyItems?: 'normal' | 'start' | 'end' | 'center';
-  alignItems?: AlignItems;
+  alignItems?: AlignItemsBase | 'end' | 'start';
   inline?: boolean;
   columns?: 1 | 2 | 3 | 4;
   className?: string;
@@ -32,8 +32,8 @@ const Grid = styled(Box)<GridBoxProps>(
   }) => ({
     justifyItems,
     alignItems,
-    columnGap,
-    rowGap,
+    columnGap: `${(columnGap || 0) / 16}rem`,
+    rowGap: `${(rowGap || 0) / 16}rem`,
     gridTemplateColumns: '1fr',
     ...(center && {
       justifyItems: 'center',

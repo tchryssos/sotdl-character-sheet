@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { Box } from './Box';
-import { AlignItems, BoxProps, JustifyContent } from './types';
+import { AlignItemsBase, BoxProps, JustifyContent } from './types';
 
 export type FlexBoxProps = BoxProps & {
   center?: boolean;
@@ -9,7 +9,7 @@ export type FlexBoxProps = BoxProps & {
   wrap?: boolean;
   inline?: boolean;
   justifyContent?: JustifyContent;
-  alignItems?: AlignItems;
+  alignItems?: AlignItemsBase | 'flex-end' | 'flex-start';
   flex?: number;
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';

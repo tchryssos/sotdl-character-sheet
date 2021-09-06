@@ -46,11 +46,9 @@ export type JustifyContent =
   | 'initial'
   | 'inherit';
 
-export type AlignItems =
+export type AlignItemsBase =
   | 'stretch'
   | 'center'
-  | 'flex-start'
-  | 'flex-end'
   | 'baseline'
   | 'initial'
   | 'inherit';

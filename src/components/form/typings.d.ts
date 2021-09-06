@@ -4,12 +4,14 @@ import {
   DeepMap,
   UseFormWatch,
   FieldErrors,
+  UseFormSetValue,
 } from 'react-hook-form';
 
 // React Hooks Form
 export type RHFRegister = UseFormRegister<FieldValues>;
 export type RHFErrors = DeepMap<FieldValues, FieldErrors>;
 export type RHFWatch = UseFormWatch<FieldValues>;
+export type RHFSetValue = UseFormSetValue;
 
 export type Validations<T> = {
   required?: boolean;
@@ -19,9 +21,10 @@ type BaseInputProps<T> = T & {
   name: string;
   label?: string;
   readOnly?: boolean;
-  type: 'checkbox' | 'text' | 'textarea' | 'number';
+  type: 'checkbox' | 'text' | 'textarea' | 'number' | 'textarea';
   className?: string;
   disabled?: boolean;
+  hideLabel?: boolean;
 };
 
 export type TextInputProps = BaseInputProps<{

@@ -34,7 +34,8 @@ const globalStyles = css`
   }
   div,
   input,
-  select {
+  select,
+  textarea {
     box-sizing: border-box;
   }
   p {

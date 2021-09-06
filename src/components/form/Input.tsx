@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+import startCase from 'lodash.startcase';
 import { useContext } from 'react';
 
 import { Label } from '~/components/form/Label';
+import { InputProps, NumberInputProps } from '~/components/form/typings';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
-import { InputProps, NumberInputProps } from '~/typings/form';
 
 const StyledInput = styled.input(({ theme }) => ({
   width: '100%',
@@ -13,12 +14,20 @@ const StyledInput = styled.input(({ theme }) => ({
 }));
 
 export const Input: React.FC<InputProps> = (props) => {
-  const { label, readOnly, type, className, validations, disabled, name } =
-    props as InputProps;
+  const {
+    label,
+    readOnly,
+    type,
+    className,
+    validations,
+    disabled,
+    name,
+    hideLabel,
+  } = props as InputProps;
   const { min, max } = props as NumberInputProps;
   const { register } = useContext(ReactHookFormContext);
   return (
-    <Label label={label} labelFor={name}>
+    <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <StyledInput
         className={className}
         disabled={disabled}

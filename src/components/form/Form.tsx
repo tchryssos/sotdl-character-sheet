@@ -20,10 +20,10 @@ const FormWrapper = styled(FlexBox)`
 `;
 
 const StyledForm = styled.form`
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 75%;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: ${({ theme }) => theme.spacing[16]};
 `;
 
 export const Form: React.FC<FormProps> = ({
@@ -39,6 +39,7 @@ export const Form: React.FC<FormProps> = ({
     handleSubmit,
     watch,
     formState: { errors },
+    setValue,
   } = useForm({
     defaultValues,
     mode,
@@ -47,7 +48,9 @@ export const Form: React.FC<FormProps> = ({
   return (
     <FormWrapper center>
       <StyledForm className={className} onSubmit={handleSubmit(onSubmit)}>
-        <ReactHookFormContext.Provider value={{ register, watch, errors }}>
+        <ReactHookFormContext.Provider
+          value={{ register, watch, errors, setValue }}
+        >
           {children}
           <Button label={submitLabel} type="submit" />
         </ReactHookFormContext.Provider>

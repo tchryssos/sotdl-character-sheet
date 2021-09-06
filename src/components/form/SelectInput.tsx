@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import startCase from 'lodash.startcase';
 import { useContext } from 'react';
 
+import { SelectInputProps, SelectOption } from '~/components/form/typings';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
-import { SelectInputProps, SelectOption } from '~/typings/form';
 
 import { Label } from './Label';
 
@@ -39,10 +40,11 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   validations,
   options,
   placeholder,
+  hideLabel,
 }) => {
   const { register } = useContext(ReactHookFormContext);
   return (
-    <Label label={label} labelFor={name}>
+    <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <Selecter
         className={className}
         disabled={disabled || readOnly}

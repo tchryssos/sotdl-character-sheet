@@ -1,4 +1,4 @@
-import { NumberInputProps, Validations } from '~/typings/form';
+import { NumberInputProps, Validations } from '~/components/form/typings';
 
 import { Input } from './Input';
 
@@ -18,10 +18,12 @@ export const NumberInput: React.FC<NumberInputComponentProps> = ({
   className,
   disabled,
   validations,
+  hideLabel,
 }) => (
   <Input
     className={className}
     disabled={disabled}
+    hideLabel={hideLabel}
     label={label}
     max={max}
     min={min}
