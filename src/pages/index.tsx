@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 import startCase from 'lodash.startcase';
 import { useContext } from 'react';
 
@@ -11,8 +11,8 @@ import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { Layout } from '~/components/meta/Layout';
-import { FIELD_NAMES } from '~/constants/form';
-import { ANCESTRIES } from '~/constants/game';
+import { ATTRIBUTES, FIELD_NAMES } from '~/constants/form';
+import { ANCESTRIES, NOVICE_PATHS } from '~/constants/game';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 
 const defaultValues = {
@@ -23,17 +23,19 @@ const defaultValues = {
   [FIELD_NAMES.attributes.agility]: 10,
 };
 
+const colGap = 16;
+
 const Home: React.FC = () => {
   const breakpoints = useContext(BreakpointsContext);
 
   return (
     <Layout>
       <Form defaultValues={defaultValues} onSubmit={() => undefined}>
-        <GridBox columnGap={16} gridTemplateColumns="7fr 1fr" mt={32}>
+        <GridBox columnGap={colGap} gridTemplateColumns="7fr 1fr" mt={32}>
           <TextInput name={FIELD_NAMES.name} />
           <NumberInput max={10} min={1} name={FIELD_NAMES.level} />
         </GridBox>
-        <GridBox columnGap={16} columns={4}>
+        <GridBox columnGap={colGap} columns={4}>
           <SelectInput
             name={FIELD_NAMES.ancestry}
             options={ANCESTRIES.map((a) => ({
@@ -41,19 +43,24 @@ const Home: React.FC = () => {
               value: a,
             }))}
           />
-          <TextInput name={FIELD_NAMES.paths.novice_path} />
+          <SelectInput
+            name={FIELD_NAMES.paths.novice_path}
+            options={NOVICE_PATHS.map((p) => ({
+              label: startCase(p),
+              value: p,
+            }))}
+          />
           <TextInput name={FIELD_NAMES.paths.expert_path} />
           <TextInput name={FIELD_NAMES.paths.master_path} />
         </GridBox>
-        <GridBox alignItems="start" columnGap={16}>
+        <GridBox alignItems="start" columnGap={colGap}>
           <TextAreaInput name={FIELD_NAMES.professions} />
           <TextAreaInput name={FIELD_NAMES.languages} />
         </GridBox>
-        <GridBox columnGap={16}>
-          <AttributeInput name={FIELD_NAMES.attributes.strength} />
-          <AttributeInput name={FIELD_NAMES.attributes.agility} />
-          <AttributeInput name={FIELD_NAMES.attributes.intellect} />
-          <AttributeInput name={FIELD_NAMES.attributes.will} />
+        <GridBox columnGap={colGap} columns={4}>
+          {ATTRIBUTES.map((a) => (
+            <AttributeInput key={a} name={a} />
+          ))}
         </GridBox>
       </Form>
     </Layout>

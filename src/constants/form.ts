@@ -1,6 +1,11 @@
 type Attribute = 'strength' | 'agility' | 'intellect' | 'will';
 
-const ATTRIBUTES: Attribute[] = ['strength', 'agility', 'intellect', 'will'];
+export const ATTRIBUTES: Attribute[] = [
+  'strength',
+  'agility',
+  'intellect',
+  'will',
+];
 
 type AttrObj<T> = Record<Attribute, T>;
 

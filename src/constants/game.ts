@@ -6,3 +6,5 @@ export const ANCESTRIES = [
   'goblin',
   'orc',
 ];
+
+export const NOVICE_PATHS = ['magician', 'priest', 'rogue', 'warrior'];

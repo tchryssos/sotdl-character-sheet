@@ -34,7 +34,7 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({ name }) => {
   }, [watchAttribute, setValue, name]);
 
   return (
-    <GridBox alignItems="end" columnGap={16} gridTemplateColumns="3fr 1fr">
+    <GridBox alignItems="end" columnGap={16}>
       <NumberInput max={20} min={1} name={name} />
       <FlexBox alignItems="center">
         <ModSymbol>{watchMod >= 0 ? '+' : ''}</ModSymbol>
