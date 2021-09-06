@@ -14,8 +14,8 @@ const Selecter = styled.select(({ theme }) => ({
   width: '100%',
 }));
 
-const Option: React.FC<SelectOption> = ({ value, label }) => (
-  <option key={value} value={value}>
+const Option: React.FC<SelectOption> = ({ value, label, disabled }) => (
+  <option disabled={disabled} key={value} value={value}>
     {label}
   </option>
 );
@@ -52,9 +52,16 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
         {...register?.(name, validations)}
       >
         <Placeholder placeholder={placeholder} />
-        {options.map(({ value, label: optionLabel }) => (
-          <Option key={value} label={optionLabel} value={value} />
-        ))}
+        {options.map(
+          ({ value, label: optionLabel, disabled: optionDisabled }) => (
+            <Option
+              disabled={optionDisabled}
+              key={value}
+              label={optionLabel}
+              value={value}
+            />
+          )
+        )}
       </Selecter>
     </Label>
   );

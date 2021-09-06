@@ -42,7 +42,7 @@ const Grid = styled(Box)<GridBoxProps>(
     ...(inline && {
       display: 'inline-grid',
     }),
-    [theme.breakpoints.md]: {
+    [theme.breakpoints.sm]: {
       gridTemplateColumns: gridTemplateColumns || `repeat(${columns}, 1fr)`,
     },
   })

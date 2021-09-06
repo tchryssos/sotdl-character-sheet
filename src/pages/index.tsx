@@ -4,15 +4,16 @@ import startCase from 'lodash.startcase';
 import { useContext } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
-import { AttributeInput } from '~/components/form/AttributeInput';
 import { Form } from '~/components/form/Form';
+import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
+import { ExpertPathInput } from '~/components/form/gameInputs/ExpertPathInput';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { Layout } from '~/components/meta/Layout';
-import { ATTRIBUTES, FIELD_NAMES } from '~/constants/form';
-import { ANCESTRIES, NOVICE_PATHS } from '~/constants/game';
+import { FIELD_NAMES } from '~/constants/form';
+import { ANCESTRIES, ATTRIBUTES, NOVICE_PATHS } from '~/constants/game';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 
 const defaultValues = {
@@ -33,7 +34,7 @@ const Home: React.FC = () => {
       <Form defaultValues={defaultValues} onSubmit={() => undefined}>
         <GridBox columnGap={colGap} gridTemplateColumns="7fr 1fr" mt={32}>
           <TextInput name={FIELD_NAMES.name} />
-          <NumberInput max={10} min={1} name={FIELD_NAMES.level} />
+          <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
         </GridBox>
         <GridBox columnGap={colGap} columns={4}>
           <SelectInput
@@ -50,7 +51,7 @@ const Home: React.FC = () => {
               value: p,
             }))}
           />
-          <TextInput name={FIELD_NAMES.paths.expert_path} />
+          <ExpertPathInput />
           <TextInput name={FIELD_NAMES.paths.master_path} />
         </GridBox>
         <GridBox alignItems="start" columnGap={colGap}>

@@ -53,6 +53,7 @@ export type CheckboxInputProps = BaseInputProps<{
 export type SelectOption = {
   value: string;
   label: string;
+  disabled?: boolean;
 };
 
 export type SelectInputProps = Omit<
