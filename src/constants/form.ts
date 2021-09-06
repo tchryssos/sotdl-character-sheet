@@ -3,7 +3,7 @@ import startCase from 'lodash.startcase';
 import { SelectOption } from '~/components/form/typings';
 import { Attribute } from '~/typings/game';
 
-import { ATTRIBUTES, EXPERT_PATHS } from './game';
+import { ATTRIBUTES, EXPERT_PATHS, MASTER_PATHS } from './game';
 
 type AttrObj<T> = Record<Attribute, T>;
 
@@ -29,20 +29,22 @@ export const FIELD_NAMES = {
   attributeModifiers: createAttributes(true) as AttrObj<string>,
 };
 
-export const expertPathSelectOptions = Object.keys(EXPERT_PATHS).reduce(
-  (options, key) => {
-    const keyOpts: SelectOption[] = EXPERT_PATHS[
-      key as keyof typeof EXPERT_PATHS
-    ].map((p) => ({
+export const generatePathOptions = (path: 'master' | 'expert') => {
+  const pathObj: Record<string, string[]> =
+    path === 'expert' ? EXPERT_PATHS : MASTER_PATHS;
+  return Object.keys(pathObj).reduce((options, key) => {
+    const keyOpts: SelectOption[] = pathObj[key].map((p) => ({
       label: startCase(p),
       value: p,
     }));
     keyOpts.unshift({
-      label: `-- Path of ${startCase(key)} --`,
+      label: `-- Paths of ${startCase(key)} --`,
       value: key,
       disabled: true,
     });
     return [...options, ...keyOpts];
-  },
-  [] as SelectOption[]
-);
+  }, [] as SelectOption[]);
+};
+
+export const expertPathSelectOptions = generatePathOptions('expert');
+export const masterPathSelectOptions = generatePathOptions('master');
