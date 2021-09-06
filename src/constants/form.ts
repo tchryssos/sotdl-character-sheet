@@ -29,10 +29,8 @@ export const FIELD_NAMES = {
   attributeModifiers: createAttributes(true) as AttrObj<string>,
 };
 
-export const generatePathOptions = (path: 'master' | 'expert') => {
-  const pathObj: Record<string, string[]> =
-    path === 'expert' ? EXPERT_PATHS : MASTER_PATHS;
-  return Object.keys(pathObj).reduce((options, key) => {
+export const generatePathOptions = (pathObj: Record<string, string[]>) =>
+  Object.keys(pathObj).reduce((options, key) => {
     const keyOpts: SelectOption[] = pathObj[key].map((p) => ({
       label: startCase(p),
       value: p,
@@ -44,7 +42,6 @@ export const generatePathOptions = (path: 'master' | 'expert') => {
     });
     return [...options, ...keyOpts];
   }, [] as SelectOption[]);
-};
 
-export const expertPathSelectOptions = generatePathOptions('expert');
-export const masterPathSelectOptions = generatePathOptions('master');
+export const expertPathSelectOptions = generatePathOptions(EXPERT_PATHS);
+export const masterPathSelectOptions = generatePathOptions(MASTER_PATHS);
