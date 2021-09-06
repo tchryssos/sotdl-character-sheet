@@ -25,6 +25,7 @@ type BaseInputProps<T> = T & {
   className?: string;
   disabled?: boolean;
   hideLabel?: boolean;
+  noOutline?: boolean;
 };
 
 export type TextInputProps = BaseInputProps<{

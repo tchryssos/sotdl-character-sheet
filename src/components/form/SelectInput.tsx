@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import startCase from 'lodash.startcase';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { SelectInputProps, SelectOption } from '~/components/form/typings';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
@@ -26,7 +26,7 @@ interface PlaceholderProps {
 
 const Placeholder: React.FC<PlaceholderProps> = ({ placeholder }) =>
   placeholder ? (
-    <option disabled value="PLACEHOLDER">
+    <option disabled value="placeholder-ignore">
       {placeholder}
     </option>
   ) : null;
@@ -42,7 +42,14 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   placeholder,
   hideLabel,
 }) => {
-  const { register } = useContext(ReactHookFormContext);
+  const { register, setValue } = useContext(ReactHookFormContext);
+
+  useEffect(() => {
+    if (placeholder) {
+      setValue(name, 'placeholder-ignore');
+    }
+  }, [setValue, placeholder, name]);
+
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <Selecter

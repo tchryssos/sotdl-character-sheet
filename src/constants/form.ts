@@ -26,7 +26,11 @@ export const FIELD_NAMES = {
   professions: 'professions',
   languages: 'languages',
   attributes: createAttributes() as AttrObj<Attribute>,
-  attributeModifiers: createAttributes(true) as AttrObj<string>,
+  attributeBonuses: createAttributes(true) as AttrObj<string>,
+  defense: 'defense',
+  damage: 'damage',
+  health: 'health',
+  healing_rate: 'healing_rate',
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>
@@ -45,3 +49,6 @@ export const generatePathOptions = (pathObj: Record<string, string[]>) =>
 
 export const expertPathSelectOptions = generatePathOptions(EXPERT_PATHS);
 export const masterPathSelectOptions = generatePathOptions(MASTER_PATHS);
+
+export const SECOND_EXPERT_PATH = 'second_expert_path';
+export const MASTER_PATH = 'master_path';

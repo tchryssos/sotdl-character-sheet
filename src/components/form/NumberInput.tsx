@@ -19,6 +19,7 @@ export const NumberInput: React.FC<NumberInputComponentProps> = ({
   disabled,
   validations,
   hideLabel,
+  noOutline,
 }) => (
   <Input
     className={className}
@@ -28,6 +29,7 @@ export const NumberInput: React.FC<NumberInputComponentProps> = ({
     max={max}
     min={min}
     name={name}
+    noOutline={noOutline}
     readOnly={readOnly}
     type="number"
     validations={{ min, max, ...validations }}

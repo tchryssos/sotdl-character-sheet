@@ -6,12 +6,19 @@ import { Label } from '~/components/form/Label';
 import { InputProps, NumberInputProps } from '~/components/form/typings';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
-const StyledInput = styled.input(({ theme }) => ({
-  width: '100%',
-  height: theme.spacing[40],
-  fontSize: theme.fontSize.body,
-  padding: theme.spacing[4],
-}));
+const StyledInput = styled.input<Pick<InputProps, 'noOutline'>>(
+  ({ theme, noOutline }) => ({
+    width: '100%',
+    height: theme.spacing[40],
+    fontSize: theme.fontSize.body,
+    padding: theme.spacing[4],
+    ...(noOutline && {
+      borderColor: 'transparent',
+      outlineColor: 'transparent',
+      paddingLeft: 0,
+    }),
+  })
+);
 
 export const Input: React.FC<InputProps> = (props) => {
   const {
@@ -23,6 +30,7 @@ export const Input: React.FC<InputProps> = (props) => {
     disabled,
     name,
     hideLabel,
+    noOutline,
   } = props as InputProps;
   const { min, max } = props as NumberInputProps;
   const { register } = useContext(ReactHookFormContext);
@@ -37,6 +45,7 @@ export const Input: React.FC<InputProps> = (props) => {
         type={type}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register?.(name, validations)}
+        noOutline={noOutline}
       />
     </Label>
   );

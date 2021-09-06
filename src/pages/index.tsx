@@ -7,6 +7,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
 import { ExpertPathInput } from '~/components/form/gameInputs/ExpertPathInput';
+import { MasterPathInput } from '~/components/form/gameInputs/MasterPathInput';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
@@ -52,7 +53,7 @@ const Home: React.FC = () => {
             }))}
           />
           <ExpertPathInput />
-          <TextInput name={FIELD_NAMES.paths.master_path} />
+          <MasterPathInput />
         </GridBox>
         <GridBox alignItems="start" columnGap={colGap}>
           <TextAreaInput name={FIELD_NAMES.professions} />
@@ -62,6 +63,12 @@ const Home: React.FC = () => {
           {ATTRIBUTES.map((a) => (
             <AttributeInput key={a} name={a} />
           ))}
+        </GridBox>
+        <GridBox columnGap={colGap} columns={4}>
+          <NumberInput min={0} name={FIELD_NAMES.defense} />
+          <NumberInput min={0} name={FIELD_NAMES.health} />
+          <NumberInput min={0} name={FIELD_NAMES.damage} />
+          <NumberInput name={FIELD_NAMES.healing_rate} />
         </GridBox>
       </Form>
     </Layout>
