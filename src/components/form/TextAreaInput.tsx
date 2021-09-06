@@ -9,7 +9,7 @@ import { Label } from './Label';
 
 export const TextArea = styled.textarea(({ theme }) => ({
   minHeight: theme.spacing[48],
-  fontSize: theme.fontSize.body,
+  fontSize: theme.fontSize.subBody,
   width: '100%',
   padding: theme.spacing[8],
   fontFamily: theme.fontFamily,
