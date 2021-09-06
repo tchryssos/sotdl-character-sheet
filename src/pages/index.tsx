@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <Form defaultValues={defaultValues} onSubmit={() => undefined}>
-        <GridBox columnGap={16} gridTemplateColumns="87.5% 12.5%" mt={32}>
+        <GridBox columnGap={16} gridTemplateColumns="7fr 1fr" mt={32}>
           <TextInput name={FIELD_NAMES.name} />
           <NumberInput max={10} min={1} name={FIELD_NAMES.level} />
         </GridBox>
