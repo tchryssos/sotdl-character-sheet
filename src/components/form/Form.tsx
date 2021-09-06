@@ -20,7 +20,8 @@ const FormWrapper = styled(FlexBox)`
 `;
 
 const StyledForm = styled.form`
-  width: 75%;
+  padding: ${({ theme }) => theme.spacing[32]};
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   row-gap: ${({ theme }) => theme.spacing[16]};

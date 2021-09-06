@@ -25,8 +25,8 @@ const Grid = styled(Box)<GridBoxProps>(
     alignItems,
     inline,
     columns = 2,
-    columnGap,
-    rowGap,
+    columnGap = 16,
+    rowGap = 16,
     theme,
     gridTemplateColumns,
   }) => ({

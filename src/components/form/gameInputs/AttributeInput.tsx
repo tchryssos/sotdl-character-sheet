@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useContext, useEffect } from 'react';
 
 import { FIELD_NAMES } from '~/constants/form';
@@ -27,7 +26,6 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({ name }) => {
         label="Bonus"
         name={FIELD_NAMES.attributeBonuses[name]}
         noOutline
-        readOnly
       />
     </GridBox>
   );

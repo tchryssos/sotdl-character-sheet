@@ -32,7 +32,7 @@ export const Input: React.FC<InputProps> = (props) => {
     hideLabel,
     noOutline,
   } = props as InputProps;
-  const { min, max } = props as NumberInputProps;
+  const { min, max, step = 1 } = props as NumberInputProps;
   const { register } = useContext(ReactHookFormContext);
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
@@ -41,7 +41,8 @@ export const Input: React.FC<InputProps> = (props) => {
         disabled={disabled}
         max={max}
         min={min}
-        readOnly={readOnly}
+        readOnly={readOnly || noOutline}
+        step={step}
         type={type}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register?.(name, validations)}

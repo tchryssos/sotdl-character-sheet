@@ -40,6 +40,7 @@ export type NumberInputProps = BaseInputProps<{
   type: 'number';
   min?: number;
   max?: number;
+  step?: number;
   validations?: Validations<{
     min?: number;
     max?: number;

@@ -31,6 +31,23 @@ export const FIELD_NAMES = {
   damage: 'damage',
   health: 'health',
   healing_rate: 'healing_rate',
+  speed: 'speed',
+  perception: 'perception',
+  perception_bonus: 'perception_bonus',
+  insanity: 'insanity',
+  corruption: 'corruption',
+  size: 'size',
+  reach: 'reach',
+  space: 'space',
+};
+
+export const DEFAULT_VALUES = {
+  [FIELD_NAMES.level]: 1,
+  [FIELD_NAMES.attributes.strength]: 10,
+  [FIELD_NAMES.attributes.will]: 10,
+  [FIELD_NAMES.attributes.intellect]: 10,
+  [FIELD_NAMES.attributes.agility]: 10,
+  [FIELD_NAMES.perception]: 10,
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>
