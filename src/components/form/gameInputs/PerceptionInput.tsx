@@ -1,12 +1,17 @@
 import { useContext, useEffect } from 'react';
 
+import { GridBox } from '~/components/box/GridBox';
 import { FIELD_NAMES } from '~/constants/form';
+import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { NumberInput } from '../NumberInput';
 
 export const PerceptionInput = () => {
   const { watch, setValue } = useContext(ReactHookFormContext);
+  const breakpoints = useContext(BreakpointsContext);
+
+  const smallerThanMd = !breakpoints.includes('md');
 
   const perception: number = watch?.(FIELD_NAMES.perception, 0);
 
@@ -15,9 +20,13 @@ export const PerceptionInput = () => {
   }, [setValue, perception]);
 
   return (
-    <>
+    <GridBox>
       <NumberInput min={0} name={FIELD_NAMES.perception} />
-      <NumberInput name={FIELD_NAMES.perception_bonus} noOutline />
-    </>
+      <NumberInput
+        label={`${smallerThanMd ? '' : 'Per. '}Bonus`}
+        name={FIELD_NAMES.perception_bonus}
+        noOutline
+      />
+    </GridBox>
   );
 };

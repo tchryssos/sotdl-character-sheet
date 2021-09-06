@@ -48,6 +48,8 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.attributes.intellect]: 10,
   [FIELD_NAMES.attributes.agility]: 10,
   [FIELD_NAMES.perception]: 10,
+  [FIELD_NAMES.damage]: 0,
+  [FIELD_NAMES.insanity]: 0,
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>
