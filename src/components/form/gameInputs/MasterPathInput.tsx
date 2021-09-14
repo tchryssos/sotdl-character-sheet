@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from 'react';
 import {
   expertPathSelectOptions,
   FIELD_NAMES,
-  MASTER_PATH,
   masterPathSelectOptions,
   SECOND_EXPERT_PATH,
 } from '~/constants/form';
@@ -28,7 +27,10 @@ const masterPathOptions = [
 const secondExpertPathOptions = [
   ...expertPathSelectOptions,
   otherOption,
-  { label: startCase(MASTER_PATH), value: MASTER_PATH },
+  {
+    label: startCase(FIELD_NAMES.paths.master_path),
+    value: FIELD_NAMES.paths.master_path,
+  },
 ];
 
 const disabledOptions = [{ label: '', value: '' }];
@@ -48,7 +50,7 @@ export const MasterPathInput = () => {
       setOptions(secondExpertPathOptions);
       setIsSecondExpertPath(true);
       setValue(FIELD_NAMES.paths.master_path, expertPathSelectOptions[1]);
-    } else if (masterPath === MASTER_PATH) {
+    } else if (masterPath === FIELD_NAMES.paths.master_path) {
       setOptions(masterPathOptions);
       setValue(FIELD_NAMES.paths.master_path, masterPathSelectOptions[1]);
       setIsSecondExpertPath(false);

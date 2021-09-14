@@ -39,6 +39,8 @@ export const FIELD_NAMES = {
   size: 'size',
   reach: 'reach',
   space: 'space',
+  fortune: 'fortune',
+  fateRolls: 'fate_rolls',
 };
 
 export const DEFAULT_VALUES = {
@@ -75,4 +77,3 @@ export const expertPathSelectOptions = generatePathOptions(EXPERT_PATHS);
 export const masterPathSelectOptions = generatePathOptions(MASTER_PATHS);
 
 export const SECOND_EXPERT_PATH = 'second_expert_path';
-export const MASTER_PATH = 'master_path';
