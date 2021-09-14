@@ -51,8 +51,10 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.damage]: 0,
   [FIELD_NAMES.health]: 1,
   [FIELD_NAMES.insanity]: 0,
+  [FIELD_NAMES.corruption]: 0,
   [FIELD_NAMES.defense]: 10,
   [FIELD_NAMES.speed]: 10,
+  [FIELD_NAMES.size]: 1,
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>

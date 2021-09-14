@@ -5,6 +5,7 @@ import startCase from 'lodash.startcase';
 import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
+import { EvilInputs } from '~/components/form/gameInputs/EvilInputs';
 import { ExpertPathInput } from '~/components/form/gameInputs/ExpertPathInput';
 import { HealthInputs } from '~/components/form/gameInputs/HealthInputs';
 import { MasterPathInput } from '~/components/form/gameInputs/MasterPathInput';
@@ -50,7 +51,11 @@ const Home: React.FC = () => (
         <HealthInputs />
         <GridBox>
           <PerceptionInput />
-          <NumberInput min={0} name={FIELD_NAMES.speed} />
+          <GridBox>
+            <NumberInput min={0} name={FIELD_NAMES.speed} />
+            <NumberInput min={0.25} name={FIELD_NAMES.size} step={0.25} />
+          </GridBox>
+          <EvilInputs />
         </GridBox>
       </GridBox>
     </Form>
