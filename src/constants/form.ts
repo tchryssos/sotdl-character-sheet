@@ -57,6 +57,7 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.defense]: 10,
   [FIELD_NAMES.speed]: 10,
   [FIELD_NAMES.size]: 1,
+  [FIELD_NAMES.fateRolls]: [false, false, false],
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '~/components/Button';
+import { DEFAULT_VALUES } from '~/constants/form';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { FlexBox } from '../box/FlexBox';
@@ -11,7 +12,6 @@ interface FormProps {
   submitLabel?: string;
   children: React.ReactNode;
   className?: string;
-  defaultValues?: Record<string, string | number | boolean>;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
 }
 
@@ -32,7 +32,6 @@ export const Form: React.FC<FormProps> = ({
   submitLabel = 'Submit',
   children,
   className,
-  defaultValues,
   mode = 'onSubmit',
 }) => {
   const {
@@ -42,7 +41,7 @@ export const Form: React.FC<FormProps> = ({
     formState: { errors },
     setValue,
   } = useForm({
-    defaultValues,
+    defaultValues: DEFAULT_VALUES,
     mode,
   });
 
