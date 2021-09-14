@@ -8,6 +8,7 @@ import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
 import { ExpertPathInput } from '~/components/form/gameInputs/ExpertPathInput';
 import { HealthInputs } from '~/components/form/gameInputs/HealthInputs';
 import { MasterPathInput } from '~/components/form/gameInputs/MasterPathInput';
+import { NovicePathInput } from '~/components/form/gameInputs/NovicePathInput';
 import { PerceptionInput } from '~/components/form/gameInputs/PerceptionInput';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
@@ -15,7 +16,7 @@ import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { Layout } from '~/components/meta/Layout';
 import { DEFAULT_VALUES, FIELD_NAMES } from '~/constants/form';
-import { ANCESTRIES, ATTRIBUTES, NOVICE_PATHS } from '~/constants/game';
+import { ANCESTRIES, ATTRIBUTES } from '~/constants/game';
 
 const Home: React.FC = () => (
   <Layout>
@@ -32,13 +33,7 @@ const Home: React.FC = () => (
             value: a,
           }))}
         />
-        <SelectInput
-          name={FIELD_NAMES.paths.novice_path}
-          options={NOVICE_PATHS.map((p) => ({
-            label: startCase(p),
-            value: p,
-          }))}
-        />
+        <NovicePathInput />
         <ExpertPathInput />
         <MasterPathInput />
       </GridBox>

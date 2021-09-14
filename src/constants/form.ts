@@ -42,14 +42,17 @@ export const FIELD_NAMES = {
 };
 
 export const DEFAULT_VALUES = {
-  [FIELD_NAMES.level]: 1,
+  [FIELD_NAMES.level]: 0,
   [FIELD_NAMES.attributes.strength]: 10,
   [FIELD_NAMES.attributes.will]: 10,
   [FIELD_NAMES.attributes.intellect]: 10,
   [FIELD_NAMES.attributes.agility]: 10,
   [FIELD_NAMES.perception]: 10,
   [FIELD_NAMES.damage]: 0,
+  [FIELD_NAMES.health]: 1,
   [FIELD_NAMES.insanity]: 0,
+  [FIELD_NAMES.defense]: 10,
+  [FIELD_NAMES.speed]: 10,
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>
