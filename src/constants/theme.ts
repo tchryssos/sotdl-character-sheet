@@ -20,6 +20,7 @@ const theme = {
   colors: {
     black: '#000',
     white: '#fff',
+    grey: '#adadad',
   },
   spacing: {
     0: '0rem',
@@ -44,7 +45,7 @@ const theme = {
   },
   fontSize: {
     subBody: '0.8rem',
-    body: '1.2rem',
+    body: '1rem',
     title: '2rem',
   },
   fontFamily: 'sans-serif',

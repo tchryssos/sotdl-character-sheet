@@ -20,13 +20,13 @@ export const PerceptionInput = () => {
   }, [setValue, perception]);
 
   return (
-    <GridBox>
+    <>
       <NumberInput min={0} name={FIELD_NAMES.perception} />
       <NumberInput
         label={`${smallerThanMd ? '' : 'Per. '}Bonus`}
         name={FIELD_NAMES.perception_bonus}
         noOutline
       />
-    </GridBox>
+    </>
   );
 };

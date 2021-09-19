@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 
-import { GridBox } from '~/components/box/GridBox';
 import { FIELD_NAMES } from '~/constants/form';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
@@ -19,7 +18,7 @@ export const HealthInputs = () => {
   }, [health, setValue]);
 
   return (
-    <GridBox columnGap={16}>
+    <>
       <NumberInput min={0} name={FIELD_NAMES.health} />
       <NumberInput
         label={smallerThanMd ? 'H. Rate' : 'Heal Rate'}
@@ -29,6 +28,6 @@ export const HealthInputs = () => {
       />
       <NumberInput max={health} min={0} name={FIELD_NAMES.damage} />
       <NumberInput min={0} name={FIELD_NAMES.defense} />
-    </GridBox>
+    </>
   );
 };

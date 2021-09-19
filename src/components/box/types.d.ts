@@ -10,7 +10,7 @@ export type MarginProps = {
 
 export type BoxProps = MarginProps & {
   className?: string;
-  children: React.ReactNode | React.Node[];
+  children?: React.ReactNode | React.Node[];
   p?: Spacing;
   px?: Spacing;
   py?: Spacing;

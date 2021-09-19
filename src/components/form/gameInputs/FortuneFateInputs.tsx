@@ -12,7 +12,7 @@ export const FortuneFateInputs: React.FC = () => {
   const lessThanMd = !breakpoints.includes('md');
 
   return (
-    <GridBox>
+    <>
       <NumberInput
         label={lessThanMd ? 'Fate' : 'Fate Rolls'}
         max={3}
@@ -20,6 +20,6 @@ export const FortuneFateInputs: React.FC = () => {
         name={FIELD_NAMES.fateRolls}
       />
       <CheckboxInput name={FIELD_NAMES.fortune} />
-    </GridBox>
+    </>
   );
 };

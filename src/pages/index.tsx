@@ -4,6 +4,7 @@ import startCase from 'lodash.startcase';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
+import { FormSection } from '~/components/form/FormSection';
 import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
 import { EvilInputs } from '~/components/form/gameInputs/EvilInputs';
 import { ExpertPathInput } from '~/components/form/gameInputs/ExpertPathInput';
@@ -27,37 +28,43 @@ const Home: React.FC = () => (
         <TextInput name={FIELD_NAMES.name} />
         <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
       </GridBox>
-      <GridBox columns={4}>
-        <SelectInput
-          name={FIELD_NAMES.ancestry}
-          options={ANCESTRIES.map((a) => ({
-            label: startCase(a),
-            value: a,
-          }))}
-        />
-        <NovicePathInput />
-        <ExpertPathInput />
-        <MasterPathInput />
-      </GridBox>
-      <GridBox alignItems="start">
-        <TextAreaInput name={FIELD_NAMES.professions} />
-        <TextAreaInput name={FIELD_NAMES.languages} />
-      </GridBox>
-      <GridBox columns={4}>
+      <FormSection columns={1} title="History">
+        <GridBox columns={4}>
+          <SelectInput
+            name={FIELD_NAMES.ancestry}
+            options={ANCESTRIES.map((a) => ({
+              label: startCase(a),
+              value: a,
+            }))}
+          />
+          <NovicePathInput />
+          <ExpertPathInput />
+          <MasterPathInput />
+        </GridBox>
+        <GridBox alignItems="start">
+          <TextAreaInput name={FIELD_NAMES.professions} />
+          <TextAreaInput name={FIELD_NAMES.languages} />
+        </GridBox>
+      </FormSection>
+      <FormSection columns={4} title="Attributes">
         {ATTRIBUTES.map((a) => (
           <AttributeInput key={a} name={a} />
         ))}
-      </GridBox>
-      <GridBox columns={2}>
-        <HealthInputs />
+      </FormSection>
+      <GridBox>
+        <FormSection title="Defenses">
+          <HealthInputs />
+        </FormSection>
         <GridBox>
-          <PerceptionInput />
-          <GridBox>
+          <FormSection title="Traits">
+            <PerceptionInput />
             <NumberInput min={0} name={FIELD_NAMES.speed} />
             <NumberInput min={0.25} name={FIELD_NAMES.size} step={0.25} />
-          </GridBox>
-          <EvilInputs />
-          <FortuneFateInputs />
+          </FormSection>
+          <FormSection title="WHATEVER">
+            <EvilInputs />
+            <FortuneFateInputs />
+          </FormSection>
         </GridBox>
       </GridBox>
     </Form>
