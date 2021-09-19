@@ -1,6 +1,12 @@
+import styled from '@emotion/styled';
+
 import { CheckboxInputProps } from '~/components/form/typings';
 
 import { Input } from './Input';
+
+const CheckInput = styled(Input)`
+  width: ${({ theme }) => theme.spacing[40]};
+`;
 
 export const CheckboxInput: React.FC<Omit<CheckboxInputProps, 'type'>> = ({
   label,
@@ -11,7 +17,7 @@ export const CheckboxInput: React.FC<Omit<CheckboxInputProps, 'type'>> = ({
   validations,
   hideLabel,
 }) => (
-  <Input
+  <CheckInput
     className={className}
     disabled={disabled}
     hideLabel={hideLabel}

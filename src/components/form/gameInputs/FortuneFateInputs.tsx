@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DEFAULT_VALUES, FIELD_NAMES } from '~/constants/form';
+import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { FateRolls } from '~/typings/form';
 
 import { CheckboxInput } from '../CheckboxInput';
+import { Label } from '../Label';
 
 interface FateCheckboxProps {
   index: number;
@@ -33,6 +36,9 @@ export const FortuneFateInputs: React.FC = () => {
   );
 
   const { setValue } = useContext(ReactHookFormContext);
+  const breakpoints = useContext(BreakpointsContext);
+
+  const lessThanMd = !breakpoints.includes('md');
 
   useEffect(() => {
     setValue(FIELD_NAMES.fateRolls, fateRolls);
@@ -40,17 +46,22 @@ export const FortuneFateInputs: React.FC = () => {
 
   return (
     <GridBox>
-      <GridBox columnGap={4} columns={3}>
-        {fateRolls.map((roll, i) => (
-          <FateCheckbox
-            fateRolls={fateRolls}
-            index={i}
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${roll}-${i}`}
-            setFateRolls={setFateRolls}
-          />
-        ))}
-      </GridBox>
+      <Label
+        label={lessThanMd ? 'Fate' : 'Fate Rolls'}
+        labelFor={FIELD_NAMES.fateRolls}
+      >
+        <FlexBox justifyContent="space-between">
+          {fateRolls.map((roll, i) => (
+            <FateCheckbox
+              fateRolls={fateRolls}
+              index={i}
+              // eslint-disable-next-line react/no-array-index-key
+              key={`${roll}-${i}`}
+              setFateRolls={setFateRolls}
+            />
+          ))}
+        </FlexBox>
+      </Label>
       <CheckboxInput name={FIELD_NAMES.fortune} />
     </GridBox>
   );
