@@ -6,6 +6,8 @@ import { Input } from './Input';
 
 const CheckInput = styled(Input)`
   width: ${({ theme }) => theme.spacing[40]};
+  padding: 0;
+  margin: 0;
 `;
 
 export const CheckboxInput: React.FC<Omit<CheckboxInputProps, 'type'>> = ({
