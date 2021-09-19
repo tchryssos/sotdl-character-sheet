@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 
-import { GridBox } from '~/components/box/GridBox';
 import { FIELD_NAMES } from '~/constants/form';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 

@@ -12,6 +12,7 @@ const BodyText = styled.p<Omit<BodyProps, 'children'>>`
   font-family: ${({ theme }) => theme.fontFamily};
   line-height: ${({ theme }) => theme.lineHeight.normal};
   margin-bottom: ${({ theme, mb = 0 }) => `${theme.spacing[mb]}`};
+  font-style: ${({ italic }) => (italic ? 'italic' : '')};
 `;
 
 export const Body: React.FC<BodyProps> = ({
@@ -19,8 +20,9 @@ export const Body: React.FC<BodyProps> = ({
   className,
   bold,
   mb,
+  italic,
 }) => (
-  <BodyText bold={bold} className={className} mb={mb}>
+  <BodyText bold={bold} className={className} italic={italic} mb={mb}>
     {children}
   </BodyText>
 );

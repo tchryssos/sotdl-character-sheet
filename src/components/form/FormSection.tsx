@@ -5,6 +5,10 @@ import { FlexBox } from '../box/FlexBox';
 import { GridBox, GridBoxProps } from '../box/GridBox';
 import { Body } from '../typography/Body';
 
+const Text = styled(Body)`
+  white-space: nowrap;
+`;
+
 const Section = styled(FlexBox)`
   height: 100%;
 `;
@@ -18,9 +22,6 @@ const Line = styled(Box)`
 const Container = styled(GridBox)`
   border: 1px solid ${({ theme }) => theme.colors.grey};
   border-top: none;
-  border-radius: ${({ theme }) => theme.spacing[4]};
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
   height: 100%;
 `;
 
@@ -36,8 +37,8 @@ export const FormSection: React.FC<FormSectionProps> = ({
   columns,
 }) => (
   <Section column>
-    <FlexBox alignItems="flex-end">
-      <Body>{title}</Body>
+    <FlexBox alignItems="flex-end" ml={4}>
+      <Text italic>{title}</Text>
       <Line ml={8} />
     </FlexBox>
     <Container columns={columns} p={8}>

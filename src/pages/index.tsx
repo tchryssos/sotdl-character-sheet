@@ -42,8 +42,10 @@ const Home: React.FC = () => (
           <MasterPathInput />
         </GridBox>
         <GridBox alignItems="start">
-          <TextAreaInput name={FIELD_NAMES.professions} />
+          <TextAreaInput name={FIELD_NAMES.ancestryBenefits} />
           <TextAreaInput name={FIELD_NAMES.languages} />
+          <TextAreaInput name={FIELD_NAMES.professions} />
+          <TextAreaInput name={FIELD_NAMES.pathBenefits} />
         </GridBox>
       </FormSection>
       <FormSection columns={4} title="Attributes">
@@ -56,12 +58,12 @@ const Home: React.FC = () => (
           <HealthInputs />
         </FormSection>
         <GridBox>
-          <FormSection title="Traits">
+          <FormSection title="Physical Traits">
             <PerceptionInput />
             <NumberInput min={0} name={FIELD_NAMES.speed} />
             <NumberInput min={0.25} name={FIELD_NAMES.size} step={0.25} />
           </FormSection>
-          <FormSection title="WHATEVER">
+          <FormSection title="Metaphysical Traits">
             <EvilInputs />
             <FortuneFateInputs />
           </FormSection>

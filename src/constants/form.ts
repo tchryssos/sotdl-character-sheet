@@ -23,6 +23,8 @@ export const FIELD_NAMES = {
     expert_path: 'expert_path',
     master_path: 'master_path',
   },
+  pathBenefits: 'path-benefits',
+  ancestryBenefits: 'ancestry-benefits',
   professions: 'professions',
   languages: 'languages',
   attributes: createAttributes() as AttrObj<Attribute>,
