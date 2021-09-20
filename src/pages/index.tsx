@@ -5,6 +5,7 @@ import startCase from 'lodash.startcase';
 import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
+import { ArmorInput } from '~/components/form/gameInputs/ArmorInput';
 import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
 import { EvilInputs } from '~/components/form/gameInputs/EvilInputs';
 import { ExpertPathInput } from '~/components/form/gameInputs/ExpertPathInput';
@@ -69,6 +70,7 @@ const Home: React.FC = () => (
           </FormSection>
         </GridBox>
       </GridBox>
+      <ArmorInput />
     </Form>
   </Layout>
 );

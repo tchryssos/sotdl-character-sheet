@@ -23,8 +23,8 @@ export const FIELD_NAMES = {
     expert_path: 'expert_path',
     master_path: 'master_path',
   },
-  pathBenefits: 'path-benefits',
-  ancestryBenefits: 'ancestry-benefits',
+  pathBenefits: 'path_benefits',
+  ancestryBenefits: 'ancestry_benefits',
   professions: 'professions',
   languages: 'languages',
   attributes: createAttributes() as AttrObj<Attribute>,
@@ -43,6 +43,12 @@ export const FIELD_NAMES = {
   space: 'space',
   fortune: 'fortune',
   fateRolls: 'fate_rolls',
+  armors: {
+    fieldName: 'armors',
+    name: 'armor_name',
+    defense: 'armor_defense',
+    notes: 'armor_notes',
+  },
 };
 
 export const DEFAULT_VALUES = {
@@ -60,6 +66,13 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.speed]: 10,
   [FIELD_NAMES.size]: 1,
   [FIELD_NAMES.fateRolls]: 0,
+  [FIELD_NAMES.armors.fieldName]: [
+    {
+      armor_name: '',
+      armor_defense: 10,
+      armor_notes: '',
+    },
+  ],
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>
