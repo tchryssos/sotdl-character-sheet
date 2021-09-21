@@ -59,6 +59,7 @@ const theme = {
   },
 };
 
+// eslint-disable-next-line import/no-default-export
 export default theme;
 
 export type ThemeShape = typeof theme;

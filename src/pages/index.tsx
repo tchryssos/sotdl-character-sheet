@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-// import styled from '@emotion/styled';
+import styled from '@emotion/styled';
 import startCase from 'lodash.startcase';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
@@ -22,56 +23,62 @@ import { Layout } from '~/components/meta/Layout';
 import { FIELD_NAMES } from '~/constants/form';
 import { ANCESTRIES, ATTRIBUTES } from '~/constants/game';
 
+const MainForm = styled(Form)`
+  max-width: ${({ theme }) => theme.breakpointValues.lg}px;
+`;
+
 const Home: React.FC = () => (
   <Layout>
-    <Form onSubmit={() => undefined}>
-      <GridBox gridTemplateColumns="7fr 1fr">
-        <TextInput name={FIELD_NAMES.name} />
-        <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
-      </GridBox>
-      <FormSection columns={1} title="History">
-        <GridBox columns={4}>
-          <SelectInput
-            name={FIELD_NAMES.ancestry}
-            options={ANCESTRIES.map((a) => ({
-              label: startCase(a),
-              value: a,
-            }))}
-          />
-          <NovicePathInput />
-          <ExpertPathInput />
-          <MasterPathInput />
+    <FlexBox center flex={1}>
+      <MainForm onSubmit={() => undefined}>
+        <GridBox gridTemplateColumns="7fr 1fr">
+          <TextInput name={FIELD_NAMES.name} />
+          <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
         </GridBox>
-        <GridBox alignItems="start">
-          <TextAreaInput name={FIELD_NAMES.ancestryBenefits} />
-          <TextAreaInput name={FIELD_NAMES.languages} />
-          <TextAreaInput name={FIELD_NAMES.professions} />
-          <TextAreaInput name={FIELD_NAMES.pathBenefits} />
-        </GridBox>
-      </FormSection>
-      <FormSection columns={4} title="Attributes">
-        {ATTRIBUTES.map((a) => (
-          <AttributeInput key={a} name={a} />
-        ))}
-      </FormSection>
-      <GridBox>
-        <FormSection title="Defenses">
-          <HealthInputs />
+        <FormSection columns={1} title="History">
+          <GridBox columns={4}>
+            <SelectInput
+              name={FIELD_NAMES.ancestry}
+              options={ANCESTRIES.map((a) => ({
+                label: startCase(a),
+                value: a,
+              }))}
+            />
+            <NovicePathInput />
+            <ExpertPathInput />
+            <MasterPathInput />
+          </GridBox>
+          <GridBox alignItems="start">
+            <TextAreaInput name={FIELD_NAMES.ancestryBenefits} />
+            <TextAreaInput name={FIELD_NAMES.languages} />
+            <TextAreaInput name={FIELD_NAMES.professions} />
+            <TextAreaInput name={FIELD_NAMES.pathBenefits} />
+          </GridBox>
+        </FormSection>
+        <FormSection columns={4} title="Attributes">
+          {ATTRIBUTES.map((a) => (
+            <AttributeInput key={a} name={a} />
+          ))}
         </FormSection>
         <GridBox>
-          <FormSection title="Physical Traits">
-            <PerceptionInput />
-            <NumberInput min={0} name={FIELD_NAMES.speed} />
-            <NumberInput min={0.25} name={FIELD_NAMES.size} step={0.25} />
+          <FormSection title="Defenses">
+            <HealthInputs />
           </FormSection>
-          <FormSection title="Metaphysical Traits">
-            <EvilInputs />
-            <FortuneFateInputs />
-          </FormSection>
+          <GridBox>
+            <FormSection title="Physical Traits">
+              <PerceptionInput />
+              <NumberInput min={0} name={FIELD_NAMES.speed} />
+              <NumberInput min={0.25} name={FIELD_NAMES.size} step={0.25} />
+            </FormSection>
+            <FormSection title="Metaphysical Traits">
+              <EvilInputs />
+              <FortuneFateInputs />
+            </FormSection>
+          </GridBox>
         </GridBox>
-      </GridBox>
-      <ArmorInput />
-    </Form>
+        <ArmorInput />
+      </MainForm>
+    </FlexBox>
   </Layout>
 );
 

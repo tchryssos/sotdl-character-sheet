@@ -41,7 +41,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
       <Text italic>{title}</Text>
       <Line ml={8} />
     </FlexBox>
-    <Container columns={columns} p={8}>
+    <Container columns={columns} px={8} py={16}>
       {children}
     </Container>
   </Section>
