@@ -8,7 +8,6 @@ import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
-import { CheckboxInput } from '../CheckboxInput';
 import { FormSection } from '../FormSection';
 import { NumberInput } from '../NumberInput';
 import { TextAreaInput } from '../TextAreaInput';
@@ -16,6 +15,13 @@ import { TextInput } from '../TextInput';
 
 const AddAnotherButton = styled(Button)`
   max-width: ${({ theme }) => theme.spacing[128]};
+`;
+
+const ArmorCheckbox = styled.input`
+  min-width: ${({ theme }) => theme.spacing[40]};
+  min-height: ${({ theme }) => theme.spacing[40]};
+  padding: 0;
+  margin: 0;
 `;
 
 const defaultArmor = {
@@ -30,7 +36,9 @@ export const ArmorInput: React.FC = () => {
     control,
     name: FIELD_NAMES.armors.fieldName,
   });
-  const { setValue } = useContext(ReactHookFormContext);
+  const { setValue, watch } = useContext(ReactHookFormContext);
+
+  const activeArmorIndex = watch?.(FIELD_NAMES.activeArmorIndex);
 
   useEffect(() => {
     if (append && setValue) {
@@ -41,6 +49,11 @@ export const ArmorInput: React.FC = () => {
       }
     }
   }, [fields, append, setValue]);
+
+  const createOnArmorCheck = (index: number) => () => {
+    const newVal = index === activeArmorIndex ? undefined : index;
+    setValue(FIELD_NAMES.activeArmorIndex, newVal);
+  };
 
   return (
     <FormSection columns={1} title="Armor">
@@ -59,7 +72,12 @@ export const ArmorInput: React.FC = () => {
       {fields.map((field, i) => (
         <GridBox columns={3} key={field.id}>
           <GridBox gridTemplateColumns="1fr 7fr">
-            <CheckboxInput hideLabel name={FIELD_NAMES.activeArmorIndex} />
+            <ArmorCheckbox
+              checked={activeArmorIndex === i}
+              name={FIELD_NAMES.activeArmorIndex}
+              type="checkbox"
+              onChange={createOnArmorCheck(i)}
+            />
             <TextInput
               hideLabel
               name={`${FIELD_NAMES.armors.fieldName}.${i}.${FIELD_NAMES.armors.name}`}
