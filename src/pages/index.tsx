@@ -4,7 +4,7 @@ import startCase from 'lodash.startcase';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { Form } from '~/components/form/Form';
+import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
 import { ArmorInput } from '~/components/form/gameInputs/ArmorInput';
 import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
@@ -23,14 +23,14 @@ import { Layout } from '~/components/meta/Layout';
 import { FIELD_NAMES } from '~/constants/form';
 import { ANCESTRIES, ATTRIBUTES } from '~/constants/game';
 
-const MainForm = styled(Form)`
+const Form = styled(FormComponent)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
 `;
 
 const Home: React.FC = () => (
   <Layout>
     <FlexBox center flex={1}>
-      <MainForm onSubmit={() => undefined}>
+      <Form onSubmit={() => undefined}>
         <GridBox gridTemplateColumns="7fr 1fr">
           <TextInput name={FIELD_NAMES.name} />
           <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
@@ -77,7 +77,7 @@ const Home: React.FC = () => (
           </GridBox>
         </GridBox>
         <ArmorInput />
-      </MainForm>
+      </Form>
     </FlexBox>
   </Layout>
 );
