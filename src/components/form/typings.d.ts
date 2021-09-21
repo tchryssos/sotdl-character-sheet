@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import {
   FieldValues,
   UseFormRegister,
@@ -26,6 +27,7 @@ type BaseInputProps<T> = T & {
   disabled?: boolean;
   hideLabel?: boolean;
   noOutline?: boolean;
+  customOnChange?: (event: ChangeEvent) => void;
 };
 
 export type TextInputProps = BaseInputProps<{

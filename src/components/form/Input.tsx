@@ -31,9 +31,11 @@ export const Input: React.FC<InputProps> = (props) => {
     name,
     hideLabel,
     noOutline,
+    customOnChange,
   } = props as InputProps;
   const { min, max, step = 1 } = props as NumberInputProps;
   const { register } = useContext(ReactHookFormContext);
+  const registeredInput = register?.(name, validations);
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <StyledInput
@@ -41,12 +43,20 @@ export const Input: React.FC<InputProps> = (props) => {
         disabled={disabled}
         max={max}
         min={min}
+        name={registeredInput?.name}
+        noOutline={noOutline}
         readOnly={readOnly || noOutline}
+        ref={registeredInput?.ref}
         step={step}
         type={type}
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...register?.(name, validations)}
-        noOutline={noOutline}
+        onBlur={registeredInput?.onBlur}
+        onChange={(e) => {
+          if (customOnChange) {
+            customOnChange(e);
+          } else {
+            registeredInput?.onChange(e);
+          }
+        }}
       />
     </Label>
   );
