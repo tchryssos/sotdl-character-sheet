@@ -66,13 +66,6 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.speed]: 10,
   [FIELD_NAMES.size]: 1,
   [FIELD_NAMES.fateRolls]: 0,
-  [FIELD_NAMES.armors.fieldName]: [
-    {
-      armor_name: '',
-      armor_defense: 10,
-      armor_notes: '',
-    },
-  ],
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>

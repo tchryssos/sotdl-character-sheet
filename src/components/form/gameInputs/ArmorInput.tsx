@@ -1,15 +1,27 @@
-import { useEffect } from 'react';
+import styled from '@emotion/styled';
+import { useContext, useEffect } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
+import { Button } from '~/components/Button';
 import { Body } from '~/components/typography/Body';
-import { DEFAULT_VALUES, FIELD_NAMES } from '~/constants/form';
-import { ArmorArray } from '~/typings/form';
+import { FIELD_NAMES } from '~/constants/form';
+import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { FormSection } from '../FormSection';
 import { NumberInput } from '../NumberInput';
 import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
+
+const AddAnotherButton = styled(Button)`
+  max-width: ${({ theme }) => theme.spacing[128]};
+`;
+
+const defaultArmor = {
+  [FIELD_NAMES.armors.defense]: 10,
+  [FIELD_NAMES.armors.name]: '',
+  [FIELD_NAMES.armors.notes]: '',
+};
 
 export const ArmorInput: React.FC = () => {
   const { control } = useForm();
@@ -17,15 +29,24 @@ export const ArmorInput: React.FC = () => {
     control,
     name: FIELD_NAMES.armors.fieldName,
   });
+  const { setValue } = useContext(ReactHookFormContext);
 
   useEffect(() => {
-    if (!fields.length) {
-      append((DEFAULT_VALUES[FIELD_NAMES.armors.fieldName] as ArmorArray)[0]);
+    if (append && setValue) {
+      if (!fields.length) {
+        append(defaultArmor);
+      } else {
+        setValue(FIELD_NAMES.armors.fieldName, fields);
+      }
     }
-  }, [fields, append]);
+  }, [fields, append, setValue]);
 
   return (
     <FormSection columns={1} title="Armor">
+      <AddAnotherButton
+        label="Add New Armor"
+        onClick={() => append(defaultArmor)}
+      />
       <GridBox columns={3}>
         <Body bold>Name</Body>
         <Body bold>Defense</Body>
