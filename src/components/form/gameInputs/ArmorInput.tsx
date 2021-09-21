@@ -88,10 +88,13 @@ export const ArmorInput: React.FC = () => {
             min={0}
             name={`${FIELD_NAMES.armors.fieldName}.${i}.${FIELD_NAMES.armors.defense}`}
           />
-          <TextAreaInput
-            hideLabel
-            name={`${FIELD_NAMES.armors.fieldName}.${i}.${FIELD_NAMES.armors.notes}`}
-          />
+          <GridBox gridTemplateColumns="7fr 1fr">
+            <TextAreaInput
+              hideLabel
+              name={`${FIELD_NAMES.armors.fieldName}.${i}.${FIELD_NAMES.armors.notes}`}
+            />
+            <Button label="Delete" onClick={() => remove(i)} />
+          </GridBox>
         </GridBox>
       ))}
     </FormSection>
