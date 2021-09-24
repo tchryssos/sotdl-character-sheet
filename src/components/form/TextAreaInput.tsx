@@ -8,7 +8,8 @@ import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { Label } from './Label';
 
 export const TextArea = styled.textarea(({ theme }) => ({
-  minHeight: theme.spacing[48],
+  height: theme.spacing[40],
+  minHeight: theme.spacing[40],
   fontSize: theme.fontSize.subBody,
   width: '100%',
   padding: theme.spacing[8],

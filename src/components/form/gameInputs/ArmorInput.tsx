@@ -14,8 +14,9 @@ import { NumberInput } from '../NumberInput';
 import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
 
-const AddAnotherButton = styled(Button)`
+const AddRemoveButton = styled(Button)`
   max-width: ${({ theme }) => theme.spacing[128]};
+  max-height: ${({ theme }) => theme.spacing[40]};
 `;
 
 const ArmorCheckbox = styled.input`
@@ -75,7 +76,7 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
           hideLabel
           name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.notes}`}
         />
-        <Button label="X" onClick={() => onDelete(index)} />
+        <AddRemoveButton label="X" onClick={() => onDelete(index)} />
       </GridBox>
     </GridBox>
   );
@@ -113,7 +114,7 @@ export const ArmorInput: React.FC = () => {
 
   return (
     <FormSection columns={1} title="Armor">
-      <AddAnotherButton label="+" onClick={onCreate} />
+      <AddRemoveButton label="+" onClick={onCreate} />
       {Boolean(controlledFields?.length) && (
         <GridBox columns={3}>
           <GridBox gridTemplateColumns="1fr 7fr">
