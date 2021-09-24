@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
@@ -33,17 +33,17 @@ const defaultArmor = {
 
 interface ArmorFieldProps {
   index: number;
-  remove: (index: number) => void;
+  onDelete: (index: number) => void;
 }
 
-const ArmorField: React.FC<ArmorFieldProps> = ({ index, remove }) => {
+const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useContext(ReactHookFormContext);
 
   const activeArmorIndex: number | undefined = watch?.(
     FIELD_NAMES.activeArmorIndex
   );
 
-  const createOnArmorCheck = () => {
+  const onArmorCheck = () => {
     const newVal = index === activeArmorIndex ? undefined : index;
     setValue(FIELD_NAMES.activeArmorIndex, newVal);
   };
@@ -55,7 +55,7 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, remove }) => {
           checked={activeArmorIndex === index}
           name={FIELD_NAMES.activeArmorIndex}
           type="checkbox"
-          onChange={createOnArmorCheck}
+          onChange={onArmorCheck}
         />
         <TextInput
           hideLabel
@@ -72,13 +72,7 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, remove }) => {
           hideLabel
           name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.notes}`}
         />
-        <Button
-          label="X"
-          onClick={() => {
-            setValue(FIELD_NAMES.armors.fieldName);
-            remove(index);
-          }}
-        />
+        <Button label="X" onClick={() => onDelete(index)} />
       </GridBox>
     </GridBox>
   );
@@ -90,7 +84,7 @@ export const ArmorInput: React.FC = () => {
     control,
     name: FIELD_NAMES.armors.fieldName,
   });
-  const { watch } = useContext(ReactHookFormContext);
+  const { watch, setValue } = useContext(ReactHookFormContext);
 
   const armors: ArmorArray | undefined = watch?.(FIELD_NAMES.armors.fieldName);
 
@@ -98,6 +92,13 @@ export const ArmorInput: React.FC = () => {
     ...field,
     ...armors?.[i],
   }));
+
+  const onDelete = (index: number) => {
+    const nextFields = controlledFields;
+    nextFields.splice(index, 1);
+    setValue(FIELD_NAMES.armors.fieldName, nextFields);
+    remove(index);
+  };
 
   return (
     <FormSection columns={1} title="Armor">
@@ -113,7 +114,7 @@ export const ArmorInput: React.FC = () => {
         </GridBox>
       )}
       {controlledFields.map((field, i) => (
-        <ArmorField index={i} key={field.id} remove={remove} />
+        <ArmorField index={i} key={field.id} onDelete={onDelete} />
       ))}
     </FormSection>
   );
