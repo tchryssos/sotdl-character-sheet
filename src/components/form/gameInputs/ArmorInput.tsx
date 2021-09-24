@@ -35,6 +35,8 @@ const createDefaultArmor = () => ({
   [FIELD_NAMES.armors.notes]: '',
 });
 
+const armorTemplateColums = '4fr 1fr 4fr';
+
 interface ArmorFieldProps {
   index: number;
   onDelete: (index: number) => void;
@@ -53,7 +55,7 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   };
 
   return (
-    <GridBox columns={3}>
+    <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
       <GridBox gridTemplateColumns="1fr 7fr">
         <ArmorCheckbox
           checked={activeArmorIndex === index}
@@ -116,7 +118,7 @@ export const ArmorInput: React.FC = () => {
     <FormSection columns={1} title="Armor">
       <AddRemoveButton label="+" onClick={onCreate} />
       {Boolean(controlledFields?.length) && (
-        <GridBox columns={3}>
+        <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
           <GridBox gridTemplateColumns="1fr 7fr">
             <Body>Active</Body>
             <Body bold>Name</Body>
