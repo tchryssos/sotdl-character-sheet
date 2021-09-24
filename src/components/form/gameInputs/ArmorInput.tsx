@@ -25,11 +25,14 @@ const ArmorCheckbox = styled.input`
   margin: 0;
 `;
 
-const defaultArmor = {
-  [FIELD_NAMES.armors.defense]: 10,
+// Something about setValue is overwriting defaultArmor
+// if it is set as a constant, so I am setting it to a fn
+// that returns the obj, which fixes the problem
+const createDefaultArmor = () => ({
+  [FIELD_NAMES.armors.defense]: 0,
   [FIELD_NAMES.armors.name]: '',
   [FIELD_NAMES.armors.notes]: '',
-};
+});
 
 interface ArmorFieldProps {
   index: number;
@@ -93,6 +96,14 @@ export const ArmorInput: React.FC = () => {
     ...armors?.[i],
   }));
 
+  const onCreate = () => {
+    append({});
+    setValue(FIELD_NAMES.armors.fieldName, [
+      ...(armors || []),
+      createDefaultArmor(),
+    ]);
+  };
+
   const onDelete = (index: number) => {
     const nextFields = controlledFields;
     nextFields.splice(index, 1);
@@ -102,7 +113,7 @@ export const ArmorInput: React.FC = () => {
 
   return (
     <FormSection columns={1} title="Armor">
-      <AddAnotherButton label="+" onClick={() => append(defaultArmor)} />
+      <AddAnotherButton label="+" onClick={onCreate} />
       {Boolean(controlledFields?.length) && (
         <GridBox columns={3}>
           <GridBox gridTemplateColumns="1fr 7fr">
