@@ -18,15 +18,15 @@ interface AddAnotherMultiFieldProps {
   children: (fieldProps: {
     index: number;
     onDelete: (index: number) => void;
-  }) => React.ReactNode[];
-  defaultValue: Record<string, unknown>;
+  }) => React.ReactNode;
+  createDefaultValue?: () => Record<string, unknown>;
   HeaderRow: React.FC;
 }
 
 export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   parentFieldName,
   children,
-  defaultValue,
+  createDefaultValue,
   HeaderRow,
 }) => {
   const { control } = useForm();
@@ -47,7 +47,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     append({});
     setValue(FIELD_NAMES.armors.fieldName, [
       ...(parentField || []),
-      defaultValue,
+      createDefaultValue?.() || null,
     ]);
   };
 
