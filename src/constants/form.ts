@@ -50,6 +50,18 @@ export const FIELD_NAMES = {
     notes: 'armor_notes',
   },
   activeArmorIndex: 'active_armor_index',
+  weapons: {
+    fieldName: 'weapons',
+    name: 'weapon_name',
+    hands: 'weapon_hands',
+    damage: 'weapon_damage',
+    notes: 'weapon_notes',
+  },
+  activeWeaponIndex: 'active_weapon_index',
+  ammoTrackers: {
+    one: 'ammo_tracker_one',
+    two: 'ammo_tracker_two',
+  },
 };
 
 export const DEFAULT_VALUES = {
@@ -67,6 +79,8 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.speed]: 10,
   [FIELD_NAMES.size]: 1,
   [FIELD_NAMES.fateRolls]: 0,
+  [FIELD_NAMES.ammoTrackers.one]: 5,
+  [FIELD_NAMES.ammoTrackers.two]: 5,
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>

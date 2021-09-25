@@ -15,6 +15,7 @@ import { HealthInputs } from '~/components/form/gameInputs/HealthInputs';
 import { MasterPathInput } from '~/components/form/gameInputs/MasterPathInput';
 import { NovicePathInput } from '~/components/form/gameInputs/NovicePathInput';
 import { PerceptionInput } from '~/components/form/gameInputs/PerceptionInput';
+import { WeaponInput } from '~/components/form/gameInputs/WeaponInput';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
@@ -77,6 +78,7 @@ const Home: React.FC = () => (
           </GridBox>
         </GridBox>
         <ArmorInput />
+        <WeaponInput />
       </Form>
     </FlexBox>
   </Layout>

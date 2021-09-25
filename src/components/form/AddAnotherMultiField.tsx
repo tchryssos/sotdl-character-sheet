@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Button } from '~/components/Button';
-import { FIELD_NAMES } from '~/constants/form';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Box } from '../box/Box';
@@ -44,11 +43,8 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   }));
 
   const onCreate = () => {
-    append({});
-    setValue(FIELD_NAMES.armors.fieldName, [
-      ...(parentField || []),
-      createDefaultValue?.() || null,
-    ]);
+    const nextValue = createDefaultValue?.() || {};
+    append(nextValue);
   };
 
   const onDelete = (index: number) => {
