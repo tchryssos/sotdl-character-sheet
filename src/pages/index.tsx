@@ -79,6 +79,20 @@ const Home: React.FC = () => (
         </GridBox>
         <ArmorInput />
         <WeaponInput />
+        <FormSection columns={4} title="Currency">
+          <NumberInput label="Gold" min={0} name={FIELD_NAMES.currency.gold} />
+          <NumberInput
+            label="Silver"
+            min={0}
+            name={FIELD_NAMES.currency.silver}
+          />
+          <NumberInput
+            label="Copper"
+            min={0}
+            name={FIELD_NAMES.currency.copper}
+          />
+          <NumberInput label="Gems" min={0} name={FIELD_NAMES.currency.gems} />
+        </FormSection>
       </Form>
     </FlexBox>
   </Layout>

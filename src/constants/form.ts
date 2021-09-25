@@ -62,6 +62,12 @@ export const FIELD_NAMES = {
     one: 'ammo_tracker_one',
     two: 'ammo_tracker_two',
   },
+  currency: {
+    gold: 'currency_gold',
+    silver: 'currency_silver',
+    copper: 'currency_copper',
+    gems: 'currency_gems',
+  },
 };
 
 export const DEFAULT_VALUES = {
