@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 
-import { expertPathSelectOptions, FIELD_NAMES } from '~/constants/form';
+import { FIELD_NAMES } from '~/constants/form';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
-import { SelectInput } from '../SelectInput';
+import { TextInput } from '../TextInput';
 
 export const ExpertPathInput = () => {
   const { watch } = useContext(ReactHookFormContext);
@@ -11,10 +11,6 @@ export const ExpertPathInput = () => {
   const isExpert = level >= 3;
 
   return (
-    <SelectInput
-      disabled={!isExpert}
-      name={FIELD_NAMES.paths.expert_path}
-      options={isExpert ? expertPathSelectOptions : [{ label: '', value: '' }]}
-    />
+    <TextInput disabled={!isExpert} name={FIELD_NAMES.paths.expert_path} />
   );
 };

@@ -1,16 +1,9 @@
-import startCase from 'lodash.startcase';
 import { useContext } from 'react';
 
 import { FIELD_NAMES } from '~/constants/form';
-import { NOVICE_PATHS } from '~/constants/game';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
-import { SelectInput } from '../SelectInput';
-
-const novicePathOptions = NOVICE_PATHS.map((p) => ({
-  label: startCase(p),
-  value: p,
-}));
+import { TextInput } from '../TextInput';
 
 export const NovicePathInput = () => {
   const { watch } = useContext(ReactHookFormContext);
@@ -18,10 +11,6 @@ export const NovicePathInput = () => {
   const isNovice = level >= 1;
 
   return (
-    <SelectInput
-      disabled={!isNovice}
-      name={FIELD_NAMES.paths.novice_path}
-      options={isNovice ? novicePathOptions : [{ label: '', value: '' }]}
-    />
+    <TextInput disabled={!isNovice} name={FIELD_NAMES.paths.novice_path} />
   );
 };

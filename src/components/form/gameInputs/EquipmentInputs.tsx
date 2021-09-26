@@ -13,7 +13,7 @@ interface ItemFieldProps {
   onDelete: (index: number) => void;
 }
 
-const itemTemplateColumns = '2fr 1fr 3fr';
+const itemTemplateColumns = '4fr 1fr 6fr';
 const { fieldName, name, notes, value } = FIELD_NAMES.equipment;
 
 const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => (
