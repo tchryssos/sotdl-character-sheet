@@ -74,6 +74,9 @@ export const FIELD_NAMES = {
     value: 'equipment_value',
     notes: 'equipment_notes',
   },
+  background: 'background',
+  appearance: 'appearance',
+  generalNotes: 'general_notes',
 };
 
 export const DEFAULT_VALUES = {
