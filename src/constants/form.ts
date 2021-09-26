@@ -14,6 +14,17 @@ const createAttributes = (isBonus?: boolean) =>
     return clone;
   }, {} as AttrObj<Attribute | string>);
 
+type CastingObj = Record<string, string>;
+
+const castings = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].reduce(
+  (castingObj, currLevel) => {
+    const castClone = { ...castingObj };
+    castClone[currLevel] = `castings_${currLevel}`;
+    return castClone;
+  },
+  {} as CastingObj
+);
+
 export const FIELD_NAMES = {
   name: 'name',
   level: 'level',
@@ -77,6 +88,18 @@ export const FIELD_NAMES = {
   background: 'background',
   appearance: 'appearance',
   generalNotes: 'general_notes',
+  spellPower: {
+    fieldName: 'spell_power',
+    castings: {
+      fieldName: 'castings',
+      castingsByLevel: {
+        ...castings,
+      },
+    },
+  },
+  spells: {
+    fieldName: 'spells',
+  },
 };
 
 export const DEFAULT_VALUES = {
@@ -96,6 +119,7 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.fateRolls]: 0,
   [FIELD_NAMES.ammoTrackers.one]: 5,
   [FIELD_NAMES.ammoTrackers.two]: 5,
+  [FIELD_NAMES.spellPower.fieldName]: 0,
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>

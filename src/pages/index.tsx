@@ -15,6 +15,7 @@ import { FortuneFateInputs } from '~/components/form/gameInputs/FortuneFateInput
 import { GeneralNotesInputs } from '~/components/form/gameInputs/GeneralNotesInputs';
 import { HealthInputs } from '~/components/form/gameInputs/HealthInputs';
 import { HistoryInputs } from '~/components/form/gameInputs/HistoryInputs';
+import { MagicInputs } from '~/components/form/gameInputs/MagicInputs';
 import { PhysicalTraitsInputs } from '~/components/form/gameInputs/PhysicalTraitsInputs';
 import { WeaponInput } from '~/components/form/gameInputs/WeaponInput';
 import { NumberInput } from '~/components/form/NumberInput';
@@ -53,6 +54,7 @@ const Home: React.FC = () => (
             </FormSection>
           </GridBox>
         </GridBox>
+        <MagicInputs />
         <ArmorInput />
         <WeaponInput />
         <EquipmentInputs />
