@@ -68,6 +68,12 @@ export const FIELD_NAMES = {
     copper: 'currency_copper',
     gems: 'currency_gems',
   },
+  equipment: {
+    fieldName: 'equipment',
+    name: 'equipment_name',
+    value: 'equipment_value',
+    notes: 'equipment_notes',
+  },
 };
 
 export const DEFAULT_VALUES = {

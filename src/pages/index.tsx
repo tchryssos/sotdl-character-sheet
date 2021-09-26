@@ -8,6 +8,7 @@ import { FormSection } from '~/components/form/FormSection';
 import { ArmorInput } from '~/components/form/gameInputs/ArmorInput';
 import { AttributeInput } from '~/components/form/gameInputs/AttributeInput';
 import { CurrencyInputs } from '~/components/form/gameInputs/CurrencyInputs';
+import { EquipmentInputs } from '~/components/form/gameInputs/EquipmentInputs';
 import { EvilInputs } from '~/components/form/gameInputs/EvilInputs';
 import { FortuneFateInputs } from '~/components/form/gameInputs/FortuneFateInputs';
 import { HealthInputs } from '~/components/form/gameInputs/HealthInputs';
@@ -52,6 +53,7 @@ const Home: React.FC = () => (
         </GridBox>
         <ArmorInput />
         <WeaponInput />
+        <EquipmentInputs />
         <CurrencyInputs />
       </Form>
     </FlexBox>
