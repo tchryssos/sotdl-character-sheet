@@ -3,6 +3,7 @@ import startCase from 'lodash.startcase';
 import { useContext, useEffect } from 'react';
 
 import { SelectInputProps, SelectOption } from '~/components/form/typings';
+import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Label } from './Label';
@@ -41,8 +42,10 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   options,
   placeholder,
   hideLabel,
+  alwaysEditable,
 }) => {
   const { register, setValue } = useContext(ReactHookFormContext);
+  const isEditMode = useContext(EditContext);
 
   useEffect(() => {
     if (placeholder) {
@@ -54,7 +57,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <Selecter
         className={className}
-        disabled={disabled || readOnly}
+        disabled={disabled || readOnly || (!isEditMode && !alwaysEditable)}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register?.(name, validations)}
       >

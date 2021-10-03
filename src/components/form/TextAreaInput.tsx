@@ -3,6 +3,7 @@ import startCase from 'lodash.startcase';
 import { useContext } from 'react';
 
 import { TextInputProps } from '~/components/form/typings';
+import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Label } from './Label';
@@ -25,8 +26,10 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
   disabled,
   validations,
   hideLabel,
+  alwaysEditable,
 }) => {
   const { register } = useContext(ReactHookFormContext);
+  const isEditMode = useContext(EditContext);
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <TextArea
@@ -34,7 +37,7 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
         {...register?.(name, validations)}
         className={className}
         disabled={disabled}
-        readOnly={readOnly}
+        readOnly={readOnly || (!isEditMode && !alwaysEditable)}
       />
     </Label>
   );

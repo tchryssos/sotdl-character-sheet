@@ -4,6 +4,7 @@ import { useContext } from 'react';
 
 import { Label } from '~/components/form/Label';
 import { InputProps, NumberInputProps } from '~/components/form/typings';
+import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 const StyledInput = styled.input<Pick<InputProps, 'noOutline'>>(
@@ -32,9 +33,11 @@ export const Input: React.FC<InputProps> = (props) => {
     hideLabel,
     noOutline,
     customOnChange,
+    alwaysEditable,
   } = props as InputProps;
   const { min, max, step = 1 } = props as NumberInputProps;
   const { register } = useContext(ReactHookFormContext);
+  const isEditMode = useContext(EditContext);
   const registeredInput = register?.(name, validations);
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
@@ -45,7 +48,7 @@ export const Input: React.FC<InputProps> = (props) => {
         min={min}
         name={registeredInput?.name}
         noOutline={noOutline}
-        readOnly={readOnly || noOutline}
+        readOnly={readOnly || noOutline || (!isEditMode && !alwaysEditable)}
         ref={registeredInput?.ref}
         step={step}
         type={type}

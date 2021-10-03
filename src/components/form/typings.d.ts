@@ -28,6 +28,7 @@ type BaseInputProps<T> = T & {
   hideLabel?: boolean;
   noOutline?: boolean;
   customOnChange?: (event: ChangeEvent) => void;
+  alwaysEditable?: boolean;
 };
 
 export type TextInputProps = BaseInputProps<{
