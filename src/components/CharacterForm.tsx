@@ -30,6 +30,19 @@ import { Body } from './typography/Body';
 
 const Form = styled(FormComponent)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
+  margin-top: ${({ theme }) => theme.spacing[64]};
+`;
+
+const FormToolbar = styled(FlexBox)`
+  position: fixed;
+  background-color: ${({ theme }) => theme.colors.white};
+  top: 0;
+  width: 100%;
+  max-width: ${({ theme }) => theme.breakpointValues.lg}px;
+  padding: ${({ theme }) => theme.spacing[16]};
+  ${({ theme }) => theme.breakpoints.sm} {
+    padding: ${({ theme }) => `${theme.spacing[16]} ${theme.spacing[32]}`};
+  }
 `;
 
 export const CharacterForm: React.FC = () => {
@@ -38,15 +51,15 @@ export const CharacterForm: React.FC = () => {
   const isLessThanXs = useBreakpointsLessThan('xs');
 
   return (
-    <Form onSubmit={() => undefined}>
-      <EditContext.Provider value={isEditMode}>
-        <FlexBox alignItems="center" flex={1} justifyContent="flex-end">
-          {isEditMode && <Body>Editing...</Body>}
-          <Button
-            label={isEditMode ? 'Cancel' : 'Edit'}
-            onClick={() => setIsEditMode(!isEditMode)}
-          />
-        </FlexBox>
+    <EditContext.Provider value={isEditMode}>
+      <FormToolbar alignItems="center" flex={1} justifyContent="flex-end">
+        {isEditMode && <Body>Editing...</Body>}
+        <Button
+          label={isEditMode ? 'Cancel' : 'Edit'}
+          onClick={() => setIsEditMode(!isEditMode)}
+        />
+      </FormToolbar>
+      <Form onSubmit={() => undefined}>
         <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
           <TextInput name={FIELD_NAMES.name} />
           <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
@@ -76,7 +89,7 @@ export const CharacterForm: React.FC = () => {
         <CurrencyInputs />
         <DescriptionInputs />
         <GeneralNotesInputs />
-      </EditContext.Provider>
-    </Form>
+      </Form>
+    </EditContext.Provider>
   );
 };

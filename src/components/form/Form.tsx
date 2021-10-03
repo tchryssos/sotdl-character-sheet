@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Button } from '~/components/Button';
 import { DEFAULT_VALUES } from '~/constants/form';
+import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { FlexBox } from '../box/FlexBox';
@@ -47,6 +49,7 @@ export const Form: React.FC<FormProps> = ({
     defaultValues: DEFAULT_VALUES,
     mode,
   });
+  const isEditMode = useContext(EditContext);
 
   return (
     <FormWrapper center>
@@ -55,7 +58,7 @@ export const Form: React.FC<FormProps> = ({
           value={{ register, watch, errors, setValue }}
         >
           {children}
-          <Button label={submitLabel} type="submit" />
+          {isEditMode && <Button label={submitLabel} type="submit" />}
         </ReactHookFormContext.Provider>
       </StyledForm>
     </FormWrapper>
