@@ -24,6 +24,9 @@ import { TextInput } from '~/components/form/TextInput';
 import { FIELD_NAMES } from '~/constants/form';
 import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+
+import { Body } from './typography/Body';
 
 const Form = styled(FormComponent)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
@@ -31,28 +34,34 @@ const Form = styled(FormComponent)`
 
 export const CharacterForm: React.FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const isLessThanSm = useBreakpointsLessThan('sm');
+  const isLessThanXs = useBreakpointsLessThan('xs');
 
   return (
     <Form onSubmit={() => undefined}>
       <EditContext.Provider value={isEditMode}>
-        <FlexBox flex={1} justifyContent="flex-end">
-          <Button label="Edit" onClick={() => setIsEditMode(!isEditMode)} />
+        <FlexBox alignItems="center" flex={1} justifyContent="flex-end">
+          {isEditMode && <Body>Editing...</Body>}
+          <Button
+            label={isEditMode ? 'Cancel' : 'Edit'}
+            onClick={() => setIsEditMode(!isEditMode)}
+          />
         </FlexBox>
-        <GridBox gridTemplateColumns="7fr 1fr">
+        <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
           <TextInput name={FIELD_NAMES.name} />
           <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
         </GridBox>
         <HistoryInputs />
-        <FormSection columns={4} title="Attributes">
+        <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
           {ATTRIBUTES.map((a) => (
             <AttributeInput key={a} name={a} />
           ))}
         </FormSection>
-        <GridBox>
+        <GridBox columns={isLessThanSm ? 1 : 2}>
           <FormSection title="Defenses">
             <HealthInputs />
           </FormSection>
-          <GridBox>
+          <GridBox columns={isLessThanXs ? 1 : 2}>
             <PhysicalTraitsInputs />
             <FormSection title="Metaphysical Traits">
               <EvilInputs />

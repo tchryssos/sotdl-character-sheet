@@ -17,7 +17,7 @@ export type GridBoxProps = BoxProps & {
   gridTemplateColumns?: string;
 };
 
-const Grid = styled(Box)<GridBoxProps>(
+export const GridBox = styled(Box)<GridBoxProps>(
   { display: 'grid' },
   ({
     center,
@@ -25,16 +25,15 @@ const Grid = styled(Box)<GridBoxProps>(
     alignItems,
     inline,
     columns = 2,
-    columnGap = 16,
-    rowGap = 16,
-    theme,
+    columnGap,
+    rowGap,
     gridTemplateColumns,
+    theme,
   }) => ({
     justifyItems,
     alignItems,
-    columnGap: `${(columnGap || 0) / 16}rem`,
-    rowGap: `${(rowGap || 0) / 16}rem`,
-    gridTemplateColumns: '1fr',
+    columnGap: `${(columnGap || 8) / 16}rem`,
+    rowGap: `${(rowGap || 8) / 16}rem`,
     ...(center && {
       justifyItems: 'center',
       alignItems: 'center',
@@ -42,13 +41,10 @@ const Grid = styled(Box)<GridBoxProps>(
     ...(inline && {
       display: 'inline-grid',
     }),
+    gridTemplateColumns: gridTemplateColumns || `repeat(${columns}, 1fr)`,
     [theme.breakpoints.sm]: {
-      gridTemplateColumns: gridTemplateColumns || `repeat(${columns}, 1fr)`,
+      rowGap: `${(rowGap || 16) / 16}rem`,
+      columnGap: `${(columnGap || 16) / 16}rem`,
     },
   })
-);
-
-export const GridBox: React.FC<GridBoxProps> = ({ children, ...rest }) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <Grid {...rest}>{children}</Grid>
 );

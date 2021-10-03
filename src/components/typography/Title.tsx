@@ -5,7 +5,7 @@ import { TypographyProps } from './types';
 
 type TitleProps = Pick<MarginProps, 'mb'> & TypographyProps;
 
-const Text = styled.h1<TitleProps>`
+export const Title = styled.h1<TitleProps>`
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: ${({ theme }) => theme.fontSize.title};
   margin-bottom: ${({ theme, mb = 24 }) => theme.spacing[mb]};
@@ -13,14 +13,3 @@ const Text = styled.h1<TitleProps>`
   font-weight: ${({ theme, bold }) =>
     bold ? theme.fontWeight.bold : theme.fontWeight.regular};
 `;
-
-export const Title: React.FC<TitleProps> = ({
-  bold,
-  className,
-  children,
-  mb,
-}) => (
-  <Text bold={bold} className={className} mb={mb}>
-    {children}
-  </Text>
-);

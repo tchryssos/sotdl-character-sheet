@@ -3,10 +3,10 @@ import styled from '@emotion/styled';
 import { MarginProps } from '../box/types';
 import { TypographyProps } from './types';
 
-type BodyProps = Pick<MarginProps, 'mb'> & TypographyProps;
+type SubBodyProps = Pick<MarginProps, 'mb'> & TypographyProps;
 
-export const Body = styled.p<Omit<BodyProps, 'children'>>`
-  font-size: ${({ theme }) => theme.fontSize.body};
+export const SubBody = styled.p<Omit<SubBodyProps, 'children'>>`
+  font-size: ${({ theme }) => theme.fontSize.subBody};
   font-weight: ${({ theme, bold }) =>
     bold ? theme.fontWeight.bold : theme.fontWeight.regular};
   font-family: ${({ theme }) => theme.fontFamily};

@@ -25,7 +25,12 @@ export const HealthInputs = () => {
         name={FIELD_NAMES.healing_rate}
         noOutline
       />
-      <NumberInput max={health} min={0} name={FIELD_NAMES.damage} />
+      <NumberInput
+        alwaysEditable
+        max={health}
+        min={0}
+        name={FIELD_NAMES.damage}
+      />
       <NumberInput min={0} name={FIELD_NAMES.defense} />
     </>
   );

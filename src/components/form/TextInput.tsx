@@ -10,8 +10,10 @@ export const TextInput: React.FC<Omit<TextInputProps, 'type'>> = ({
   disabled,
   validations,
   hideLabel,
+  alwaysEditable,
 }) => (
   <Input
+    alwaysEditable={alwaysEditable}
     className={className}
     disabled={disabled}
     hideLabel={hideLabel}

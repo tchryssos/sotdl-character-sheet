@@ -95,7 +95,7 @@ const HeaderRow: React.FC = () => (
 );
 
 export const ArmorInput: React.FC = () => (
-  <FormSection columns={1} title="Armor">
+  <FormSection columns={1} isCollapsable title="Armor">
     <AddAnotherMultiField
       HeaderRow={HeaderRow}
       createDefaultValue={createDefaultArmor}

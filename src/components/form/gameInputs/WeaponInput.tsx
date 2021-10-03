@@ -5,6 +5,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { Button } from '~/components/Button';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
+import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
@@ -46,6 +47,7 @@ const weaponTemplateColumns = '3fr 1fr 1fr 3fr';
 
 const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useContext(ReactHookFormContext);
+  const isEditMode = useContext(EditContext);
 
   const activeWeaponIndex: number | undefined = watch?.(
     FIELD_NAMES.activeWeaponIndex
@@ -78,12 +80,14 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
         hideLabel
         name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.damage}`}
       />
-      <GridBox gridTemplateColumns="7fr 1fr">
+      <GridBox gridTemplateColumns={isEditMode ? '7fr 1fr' : '1fr'}>
         <TextAreaInput
           hideLabel
           name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.notes}`}
         />
-        <AddRemoveButton label="X" onClick={() => onDelete(index)} />
+        {isEditMode && (
+          <AddRemoveButton label="X" onClick={() => onDelete(index)} />
+        )}
       </GridBox>
     </GridBox>
   );
@@ -106,7 +110,7 @@ export const WeaponInput: React.FC = () => {
 
   const weapons = watch?.(FIELD_NAMES.weapons.fieldName);
   return (
-    <FormSection columns={1} title="Weapons">
+    <FormSection columns={1} isCollapsable title="Weapons">
       <AddAnotherMultiField
         HeaderRow={WeaponHeader}
         createDefaultValue={createDefaultWeapon}

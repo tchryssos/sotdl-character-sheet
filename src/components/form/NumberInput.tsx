@@ -21,8 +21,10 @@ export const NumberInput: React.FC<NumberInputComponentProps> = ({
   hideLabel,
   noOutline,
   step,
+  alwaysEditable,
 }) => (
   <Input
+    alwaysEditable={alwaysEditable}
     className={className}
     disabled={disabled}
     hideLabel={hideLabel}

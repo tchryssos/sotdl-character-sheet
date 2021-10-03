@@ -3,9 +3,11 @@ import { useContext } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
 import { Button } from '~/components/Button';
+import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Box } from '../box/Box';
+import { SubBody } from '../typography/SubBody';
 
 const AddFieldButton = styled(Button)`
   max-width: ${({ theme }) => theme.spacing[128]};
@@ -34,6 +36,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     name: parentFieldName,
   });
   const { watch, setValue } = useContext(ReactHookFormContext);
+  const isEditMode = useContext(EditContext);
 
   const parentField: Record<string, unknown>[] = watch?.(parentFieldName);
 
@@ -56,7 +59,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
 
   return (
     <>
-      <AddFieldButton label="+" onClick={onCreate} />
+      {isEditMode && <AddFieldButton label="+" onClick={onCreate} />}
       {Boolean(controlledFields?.length) && <HeaderRow />}
       {controlledFields.map((field, i) => (
         <Box key={field.id}>
@@ -66,6 +69,11 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
           })}
         </Box>
       ))}
+      {!controlledFields.length && (
+        <SubBody italic>
+          Empty (use edit mode to add some {parentFieldName})
+        </SubBody>
+      )}
     </>
   );
 };

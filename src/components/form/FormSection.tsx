@@ -44,7 +44,7 @@ const Container = styled(GridBox)<{ isOpen?: boolean }>`
 
 const CollapseButton = styled(Button)<{ isOpen?: boolean }>`
   transform: rotate(${({ isOpen }) => (isOpen ? -90 : 90)}deg);
-  margin-left: ${theme.spacing[8]};
+  margin-right: ${theme.spacing[8]};
 `;
 
 const Collapsed = styled.div`
@@ -68,12 +68,11 @@ export const FormSection: React.FC<FormSectionProps> = ({
   columns,
   isCollapsable,
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(!isCollapsable);
 
   return (
     <Section column>
       <FlexBox alignItems="flex-end" ml={4}>
-        <Text italic>{title}</Text>
         {isCollapsable && (
           <CollapseButton
             isOpen={isOpen}
@@ -81,6 +80,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
             onClick={() => setIsOpen(!isOpen)}
           />
         )}
+        <Text italic>{title}</Text>
         <Line ml={8} />
       </FlexBox>
       <Container columns={columns} isOpen={isOpen} px={8} py={16}>

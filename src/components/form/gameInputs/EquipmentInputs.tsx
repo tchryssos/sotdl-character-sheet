@@ -1,7 +1,10 @@
+import { useContext } from 'react';
+
 import { GridBox } from '~/components/box/GridBox';
 import { Button } from '~/components/Button';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
+import { EditContext } from '~/logic/contexts/editContext';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
@@ -16,16 +19,19 @@ interface ItemFieldProps {
 const itemTemplateColumns = '4fr 1fr 6fr';
 const { fieldName, name, notes, value } = FIELD_NAMES.equipment;
 
-const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => (
-  <GridBox gridTemplateColumns={itemTemplateColumns}>
-    <TextInput hideLabel name={`${fieldName}.${index}.${name}}`} />
-    <TextInput hideLabel name={`${fieldName}.${index}.${value}`} />
-    <GridBox gridTemplateColumns="7fr 1fr">
-      <TextAreaInput hideLabel name={`${fieldName}.${index}.${notes}`} />
-      <Button label="X" onClick={() => onDelete(index)} />
+const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
+  const isEditMode = useContext(EditContext);
+  return (
+    <GridBox gridTemplateColumns={itemTemplateColumns}>
+      <TextInput hideLabel name={`${fieldName}.${index}.${name}}`} />
+      <TextInput hideLabel name={`${fieldName}.${index}.${value}`} />
+      <GridBox gridTemplateColumns={isEditMode ? '7fr 1fr' : '1fr'}>
+        <TextAreaInput hideLabel name={`${fieldName}.${index}.${notes}`} />
+        {isEditMode && <Button label="X" onClick={() => onDelete(index)} />}
+      </GridBox>
     </GridBox>
-  </GridBox>
-);
+  );
+};
 
 const ItemHeader: React.FC = () => (
   <GridBox gridTemplateColumns={itemTemplateColumns}>

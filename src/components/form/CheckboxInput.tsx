@@ -19,8 +19,10 @@ export const CheckboxInput: React.FC<Omit<CheckboxInputProps, 'type'>> = ({
   validations,
   hideLabel,
   customOnChange,
+  alwaysEditable,
 }) => (
   <CheckInput
+    alwaysEditable={alwaysEditable}
     className={className}
     customOnChange={customOnChange}
     disabled={disabled}
