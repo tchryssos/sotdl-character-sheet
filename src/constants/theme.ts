@@ -39,7 +39,7 @@ const theme = {
   },
   border: {
     borderWidth: {
-      1: '1px',
+      1: '0.0625rem',
       3: '0.1875rem',
     },
   },

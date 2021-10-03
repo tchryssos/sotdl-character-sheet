@@ -4,6 +4,8 @@ import { Body } from './typography/Body';
 
 const StyledButton = styled.button`
   cursor: pointer;
+  min-height: ${({ theme }) => theme.spacing[40]};
+  min-width: ${({ theme }) => theme.spacing[40]};
 `;
 
 interface ButtonProps {
