@@ -2,12 +2,12 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button } from '~/components/Button';
 import { DEFAULT_VALUES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { FlexBox } from '../box/FlexBox';
+import { TextButton } from '../buttons/TextButton';
 
 interface FormProps {
   onSubmit: () => void;
@@ -58,7 +58,7 @@ export const Form: React.FC<FormProps> = ({
           value={{ register, watch, errors, setValue }}
         >
           {children}
-          {isEditMode && <Button label={submitLabel} type="submit" />}
+          {isEditMode && <TextButton label={submitLabel} type="submit" />}
         </ReactHookFormContext.Provider>
       </StyledForm>
     </FormWrapper>

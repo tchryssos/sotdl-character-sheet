@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Body } from './typography/Body';
+import { BaseButtonProps } from './types';
 
 const StyledButton = styled.button`
   cursor: pointer;
@@ -8,20 +8,12 @@ const StyledButton = styled.button`
   min-width: ${({ theme }) => theme.spacing[40]};
 `;
 
-interface ButtonProps {
-  onClick?: () => void;
-  type?: 'button' | 'submit';
-  className?: string;
-  label: string;
-  disabled?: boolean;
-}
-
-export const Button: React.FC<ButtonProps> = ({
+export const BaseButton: React.FC<BaseButtonProps> = ({
   onClick,
   className,
-  label,
   type = 'button',
   disabled,
+  children,
 }) => (
   <StyledButton
     className={className}
@@ -30,6 +22,6 @@ export const Button: React.FC<ButtonProps> = ({
     type={type}
     onClick={onClick}
   >
-    <Body>{label}</Body>
+    {children}
   </StyledButton>
 );

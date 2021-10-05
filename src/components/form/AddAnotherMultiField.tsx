@@ -2,15 +2,15 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
-import { Button } from '~/components/Button';
 import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Box } from '../box/Box';
+import { TextButton } from '../buttons/TextButton';
 import { SubBody } from '../typography/SubBody';
 
-const AddFieldButton = styled(Button)`
-  max-width: ${({ theme }) => theme.spacing[128]};
+const AddFieldButton = styled(TextButton)`
+  max-width: fit-content;
   max-height: ${({ theme }) => theme.spacing[40]};
 `;
 

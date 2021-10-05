@@ -7,7 +7,7 @@ import theme from '~/constants/theme';
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { GridBox, GridBoxProps } from '../box/GridBox';
-import { Button } from '../Button';
+import { TextButton } from '../buttons/TextButton';
 import { Body } from '../typography/Body';
 
 const Text = styled(Body)`
@@ -42,7 +42,7 @@ const Container = styled(GridBox)<{ isOpen?: boolean }>`
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
 `;
 
-const CollapseButton = styled(Button)<{ isOpen?: boolean }>`
+const CollapseButton = styled(TextButton)<{ isOpen?: boolean }>`
   transform: rotate(${({ isOpen }) => (isOpen ? -90 : 90)}deg);
   margin-right: ${theme.spacing[8]};
 `;
@@ -50,7 +50,7 @@ const CollapseButton = styled(Button)<{ isOpen?: boolean }>`
 const Collapsed = styled.div`
   ${collapsableStyles};
   border-top-width: 0;
-  height: ${theme.spacing[12]};
+  height: ${theme.spacing[16]};
   /* height: 0 on container still leaves a 1px space */
   transform: translateY(-1px);
 `;

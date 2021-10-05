@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { Button } from '~/components/Button';
 import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
 import { ArmorInput } from '~/components/form/gameInputs/ArmorInput';
@@ -26,6 +25,7 @@ import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
+import { TextButton } from './buttons/TextButton';
 import { Body } from './typography/Body';
 
 const Form = styled(FormComponent)`
@@ -33,17 +33,18 @@ const Form = styled(FormComponent)`
   margin-top: ${({ theme }) => theme.spacing[64]};
 `;
 
-const FormToolbar = styled(FlexBox)`
-  position: fixed;
-  background-color: ${({ theme }) => theme.colors.white};
-  top: 0;
-  width: 100%;
-  max-width: ${({ theme }) => theme.breakpointValues.lg}px;
-  padding: ${({ theme }) => theme.spacing[16]};
-  ${({ theme }) => theme.breakpoints.sm} {
-    padding: ${({ theme }) => `${theme.spacing[16]} ${theme.spacing[32]}`};
-  }
-`;
+const FormToolbar = styled(FlexBox)(({ theme }) => ({
+  position: 'fixed',
+  backgroundColor: theme.colors.white,
+  top: 0,
+  width: '100%',
+  maxWidth: theme.breakpointValues.lg,
+  padding: theme.spacing[16],
+  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.black}`,
+  [theme.breakpoints.sm]: {
+    padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
+  },
+}));
 
 export const CharacterForm: React.FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -54,7 +55,7 @@ export const CharacterForm: React.FC = () => {
     <EditContext.Provider value={isEditMode}>
       <FormToolbar alignItems="center" flex={1} justifyContent="flex-end">
         {isEditMode && <Body>Editing...</Body>}
-        <Button
+        <TextButton
           label={isEditMode ? 'Cancel' : 'Edit'}
           onClick={() => setIsEditMode(!isEditMode)}
         />

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
-import { Button } from '~/components/Button';
+import { TextButton } from '~/components/buttons/TextButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
@@ -13,7 +13,7 @@ import { NumberInput } from '../NumberInput';
 import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
 
-const AddRemoveButton = styled(Button)`
+const AddRemoveButton = styled(TextButton)`
   max-width: ${({ theme }) => theme.spacing[128]};
   max-height: ${({ theme }) => theme.spacing[40]};
 `;
