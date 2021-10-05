@@ -60,13 +60,21 @@ const CopyIcon: React.FC<CopyIconProps> = ({ copySuccess }) => {
   return <ClipboardCopy title="Copy" titleId="copy-icon" />;
 };
 
-export const FormToolbar: React.FC<FormToolbarProps> = ({
-  isEditMode,
-  setIsEditMode,
-}) => {
+const CopyButton: React.FC = () => {
   const [copySuccess, setCopySuccess] = useState<boolean | undefined>();
-  const { getValues, formState } = useFormContext();
+  const { getValues, formState, handleSubmit, reset } = useFormContext();
   const { isDirty } = formState;
+
+  const copyCode = async () => {
+    const valueObj = getValues();
+    const code = window.btoa(JSON.stringify(valueObj));
+    try {
+      await clipboardCopy(code);
+      return handleSubmit(async () => setCopySuccess(true))();
+    } catch (e) {
+      return setCopySuccess(false);
+    }
+  };
 
   useEffect(() => {
     if (isDirty) {
@@ -74,30 +82,33 @@ export const FormToolbar: React.FC<FormToolbarProps> = ({
     }
   }, [isDirty]);
 
-  const copyCode = async () => {
-    const valueObj = getValues();
-    const code = window.btoa(JSON.stringify(valueObj));
-    try {
-      await clipboardCopy(code);
-      return setCopySuccess(true);
-    } catch (e) {
-      return setCopySuccess(false);
+  useEffect(() => {
+    if (copySuccess && reset) {
+      reset({}, { keepValues: true });
     }
-  };
+  }, [copySuccess, reset]);
+
   return (
-    <Toolbar center flex={1}>
-      <InnerToolbar flex={1} justifyContent="flex-end">
-        <IconButton onClick={copyCode}>
-          <CopyIcon copySuccess={copySuccess} />
-        </IconButton>
-        <IconButton onClick={() => setIsEditMode(!isEditMode)}>
-          <Pencil
-            color={isEditMode ? 'red' : 'black'}
-            title="Edit pencil"
-            titleId="edit-pencil-icon"
-          />
-        </IconButton>
-      </InnerToolbar>
-    </Toolbar>
+    <IconButton type="submit" onClick={copyCode}>
+      <CopyIcon copySuccess={copySuccess} />
+    </IconButton>
   );
 };
+
+export const FormToolbar: React.FC<FormToolbarProps> = ({
+  isEditMode,
+  setIsEditMode,
+}) => (
+  <Toolbar center flex={1}>
+    <InnerToolbar flex={1} justifyContent="flex-end">
+      <CopyButton />
+      <IconButton onClick={() => setIsEditMode(!isEditMode)}>
+        <Pencil
+          color={isEditMode ? 'red' : 'black'}
+          title="Edit pencil"
+          titleId="edit-pencil-icon"
+        />
+      </IconButton>
+    </InnerToolbar>
+  </Toolbar>
+);
