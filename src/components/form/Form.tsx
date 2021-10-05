@@ -26,7 +26,7 @@ const StyledForm = styled.form`
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  row-gap: ${({ theme }) => theme.spacing[16]};
+  row-gap: ${({ theme }) => theme.spacing[32]};
   ${({ theme }) => theme.breakpoints.sm} {
     padding: ${({ theme }) => theme.spacing[32]};
   }
