@@ -120,7 +120,7 @@ export const WeaponInput: React.FC = () => {
           <WeaponField index={index} onDelete={onDelete} />
         )}
       </AddAnotherMultiField>
-      {Boolean(weapons.length) && (
+      {Boolean(weapons?.length) && (
         <Label label="Ammo Trackers" labelFor="ammo_trackers">
           <AmmoContainer>
             <NumberInput
@@ -129,7 +129,7 @@ export const WeaponInput: React.FC = () => {
               min={0}
               name={FIELD_NAMES.ammoTrackers.one}
             />
-            {Boolean(weapons.length > 1) && (
+            {Boolean(weapons?.length > 1) && (
               <NumberInput
                 hideLabel
                 max={5}
