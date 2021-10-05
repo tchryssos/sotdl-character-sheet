@@ -47,6 +47,7 @@ const Toolbar = styled(FlexBox)(({ theme }) => ({
   [theme.breakpoints.sm]: {
     padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
   },
+  zIndex: 100,
 }));
 
 const InnerToolbar = styled(FlexBox)(({ theme }) => ({

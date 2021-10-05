@@ -46,12 +46,6 @@ const Container = styled(GridBox)<{ isOpen?: boolean }>`
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
 `;
 
-// const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>`
-//   transform: rotate(${({ isOpen }) => (isOpen ? -90 : 90)}deg)
-//     translateX(${}${theme.spacing[8]});
-//   margin-right: ${theme.spacing[8]};
-// `;
-
 const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
   ({ isOpen }) => ({
     transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
