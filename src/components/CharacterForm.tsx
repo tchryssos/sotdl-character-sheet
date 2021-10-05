@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
-import clipboardCopy from 'copy-text-to-clipboard';
 import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 
-import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
@@ -27,63 +24,12 @@ import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
-import { IconButton } from './buttons/IconButton';
-import { ClipboardCopy } from './icons/ClipboardCopy';
-import { Pencil } from './icons/Pencil';
+import { FormToolbar } from './FormToolbar';
 
 const Form = styled(FormComponent)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
   margin-top: ${({ theme }) => theme.spacing[64]};
 `;
-
-const Toolbar = styled(FlexBox)(({ theme }) => ({
-  position: 'fixed',
-  backgroundColor: theme.colors.white,
-  top: 0,
-  left: 0,
-  width: '100%',
-  padding: theme.spacing[16],
-  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.black}`,
-  [theme.breakpoints.sm]: {
-    padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
-  },
-  zIndex: 100,
-}));
-
-const InnerToolbar = styled(FlexBox)(({ theme }) => ({
-  maxWidth: theme.breakpointValues.lg,
-  gap: theme.spacing[16],
-}));
-
-interface FormToolbarProps {
-  isEditMode: boolean;
-  setIsEditMode: (isEditMode: boolean) => void;
-}
-const FormToolbar: React.FC<FormToolbarProps> = ({
-  isEditMode,
-  setIsEditMode,
-}) => {
-  const { register } = useFormContext();
-  return (
-    <Toolbar center flex={1}>
-      <InnerToolbar flex={1} justifyContent="flex-end">
-        <IconButton>
-          <ClipboardCopy
-            title="Copy to clipboard"
-            titleId="clipboard-copy-icon"
-          />
-        </IconButton>
-        <IconButton onClick={() => setIsEditMode(!isEditMode)}>
-          <Pencil
-            color={isEditMode ? 'red' : 'black'}
-            title="Edit pencil"
-            titleId="edit-pencil-icon"
-          />
-        </IconButton>
-      </InnerToolbar>
-    </Toolbar>
-  );
-};
 
 export const CharacterForm: React.FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
