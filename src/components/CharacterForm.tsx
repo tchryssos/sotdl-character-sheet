@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import clipboardCopy from 'copy-text-to-clipboard';
+import { useContext, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
@@ -23,9 +24,11 @@ import { TextInput } from '~/components/form/TextInput';
 import { FIELD_NAMES } from '~/constants/form';
 import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
+import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { IconButton } from './buttons/IconButton';
+import { ClipboardCopy } from './icons/ClipboardCopy';
 import { Pencil } from './icons/Pencil';
 
 const Form = styled(FormComponent)`
@@ -33,18 +36,53 @@ const Form = styled(FormComponent)`
   margin-top: ${({ theme }) => theme.spacing[64]};
 `;
 
-const FormToolbar = styled(FlexBox)(({ theme }) => ({
+const Toolbar = styled(FlexBox)(({ theme }) => ({
   position: 'fixed',
   backgroundColor: theme.colors.white,
   top: 0,
+  left: 0,
   width: '100%',
-  maxWidth: theme.breakpointValues.lg,
   padding: theme.spacing[16],
   borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.black}`,
   [theme.breakpoints.sm]: {
     padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
   },
 }));
+
+const InnerToolbar = styled(FlexBox)(({ theme }) => ({
+  maxWidth: theme.breakpointValues.lg,
+  gap: theme.spacing[16],
+}));
+
+interface FormToolbarProps {
+  isEditMode: boolean;
+  setIsEditMode: (isEditMode: boolean) => void;
+}
+const FormToolbar: React.FC<FormToolbarProps> = ({
+  isEditMode,
+  setIsEditMode,
+}) => {
+  const { register } = useContext(ReactHookFormContext);
+  return (
+    <Toolbar center flex={1}>
+      <InnerToolbar flex={1} justifyContent="flex-end">
+        <IconButton>
+          <ClipboardCopy
+            title="Copy to clipboard"
+            titleId="clipboard-copy-icon"
+          />
+        </IconButton>
+        <IconButton onClick={() => setIsEditMode(!isEditMode)}>
+          <Pencil
+            color={isEditMode ? 'red' : 'black'}
+            title="Edit pencil"
+            titleId="edit-pencil-icon"
+          />
+        </IconButton>
+      </InnerToolbar>
+    </Toolbar>
+  );
+};
 
 export const CharacterForm: React.FC = () => {
   const [isEditMode, setIsEditMode] = useState(false);
@@ -53,16 +91,8 @@ export const CharacterForm: React.FC = () => {
 
   return (
     <EditContext.Provider value={isEditMode}>
-      <FormToolbar alignItems="center" flex={1} justifyContent="flex-end">
-        <IconButton onClick={() => setIsEditMode(!isEditMode)}>
-          <Pencil
-            color={isEditMode ? 'red' : 'black'}
-            title="Edit pencil"
-            titleId="edit-pencil-icon"
-          />
-        </IconButton>
-      </FormToolbar>
       <Form onSubmit={() => undefined}>
+        <FormToolbar isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
         <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
           <TextInput name={FIELD_NAMES.name} />
           <NumberInput max={10} min={0} name={FIELD_NAMES.level} />

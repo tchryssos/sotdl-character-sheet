@@ -46,21 +46,32 @@ const Container = styled(GridBox)<{ isOpen?: boolean }>`
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
 `;
 
-const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>`
-  transform: rotate(${({ isOpen }) => (isOpen ? -90 : 90)}deg);
-  margin-right: ${theme.spacing[8]};
-`;
+// const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>`
+//   transform: rotate(${({ isOpen }) => (isOpen ? -90 : 90)}deg)
+//     translateX(${}${theme.spacing[8]});
+//   margin-right: ${theme.spacing[8]};
+// `;
+
+const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
+  ({ isOpen }) => ({
+    transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
+      isOpen ? '-' : ''
+    }${theme.spacing[8]})`,
+    marginRight: theme.spacing[8],
+  })
+);
 
 const Collapsed = styled.div`
   ${collapsableStyles};
   border-top-width: 0;
-  height: ${theme.spacing[16]};
+  height: ${theme.spacing[24]};
   /* height: 0 on container still leaves a 1px space */
   transform: translateY(-1px);
 `;
 
 const VisibilityButton = styled(IconButton)`
   margin-left: ${theme.spacing[8]};
+  transform: translateY(${theme.spacing[8]});
 `;
 
 interface FormSectionProps {
