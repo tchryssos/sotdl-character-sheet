@@ -39,7 +39,6 @@ const Text = styled(Body)<
 
 const Section = styled(FlexBox)<{ addMargin: boolean }>`
   height: 100%;
-  /* padding-top: ${({ addMargin }) => (addMargin ? theme.spacing[16] : 0)}; */
 `;
 
 const collapsableStyles = css`
