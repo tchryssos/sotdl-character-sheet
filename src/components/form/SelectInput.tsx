@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import startCase from 'lodash.startcase';
 import { useContext, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { SelectInputProps, SelectOption } from '~/components/form/typings';
 import { EditContext } from '~/logic/contexts/editContext';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Label } from './Label';
 
@@ -44,7 +44,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   hideLabel,
   alwaysEditable,
 }) => {
-  const { register, setValue } = useContext(ReactHookFormContext);
+  const { register, setValue } = useFormContext();
   const isEditMode = useContext(EditContext);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
         className={className}
         disabled={disabled || readOnly || (!isEditMode && !alwaysEditable)}
         // eslint-disable-next-line react/jsx-props-no-spreading
-        {...register?.(name, validations)}
+        {...register(name, validations)}
       >
         <Placeholder placeholder={placeholder} />
         {options.map(

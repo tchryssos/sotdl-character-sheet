@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
@@ -42,9 +41,9 @@ interface ArmorFieldProps {
 }
 
 const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
-  const { setValue, watch } = useContext(ReactHookFormContext);
+  const { setValue, watch } = useFormContext();
 
-  const activeArmorIndex: number | undefined = watch?.(
+  const activeArmorIndex: number | undefined = watch(
     FIELD_NAMES.activeArmorIndex
   );
 

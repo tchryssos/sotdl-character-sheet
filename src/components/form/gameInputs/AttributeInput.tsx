@@ -1,7 +1,7 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { GridBox } from '../../box/GridBox';
 import { NumberInput } from '../NumberInput';
@@ -12,11 +12,11 @@ type AttributeInputProps = Omit<NumberInputProps, 'type' | 'name'> & {
 };
 
 export const AttributeInput: React.FC<AttributeInputProps> = ({ name }) => {
-  const { watch, setValue } = useContext(ReactHookFormContext);
-  const watchAttribute: number = watch?.(FIELD_NAMES.attributes[name], 10);
+  const { watch, setValue } = useFormContext();
+  const watchAttribute: number = watch(FIELD_NAMES.attributes[name], 10);
 
   useEffect(() => {
-    setValue?.(FIELD_NAMES.attributeBonuses[name], watchAttribute - 10);
+    setValue(FIELD_NAMES.attributeBonuses[name], watchAttribute - 10);
   }, [watchAttribute, setValue, name]);
 
   return (

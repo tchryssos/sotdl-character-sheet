@@ -1,16 +1,16 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { NumberInput } from '../NumberInput';
 
 export const HealthInputs = () => {
-  const { watch, setValue } = useContext(ReactHookFormContext);
+  const { watch, setValue } = useFormContext();
 
   const isLessThanMd = useBreakpointsLessThan('md');
-  const health: number = watch?.(FIELD_NAMES.health, 0);
+  const health: number = watch(FIELD_NAMES.health, 0);
 
   useEffect(() => {
     setValue(FIELD_NAMES.healing_rate, Math.max(Math.floor(health / 4), 1));

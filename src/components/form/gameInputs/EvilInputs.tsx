@@ -1,13 +1,12 @@
-import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { NumberInput } from '../NumberInput';
 
 export const EvilInputs: React.FC = () => {
-  const { watch } = useContext(ReactHookFormContext);
-  const will: number = watch?.(FIELD_NAMES.attributes.will, 0);
+  const { watch } = useFormContext();
+  const will: number = watch(FIELD_NAMES.attributes.will, 0);
 
   return (
     <>

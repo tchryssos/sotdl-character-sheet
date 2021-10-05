@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { DEFAULT_VALUES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { FlexBox } from '../box/FlexBox';
 import { TextButton } from '../buttons/TextButton';
@@ -39,13 +38,7 @@ export const Form: React.FC<FormProps> = ({
   className,
   mode = 'onSubmit',
 }) => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setValue,
-  } = useForm({
+  const formMethods = useForm({
     defaultValues: DEFAULT_VALUES,
     mode,
   });
@@ -53,13 +46,15 @@ export const Form: React.FC<FormProps> = ({
 
   return (
     <FormWrapper center>
-      <StyledForm className={className} onSubmit={handleSubmit(onSubmit)}>
-        <ReactHookFormContext.Provider
-          value={{ register, watch, errors, setValue }}
-        >
+      <StyledForm
+        className={className}
+        onSubmit={formMethods.handleSubmit(onSubmit)}
+      >
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <FormProvider {...formMethods}>
           {children}
           {isEditMode && <TextButton label={submitLabel} type="submit" />}
-        </ReactHookFormContext.Provider>
+        </FormProvider>
       </StyledForm>
     </FormWrapper>
   );

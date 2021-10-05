@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
@@ -46,10 +46,10 @@ const createDefaultWeapon = () => ({
 const weaponTemplateColumns = '3fr 1fr 1fr 3fr';
 
 const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
-  const { setValue, watch } = useContext(ReactHookFormContext);
+  const { setValue, watch } = useFormContext();
   const isEditMode = useContext(EditContext);
 
-  const activeWeaponIndex: number | undefined = watch?.(
+  const activeWeaponIndex: number | undefined = watch(
     FIELD_NAMES.activeWeaponIndex
   );
 
@@ -106,9 +106,9 @@ const WeaponHeader: React.FC = () => (
 );
 
 export const WeaponInput: React.FC = () => {
-  const { watch } = useContext(ReactHookFormContext);
+  const { watch } = useFormContext();
 
-  const weapons = watch?.(FIELD_NAMES.weapons.fieldName);
+  const weapons = watch(FIELD_NAMES.weapons.fieldName);
   return (
     <FormSection columns={1} isCollapsable title="Weapons">
       <AddAnotherMultiField
@@ -120,7 +120,7 @@ export const WeaponInput: React.FC = () => {
           <WeaponField index={index} onDelete={onDelete} />
         )}
       </AddAnotherMultiField>
-      {Boolean(weapons?.length) && (
+      {Boolean(weapons.length) && (
         <Label label="Ammo Trackers" labelFor="ammo_trackers">
           <AmmoContainer>
             <NumberInput
@@ -129,7 +129,7 @@ export const WeaponInput: React.FC = () => {
               min={0}
               name={FIELD_NAMES.ammoTrackers.one}
             />
-            {Boolean(weapons?.length > 1) && (
+            {Boolean(weapons.length > 1) && (
               <NumberInput
                 hideLabel
                 max={5}

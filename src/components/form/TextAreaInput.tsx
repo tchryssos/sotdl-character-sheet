@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import startCase from 'lodash.startcase';
 import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { TextInputProps } from '~/components/form/typings';
 import { EditContext } from '~/logic/contexts/editContext';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Label } from './Label';
 
@@ -28,13 +28,13 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
   hideLabel,
   alwaysEditable,
 }) => {
-  const { register } = useContext(ReactHookFormContext);
+  const { register } = useFormContext();
   const isEditMode = useContext(EditContext);
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <TextArea
         // eslint-disable-next-line react/jsx-props-no-spreading
-        {...register?.(name, validations)}
+        {...register(name, validations)}
         className={className}
         disabled={disabled || (!isEditMode && !alwaysEditable)}
         readOnly={readOnly}

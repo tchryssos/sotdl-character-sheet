@@ -1,16 +1,16 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { NumberInput } from '../NumberInput';
 
 export const PerceptionInput = () => {
-  const { watch, setValue } = useContext(ReactHookFormContext);
+  const { watch, setValue } = useFormContext();
   const isLessThanMd = useBreakpointsLessThan('md');
 
-  const perception: number = watch?.(FIELD_NAMES.perception, 0);
+  const perception: number = watch(FIELD_NAMES.perception, 0);
 
   useEffect(() => {
     setValue(FIELD_NAMES.perception_bonus, perception - 10);

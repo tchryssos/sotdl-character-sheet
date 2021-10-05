@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import clipboardCopy from 'copy-text-to-clipboard';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
@@ -24,7 +25,6 @@ import { TextInput } from '~/components/form/TextInput';
 import { FIELD_NAMES } from '~/constants/form';
 import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { IconButton } from './buttons/IconButton';
@@ -63,7 +63,7 @@ const FormToolbar: React.FC<FormToolbarProps> = ({
   isEditMode,
   setIsEditMode,
 }) => {
-  const { register } = useContext(ReactHookFormContext);
+  const { register } = useFormContext();
   return (
     <Toolbar center flex={1}>
       <InnerToolbar flex={1} justifyContent="flex-end">

@@ -1,8 +1,7 @@
 import { useContext } from 'react';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
 import { EditContext } from '~/logic/contexts/editContext';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Box } from '../box/Box';
 import { IconButton } from '../buttons/IconButton';
@@ -30,14 +29,14 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     control,
     name: parentFieldName,
   });
-  const { watch, setValue } = useContext(ReactHookFormContext);
+  const { watch, setValue } = useFormContext();
   const isEditMode = useContext(EditContext);
 
-  const parentField: Record<string, unknown>[] = watch?.(parentFieldName);
+  const parentField: Record<string, unknown>[] = watch(parentFieldName);
 
   const controlledFields = fields.map((field, i) => ({
     ...field,
-    ...parentField?.[i],
+    ...parentField[i],
   }));
 
   const onCreate = () => {
@@ -59,7 +58,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
           <Plus title="Add another plus" titleId="add-another-plus-icon" />
         </IconButton>
       )}
-      {Boolean(controlledFields?.length) && <HeaderRow />}
+      {Boolean(controlledFields.length) && <HeaderRow />}
       {controlledFields.map((field, i) => (
         <Box key={field.id}>
           {children({

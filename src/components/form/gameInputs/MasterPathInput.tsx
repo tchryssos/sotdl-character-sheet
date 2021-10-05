@@ -1,7 +1,6 @@
-import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { TextInput } from '../TextInput';
 
@@ -27,9 +26,9 @@ import { TextInput } from '../TextInput';
 // ];
 
 export const MasterPathInput = () => {
-  const { watch } = useContext(ReactHookFormContext);
+  const { watch } = useFormContext();
 
-  const level: number = watch?.(FIELD_NAMES.level, 0);
+  const level: number = watch(FIELD_NAMES.level, 0);
 
   const isMaster = level >= 7;
 

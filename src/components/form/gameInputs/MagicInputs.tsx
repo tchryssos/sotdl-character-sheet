@@ -1,8 +1,7 @@
-import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { FIELD_NAMES } from '~/constants/form';
-import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 import {
   useBreakpointsIsExactly,
   useBreakpointsLessThan,
@@ -12,10 +11,10 @@ import { FormSection } from '../FormSection';
 import { NumberInput } from '../NumberInput';
 
 export const MagicInputs: React.FC = () => {
-  const { watch } = useContext(ReactHookFormContext);
+  const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isExactlySm = useBreakpointsIsExactly('sm');
-  const power: number = watch?.(FIELD_NAMES.spellPower.fieldName);
+  const power: number = watch(FIELD_NAMES.spellPower.fieldName);
   return (
     <FormSection columns={1} isCollapsable title="Spells">
       <GridBox gridTemplateColumns={isLessThanSm ? '100%' : '1fr 8fr'}>
