@@ -43,12 +43,12 @@ export const Input: React.FC<InputProps> = (props) => {
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <StyledInput
         className={className}
-        disabled={disabled}
+        disabled={disabled || (!isEditMode && !alwaysEditable)}
         max={max}
         min={min}
         name={registeredInput?.name}
         noOutline={noOutline}
-        readOnly={readOnly || noOutline || (!isEditMode && !alwaysEditable)}
+        readOnly={readOnly || noOutline}
         ref={registeredInput?.ref}
         step={step}
         type={type}

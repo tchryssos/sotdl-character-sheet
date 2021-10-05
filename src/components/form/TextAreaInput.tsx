@@ -36,8 +36,8 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register?.(name, validations)}
         className={className}
-        disabled={disabled}
-        readOnly={readOnly || (!isEditMode && !alwaysEditable)}
+        disabled={disabled || (!isEditMode && !alwaysEditable)}
+        readOnly={readOnly}
       />
     </Label>
   );
