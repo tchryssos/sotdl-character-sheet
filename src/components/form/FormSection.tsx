@@ -7,7 +7,8 @@ import theme from '~/constants/theme';
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { GridBox, GridBoxProps } from '../box/GridBox';
-import { TextButton } from '../buttons/TextButton';
+import { IconButton } from '../buttons/IconButton';
+import { ChevRight } from '../icons/ChevRight';
 import { Body } from '../typography/Body';
 
 const Text = styled(Body)`
@@ -42,7 +43,7 @@ const Container = styled(GridBox)<{ isOpen?: boolean }>`
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
 `;
 
-const CollapseButton = styled(TextButton)<{ isOpen?: boolean }>`
+const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>`
   transform: rotate(${({ isOpen }) => (isOpen ? -90 : 90)}deg);
   margin-right: ${theme.spacing[8]};
 `;
@@ -74,11 +75,12 @@ export const FormSection: React.FC<FormSectionProps> = ({
     <Section column>
       <FlexBox alignItems="flex-end" ml={4}>
         {isCollapsable && (
-          <CollapseButton
-            isOpen={isOpen}
-            label=">"
-            onClick={() => setIsOpen(!isOpen)}
-          />
+          <CollapseButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
+            <ChevRight
+              title="Collapsable arrow"
+              titleId="collapseable-arrow-icon"
+            />
+          </CollapseButton>
         )}
         <Text italic>{title}</Text>
         <Line ml={8} />

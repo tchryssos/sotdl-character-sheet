@@ -3,12 +3,37 @@ import styled from '@emotion/styled';
 import { BaseButton } from './BaseButton';
 import { BaseButtonProps } from './types';
 
-const IconSafeButton = styled(BaseButton)``;
+interface IconButtonProps extends BaseButtonProps {
+  size?: 'sm' | 'md' | 'lg';
+}
 
-export const IconButton: React.FC<BaseButtonProps> = ({
+const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
+  ({ theme, size }) => {
+    let dimension: string;
+    switch (size) {
+      case 'md':
+        dimension = theme.spacing['48'];
+        break;
+      case 'lg':
+        dimension = theme.spacing['64'];
+        break;
+      default:
+        dimension = theme.spacing['40'];
+    }
+    return {
+      height: dimension,
+      width: dimension,
+    };
+  }
+);
+
+export const IconButton: React.FC<IconButtonProps> = ({
   children,
+  size = 'sm',
   ...rest
 }) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <IconSafeButton {...rest}>{children}</IconSafeButton>
+  <IconSafeButton {...rest} size={size}>
+    {children}
+  </IconSafeButton>
 );

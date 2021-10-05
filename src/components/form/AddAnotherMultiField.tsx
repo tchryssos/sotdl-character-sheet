@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
@@ -6,13 +5,9 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { ReactHookFormContext } from '~/logic/contexts/rhfContext';
 
 import { Box } from '../box/Box';
-import { TextButton } from '../buttons/TextButton';
+import { IconButton } from '../buttons/IconButton';
+import { Plus } from '../icons/Plus';
 import { SubBody } from '../typography/SubBody';
-
-const AddFieldButton = styled(TextButton)`
-  max-width: fit-content;
-  max-height: ${({ theme }) => theme.spacing[40]};
-`;
 
 interface AddAnotherMultiFieldProps {
   parentFieldName: string;
@@ -59,7 +54,11 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
 
   return (
     <>
-      {isEditMode && <AddFieldButton label="+" onClick={onCreate} />}
+      {isEditMode && (
+        <IconButton onClick={onCreate}>
+          <Plus title="Add another plus" titleId="add-another-plus-icon" />
+        </IconButton>
+      )}
       {Boolean(controlledFields?.length) && <HeaderRow />}
       {controlledFields.map((field, i) => (
         <Box key={field.id}>

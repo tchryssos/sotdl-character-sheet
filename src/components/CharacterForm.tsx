@@ -25,8 +25,8 @@ import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
-import { TextButton } from './buttons/TextButton';
-import { Body } from './typography/Body';
+import { IconButton } from './buttons/IconButton';
+import { Pencil } from './icons/Pencil';
 
 const Form = styled(FormComponent)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
@@ -54,11 +54,13 @@ export const CharacterForm: React.FC = () => {
   return (
     <EditContext.Provider value={isEditMode}>
       <FormToolbar alignItems="center" flex={1} justifyContent="flex-end">
-        {isEditMode && <Body>Editing...</Body>}
-        <TextButton
-          label={isEditMode ? 'Cancel' : 'Edit'}
-          onClick={() => setIsEditMode(!isEditMode)}
-        />
+        <IconButton onClick={() => setIsEditMode(!isEditMode)}>
+          <Pencil
+            color={isEditMode ? 'red' : 'black'}
+            title="Edit pencil"
+            titleId="edit-pencil-icon"
+          />
+        </IconButton>
       </FormToolbar>
       <Form onSubmit={() => undefined}>
         <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>

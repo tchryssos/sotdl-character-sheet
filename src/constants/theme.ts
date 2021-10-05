@@ -21,6 +21,7 @@ const theme = {
     black: '#000',
     white: '#fff',
     grey: '#adadad',
+    red: '#db0033',
   },
   spacing: {
     0: '0rem',

@@ -7,13 +7,16 @@ const Path = styled.path<Pick<IconProps, 'color'>>`
   fill: ${({ color = 'black', theme }) => theme.colors[color]};
 `;
 
-export const Plus: React.FC<IconProps> = ({
+export const Pencil: React.FC<IconProps> = ({
   className,
   color,
   title,
   titleId,
 }) => (
   <Icon className={className} title={title} titleId={titleId}>
-    <Path color={color} d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2Z" />
+    <Path
+      color={color}
+      d="M16.84 2.73c-.39 0-.77.15-1.07.44l-2.12 2.12 5.3 5.31 2.12-2.1c.6-.61.6-1.56 0-2.14L17.9 3.17c-.3-.29-.68-.44-1.06-.44M12.94 6l-8.1 8.11 2.56.28.18 2.29 2.28.17.29 2.56 8.1-8.11m-14 3.74L2.5 21.73l6.7-1.79-.24-2.16-2.31-.17-.18-2.32"
+    />
   </Icon>
 );
