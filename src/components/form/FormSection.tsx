@@ -14,12 +14,32 @@ import { Invisible } from '../icons/Invisible';
 import { Visible } from '../icons/Visible';
 import { Body } from '../typography/Body';
 
-const Text = styled(Body)`
-  white-space: nowrap;
+interface FormSectionProps {
+  title: string;
+  children: React.ReactNode | React.ReactNode[];
+  columns?: GridBoxProps['columns'];
+  isCollapsable?: boolean;
+}
+
+const TitleBox = styled(FlexBox)`
+  position: relative;
 `;
 
-const Section = styled(FlexBox)`
+const Text = styled(Body)<
+  Pick<FormSectionProps, 'isCollapsable'> & { isEditMode: boolean }
+>(({ isEditMode, isCollapsable }) => ({
+  whiteSpace: 'nowrap',
+  ...(isCollapsable && {
+    paddingLeft: theme.spacing[48],
+  }),
+  ...(isEditMode && {
+    paddingRight: theme.spacing[48],
+  }),
+}));
+
+const Section = styled(FlexBox)<{ addMargin: boolean }>`
   height: 100%;
+  padding-top: ${({ addMargin }) => (addMargin ? theme.spacing[16] : 0)};
 `;
 
 const collapsableStyles = css`
@@ -48,6 +68,9 @@ const Container = styled(GridBox)<{ isOpen?: boolean }>`
 
 const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
   ({ isOpen }) => ({
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
     transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
       isOpen ? '-' : ''
     }${theme.spacing[8]})`,
@@ -66,14 +89,10 @@ const Collapsed = styled.div`
 const VisibilityButton = styled(IconButton)`
   margin-left: ${theme.spacing[8]};
   transform: translateY(${theme.spacing[8]});
+  position: absolute;
+  right: 0;
+  bottom: 0;
 `;
-
-interface FormSectionProps {
-  title: string;
-  children: React.ReactNode | React.ReactNode[];
-  columns?: GridBoxProps['columns'];
-  isCollapsable?: boolean;
-}
 
 export const FormSection: React.FC<FormSectionProps> = ({
   title,
@@ -87,32 +106,39 @@ export const FormSection: React.FC<FormSectionProps> = ({
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (
-      <Section column>
+      <Section addMargin={isCollapsable || isEditMode} column>
         <FlexBox alignItems="flex-end" ml={4}>
-          {isCollapsable && (
-            <CollapseButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
-              <ChevRight
-                title="Collapsable arrow"
-                titleId="collapseable-arrow-icon"
-              />
-            </CollapseButton>
-          )}
-          <Text italic>{title}</Text>
-          {isEditMode && (
-            <VisibilityButton onClick={() => setIsVisible(!isVisible)}>
-              {isVisible ? (
-                <Visible
-                  title="Form section visibility"
-                  titleId={`${title}-visibility-${isVisible}`}
+          <TitleBox>
+            {isCollapsable && (
+              <CollapseButton
+                isOpen={isOpen}
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <ChevRight
+                  title="Collapsable arrow"
+                  titleId="collapseable-arrow-icon"
                 />
-              ) : (
-                <Invisible
-                  title="Form section visibility"
-                  titleId={`${title}-visibility-${isVisible}`}
-                />
-              )}
-            </VisibilityButton>
-          )}
+              </CollapseButton>
+            )}
+            <Text isCollapsable={isCollapsable} isEditMode={isEditMode} italic>
+              {title}
+            </Text>
+            {isEditMode && (
+              <VisibilityButton onClick={() => setIsVisible(!isVisible)}>
+                {isVisible ? (
+                  <Visible
+                    title="Form section visibility"
+                    titleId={`${title}-visibility-${isVisible}`}
+                  />
+                ) : (
+                  <Invisible
+                    title="Form section visibility"
+                    titleId={`${title}-visibility-${isVisible}`}
+                  />
+                )}
+              </VisibilityButton>
+            )}
+          </TitleBox>
           <Line ml={8} />
         </FlexBox>
         <Container columns={columns} isOpen={isOpen} px={8} py={16}>
