@@ -4,6 +4,7 @@ import { useContext, useState } from 'react';
 
 import theme from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
+import { pxToRem } from '~/utils/styles';
 
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
@@ -30,10 +31,10 @@ const Text = styled(Body)<
 >(({ isEditMode, isCollapsable }) => ({
   whiteSpace: 'nowrap',
   ...(isCollapsable && {
-    paddingLeft: theme.spacing[40],
+    paddingLeft: theme.spacing[32],
   }),
   ...(isEditMode && {
-    paddingRight: theme.spacing[40],
+    paddingRight: theme.spacing[32],
   }),
 }));
 
@@ -72,7 +73,7 @@ const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
     bottom: 0,
     transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
       isOpen ? '-' : ''
-    }${theme.spacing[4]})`,
+    }${pxToRem(6)})`,
   })
 );
 

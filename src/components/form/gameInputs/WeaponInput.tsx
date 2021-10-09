@@ -9,7 +9,6 @@ import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { pxToRem } from '~/utils/styles';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
@@ -18,15 +17,15 @@ import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
 
 const RemoveButton = styled(DeleteButton)(({ theme }) => ({
-  marginTop: pxToRem(18),
+  marginTop: theme.spacing[20],
   [theme.breakpoints.sm]: {
     marginTop: 0,
   },
 }));
 
 const WeaponCheckbox = styled.input`
-  min-width: ${({ theme }) => theme.spacing[32]};
-  min-height: ${({ theme }) => theme.spacing[32]};
+  min-width: ${({ theme }) => theme.spacing[40]};
+  min-height: ${({ theme }) => theme.spacing[40]};
   padding: 0;
   margin: 0;
 `;
@@ -74,7 +73,7 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
     return (
       <FlexBox>
         <SmWeaponActiveLabel
-          label="Equip"
+          label="Act."
           labelFor={FIELD_NAMES.activeArmorIndex}
         >
           <WeaponCheckbox

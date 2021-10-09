@@ -1,15 +1,16 @@
 import { Delete } from '../icons/Delete';
-import { IconButton } from './IconButton';
+import { IconButton, IconButtonProps } from './IconButton';
 
-interface DeleteButtonProps {
+interface DeleteButtonProps extends Pick<IconButtonProps, 'size'> {
   onDelete: () => void;
   className?: string;
 }
 export const DeleteButton: React.FC<DeleteButtonProps> = ({
   onDelete,
   className,
+  size = 'md',
 }) => (
-  <IconButton className={className} onClick={onDelete}>
+  <IconButton className={className} size={size} onClick={onDelete}>
     <Delete title="Delete" titleId="delete-icon" />
   </IconButton>
 );

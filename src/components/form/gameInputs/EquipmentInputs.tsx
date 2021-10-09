@@ -25,7 +25,7 @@ const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
     <GridBox gridTemplateColumns={itemTemplateColumns}>
       <TextInput hideLabel name={`${fieldName}.${index}.${name}}`} />
       <TextInput hideLabel name={`${fieldName}.${index}.${value}`} />
-      <GridBox gridTemplateColumns={isEditMode ? '7fr 1fr' : '1fr'}>
+      <GridBox gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}>
         <TextAreaInput hideLabel name={`${fieldName}.${index}.${notes}`} />
         {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
       </GridBox>

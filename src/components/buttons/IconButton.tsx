@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { BaseButton } from './BaseButton';
 import { BaseButtonProps } from './types';
 
-interface IconButtonProps extends BaseButtonProps {
+export interface IconButtonProps extends BaseButtonProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
@@ -23,6 +23,13 @@ const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
     return {
       height: dimension,
       width: dimension,
+      minWidth: dimension,
+      minHeight: dimension,
+      background: 'transparent',
+      border: 'none',
+      ':hover': {
+        background: theme.colors.lightGrey,
+      },
     };
   }
 );

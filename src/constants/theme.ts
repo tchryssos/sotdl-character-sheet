@@ -23,6 +23,7 @@ const theme = {
     grey: '#adadad',
     red: '#db0033',
     green: '#00784e',
+    lightGrey: '#e8e8e8',
   },
   spacing: {
     0: '0rem',
