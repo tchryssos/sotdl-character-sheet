@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
-import { Body } from '~/components/typography/Body';
+import { SubBody } from '~/components/typography/SubBody';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
@@ -146,12 +146,12 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
 const WeaponHeader: React.FC = () => (
   <GridBox gridTemplateColumns={weaponTemplateColumns}>
     <GridBox gridTemplateColumns="1fr 7fr">
-      <Body>Active</Body>
-      <Body bold>Name</Body>
+      <SubBody>Active</SubBody>
+      <SubBody bold>Name</SubBody>
     </GridBox>
-    <Body bold>Hands</Body>
-    <Body bold>Damage</Body>
-    <Body bold>Notes</Body>
+    <SubBody bold>Hands</SubBody>
+    <SubBody bold>Damage</SubBody>
+    <SubBody bold>Notes</SubBody>
   </GridBox>
 );
 

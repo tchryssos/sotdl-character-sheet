@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Body } from '~/components/typography/Body';
+import { SubBody } from '~/components/typography/SubBody';
 
 interface LabelProps {
   labelFor?: string;
@@ -21,7 +21,7 @@ export const Label: React.FC<LabelProps> = ({
 }) =>
   label && labelFor ? (
     <StyledLabel className={className} htmlFor={labelFor}>
-      <Body bold>{label}</Body>
+      <SubBody bold>{label}</SubBody>
       {children}
     </StyledLabel>
   ) : (
