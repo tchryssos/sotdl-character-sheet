@@ -46,6 +46,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
 }) => {
   const { register, setValue } = useFormContext();
   const isEditMode = useContext(EditContext);
+  const nonEditLocked = !isEditMode && !alwaysEditable;
 
   useEffect(() => {
     if (placeholder) {
@@ -57,7 +58,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <Selecter
         className={className}
-        disabled={disabled || readOnly || (!isEditMode && !alwaysEditable)}
+        disabled={disabled}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(name, validations)}
       >
@@ -65,7 +66,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
         {options.map(
           ({ value, label: optionLabel, disabled: optionDisabled }) => (
             <Option
-              disabled={optionDisabled}
+              disabled={optionDisabled || nonEditLocked || readOnly}
               key={value}
               label={optionLabel}
               value={value}

@@ -39,16 +39,17 @@ export const Input: React.FC<InputProps> = (props) => {
   const { register } = useFormContext();
   const isEditMode = useContext(EditContext);
   const registeredInput = register(name, validations);
+  const nonEditLocked = !isEditMode && !alwaysEditable;
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <StyledInput
         className={className}
-        disabled={disabled || (!isEditMode && !alwaysEditable)}
+        disabled={disabled}
         max={max}
         min={min}
         name={registeredInput.name}
         noOutline={noOutline}
-        readOnly={readOnly || noOutline}
+        readOnly={readOnly || noOutline || nonEditLocked}
         ref={registeredInput.ref}
         step={step}
         type={type}

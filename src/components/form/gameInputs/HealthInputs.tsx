@@ -10,10 +10,13 @@ export const HealthInputs = () => {
   const { watch, setValue } = useFormContext();
 
   const isLessThanMd = useBreakpointsLessThan('md');
-  const health: number = watch(FIELD_NAMES.health, 0);
+  const health: number = watch(FIELD_NAMES.health);
 
   useEffect(() => {
-    setValue(FIELD_NAMES.healing_rate, Math.max(Math.floor(health / 4), 1));
+    setValue(
+      FIELD_NAMES.healing_rate,
+      Math.max(Math.floor(health ?? 1 / 4), 1)
+    );
   }, [health, setValue]);
 
   return (

@@ -10,10 +10,10 @@ export const PerceptionInput = () => {
   const { watch, setValue } = useFormContext();
   const isLessThanMd = useBreakpointsLessThan('md');
 
-  const perception: number = watch(FIELD_NAMES.perception, 0);
+  const perception: number = watch(FIELD_NAMES.perception);
 
   useEffect(() => {
-    setValue(FIELD_NAMES.perception_bonus, perception - 10);
+    setValue(FIELD_NAMES.perception_bonus, (perception ?? 0) - 10);
   }, [setValue, perception]);
 
   return (

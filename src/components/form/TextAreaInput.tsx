@@ -30,14 +30,15 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
 }) => {
   const { register } = useFormContext();
   const isEditMode = useContext(EditContext);
+  const nonEditLocked = !isEditMode && !alwaysEditable;
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <TextArea
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(name, validations)}
         className={className}
-        disabled={disabled || (!isEditMode && !alwaysEditable)}
-        readOnly={readOnly}
+        disabled={disabled}
+        readOnly={readOnly || nonEditLocked}
       />
     </Label>
   );
