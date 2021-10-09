@@ -12,13 +12,13 @@ const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
     let dimension: string;
     switch (size) {
       case 'md':
-        dimension = theme.spacing['48'];
+        dimension = theme.spacing['40'];
         break;
       case 'lg':
-        dimension = theme.spacing['64'];
+        dimension = theme.spacing['48'];
         break;
       default:
-        dimension = theme.spacing['40'];
+        dimension = theme.spacing['32'];
     }
     return {
       height: dimension,

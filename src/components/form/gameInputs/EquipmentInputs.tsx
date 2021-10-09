@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
-import { TextButton } from '~/components/buttons/TextButton';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -27,7 +27,7 @@ const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
       <TextInput hideLabel name={`${fieldName}.${index}.${value}`} />
       <GridBox gridTemplateColumns={isEditMode ? '7fr 1fr' : '1fr'}>
         <TextAreaInput hideLabel name={`${fieldName}.${index}.${notes}`} />
-        {isEditMode && <TextButton label="X" onClick={() => onDelete(index)} />}
+        {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
       </GridBox>
     </GridBox>
   );
@@ -35,7 +35,7 @@ const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
 
 const ItemHeader: React.FC = () => (
   <GridBox gridTemplateColumns={itemTemplateColumns}>
-    <Body bold>Item Name</Body>
+    <Body bold>Name</Body>
     <Body bold>Value</Body>
     <Body bold>Notes</Body>
   </GridBox>

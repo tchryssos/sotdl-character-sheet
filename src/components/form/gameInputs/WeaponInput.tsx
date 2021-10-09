@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { TextButton } from '~/components/buttons/TextButton';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -17,9 +17,7 @@ import { Label } from '../Label';
 import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
 
-const AddRemoveButton = styled(TextButton)(({ theme }) => ({
-  maxWidth: theme.spacing[128],
-  maxHeight: theme.spacing[40],
+const RemoveButton = styled(DeleteButton)(({ theme }) => ({
   marginTop: pxToRem(18),
   [theme.breakpoints.sm]: {
     marginTop: 0,
@@ -27,8 +25,8 @@ const AddRemoveButton = styled(TextButton)(({ theme }) => ({
 }));
 
 const WeaponCheckbox = styled.input`
-  min-width: ${({ theme }) => theme.spacing[40]};
-  min-height: ${({ theme }) => theme.spacing[40]};
+  min-width: ${({ theme }) => theme.spacing[32]};
+  min-height: ${({ theme }) => theme.spacing[32]};
   padding: 0;
   margin: 0;
 `;
@@ -108,9 +106,7 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
             />
           </GridBox>
         </FlexBox>
-        {isEditMode && (
-          <AddRemoveButton label="X" onClick={() => onDelete(index)} />
-        )}
+        {isEditMode && <RemoveButton onDelete={() => onDelete(index)} />}
       </FlexBox>
     );
   }
@@ -142,9 +138,7 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
           hideLabel
           name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.notes}`}
         />
-        {isEditMode && (
-          <AddRemoveButton label="X" onClick={() => onDelete(index)} />
-        )}
+        {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
       </GridBox>
     </GridBox>
   );

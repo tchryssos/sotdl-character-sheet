@@ -30,10 +30,10 @@ const Text = styled(Body)<
 >(({ isEditMode, isCollapsable }) => ({
   whiteSpace: 'nowrap',
   ...(isCollapsable && {
-    paddingLeft: theme.spacing[48],
+    paddingLeft: theme.spacing[40],
   }),
   ...(isEditMode && {
-    paddingRight: theme.spacing[48],
+    paddingRight: theme.spacing[40],
   }),
 }));
 
@@ -72,8 +72,7 @@ const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
     bottom: 0,
     transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
       isOpen ? '-' : ''
-    }${theme.spacing[8]})`,
-    marginRight: theme.spacing[8],
+    }${theme.spacing[4]})`,
   })
 );
 
@@ -86,8 +85,7 @@ const Collapsed = styled.div`
 `;
 
 const VisibilityButton = styled(IconButton)`
-  margin-left: ${theme.spacing[8]};
-  transform: translateY(${theme.spacing[8]});
+  transform: translateY(${theme.spacing[4]});
   position: absolute;
   right: 0;
   bottom: 0;

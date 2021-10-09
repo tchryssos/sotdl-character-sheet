@@ -4,8 +4,8 @@ import { BaseButtonProps } from './types';
 
 const StyledButton = styled.button`
   cursor: pointer;
-  min-height: ${({ theme }) => theme.spacing[40]};
-  min-width: ${({ theme }) => theme.spacing[40]};
+  min-height: ${({ theme }) => theme.spacing[32]};
+  min-width: ${({ theme }) => theme.spacing[32]};
 `;
 
 export const BaseButton: React.FC<BaseButtonProps> = ({
