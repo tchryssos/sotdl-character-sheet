@@ -15,7 +15,7 @@ interface AddAnotherMultiFieldProps {
     onDelete: (index: number) => void;
   }) => React.ReactNode;
   createDefaultValue?: () => Record<string, unknown>;
-  HeaderRow: React.FC;
+  HeaderRow?: React.FC;
 }
 
 export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
@@ -32,11 +32,12 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   const { watch, setValue } = useFormContext();
   const isEditMode = useContext(EditContext);
 
-  const parentField: Record<string, unknown>[] = watch(parentFieldName);
+  const parentField: Record<string, unknown>[] | undefined =
+    watch(parentFieldName);
 
   const controlledFields = fields.map((field, i) => ({
     ...field,
-    ...parentField[i],
+    ...parentField?.[i],
   }));
 
   const onCreate = () => {
@@ -58,7 +59,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
           <Plus title="Add another plus" titleId="add-another-plus-icon" />
         </IconButton>
       )}
-      {Boolean(controlledFields.length) && <HeaderRow />}
+      {Boolean(controlledFields.length) && HeaderRow && <HeaderRow />}
       {controlledFields.map((field, i) => (
         <Box key={field.id}>
           {children({

@@ -2,23 +2,29 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { pxToRem } from '~/utils/styles';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
 import { Label } from '../Label';
-import { NumberInput } from '../NumberInput';
 import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
 
-const AddRemoveButton = styled(TextButton)`
-  max-width: ${({ theme }) => theme.spacing[128]};
-  max-height: ${({ theme }) => theme.spacing[40]};
-`;
+const AddRemoveButton = styled(TextButton)(({ theme }) => ({
+  maxWidth: theme.spacing[128],
+  maxHeight: theme.spacing[40],
+  marginTop: pxToRem(18),
+  [theme.breakpoints.sm]: {
+    marginTop: 0,
+  },
+}));
 
 const WeaponCheckbox = styled.input`
   min-width: ${({ theme }) => theme.spacing[40]};
@@ -27,9 +33,16 @@ const WeaponCheckbox = styled.input`
   margin: 0;
 `;
 
-const AmmoContainer = styled(GridBox)`
-  max-width: 25%;
+const SmWeaponActiveLabel = styled(Label)`
+  width: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
+
+// const AmmoContainer = styled(GridBox)`
+//   max-width: 25%;
+// `;
 
 interface WeaponFieldProps {
   index: number;
@@ -48,6 +61,7 @@ const weaponTemplateColumns = '3fr 1fr 1fr 3fr';
 const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useFormContext();
   const isEditMode = useContext(EditContext);
+  const isLessThanSm = useBreakpointsLessThan('sm');
 
   const activeWeaponIndex: number | undefined = watch(
     FIELD_NAMES.activeWeaponIndex
@@ -57,6 +71,49 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
     const newVal = index === activeWeaponIndex ? undefined : index;
     setValue(FIELD_NAMES.activeWeaponIndex, newVal);
   };
+
+  if (isLessThanSm) {
+    return (
+      <FlexBox>
+        <SmWeaponActiveLabel
+          label="Equip"
+          labelFor={FIELD_NAMES.activeArmorIndex}
+        >
+          <WeaponCheckbox
+            checked={activeWeaponIndex === index}
+            name={FIELD_NAMES.activeWeaponIndex}
+            type="checkbox"
+            onChange={onWeaponCheck}
+          />
+        </SmWeaponActiveLabel>
+        <FlexBox column mx={8}>
+          <GridBox gridTemplateColumns="6fr 2fr" mb={8}>
+            <TextInput
+              label="Name"
+              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.name}`}
+            />
+            <TextInput
+              label="Hands"
+              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.hands}`}
+            />
+          </GridBox>
+          <GridBox gridTemplateColumns="2fr 6fr">
+            <TextInput
+              label="Damage"
+              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.damage}`}
+            />
+            <TextAreaInput
+              label="Notes"
+              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.notes}`}
+            />
+          </GridBox>
+        </FlexBox>
+        {isEditMode && (
+          <AddRemoveButton label="X" onClick={() => onDelete(index)} />
+        )}
+      </FlexBox>
+    );
+  }
 
   return (
     <GridBox gridTemplateColumns={weaponTemplateColumns}>
@@ -106,13 +163,13 @@ const WeaponHeader: React.FC = () => (
 );
 
 export const WeaponInput: React.FC = () => {
-  const { watch } = useFormContext();
+  const isLessThanSm = useBreakpointsLessThan('sm');
 
-  const weapons = watch(FIELD_NAMES.weapons.fieldName);
+  // const weapons = watch(FIELD_NAMES.weapons.fieldName);
   return (
     <FormSection columns={1} isCollapsable title="Weapons">
       <AddAnotherMultiField
-        HeaderRow={WeaponHeader}
+        HeaderRow={isLessThanSm ? undefined : WeaponHeader}
         createDefaultValue={createDefaultWeapon}
         parentFieldName={FIELD_NAMES.weapons.fieldName}
       >
@@ -120,7 +177,11 @@ export const WeaponInput: React.FC = () => {
           <WeaponField index={index} onDelete={onDelete} />
         )}
       </AddAnotherMultiField>
-      {Boolean(weapons?.length) && (
+      {/*
+        Ammo tracker doesn't seem STRICTLY necessary
+        and I need to figure out a good way to toggle them on and off
+      */}
+      {/* {Boolean(weapons?.length) && (
         <Label label="Ammo Trackers" labelFor="ammo_trackers">
           <AmmoContainer>
             <NumberInput
@@ -139,7 +200,7 @@ export const WeaponInput: React.FC = () => {
             )}
           </AmmoContainer>
         </Label>
-      )}
+      )} */}
     </FormSection>
   );
 };

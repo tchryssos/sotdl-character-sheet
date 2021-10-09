@@ -18,3 +18,11 @@ export const useBreakpointsIsExactly = (breakpoint: BreakpointSize) => {
   const breakpoints = useContext(BreakpointsContext);
   return breakpoints[breakpoints.length - 1] === breakpoint;
 };
+
+export const useBreakpointsIsGreaterThan = (breakpoint: BreakpointSize) => {
+  const breakpoints = useContext(BreakpointsContext);
+  return (
+    breakpoints.includes(breakpoint) &&
+    breakpoints[breakpoints.length - 1] !== breakpoint
+  );
+};
