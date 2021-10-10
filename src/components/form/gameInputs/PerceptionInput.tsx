@@ -8,10 +8,11 @@ import { NumberInput } from '../NumberInput';
 export const PerceptionInput = () => {
   const { watch, setValue } = useFormContext();
 
-  const perception: number = watch(FIELD_NAMES.perception);
+  let perception: number = watch(FIELD_NAMES.perception);
+  perception = parseInt(`${perception || 10}`, 10);
 
   useEffect(() => {
-    setValue(FIELD_NAMES.perception_bonus, (perception ?? 0) - 10);
+    setValue(FIELD_NAMES.perception_bonus, perception - 10);
   }, [setValue, perception]);
 
   return (

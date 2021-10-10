@@ -14,7 +14,9 @@ export const MagicInputs: React.FC = () => {
   const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isExactlySm = useBreakpointsIsExactly('sm');
-  const power: number = watch(FIELD_NAMES.spellPower.fieldName);
+  let power: number = watch(FIELD_NAMES.spellPower.fieldName);
+  power = parseInt(`${power || 0}`, 10);
+
   return (
     <FormSection columns={1} isCollapsable title="Spells">
       <GridBox gridTemplateColumns={isLessThanSm ? '100%' : '1fr 8fr'}>

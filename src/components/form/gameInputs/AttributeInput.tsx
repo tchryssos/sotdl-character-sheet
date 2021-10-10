@@ -13,10 +13,11 @@ type AttributeInputProps = Omit<NumberInputProps, 'type' | 'name'> & {
 
 export const AttributeInput: React.FC<AttributeInputProps> = ({ name }) => {
   const { watch, setValue } = useFormContext();
-  const watchAttribute: number = watch(FIELD_NAMES.attributes[name]);
+  let watchAttribute: number = watch(FIELD_NAMES.attributes[name]);
+  watchAttribute = parseInt(`${watchAttribute || 10}`, 10);
 
   useEffect(() => {
-    setValue(FIELD_NAMES.attributeBonuses[name], (watchAttribute ?? 10) - 10);
+    setValue(FIELD_NAMES.attributeBonuses[name], watchAttribute - 10);
   }, [watchAttribute, setValue, name]);
 
   return (

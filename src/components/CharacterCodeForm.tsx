@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
+import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Color } from '~/typings/theme';
 import { pxToRem } from '~/utils/styles';
 
 import { FlexBox } from './box/FlexBox';
@@ -22,9 +24,13 @@ const FormWrapper = styled(FlexBox)(({ theme }) => ({
   },
 }));
 
-const CCInput = styled(TextArea)`
+const CCInput = styled(TextArea)<{ borderColor: Color | false }>`
   min-height: ${pxToRem(80)};
   width: 100%;
+  border-color: ${({ theme, borderColor }) =>
+    borderColor && theme.colors[borderColor]};
+  outline-color: ${({ theme, borderColor }) =>
+    borderColor && theme.colors[borderColor]};
 `;
 
 interface UploadFormProps {
@@ -38,17 +44,44 @@ export const CharacterCodeForm: React.FC<UploadFormProps> = ({
   isVisible,
   className,
 }) => {
-  const { setValue } = useForm();
+  const [value, setValue] = useState('');
+  const [hasError, setHasError] = useState(false);
+  const { setValue: setFormValue } = useForm();
+
   if (!isVisible) {
     return null;
   }
 
+  const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setValue(e.target.value);
+  };
+
+  const onSubmit = () => {
+    try {
+      const objString = window.atob(value);
+      const characterObj = JSON.parse(objString);
+      setHasError(false);
+    } catch (e) {
+      setHasError(true);
+    }
+  };
+
   return (
     <FormWrapper alignItems="flex-end" className={className} column gap={8}>
       <Label label="Character Code" labelFor={uploadName}>
-        <CCInput name={uploadName} />
+        <CCInput
+          borderColor={hasError && 'red'}
+          name={uploadName}
+          value={value}
+          onChange={onChange}
+        />
       </Label>
-      <TextButton label="Use Code" type="submit" />
+      <TextButton
+        disabled={!value}
+        label="Use Code"
+        type="submit"
+        onClick={onSubmit}
+      />
     </FormWrapper>
   );
 };
