@@ -1,12 +1,14 @@
-// import styled from '@emotion/styled';
 import { FlexBox } from '~/components/box/FlexBox';
-import { CharacterForm } from '~/components/CharacterForm';
+import { Link } from '~/components/Link';
 import { Layout } from '~/components/meta/Layout';
+import { Body } from '~/components/typography/Body';
 
 const Home: React.FC = () => (
   <Layout>
-    <FlexBox center flex={1}>
-      <CharacterForm />
+    <FlexBox center flex={1} py={16}>
+      <Link href="/sotdl" isInternal>
+        <Body>Shadow of the Demon Lord</Body>
+      </Link>
     </FlexBox>
   </Layout>
 );
