@@ -5,26 +5,51 @@ import { Attribute } from '~/typings/game';
 
 import { ATTRIBUTES, EXPERT_PATHS, MASTER_PATHS } from './game';
 
+// START - Attributes - START
 type AttrObj<T> = Record<Attribute, T>;
-
 const createAttributes = (isBonus?: boolean) =>
   ATTRIBUTES.reduce((attrObj: AttrObj<Attribute | string>, currAttr) => {
     const clone = { ...attrObj };
     clone[currAttr] = `${currAttr}${isBonus ? '_bonus' : ''}`;
     return clone;
   }, {} as AttrObj<Attribute | string>);
+// END - Attributes - END
 
+// START - Spells and Magic - START
 type CastingObj = Record<string, string>;
-
-const castings = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].reduce(
-  (castingObj, currLevel) => {
+const spellLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const spellObjBuilder = (label: string) =>
+  spellLevels.reduce((castingObj, currLevel) => {
     const castClone = { ...castingObj };
-    castClone[currLevel] = `castings_${currLevel}`;
+    castClone[currLevel] = `${label}_${currLevel}`;
     return castClone;
-  },
-  {} as CastingObj
-);
+  }, {} as CastingObj);
+const castings = spellObjBuilder('castings');
+const spells = spellObjBuilder('spells');
+// END - Spells and Magic - END
 
+// START - Paths - START
+export const generatePathOptions = (pathObj: Record<string, string[]>) =>
+  Object.keys(pathObj).reduce((options, key) => {
+    const keyOpts: SelectOption[] = pathObj[key].map((p) => ({
+      label: startCase(p),
+      value: p,
+    }));
+    keyOpts.unshift({
+      label: `-- Paths of ${startCase(key)} --`,
+      value: key,
+      disabled: true,
+    });
+    return [...options, ...keyOpts];
+  }, [] as SelectOption[]);
+
+export const expertPathSelectOptions = generatePathOptions(EXPERT_PATHS);
+export const masterPathSelectOptions = generatePathOptions(MASTER_PATHS);
+
+export const SECOND_EXPERT_PATH = 'second_expert_path';
+// END - Paths - END
+
+// START - Form - START
 export const FIELD_NAMES = {
   name: 'name',
   level: 'level',
@@ -98,6 +123,9 @@ export const FIELD_NAMES = {
   },
   spells: {
     fieldName: 'spells',
+    spellsByLevel: {
+      ...spells,
+    },
   },
 };
 
@@ -147,22 +175,4 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.appearance]: '',
   [FIELD_NAMES.generalNotes]: '',
 };
-
-export const generatePathOptions = (pathObj: Record<string, string[]>) =>
-  Object.keys(pathObj).reduce((options, key) => {
-    const keyOpts: SelectOption[] = pathObj[key].map((p) => ({
-      label: startCase(p),
-      value: p,
-    }));
-    keyOpts.unshift({
-      label: `-- Paths of ${startCase(key)} --`,
-      value: key,
-      disabled: true,
-    });
-    return [...options, ...keyOpts];
-  }, [] as SelectOption[]);
-
-export const expertPathSelectOptions = generatePathOptions(EXPERT_PATHS);
-export const masterPathSelectOptions = generatePathOptions(MASTER_PATHS);
-
-export const SECOND_EXPERT_PATH = 'second_expert_path';
+// END - Form - END
