@@ -85,7 +85,7 @@ const CopyButton: React.FC = () => {
 
   useEffect(() => {
     if (copySuccess && reset) {
-      reset({}, { keepValues: true });
+      reset(undefined, { keepValues: true });
     }
   }, [copySuccess, reset]);
 
@@ -115,7 +115,7 @@ export const FormToolbar: React.FC<FormToolbarProps> = ({
           <CopyButton />
           <IconButton onClick={() => setIsEditMode(!isEditMode)}>
             <Pencil
-              color={isEditMode ? 'red' : 'black'}
+              color={isEditMode ? 'green' : 'black'}
               title="Edit pencil"
               titleId="edit-pencil-icon"
             />

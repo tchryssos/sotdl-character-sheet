@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { Color } from '~/typings/theme';
 import { pxToRem } from '~/utils/styles';
@@ -46,7 +46,7 @@ export const CharacterCodeForm: React.FC<UploadFormProps> = ({
 }) => {
   const [value, setValue] = useState('');
   const [hasError, setHasError] = useState(false);
-  const { setValue: setFormValue } = useForm();
+  const { reset } = useFormContext();
 
   if (!isVisible) {
     return null;
@@ -59,7 +59,8 @@ export const CharacterCodeForm: React.FC<UploadFormProps> = ({
   const onSubmit = () => {
     try {
       const objString = window.atob(value);
-      const characterObj = JSON.parse(objString);
+      const characterObj: Record<string, unknown> = JSON.parse(objString);
+      reset(characterObj);
       setHasError(false);
     } catch (e) {
       setHasError(true);

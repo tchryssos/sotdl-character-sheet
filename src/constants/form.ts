@@ -77,7 +77,6 @@ export const FIELD_NAMES = {
     gold: 'currency_gold',
     silver: 'currency_silver',
     copper: 'currency_copper',
-    gems: 'currency_gems',
   },
   equipment: {
     fieldName: 'equipment',
@@ -102,15 +101,33 @@ export const FIELD_NAMES = {
   },
 };
 
+// Per https://react-hook-form.com/api/useform
+// it is encouraged to have default values for all fields
+// I have them for most that aren't add-another-multiple fields
 export const DEFAULT_VALUES = {
+  [FIELD_NAMES.name]: '',
   [FIELD_NAMES.level]: 0,
+  [FIELD_NAMES.ancestry]: '',
+  [FIELD_NAMES.paths.novice_path]: '',
+  [FIELD_NAMES.paths.expert_path]: '',
+  [FIELD_NAMES.paths.master_path]: '',
+  [FIELD_NAMES.pathBenefits]: '',
+  [FIELD_NAMES.ancestryBenefits]: '',
+  [FIELD_NAMES.professions]: '',
+  [FIELD_NAMES.languages]: '',
   [FIELD_NAMES.attributes.strength]: 10,
   [FIELD_NAMES.attributes.will]: 10,
   [FIELD_NAMES.attributes.intellect]: 10,
   [FIELD_NAMES.attributes.agility]: 10,
+  [FIELD_NAMES.attributeBonuses.strength]: 0,
+  [FIELD_NAMES.attributeBonuses.agility]: 0,
+  [FIELD_NAMES.attributeBonuses.intellect]: 0,
+  [FIELD_NAMES.attributeBonuses.will]: 0,
   [FIELD_NAMES.perception]: 10,
+  [FIELD_NAMES.perception_bonus]: 0,
   [FIELD_NAMES.damage]: 0,
   [FIELD_NAMES.health]: 1,
+  [FIELD_NAMES.healing_rate]: 1,
   [FIELD_NAMES.insanity]: 0,
   [FIELD_NAMES.corruption]: 0,
   [FIELD_NAMES.defense]: 10,
@@ -120,6 +137,15 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.ammoTrackers.one]: 5,
   [FIELD_NAMES.ammoTrackers.two]: 5,
   [FIELD_NAMES.spellPower.fieldName]: 0,
+  [FIELD_NAMES.fortune]: false,
+  [FIELD_NAMES.activeArmorIndex]: 0,
+  [FIELD_NAMES.activeWeaponIndex]: 0,
+  [FIELD_NAMES.currency.gold]: 0,
+  [FIELD_NAMES.currency.silver]: 0,
+  [FIELD_NAMES.currency.copper]: 0,
+  [FIELD_NAMES.background]: '',
+  [FIELD_NAMES.appearance]: '',
+  [FIELD_NAMES.generalNotes]: '',
 };
 
 export const generatePathOptions = (pathObj: Record<string, string[]>) =>

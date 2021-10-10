@@ -39,6 +39,7 @@ export const Form: React.FC<FormProps> = ({
     defaultValues: defaultValues as Record<string, any>,
     mode,
   });
+
   return (
     <FormWrapper center>
       <StyledForm
