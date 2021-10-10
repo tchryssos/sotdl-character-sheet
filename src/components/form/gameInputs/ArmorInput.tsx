@@ -1,21 +1,18 @@
 import styled from '@emotion/styled';
+import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
-import { TextButton } from '~/components/buttons/TextButton';
-import { Body } from '~/components/typography/Body';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { SubBody } from '~/components/typography/SubBody';
 import { FIELD_NAMES } from '~/constants/form';
+import { EditContext } from '~/logic/contexts/editContext';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
 import { NumberInput } from '../NumberInput';
 import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
-
-const AddRemoveButton = styled(TextButton)`
-  max-width: ${({ theme }) => theme.spacing[128]};
-  max-height: ${({ theme }) => theme.spacing[40]};
-`;
 
 const ArmorCheckbox = styled.input`
   min-width: ${({ theme }) => theme.spacing[40]};
@@ -42,6 +39,7 @@ interface ArmorFieldProps {
 
 const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useFormContext();
+  const isEditMode = useContext(EditContext);
 
   const activeArmorIndex: number | undefined = watch(
     FIELD_NAMES.activeArmorIndex
@@ -54,7 +52,7 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
 
   return (
     <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
-      <GridBox gridTemplateColumns="1fr 7fr">
+      <GridBox gridTemplateColumns="auto 1fr">
         <ArmorCheckbox
           checked={activeArmorIndex === index}
           name={FIELD_NAMES.activeArmorIndex}
@@ -71,12 +69,12 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
         min={0}
         name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.defense}`}
       />
-      <GridBox gridTemplateColumns="7fr 1fr">
+      <GridBox gridTemplateColumns={isEditMode ? '7fr 1fr' : '1fr'}>
         <TextAreaInput
           hideLabel
           name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.notes}`}
         />
-        <AddRemoveButton label="X" onClick={() => onDelete(index)} />
+        {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
       </GridBox>
     </GridBox>
   );
@@ -85,11 +83,11 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
 const HeaderRow: React.FC = () => (
   <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
     <GridBox gridTemplateColumns="1fr 7fr">
-      <Body>Active</Body>
-      <Body bold>Name</Body>
+      <SubBody>Active</SubBody>
+      <SubBody bold>Name</SubBody>
     </GridBox>
-    <Body bold>Defense</Body>
-    <Body bold>Notes</Body>
+    <SubBody bold>Defense</SubBody>
+    <SubBody bold>Notes</SubBody>
   </GridBox>
 );
 

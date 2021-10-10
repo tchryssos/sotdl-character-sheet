@@ -5,12 +5,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from './box/FlexBox';
 import { IconButton } from './buttons/IconButton';
+import { CharacterCodeForm } from './CharacterCodeForm';
 import { ClipboardCopy } from './icons/ClipboardCopy';
 import { ClipboardCopyFail } from './icons/ClipboardCopyFail';
 import { ClipboardCopySuccess } from './icons/ClipboardCopySuccess';
 import { Pencil } from './icons/Pencil';
+import { Upload } from './icons/Upload';
 
-const Toolbar = styled(FlexBox)(({ theme }) => ({
+const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
   backgroundColor: theme.colors.white,
   top: 0,
@@ -26,7 +28,6 @@ const Toolbar = styled(FlexBox)(({ theme }) => ({
 
 const InnerToolbar = styled(FlexBox)(({ theme }) => ({
   maxWidth: theme.breakpointValues.lg,
-  gap: theme.spacing[16],
 }));
 
 interface FormToolbarProps {
@@ -98,17 +99,30 @@ const CopyButton: React.FC = () => {
 export const FormToolbar: React.FC<FormToolbarProps> = ({
   isEditMode,
   setIsEditMode,
-}) => (
-  <Toolbar center flex={1}>
-    <InnerToolbar flex={1} justifyContent="flex-end">
-      <CopyButton />
-      <IconButton onClick={() => setIsEditMode(!isEditMode)}>
-        <Pencil
-          color={isEditMode ? 'red' : 'black'}
-          title="Edit pencil"
-          titleId="edit-pencil-icon"
-        />
-      </IconButton>
-    </InnerToolbar>
-  </Toolbar>
-);
+}) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  return (
+    <Toolbar center flex={1} isExpanded={isExpanded}>
+      <InnerToolbar alignItems="flex-end" column flex={1}>
+        <FlexBox gap={16}>
+          <IconButton onClick={() => setIsExpanded(!isExpanded)}>
+            <Upload
+              color={isExpanded ? 'green' : undefined}
+              title="Upload code"
+              titleId="upload-code-icon"
+            />
+          </IconButton>
+          <CopyButton />
+          <IconButton onClick={() => setIsEditMode(!isEditMode)}>
+            <Pencil
+              color={isEditMode ? 'red' : 'black'}
+              title="Edit pencil"
+              titleId="edit-pencil-icon"
+            />
+          </IconButton>
+        </FlexBox>
+        <CharacterCodeForm isVisible={isExpanded} />
+      </InnerToolbar>
+    </Toolbar>
+  );
+};

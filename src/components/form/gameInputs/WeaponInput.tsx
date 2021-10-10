@@ -112,7 +112,7 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
 
   return (
     <GridBox gridTemplateColumns={weaponTemplateColumns}>
-      <GridBox gridTemplateColumns="1fr 7fr">
+      <GridBox gridTemplateColumns="auto 1fr">
         <WeaponCheckbox
           checked={activeWeaponIndex === index}
           name={FIELD_NAMES.activeWeaponIndex}

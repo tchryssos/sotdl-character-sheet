@@ -19,7 +19,7 @@ import { PhysicalTraitsInputs } from '~/components/form/gameInputs/PhysicalTrait
 import { WeaponInput } from '~/components/form/gameInputs/WeaponInput';
 import { NumberInput } from '~/components/form/NumberInput';
 import { TextInput } from '~/components/form/TextInput';
-import { FIELD_NAMES } from '~/constants/form';
+import { DEFAULT_VALUES, FIELD_NAMES } from '~/constants/form';
 import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
@@ -38,7 +38,7 @@ export const CharacterForm: React.FC = () => {
 
   return (
     <EditContext.Provider value={isEditMode}>
-      <Form onSubmit={() => undefined}>
+      <Form defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
         <FormToolbar isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
         <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
           <TextInput name={FIELD_NAMES.name} />

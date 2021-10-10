@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
-
-import { DEFAULT_VALUES } from '~/constants/form';
 
 import { FlexBox } from '../box/FlexBox';
 
@@ -11,6 +10,7 @@ interface FormProps {
   children: React.ReactNode;
   className?: string;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
+  defaultValues: Record<string, unknown>;
 }
 
 const FormWrapper = styled(FlexBox)`
@@ -33,9 +33,10 @@ export const Form: React.FC<FormProps> = ({
   children,
   className,
   mode = 'onSubmit',
+  defaultValues,
 }) => {
   const formMethods = useForm({
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: defaultValues as Record<string, any>,
     mode,
   });
   return (
