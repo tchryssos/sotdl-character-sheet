@@ -1,10 +1,14 @@
 import NextHead from 'next/head';
 
 type HeadProps = {
-  title?: string;
+  title: string;
+  meta: string;
 };
 
-export const Head: React.FC<HeadProps> = ({ title = 'Character Sheets' }) => (
+export const Head: React.FC<HeadProps> = ({
+  title = 'Character Sheets',
+  meta,
+}) => (
   <NextHead>
     {/* Uncomment the following lines if using google fonts */}
     {/* <link
@@ -16,6 +20,6 @@ export const Head: React.FC<HeadProps> = ({ title = 'Character Sheets' }) => (
     <title>{title}</title>
     <meta charSet="utf-8" />
     <meta content="initial-scale=1.0, width=device-width" name="viewport" />
-    <meta content="Troy Chryssos' Next JS template" name="description" />
+    <meta content={meta} name="description" />
   </NextHead>
 );
