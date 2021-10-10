@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
 import { EditContext } from '~/logic/contexts/editContext';
@@ -25,7 +25,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   HeaderRow,
 }) => {
   const { control } = useForm();
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: parentFieldName,
   });
@@ -39,6 +39,12 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     ...field,
     ...parentField?.[i],
   }));
+
+  useEffect(() => {
+    if (parentField && parentField.length > controlledFields.length) {
+      replace(parentField);
+    }
+  }, [parentField, controlledFields, replace]);
 
   const onCreate = () => {
     const nextValue = createDefaultValue?.() || {};
