@@ -5,6 +5,10 @@ import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
@@ -17,14 +21,22 @@ interface ItemFieldProps {
 }
 
 const itemTemplateColumns = '4fr 1fr 6fr';
+const itemSmallTemplateColumns = '2fr 3fr';
 const { fieldName, name, notes, value } = FIELD_NAMES.equipment;
 
 const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
   const isEditMode = useContext(EditContext);
+  const isAtLeastSm = useBreakpointsAtLeast('sm');
   return (
-    <GridBox gridTemplateColumns={itemTemplateColumns}>
+    <GridBox
+      gridTemplateColumns={
+        isAtLeastSm ? itemTemplateColumns : itemSmallTemplateColumns
+      }
+    >
       <TextInput hideLabel name={`${fieldName}.${index}.${name}}`} />
-      <TextInput hideLabel name={`${fieldName}.${index}.${value}`} />
+      {isAtLeastSm && (
+        <TextInput hideLabel name={`${fieldName}.${index}.${value}`} />
+      )}
       <GridBox gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}>
         <TextAreaInput hideLabel name={`${fieldName}.${index}.${notes}`} />
         {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
@@ -33,13 +45,20 @@ const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
   );
 };
 
-const ItemHeader: React.FC = () => (
-  <GridBox gridTemplateColumns={itemTemplateColumns}>
-    <Body bold>Name</Body>
-    <Body bold>Value</Body>
-    <Body bold>Notes</Body>
-  </GridBox>
-);
+const ItemHeader: React.FC = () => {
+  const isAtLeastSm = useBreakpointsAtLeast('sm');
+  return (
+    <GridBox
+      gridTemplateColumns={
+        isAtLeastSm ? itemTemplateColumns : itemSmallTemplateColumns
+      }
+    >
+      <Body bold>Name</Body>
+      {isAtLeastSm && <Body bold>Value</Body>}
+      <Body bold>Notes</Body>
+    </GridBox>
+  );
+};
 
 export const EquipmentInputs: React.FC = () => (
   <FormSection columns={1} title="Equipment">
