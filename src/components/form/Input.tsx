@@ -13,6 +13,7 @@ const StyledInput = styled.input<Pick<InputProps, 'noOutline'>>(
     height: theme.spacing[40],
     fontSize: theme.fontSize.body,
     padding: theme.spacing[4],
+    color: theme.colors.text,
     ...(noOutline && {
       borderColor: 'transparent',
       outlineColor: 'transparent',

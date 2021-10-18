@@ -13,4 +13,5 @@ export const SubBody = styled.p<Omit<SubBodyProps, 'children'>>`
   line-height: ${({ theme }) => theme.lineHeight.normal};
   margin-bottom: ${({ theme, mb = 0 }) => `${theme.spacing[mb]}`};
   font-style: ${({ italic }) => (italic ? 'italic' : '')};
+  color: ${({ theme }) => theme.colors.text};
 `;
