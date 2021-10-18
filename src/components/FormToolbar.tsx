@@ -14,12 +14,12 @@ import { Upload } from './icons/Upload';
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
-  backgroundColor: theme.colors.white,
+  backgroundColor: theme.colors.background,
   top: 0,
   left: 0,
   width: '100%',
   padding: theme.spacing[16],
-  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.black}`,
+  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
   [theme.breakpoints.sm]: {
     padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
   },
@@ -43,7 +43,7 @@ const CopyIcon: React.FC<CopyIconProps> = ({ copySuccess }) => {
   if (copySuccess) {
     return (
       <ClipboardCopySuccess
-        color="green"
+        color="success"
         title="Copy success"
         titleId="copy-success-icon"
       />
@@ -52,7 +52,7 @@ const CopyIcon: React.FC<CopyIconProps> = ({ copySuccess }) => {
   if (copySuccess === false) {
     return (
       <ClipboardCopyFail
-        color="red"
+        color="danger"
         title="Copy failed"
         titleId="copy-failed-icon"
       />
@@ -107,7 +107,7 @@ export const FormToolbar: React.FC<FormToolbarProps> = ({
         <FlexBox gap={16}>
           <IconButton onClick={() => setIsExpanded(!isExpanded)}>
             <Upload
-              color={isExpanded ? 'green' : undefined}
+              color={isExpanded ? 'success' : undefined}
               title="Upload code"
               titleId="upload-code-icon"
             />
@@ -115,7 +115,7 @@ export const FormToolbar: React.FC<FormToolbarProps> = ({
           <CopyButton />
           <IconButton onClick={() => setIsEditMode(!isEditMode)}>
             <Pencil
-              color={isEditMode ? 'green' : 'black'}
+              color={isEditMode ? 'success' : 'text'}
               title="Edit pencil"
               titleId="edit-pencil-icon"
             />

@@ -28,7 +28,7 @@ const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
       background: 'transparent',
       border: 'none',
       ':hover': {
-        background: theme.colors.lightGrey,
+        background: theme.colors.accentLight,
       },
     };
   }

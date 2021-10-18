@@ -71,7 +71,7 @@ export const CharacterCodeForm: React.FC<UploadFormProps> = ({
     <FormWrapper alignItems="flex-end" className={className} column gap={8}>
       <Label label="Character Code" labelFor={uploadName}>
         <CCInput
-          borderColor={hasError && 'red'}
+          borderColor={hasError && 'danger'}
           name={uploadName}
           value={value}
           onChange={onChange}

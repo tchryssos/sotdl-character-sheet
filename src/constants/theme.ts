@@ -7,6 +7,35 @@ const breakpointValues = {
   xl: 1440,
 };
 
+type ColorHash = `#${string}`;
+interface ColorModeColors {
+  background: ColorHash;
+  text: ColorHash;
+  success: ColorHash;
+  danger: ColorHash;
+  accentHeavy: ColorHash;
+  accentLight: ColorHash;
+}
+export type ColorMode = 'light' | 'dark';
+
+const darkModeColors: ColorModeColors = {
+  background: '#1d1f21',
+  text: '#c5c8c6',
+  success: '#b5bd68',
+  danger: '#9a4d4d',
+  accentHeavy: '#2a3c3e',
+  accentLight: '#505253',
+};
+
+const lightModeColors: ColorModeColors = {
+  background: '#fff',
+  text: '#000',
+  success: '#00784e',
+  danger: '#db0033',
+  accentHeavy: '#adadad',
+  accentLight: '#e8e8e8',
+};
+
 const theme = {
   breakpointValues,
   breakpoints: {
@@ -16,14 +45,6 @@ const theme = {
     md: `@media only screen and (min-width: ${breakpointValues.md}px)`,
     lg: `@media only screen and (min-width: ${breakpointValues.lg}px)`,
     xl: `@media only screen and (min-width: ${breakpointValues.xl}px)`,
-  },
-  colors: {
-    black: '#000',
-    white: '#fff',
-    grey: '#adadad',
-    red: '#db0033',
-    green: '#00784e',
-    lightGrey: '#e8e8e8',
   },
   spacing: {
     0: '0rem',
@@ -62,9 +83,15 @@ const theme = {
   },
 };
 
-// eslint-disable-next-line import/no-default-export
-export default theme;
+export const lightTheme = { ...theme, colors: lightModeColors };
+export const darkTheme = { ...theme, colors: darkModeColors };
 
-export type ThemeShape = typeof theme;
+// All keys should be the same, so we can just type the theme obj as any of the themes
+export type ThemeShape = typeof lightTheme;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Theme extends ThemeShape {}
+
+export const themes: Record<ColorMode, Theme> = {
+  light: lightTheme,
+  dark: darkTheme,
+};

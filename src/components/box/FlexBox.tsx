@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 
-import theme from '~/constants/theme';
 import { Spacing } from '~/typings/theme';
 
 import { Box } from './Box';
@@ -36,6 +35,7 @@ const Flex = styled(Box)<FlexBoxProps>(
     flexGrow,
     flexShrink,
     gap = 0,
+    theme,
   }) => ({
     justifyContent,
     alignItems,

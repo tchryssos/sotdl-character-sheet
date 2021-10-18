@@ -4,8 +4,9 @@ import type { AppProps /* , AppContext */ } from 'next/app';
 import { useEffect, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
-import theme from '~/constants/theme';
+import { ColorMode, themes } from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
+import { ThemeContext } from '~/logic/contexts/themeContext';
 import { BreakpointSize } from '~/typings/theme';
 
 const marPadZero = css`
@@ -61,6 +62,8 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [windowBreakpoints, setWindowBreakpoints] = useState<BreakpointSize[]>([
     'xxs',
   ]);
+  const [colorMode, setColorMode] = useState<ColorMode>('dark');
+  const theme = themes[colorMode];
 
   useEffect(() => {
     Object.keys(theme.breakpointValues).forEach((key, i, arr) => {
@@ -82,15 +85,17 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
   }, []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <BreakpointsContext.Provider value={windowBreakpoints}>
-        <GlobalWrapper>
-          <Global styles={globalStyles} />
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <Component {...pageProps} />
-        </GlobalWrapper>
-      </BreakpointsContext.Provider>
-    </ThemeProvider>
+    <ThemeContext.Provider value={{ colorMode, setColorMode }}>
+      <ThemeProvider theme={theme}>
+        <BreakpointsContext.Provider value={windowBreakpoints}>
+          <GlobalWrapper>
+            <Global styles={globalStyles} />
+            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+            <Component {...pageProps} />
+          </GlobalWrapper>
+        </BreakpointsContext.Provider>
+      </ThemeProvider>
+    </ThemeContext.Provider>
   );
 };
 

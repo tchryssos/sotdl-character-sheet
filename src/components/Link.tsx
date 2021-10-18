@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import NextLink from 'next/link';
 
 const StyledLink = styled.a`
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.text};
   display: inline-block;
 `;
 

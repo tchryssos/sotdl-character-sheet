@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
 
-import theme from '~/constants/theme';
+import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
 import { pxToRem } from '~/utils/styles';
 
@@ -28,7 +28,7 @@ const TitleBox = styled(FlexBox)`
 
 const Text = styled(Body)<
   Pick<FormSectionProps, 'isCollapsable'> & { isEditMode: boolean }
->(({ isEditMode, isCollapsable }) => ({
+>(({ isEditMode, isCollapsable, theme }) => ({
   whiteSpace: 'nowrap',
   ...(isCollapsable && {
     paddingLeft: theme.spacing[32],
@@ -42,8 +42,8 @@ const Section = styled(FlexBox)<{ addMargin: boolean }>`
   height: 100%;
 `;
 
-const collapsableStyles = css`
-  border-color: ${theme.colors.grey};
+const createCollapsibleStyles = (theme: Theme) => css`
+  border-color: ${theme.colors.accentHeavy};
   border-width: ${theme.border.borderWidth[1]};
   border-style: solid;
 `;
@@ -51,14 +51,14 @@ const collapsableStyles = css`
 const Line = styled(Box)`
   height: 0;
   width: 100%;
-  ${collapsableStyles};
+  ${({ theme }) => createCollapsibleStyles(theme)};
   border-bottom-width: 0;
   border-left-width: 0;
   border-right-width: 0;
 `;
 
 const Container = styled(GridBox)<{ isOpen?: boolean }>`
-  ${collapsableStyles};
+  ${({ theme }) => createCollapsibleStyles(theme)};
   border-top-width: 0;
   height: 100%;
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'collapse')};
@@ -78,15 +78,15 @@ const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
 );
 
 const Collapsed = styled.div`
-  ${collapsableStyles};
+  ${({ theme }) => createCollapsibleStyles(theme)};
   border-top-width: 0;
-  height: ${theme.spacing[24]};
+  height: ${({ theme }) => theme.spacing[24]};
   /* height: 0 on container still leaves a 1px space */
   transform: translateY(-1px);
 `;
 
 const VisibilityButton = styled(IconButton)`
-  transform: translateY(${theme.spacing[4]});
+  transform: translateY(${({ theme }) => theme.spacing[4]});
   position: absolute;
   right: 0;
   bottom: 0;

@@ -4,7 +4,7 @@ import { Icon } from './Icon';
 import { IconProps } from './types';
 
 const Path = styled.path<Pick<IconProps, 'color'>>`
-  fill: ${({ color = 'black', theme }) => theme.colors[color]};
+  fill: ${({ color = 'text', theme }) => theme.colors[color]};
 `;
 
 export const Invisible: React.FC<IconProps> = ({

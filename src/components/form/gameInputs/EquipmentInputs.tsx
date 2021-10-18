@@ -5,10 +5,7 @@ import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { Body } from '~/components/typography/Body';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import {
-  useBreakpointsAtLeast,
-  useBreakpointsLessThan,
-} from '~/logic/hooks/useBreakpoints';
+import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
