@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import clipboardCopy from 'clipboard-copy';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+
+import { ColorMode } from '~/constants/theme';
+import { ThemeContext } from '~/logic/contexts/themeContext';
 
 import { FlexBox } from './box/FlexBox';
 import { IconButton } from './buttons/IconButton';
@@ -9,31 +12,34 @@ import { CharacterCodeForm } from './CharacterCodeForm';
 import { ClipboardCopy } from './icons/ClipboardCopy';
 import { ClipboardCopyFail } from './icons/ClipboardCopyFail';
 import { ClipboardCopySuccess } from './icons/ClipboardCopySuccess';
+import { Moon } from './icons/Moon';
 import { Pencil } from './icons/Pencil';
+import { Sun } from './icons/Sun';
 import { Upload } from './icons/Upload';
 
-const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
-  position: 'fixed',
-  backgroundColor: theme.colors.background,
-  top: 0,
-  left: 0,
-  width: '100%',
-  padding: theme.spacing[16],
-  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
-  [theme.breakpoints.sm]: {
-    padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
-  },
-  zIndex: 100,
-}));
+// START - Icons and Buttons - START
+const colorToggleObj: Record<ColorMode, ColorMode> = {
+  light: 'dark',
+  dark: 'light',
+};
 
-const InnerToolbar = styled(FlexBox)(({ theme }) => ({
-  maxWidth: theme.breakpointValues.lg,
-}));
+const ColorModeToggle = () => {
+  const { colorMode, setColorMode } = useContext(ThemeContext);
 
-interface FormToolbarProps {
-  isEditMode: boolean;
-  setIsEditMode: (isEditMode: boolean) => void;
-}
+  const onSwitch = () => {
+    setColorMode(colorToggleObj[colorMode]);
+  };
+
+  return (
+    <IconButton onClick={onSwitch}>
+      {colorMode === 'light' ? (
+        <Sun title="Light mode" titleId="light-mode-icon" />
+      ) : (
+        <Moon title="Dark mode" titleId="dark-mode-icon" />
+      )}
+    </IconButton>
+  );
+};
 
 interface CopyIconProps {
   copySuccess?: boolean;
@@ -95,6 +101,31 @@ const CopyButton: React.FC = () => {
     </IconButton>
   );
 };
+// END - Icons and Buttons - End
+
+// START - Toolbar - START
+const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
+  position: 'fixed',
+  backgroundColor: theme.colors.background,
+  top: 0,
+  left: 0,
+  width: '100%',
+  padding: theme.spacing[16],
+  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
+  [theme.breakpoints.sm]: {
+    padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
+  },
+  zIndex: 100,
+}));
+
+const InnerToolbar = styled(FlexBox)(({ theme }) => ({
+  maxWidth: theme.breakpointValues.lg,
+}));
+
+interface FormToolbarProps {
+  isEditMode: boolean;
+  setIsEditMode: (isEditMode: boolean) => void;
+}
 
 export const FormToolbar: React.FC<FormToolbarProps> = ({
   isEditMode,
@@ -105,6 +136,7 @@ export const FormToolbar: React.FC<FormToolbarProps> = ({
     <Toolbar center flex={1} isExpanded={isExpanded}>
       <InnerToolbar alignItems="flex-end" column flex={1}>
         <FlexBox gap={16}>
+          <ColorModeToggle />
           <IconButton onClick={() => setIsExpanded(!isExpanded)}>
             <Upload
               color={isExpanded ? 'success' : undefined}
@@ -126,3 +158,4 @@ export const FormToolbar: React.FC<FormToolbarProps> = ({
     </Toolbar>
   );
 };
+// END - Toolbar - END
