@@ -21,7 +21,7 @@ export type ColorMode = 'light' | 'dark';
 const darkModeColors: ColorModeColors = {
   background: '#1d1f21',
   text: '#c5c8c6',
-  success: '#b5bd68',
+  success: '#6fbd68',
   danger: '#9a4d4d',
   accentHeavy: '#2a3c3e',
   accentLight: '#505253',

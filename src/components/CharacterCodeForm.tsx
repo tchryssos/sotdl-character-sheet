@@ -9,6 +9,7 @@ import { FlexBox } from './box/FlexBox';
 import { TextButton } from './buttons/TextButton';
 import { Label } from './form/Label';
 import { TextArea } from './form/TextAreaInput';
+import { SubBody } from './typography/SubBody';
 
 const FormWrapper = styled(FlexBox)(({ theme }) => ({
   alignSelf: 'flex-start',
@@ -28,9 +29,14 @@ const CCInput = styled(TextArea)<{ borderColor: Color | false }>`
   min-height: ${pxToRem(80)};
   width: 100%;
   border-color: ${({ theme, borderColor }) =>
-    borderColor && theme.colors[borderColor]};
+    borderColor ? theme.colors[borderColor] : 'transparent'};
   outline-color: ${({ theme, borderColor }) =>
     borderColor && theme.colors[borderColor]};
+  border-width: ${({ theme }) => theme.border.borderWidth[3]};
+`;
+
+const ErrorMessage = styled(SubBody)`
+  color: ${({ theme }) => theme.colors.danger};
 `;
 
 interface UploadFormProps {
@@ -77,6 +83,12 @@ export const CharacterCodeForm: React.FC<UploadFormProps> = ({
           onChange={onChange}
         />
       </Label>
+      {hasError && (
+        <ErrorMessage>
+          Something is wrong with your character code. Double check it and try
+          again.
+        </ErrorMessage>
+      )}
       <TextButton
         disabled={!value}
         label="Use Code"

@@ -4,7 +4,7 @@ import type { AppProps /* , AppContext */ } from 'next/app';
 import { useEffect, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
-import { ColorMode, themes } from '~/constants/theme';
+import { ColorMode, Theme, themes } from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 import { BreakpointSize } from '~/typings/theme';
@@ -20,9 +20,10 @@ const baseStyle = css`
   ${marPadZero};
 `;
 
-const globalStyles = css`
+const createGlobalStyles = (theme: Theme) => css`
   /* @import url(''); */
   html {
+    background-color: ${theme.colors.background};
     ${baseStyle};
   }
   body {
@@ -38,6 +39,12 @@ const globalStyles = css`
   select,
   textarea {
     box-sizing: border-box;
+  }
+  input,
+  select,
+  textarea {
+    background-color: ${theme.colors.accentLight};
+    color: ${theme.colors.text};
   }
   p {
     ${marPadZero};
@@ -89,7 +96,7 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
       <ThemeProvider theme={theme}>
         <BreakpointsContext.Provider value={windowBreakpoints}>
           <GlobalWrapper>
-            <Global styles={globalStyles} />
+            <Global styles={createGlobalStyles(theme)} />
             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <Component {...pageProps} />
           </GlobalWrapper>

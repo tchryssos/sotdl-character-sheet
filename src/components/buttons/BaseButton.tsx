@@ -6,6 +6,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   min-height: ${({ theme }) => theme.spacing[32]};
   min-width: ${({ theme }) => theme.spacing[32]};
+  background-color: ${({ theme }) => theme.colors.accentHeavy};
 `;
 
 export const BaseButton: React.FC<BaseButtonProps> = ({
