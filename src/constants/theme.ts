@@ -8,6 +8,7 @@ const breakpointValues = {
 };
 
 type ColorHash = `#${string}`;
+type ColorRgba = `rgba(${number},${number},${number},${number})`;
 interface ColorModeColors {
   background: ColorHash;
   text: ColorHash;
@@ -15,6 +16,7 @@ interface ColorModeColors {
   danger: ColorHash;
   accentHeavy: ColorHash;
   accentLight: ColorHash;
+  smudge: ColorRgba;
 }
 export type ColorMode = 'light' | 'dark';
 
@@ -25,6 +27,7 @@ const darkModeColors: ColorModeColors = {
   danger: '#9a4d4d',
   accentHeavy: '#2a3c3e',
   accentLight: '#505253',
+  smudge: 'rgba(255,255,255,0.1)',
 };
 
 const lightModeColors: ColorModeColors = {
@@ -34,6 +37,7 @@ const lightModeColors: ColorModeColors = {
   danger: '#db0033',
   accentHeavy: '#adadad',
   accentLight: '#e8e8e8',
+  smudge: 'rgba(0,0,0,0.05)',
 };
 
 const theme = {

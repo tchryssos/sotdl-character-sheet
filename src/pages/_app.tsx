@@ -8,6 +8,7 @@ import { ColorMode, Theme, themes } from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 import { BreakpointSize } from '~/typings/theme';
+import { pxToRem } from '~/utils/styles';
 
 const marPadZero = css`
   margin: 0;
@@ -45,6 +46,11 @@ const createGlobalStyles = (theme: Theme) => css`
   textarea {
     background-color: ${theme.colors.accentLight};
     color: ${theme.colors.text};
+    border-radius: ${pxToRem(4)};
+    border-width: ${theme.border.borderWidth[1]};
+    :disabled {
+      background-color: ${theme.colors.smudge};
+    }
   }
   p {
     ${marPadZero};
