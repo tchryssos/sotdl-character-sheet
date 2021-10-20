@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { ColorMode } from '~/constants/theme';
 import { ThemeContext } from '~/logic/contexts/themeContext';
+import { pxToRem } from '~/utils/styles';
 
 import { FlexBox } from './box/FlexBox';
 import { IconButton } from './buttons/IconButton';
@@ -112,6 +113,7 @@ const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   width: '100%',
   padding: theme.spacing[16],
   borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
+  boxShadow: `${theme.colors.smudge} 0 ${theme.spacing[4]}`,
   [theme.breakpoints.sm]: {
     padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
   },
