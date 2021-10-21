@@ -16,6 +16,7 @@ import { Moon } from './icons/Moon';
 import { Pencil } from './icons/Pencil';
 import { Sun } from './icons/Sun';
 import { Upload } from './icons/Upload';
+import { Body } from './typography/Body';
 
 // START - Icons and Buttons - START
 const colorToggleObj: Record<ColorMode, ColorMode> = {
@@ -74,7 +75,7 @@ const CopyButton: React.FC = () => {
 
   const copyCode = async () => {
     const valueObj = getValues();
-    const code = window.btoa(JSON.stringify(valueObj));
+    const code = window.btoa(encodeURIComponent(JSON.stringify(valueObj)));
     try {
       await clipboardCopy(code);
       return handleSubmit(async () => setCopySuccess(true))();
@@ -124,37 +125,49 @@ const InnerToolbar = styled(FlexBox)(({ theme }) => ({
   maxWidth: theme.breakpointValues.lg,
 }));
 
+const TopRow = styled(FlexBox)`
+  width: 100%;
+`;
+
 interface FormToolbarProps {
   isEditMode: boolean;
   setIsEditMode: (isEditMode: boolean) => void;
+  title?: string;
 }
 
 export const FormToolbar: React.FC<FormToolbarProps> = ({
   isEditMode,
   setIsEditMode,
+  title,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <Toolbar center flex={1} isExpanded={isExpanded}>
       <InnerToolbar alignItems="flex-end" column flex={1}>
-        <FlexBox gap={16}>
-          <ColorModeToggle />
-          <IconButton onClick={() => setIsExpanded(!isExpanded)}>
-            <Upload
-              color={isExpanded ? 'success' : undefined}
-              title="Upload code"
-              titleId="upload-code-icon"
-            />
-          </IconButton>
-          <CopyButton />
-          <IconButton onClick={() => setIsEditMode(!isEditMode)}>
-            <Pencil
-              color={isEditMode ? 'success' : 'text'}
-              title="Edit pencil"
-              titleId="edit-pencil-icon"
-            />
-          </IconButton>
-        </FlexBox>
+        <TopRow
+          alignItems="center"
+          justifyContent={title ? 'space-between' : 'flex-end'}
+        >
+          {title && <Body>{title}</Body>}
+          <FlexBox gap={16}>
+            <ColorModeToggle />
+            <IconButton onClick={() => setIsExpanded(!isExpanded)}>
+              <Upload
+                color={isExpanded ? 'success' : undefined}
+                title="Upload code"
+                titleId="upload-code-icon"
+              />
+            </IconButton>
+            <CopyButton />
+            <IconButton onClick={() => setIsEditMode(!isEditMode)}>
+              <Pencil
+                color={isEditMode ? 'success' : 'text'}
+                title="Edit pencil"
+                titleId="edit-pencil-icon"
+              />
+            </IconButton>
+          </FlexBox>
+        </TopRow>
         <CharacterCodeForm isVisible={isExpanded} />
       </InnerToolbar>
     </Toolbar>

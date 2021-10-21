@@ -65,7 +65,9 @@ export const CharacterCodeForm: React.FC<UploadFormProps> = ({
   const onSubmit = () => {
     try {
       const objString = window.atob(value);
-      const characterObj: Record<string, unknown> = JSON.parse(objString);
+      const characterObj: Record<string, unknown> = JSON.parse(
+        decodeURIComponent(objString)
+      );
       reset(characterObj);
       setHasError(false);
     } catch (e) {
