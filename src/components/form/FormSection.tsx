@@ -114,7 +114,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
               >
                 <ChevRight
                   title="Collapsable arrow"
-                  titleId="collapseable-arrow-icon"
+                  titleId={`collapseable-arrow-icon-${title}`}
                 />
               </CollapseButton>
             )}

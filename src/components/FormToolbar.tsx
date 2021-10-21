@@ -90,10 +90,11 @@ const CopyButton: React.FC = () => {
   }, [isDirty]);
 
   useEffect(() => {
-    if (copySuccess && reset) {
-      reset(undefined, { keepValues: true });
+    if (copySuccess && reset && getValues) {
+      const valueObj = getValues();
+      reset(valueObj, { keepValues: true });
     }
-  }, [copySuccess, reset]);
+  }, [copySuccess, reset, getValues]);
 
   return (
     <IconButton type="submit" onClick={copyCode}>
