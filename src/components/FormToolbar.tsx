@@ -5,7 +5,6 @@ import { useFormContext } from 'react-hook-form';
 
 import { ColorMode } from '~/constants/theme';
 import { ThemeContext } from '~/logic/contexts/themeContext';
-import { pxToRem } from '~/utils/styles';
 
 import { FlexBox } from './box/FlexBox';
 import { IconButton } from './buttons/IconButton';
