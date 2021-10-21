@@ -12,3 +12,4 @@
 1. Checkboxes need a re-design
 1. Better button / icon tooltips
 1. Links to official resources?
+1. Dice rolling by clicking on attributes
