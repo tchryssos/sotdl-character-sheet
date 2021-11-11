@@ -1,25 +1,27 @@
 import styled from '@emotion/styled';
 
-import { pxToRem } from '~/utils/styles';
-
 import { BaseButtonProps } from './types';
 
-const StyledButton = styled.button<Pick<BaseButtonProps, 'transparent'>>(
-  ({ theme, transparent }) => ({
-    cursor: 'pointer',
-    minHeight: theme.spacing[32],
-    minWidth: theme.spacing[32],
-    backgroundColor: transparent ? 'transparent' : theme.colors.accentHeavy,
-    border: transparent
-      ? `${theme.border.borderWidth[1]} solid ${theme.colors.text}`
-      : 'none',
-    borderRadius: pxToRem(2),
-    ':disabled': {
-      cursor: 'not-allowed',
-      backgroundColor: transparent ? 'transparent' : theme.colors.accentLight,
-    },
-  })
-);
+type StyledProps = Pick<Required<BaseButtonProps>, 'transparent'>;
+
+const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
+  cursor: 'pointer',
+  minHeight: theme.spacing[32],
+  minWidth: theme.spacing[32],
+  backgroundColor: transparent ? 'transparent' : theme.colors.accentHeavy,
+  border: transparent
+    ? `${theme.border.borderWidth[1]} solid ${theme.colors.text}`
+    : 'none',
+  borderRadius: theme.spacing[2],
+  ':hover': {
+    filter: `brightness(${theme.colors.brightnessMod})`,
+  },
+  ':disabled': {
+    cursor: 'not-allowed',
+    backgroundColor: transparent ? 'transparent' : theme.colors.accentLight,
+    filter: 'brightness(1.0)',
+  },
+}));
 
 export const BaseButton: React.FC<BaseButtonProps> = ({
   onClick,
@@ -32,7 +34,7 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
   <StyledButton
     className={className}
     disabled={disabled || !onClick}
-    transparent={transparent}
+    transparent={Boolean(transparent)}
     // eslint-disable-next-line react/button-has-type
     type={type}
     onClick={onClick}
