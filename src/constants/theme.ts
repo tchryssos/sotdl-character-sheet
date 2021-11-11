@@ -76,7 +76,10 @@ const theme = {
     body: '1rem',
     title: '2rem',
   },
-  fontFamily: 'sans-serif',
+  fontFamily: {
+    normal: 'sans-serif',
+    decorative: 'serif',
+  },
   lineHeight: {
     normal: 1.2,
   },

@@ -27,7 +27,6 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { FormToolbar } from './FormToolbar';
 
 const Form = styled(FormComponent)`
-  max-width: ${({ theme }) => theme.breakpointValues.lg}px;
   margin-top: ${({ theme }) => theme.spacing[64]};
 `;
 
