@@ -93,6 +93,7 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
         );
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

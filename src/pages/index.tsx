@@ -33,6 +33,10 @@ const ButtonWrapper = styled(GridBox)`
   width: 100%;
 `;
 
+const CreateButton = styled(TextButton)`
+  width: 100%;
+`;
+
 const Home: React.FC = () => (
   <Layout
     meta="A collection of online ttrpg character sheets"
@@ -45,9 +49,14 @@ const Home: React.FC = () => (
         </figure>
         <Title mb={16}>rpg sheet dot games</Title>
         <ButtonWrapper columns={1} rowGap={8}>
-          <TextButton label="Log In" />
+          <GridBox columnGap={8}>
+            <TextButton label="Log In" transparent />
+            <TextButton label="Create Account" />
+          </GridBox>
           <Divider label="or" />
-          <TextButton label="Create a Character" />
+          <Link href="/games">
+            <CreateButton label="Create a Character" onClick={() => null} />
+          </Link>
         </ButtonWrapper>
       </HomePane>
     </HomeWrapper>

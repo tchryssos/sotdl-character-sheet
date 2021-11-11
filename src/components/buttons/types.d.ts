@@ -5,6 +5,7 @@ export interface CoreButtonProps {
   type?: 'button' | 'submit';
   className?: string;
   disabled?: boolean;
+  transparent?: boolean;
 }
 
 export interface BaseButtonProps extends CoreButtonProps {
