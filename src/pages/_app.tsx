@@ -22,7 +22,7 @@ const baseStyle = css`
 `;
 
 const createGlobalStyles = (theme: Theme) => css`
-  @import url('https://fonts.googleapis.com/css2?family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&family=Uchen&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Uchen&display=swap');
   html {
     background-color: ${theme.colors.background};
     ${baseStyle};

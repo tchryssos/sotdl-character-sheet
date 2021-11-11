@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 
-import { Box } from '~/components/box/Box';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
+import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
 import { Layout } from '~/components/meta/Layout';
-import { Body } from '~/components/typography/Body';
 import { Title } from '~/components/typography/Title';
 import { SCIMITAR } from '~/constants/ascii';
 import { pxToRem } from '~/utils/styles';
@@ -47,7 +46,7 @@ const Home: React.FC = () => (
         <Title mb={16}>rpg sheet dot games</Title>
         <ButtonWrapper columns={1} rowGap={8}>
           <TextButton label="Log In" />
-          <Body>or</Body>
+          <Divider label="or" />
           <TextButton label="Create a Character" />
         </ButtonWrapper>
       </HomePane>
