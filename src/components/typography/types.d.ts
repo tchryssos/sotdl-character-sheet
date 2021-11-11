@@ -6,5 +6,4 @@ export type TypographyProps = {
   bold?: boolean;
   italic?: boolean;
   variant?: FontVariant;
-  shadowed?: boolean;
 };

@@ -77,8 +77,8 @@ const theme = {
     title: '2rem',
   },
   fontFamily: {
-    normal: 'sans-serif',
-    decorative: 'serif',
+    normal: "'Cantarell', sans-serif",
+    decorative: "'Uchen', garamond",
   },
   lineHeight: {
     normal: 1.2,

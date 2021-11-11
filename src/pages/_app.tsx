@@ -22,7 +22,7 @@ const baseStyle = css`
 `;
 
 const createGlobalStyles = (theme: Theme) => css`
-  /* @import url(''); */
+  @import url('https://fonts.googleapis.com/css2?family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&family=Uchen&display=swap');
   html {
     background-color: ${theme.colors.background};
     ${baseStyle};
@@ -54,16 +54,11 @@ const createGlobalStyles = (theme: Theme) => css`
       background-color: ${theme.colors.smudge};
     }
   }
-  p {
-    ${marPadZero};
-  }
-  h1 {
-    ${marPadZero};
-  }
-  h2 {
-    ${marPadZero};
-  }
-  h3 {
+  p,
+  h1,
+  h2,
+  h3,
+  pre {
     ${marPadZero};
   }
 `;
