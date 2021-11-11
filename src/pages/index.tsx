@@ -5,21 +5,15 @@ import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
+import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
 import { Title } from '~/components/typography/Title';
-import { SCIMITAR } from '~/constants/ascii';
 import { pxToRem } from '~/utils/styles';
 
 const HomeWrapper = styled(FlexBox)`
   width: 100%;
   height: 100%;
 `;
-
-const AsciiText = styled.pre(({ theme }) => ({
-  color: theme.colors.text,
-  fontSize: pxToRem(6),
-  marginBottom: theme.spacing[8],
-}));
 
 const HomePane = styled(FlexBox)(({ theme }) => ({
   borderColor: theme.colors.accentLight,
@@ -44,9 +38,7 @@ const Home: React.FC = () => (
   >
     <HomeWrapper center>
       <HomePane center column px={24} py={16}>
-        <figure aria-label="ascii art scimitar" role="img">
-          <AsciiText>{SCIMITAR}</AsciiText>
-        </figure>
+        <LogoAscii />
         <Title mb={16}>rpg sheet dot games</Title>
         <ButtonWrapper columns={1} rowGap={8}>
           <GridBox columnGap={8}>
