@@ -5,6 +5,7 @@ import { BaseButtonProps } from './types';
 type StyledProps = Pick<Required<BaseButtonProps>, 'transparent'>;
 
 const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
+  color: theme.colors.text,
   cursor: 'pointer',
   minHeight: theme.spacing[32],
   minWidth: theme.spacing[32],
@@ -18,7 +19,8 @@ const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
   },
   ':disabled': {
     cursor: 'not-allowed',
-    backgroundColor: transparent ? 'transparent' : theme.colors.accentLight,
+    backgroundColor: theme.colors.accentLight,
+    border: 'none',
     filter: 'brightness(1.0)',
   },
 }));

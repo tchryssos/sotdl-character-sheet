@@ -16,6 +16,6 @@ export const createTextSharedStyles = (
       ? theme.fontWeight.bold
       : theme.fontWeight.regular,
     fontStyle: fontProps.italic ? 'italic' : '',
-    color: theme.colors.text,
+    color: 'inherit',
     lineHeight: theme.lineHeight.normal,
   });

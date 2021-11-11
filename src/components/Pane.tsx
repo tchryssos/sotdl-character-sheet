@@ -10,18 +10,27 @@ const StyledPane = styled(FlexBox)(({ theme }) => ({
   borderRadius: theme.spacing[4],
   borderStyle: 'solid',
   boxShadow: `${pxToRem(6)} ${pxToRem(4)} ${theme.colors.accentHeavy}`,
+  minWidth: pxToRem(256),
 }));
 
 export const Pane: React.FC<FlexBoxProps> = ({
   px = 24,
   py = 16,
-  center = true,
+  justifyContent = 'center',
+  alignItems = 'center',
   column = true,
   children,
   ...rest
 }) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <StyledPane center={center} column={column} px={px} py={py} {...rest}>
+  <StyledPane
+    alignItems={alignItems}
+    column={column}
+    justifyContent={justifyContent}
+    px={px}
+    py={py}
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    {...rest}
+  >
     {children}{' '}
   </StyledPane>
 );

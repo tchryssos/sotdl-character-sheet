@@ -8,6 +8,7 @@ import { Link } from '~/components/Link';
 import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
 import { Pane } from '~/components/Pane';
+import { Body } from '~/components/typography/Body';
 import { Title } from '~/components/typography/Title';
 
 const HomeWrapper = styled(FlexBox)`
@@ -21,6 +22,11 @@ const ButtonWrapper = styled(GridBox)`
 
 const CreateButton = styled(TextButton)`
   width: 100%;
+`;
+
+const MadeBy = styled(Body)`
+  align-self: flex-start;
+  color: ${({ theme }) => theme.colors.accentLight};
 `;
 
 const Home: React.FC = () => (
@@ -38,12 +44,15 @@ const Home: React.FC = () => (
             <TextButton label="Create Account" />
           </GridBox>
           <Divider label="or" />
-          <Link href="/games">
+          <Link href="/games" isInternal>
             <CreateButton label="Create a Character" onClick={() => null} />
           </Link>
         </ButtonWrapper>
       </Pane>
     </HomeWrapper>
+    <MadeBy mb={8} variant="decorative">
+      Created by Troy Chryssos
+    </MadeBy>
   </Layout>
 );
 

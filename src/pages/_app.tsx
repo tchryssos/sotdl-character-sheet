@@ -32,6 +32,7 @@ const createGlobalStyles = (theme: Theme) => css`
     position: relative;
     box-sizing: border-box;
     font-family: ${theme.fontFamily.normal};
+    color: ${theme.colors.text};
   }
   #app,
   #__next {
