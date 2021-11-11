@@ -24,7 +24,7 @@ import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
-import { FormToolbar } from './FormToolbar';
+import { FormToolbar } from './HeaderBar';
 
 const Form = styled(FormComponent)`
   margin-top: ${({ theme }) => theme.spacing[64]};

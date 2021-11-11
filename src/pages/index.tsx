@@ -24,6 +24,10 @@ const CreateButton = styled(TextButton)`
   width: 100%;
 `;
 
+const Logo = styled(LogoAscii)`
+  margin-bottom: ${({ theme }) => theme.spacing[16]};
+`;
+
 const MadeBy = styled(Body)`
   align-self: flex-start;
   color: ${({ theme }) => theme.colors.accentLight};
@@ -36,7 +40,7 @@ const Home: React.FC = () => (
   >
     <HomeWrapper center>
       <Pane>
-        <LogoAscii />
+        <Logo />
         <Title mb={16}>rpg sheet dot games</Title>
         <ButtonWrapper columns={1} rowGap={8}>
           <GridBox columnGap={8}>

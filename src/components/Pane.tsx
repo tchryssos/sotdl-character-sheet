@@ -9,7 +9,7 @@ const StyledPane = styled(FlexBox)(({ theme }) => ({
   borderWidth: theme.border.borderWidth[1],
   borderRadius: theme.spacing[4],
   borderStyle: 'solid',
-  boxShadow: `${pxToRem(6)} ${pxToRem(4)} ${theme.colors.accentHeavy}`,
+  boxShadow: `${pxToRem(4)} ${pxToRem(6)} ${theme.colors.accentHeavy}`,
   minWidth: pxToRem(256),
 }));
 

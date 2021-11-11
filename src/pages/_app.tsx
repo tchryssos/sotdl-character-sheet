@@ -59,7 +59,8 @@ const createGlobalStyles = (theme: Theme) => css`
   h1,
   h2,
   h3,
-  pre {
+  pre,
+  figure {
     ${marPadZero};
   }
 `;
