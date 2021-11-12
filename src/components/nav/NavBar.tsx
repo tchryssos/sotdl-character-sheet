@@ -1,14 +1,10 @@
 import styled from '@emotion/styled';
 
-import {
-  useBreakpointsIsExactly,
-  useBreakpointsLessThan,
-} from '~/logic/hooks/useBreakpoints';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { Spacing } from '~/typings/theme';
+
 // import { MutableRefObject, useContext, useState } from 'react';
 // import { AuthContext } from '~/logic/contexts/authContext';
-import { pxToRem } from '~/utils/styles';
-
 import { FlexBox } from '../box/FlexBox';
 // import { IconButton } from '../buttons/IconButton';
 // import { TextButton } from '../buttons/TextButton';
