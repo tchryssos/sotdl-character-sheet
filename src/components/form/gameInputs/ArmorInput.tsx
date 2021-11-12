@@ -2,14 +2,17 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { SubBody } from '~/components/typography/SubBody';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { AddAnotherMultiField } from '../AddAnotherMultiField';
 import { FormSection } from '../FormSection';
+import { Label } from '../Label';
 import { NumberInput } from '../NumberInput';
 import { TextAreaInput } from '../TextAreaInput';
 import { TextInput } from '../TextInput';
@@ -19,6 +22,13 @@ const ArmorCheckbox = styled.input`
   min-height: ${({ theme }) => theme.spacing[40]};
   padding: 0;
   margin: 0;
+`;
+
+const SmArmorActiveLabel = styled(Label)`
+  width: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 // Something about setValue is overwriting defaultArmor
@@ -40,6 +50,7 @@ interface ArmorFieldProps {
 const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useFormContext();
   const { isEditMode } = useContext(EditContext);
+  const isLessThanSm = useBreakpointsLessThan('sm');
 
   const activeArmorIndex: number | undefined = watch(
     FIELD_NAMES.activeArmorIndex
@@ -49,6 +60,42 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
     const newVal = index === activeArmorIndex ? undefined : index;
     setValue(FIELD_NAMES.activeArmorIndex, newVal);
   };
+
+  if (isLessThanSm) {
+    return (
+      <FlexBox>
+        <SmArmorActiveLabel
+          label="Act."
+          labelFor={FIELD_NAMES.activeArmorIndex}
+        >
+          <ArmorCheckbox
+            checked={activeArmorIndex === index}
+            name={FIELD_NAMES.activeArmorIndex}
+            type="checkbox"
+            onChange={onArmorCheck}
+          />
+        </SmArmorActiveLabel>
+        <FlexBox column mx={8}>
+          <GridBox gridTemplateColumns="6fr 2fr" mb={8}>
+            <TextInput
+              label="Name"
+              name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.name}`}
+            />
+            <NumberInput
+              label="Defense"
+              min={0}
+              name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.defense}`}
+            />
+          </GridBox>
+          <TextAreaInput
+            label="Notes"
+            name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.notes}`}
+          />
+        </FlexBox>
+        {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
+      </FlexBox>
+    );
+  }
 
   return (
     <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
@@ -91,16 +138,19 @@ const HeaderRow: React.FC = () => (
   </GridBox>
 );
 
-export const ArmorInput: React.FC = () => (
-  <FormSection columns={1} isCollapsable title="Armor">
-    <AddAnotherMultiField
-      HeaderRow={HeaderRow}
-      createDefaultValue={createDefaultArmor}
-      parentFieldName={FIELD_NAMES.armors.fieldName}
-    >
-      {({ index, onDelete }) => (
-        <ArmorField index={index} onDelete={onDelete} />
-      )}
-    </AddAnotherMultiField>
-  </FormSection>
-);
+export const ArmorInput: React.FC = () => {
+  const isLessThanSm = useBreakpointsLessThan('sm');
+  return (
+    <FormSection columns={1} isCollapsable title="Armor">
+      <AddAnotherMultiField
+        HeaderRow={isLessThanSm ? undefined : HeaderRow}
+        createDefaultValue={createDefaultArmor}
+        parentFieldName={FIELD_NAMES.armors.fieldName}
+      >
+        {({ index, onDelete }) => (
+          <ArmorField index={index} onDelete={onDelete} />
+        )}
+      </AddAnotherMultiField>
+    </FormSection>
+  );
+};
