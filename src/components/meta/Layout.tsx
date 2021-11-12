@@ -26,7 +26,12 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
 
   return (
     <NavContext.Provider
-      value={{ setNavTitle, setNavExpanded, portalRef: navPortalRef }}
+      value={{
+        setNavTitle,
+        setNavExpanded,
+        portalRef: navPortalRef,
+        isNavExpanded: navExpanded,
+      }}
     >
       <Head meta={meta} title={title} />
       <NavBar

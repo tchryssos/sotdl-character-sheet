@@ -49,6 +49,7 @@ const createGlobalStyles = (theme: Theme) => css`
   input,
   select,
   textarea {
+    font-family: ${theme.fontFamily.normal};
     background-color: ${theme.colors.accentLight};
     color: ${theme.colors.text};
     border-radius: ${pxToRem(4)};

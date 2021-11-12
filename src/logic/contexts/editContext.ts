@@ -1,3 +1,11 @@
 import { createContext } from 'react';
 
-export const EditContext = createContext(false);
+interface EditContextProps {
+  isEditMode: boolean;
+  setIsEditMode: (isEditMode: boolean) => void;
+}
+
+export const EditContext = createContext<EditContextProps>({
+  isEditMode: false,
+  setIsEditMode: () => null,
+});

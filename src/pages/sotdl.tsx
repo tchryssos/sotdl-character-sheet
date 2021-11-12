@@ -1,6 +1,6 @@
 // import styled from '@emotion/styled';
-import { CharacterForm } from '~/components/CharacterForm';
 import { Layout } from '~/components/meta/Layout';
+import { CharacterForm } from '~/components/sotdl/CharacterForm';
 
 const SOTDL: React.FC = () => (
   <Layout

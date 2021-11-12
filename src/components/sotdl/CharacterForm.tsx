@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
@@ -24,7 +25,7 @@ import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
-import { FormToolbar } from './HeaderBar';
+import { FormNav } from '../nav/FormNav';
 
 const Form = styled(FormComponent)`
   margin-top: ${({ theme }) => theme.spacing[64]};
@@ -36,9 +37,9 @@ export const CharacterForm: React.FC = () => {
   const isLessThanXs = useBreakpointsLessThan('xs');
 
   return (
-    <EditContext.Provider value={isEditMode}>
+    <EditContext.Provider value={{ isEditMode, setIsEditMode }}>
       <Form defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
-        <FormToolbar isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
+        <FormNav />
         <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
           <TextInput name={FIELD_NAMES.name} />
           <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
