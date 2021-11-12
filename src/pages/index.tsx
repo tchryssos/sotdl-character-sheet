@@ -40,25 +40,25 @@ const Home: React.FC = () => (
     title="Character Sheets"
   >
     <HomeNav />
-    <HomeWrapper center>
-      <Pane>
+    <HomeWrapper alignItems="flex-start" justifyContent="center">
+      <Pane mt={16}>
         <Logo />
-        <Title mb={16}>rpg sheet dot games</Title>
+        <Title mb={16}>rpg sheet dot&nbsp;games</Title>
         <ButtonWrapper columns={1} rowGap={8}>
-          <GridBox columnGap={8}>
+          {/* <GridBox columnGap={8}>
             <TextButton label="Log In" transparent />
             <TextButton label="Create Account" />
           </GridBox>
-          <Divider label="or" />
+          <Divider label="or" /> */}
           <Link href="/games" isInternal>
             <CreateButton label="Create a Character" onClick={() => null} />
           </Link>
         </ButtonWrapper>
       </Pane>
     </HomeWrapper>
-    <MadeBy mb={8} variant="decorative">
+    {/* <MadeBy mb={8} variant="decorative">
       Created by Troy Chryssos
-    </MadeBy>
+    </MadeBy> */}
   </Layout>
 );
 

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
 
@@ -17,26 +17,33 @@ const PageWrapper = styled(FlexBox)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
   width: 100%;
   height: 100%;
+  padding-top: ${({ theme }) => theme.spacing[96]};
 `;
 
 export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
   const [navTitle, setNavTitle] = useState('');
+  const [portalNode, setPortalNode] = useState<HTMLDivElement>();
+
   const [navExpanded, setNavExpanded] = useState(false);
-  const navPortalRef = useRef<HTMLDivElement>(null);
+  const setPortalNodeCallback = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      setPortalNode(node);
+    }
+  }, []);
 
   return (
     <NavContext.Provider
       value={{
         setNavTitle,
         setNavExpanded,
-        portalRef: navPortalRef,
+        portalNode,
         isNavExpanded: navExpanded,
       }}
     >
       <Head meta={meta} title={title} />
       <NavBar
         isExpanded={navExpanded}
-        portalRef={navPortalRef}
+        setPortalNode={setPortalNodeCallback}
         title={navTitle}
       />
       <FlexBox flex={1} justifyContent="center" pb={8} px={16}>

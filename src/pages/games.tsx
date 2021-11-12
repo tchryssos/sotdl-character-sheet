@@ -17,7 +17,7 @@ const GamesWrapper = styled(FlexBox)`
 const Games = () => (
   <Layout meta="" title="Game selection">
     <GamesWrapper alignItems="flex-start" justifyContent="center">
-      <Pane mt={128}>
+      <Pane mt={16}>
         <Title mb={16}>Select a game</Title>
         <GridBox columns={1} rowGap={16}>
           {Object.keys(SUPPORTED_GAMES).map((key) => (

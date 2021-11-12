@@ -52,29 +52,27 @@ const Portal = styled.div`
 interface NavBarProps {
   title: string;
   isExpanded: boolean;
-  portalRef: MutableRefObject<HTMLDivElement | null>;
+  setPortalNode: (node: HTMLDivElement) => void;
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
   title,
   isExpanded,
-  portalRef,
-}) => {
-  const { user } = useContext(AuthContext);
-  return (
-    <Toolbar center flex={1} isExpanded={isExpanded}>
-      <InnerToolbar alignItems="flex-end" column flex={1}>
-        <TopRow alignItems="center" justifyContent="space-between">
-          <FlexBox alignItems="center" gap={flexGap}>
-            <HomeLink href="/" isInternal>
-              <LogoAscii size="sm" />
-            </HomeLink>
-            {title && <Body variant="decorative">{title}</Body>}
-          </FlexBox>
-          <FlexBox alignItems="center" gap={flexGap}>
-            <Portal ref={portalRef} />
-            <ColorModeToggle />
-            {!user.isAuthenticated ? (
+  setPortalNode,
+}) => (
+  <Toolbar center flex={1} isExpanded={isExpanded}>
+    <InnerToolbar alignItems="flex-end" column flex={1}>
+      <TopRow alignItems="center" justifyContent="space-between">
+        <FlexBox alignItems="center" gap={flexGap}>
+          <HomeLink href="/" isInternal>
+            <LogoAscii size="sm" />
+          </HomeLink>
+          {title && <Body variant="decorative">{title}</Body>}
+        </FlexBox>
+        <FlexBox alignItems="center" gap={flexGap}>
+          <Portal ref={setPortalNode} />
+          <ColorModeToggle />
+          {/* {!user.isAuthenticated ? (
               <IconButton>
                 <LogIn title="Log In / Sign Up" titleId="login-signup" />
               </IconButton>
@@ -82,10 +80,9 @@ export const NavBar: React.FC<NavBarProps> = ({
               <IconButton>
                 <LogOut title="Log Out" titleId="log-out" />
               </IconButton>
-            )}
-          </FlexBox>
-        </TopRow>
-      </InnerToolbar>
-    </Toolbar>
-  );
-};
+            )} */}
+        </FlexBox>
+      </TopRow>
+    </InnerToolbar>
+  </Toolbar>
+);

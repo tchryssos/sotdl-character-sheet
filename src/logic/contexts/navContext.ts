@@ -1,14 +1,14 @@
-import { createContext, MutableRefObject } from 'react';
+import { createContext } from 'react';
 
 type NavContext = {
-  portalRef: MutableRefObject<HTMLDivElement | null>;
+  portalNode: HTMLDivElement | undefined;
   setNavExpanded: (isExpanded: boolean) => void;
   setNavTitle: (title: string) => void;
   isNavExpanded: boolean;
 };
 
 export const NavContext = createContext<NavContext>({
-  portalRef: {} as MutableRefObject<HTMLDivElement>,
+  portalNode: undefined,
   setNavExpanded: () => null,
   setNavTitle: () => null,
   isNavExpanded: false,

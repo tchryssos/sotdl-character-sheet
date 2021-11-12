@@ -116,7 +116,7 @@ export const FormNav: React.FC = () => {
   const expertPath = watch(FIELD_NAMES.paths.expert_path);
   const masterPath = watch(FIELD_NAMES.paths.master_path);
 
-  const { portalRef, setNavExpanded, isNavExpanded, setNavTitle } =
+  const { portalNode, setNavExpanded, isNavExpanded, setNavTitle } =
     useContext(NavContext);
 
   useEffect(() => {
@@ -124,13 +124,13 @@ export const FormNav: React.FC = () => {
     const title = `${name}${
       ancestry ? ` - ${ancestry}${titleClass ? ` ${titleClass}` : ''}` : ''
     }`;
-    setNavTitle(title);
+    setNavTitle(title || 'Create a Character');
   }, [name, ancestry, novicePath, expertPath, masterPath, setNavTitle]);
 
-  if (portalRef.current) {
+  if (portalNode) {
     return createPortal(
       <NavButtons isExpanded={isNavExpanded} setIsExpanded={setNavExpanded} />,
-      portalRef.current
+      portalNode
     );
   }
   return null;

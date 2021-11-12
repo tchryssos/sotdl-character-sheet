@@ -69,6 +69,7 @@ const theme = {
     48: pxToRem(48),
     64: pxToRem(64),
     80: pxToRem(80),
+    96: pxToRem(96),
     128: pxToRem(128),
   },
   border: {
