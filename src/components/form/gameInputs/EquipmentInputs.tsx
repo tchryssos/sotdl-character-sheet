@@ -18,7 +18,7 @@ interface ItemFieldProps {
 }
 
 const itemTemplateColumns = '4fr 1fr 6fr';
-const itemSmallTemplateColumns = '2fr 3fr';
+const itemSmallTemplateColumns = '2fr 2fr';
 const { fieldName, name, notes, value } = FIELD_NAMES.equipment;
 
 const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
