@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { ColorMode, Theme, themes } from '~/constants/theme';
+import { AuthContext } from '~/logic/contexts/authContext';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
+import { User } from '~/typings/auth';
 import { BreakpointSize } from '~/typings/theme';
 import { pxToRem } from '~/utils/styles';
 
@@ -22,7 +24,7 @@ const baseStyle = css`
 `;
 
 const createGlobalStyles = (theme: Theme) => css`
-  @import url('https://fonts.googleapis.com/css2?family=Uchen&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&family=Uchen&display=swap');
   html {
     background-color: ${theme.colors.background};
     ${baseStyle};
@@ -71,12 +73,15 @@ const GlobalWrapper = styled(FlexBox)`
   overflow: hidden;
 `;
 
+const emptyUser = { isAuthenticated: false };
+
 const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
   const [windowBreakpoints, setWindowBreakpoints] = useState<BreakpointSize[]>([
     'xxs',
   ]);
   const [colorMode, setColorMode] = useState<ColorMode>('dark');
   const theme = themes[colorMode];
+  const [user, setUser] = useState<User>(emptyUser);
 
   useEffect(() => {
     Object.keys(theme.breakpointValues).forEach((key, i, arr) => {
@@ -101,13 +106,15 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <ThemeContext.Provider value={{ colorMode, setColorMode }}>
       <ThemeProvider theme={theme}>
-        <BreakpointsContext.Provider value={windowBreakpoints}>
-          <GlobalWrapper>
-            <Global styles={createGlobalStyles(theme)} />
-            {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-            <Component {...pageProps} />
-          </GlobalWrapper>
-        </BreakpointsContext.Provider>
+        <AuthContext.Provider value={{ user, setUser }}>
+          <BreakpointsContext.Provider value={windowBreakpoints}>
+            <GlobalWrapper>
+              <Global styles={createGlobalStyles(theme)} />
+              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+              <Component {...pageProps} />
+            </GlobalWrapper>
+          </BreakpointsContext.Provider>
+        </AuthContext.Provider>
       </ThemeProvider>
     </ThemeContext.Provider>
   );

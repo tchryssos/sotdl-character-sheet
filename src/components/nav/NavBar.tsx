@@ -1,9 +1,14 @@
 import styled from '@emotion/styled';
-import { MutableRefObject, useState } from 'react';
+import { MutableRefObject, useContext, useState } from 'react';
 
+import { AuthContext } from '~/logic/contexts/authContext';
 import { pxToRem } from '~/utils/styles';
 
 import { FlexBox } from '../box/FlexBox';
+import { IconButton } from '../buttons/IconButton';
+import { TextButton } from '../buttons/TextButton';
+import { LogIn } from '../icons/LogIn';
+import { LogOut } from '../icons/LogOut';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
@@ -54,21 +59,33 @@ export const NavBar: React.FC<NavBarProps> = ({
   title,
   isExpanded,
   portalRef,
-}) => (
-  <Toolbar center flex={1} isExpanded={isExpanded}>
-    <InnerToolbar alignItems="flex-end" column flex={1}>
-      <TopRow alignItems="center" justifyContent="space-between">
-        <FlexBox alignItems="center" gap={flexGap}>
-          <HomeLink href="/" isInternal>
-            <LogoAscii size="sm" />
-          </HomeLink>
-          {title && <Body variant="decorative">{title}</Body>}
-        </FlexBox>
-        <FlexBox alignItems="center" gap={flexGap}>
-          <Portal ref={portalRef} />
-          <ColorModeToggle />
-        </FlexBox>
-      </TopRow>
-    </InnerToolbar>
-  </Toolbar>
-);
+}) => {
+  const { user } = useContext(AuthContext);
+  return (
+    <Toolbar center flex={1} isExpanded={isExpanded}>
+      <InnerToolbar alignItems="flex-end" column flex={1}>
+        <TopRow alignItems="center" justifyContent="space-between">
+          <FlexBox alignItems="center" gap={flexGap}>
+            <HomeLink href="/" isInternal>
+              <LogoAscii size="sm" />
+            </HomeLink>
+            {title && <Body variant="decorative">{title}</Body>}
+          </FlexBox>
+          <FlexBox alignItems="center" gap={flexGap}>
+            <Portal ref={portalRef} />
+            <ColorModeToggle />
+            {!user.isAuthenticated ? (
+              <IconButton>
+                <LogIn title="Log In / Sign Up" titleId="login-signup" />
+              </IconButton>
+            ) : (
+              <IconButton>
+                <LogOut title="Log Out" titleId="log-out" />
+              </IconButton>
+            )}
+          </FlexBox>
+        </TopRow>
+      </InnerToolbar>
+    </Toolbar>
+  );
+};

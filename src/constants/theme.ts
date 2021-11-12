@@ -78,12 +78,12 @@ const theme = {
     },
   },
   fontSize: {
-    subBody: pxToRem(12),
-    body: pxToRem(16),
-    title: pxToRem(32),
+    subBody: pxToRem(14),
+    body: pxToRem(18),
+    title: pxToRem(36),
   },
   fontFamily: {
-    normal: 'sans-serif',
+    normal: '"Inconsolata", sans-serif',
     decorative: "'Uchen', garamond",
   },
   lineHeight: {
