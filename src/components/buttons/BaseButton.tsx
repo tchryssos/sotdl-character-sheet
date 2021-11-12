@@ -15,7 +15,7 @@ const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
     : 'none',
   borderRadius: theme.spacing[2],
   ':hover': {
-    filter: `brightness(${theme.colors.brightnessMod})`,
+    filter: `brightness(${theme.filters.brightnessMod})`,
   },
   ':disabled': {
     cursor: 'not-allowed',

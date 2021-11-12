@@ -5,7 +5,7 @@ const StyledLink = styled.a`
   color: ${({ theme }) => theme.colors.text};
   display: inline-block;
   :hover {
-    filter: brightness(${({ theme }) => theme.colors.brightnessMod});
+    filter: brightness(${({ theme }) => theme.filters.brightnessMod});
   }
 `;
 

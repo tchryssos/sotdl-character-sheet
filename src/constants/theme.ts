@@ -19,7 +19,6 @@ interface ColorModeColors {
   accentHeavy: ColorHash;
   accentLight: ColorHash;
   smudge: ColorRgba;
-  brightnessMod: number;
 }
 export type ColorMode = 'light' | 'dark';
 
@@ -31,6 +30,9 @@ const darkModeColors: ColorModeColors = {
   accentHeavy: '#2a3c3e',
   accentLight: '#505253',
   smudge: 'rgba(255,255,255,0.1)',
+};
+
+const darkModeFilters = {
   brightnessMod: 1.2,
 };
 
@@ -42,6 +44,9 @@ const lightModeColors: ColorModeColors = {
   accentHeavy: '#adadad',
   accentLight: '#e8e8e8',
   smudge: 'rgba(0,0,0,0.05)',
+};
+
+const lightModeFilters = {
   brightnessMod: 0.8,
 };
 
@@ -96,8 +101,16 @@ const theme = {
   },
 };
 
-export const lightTheme = { ...theme, colors: lightModeColors };
-export const darkTheme = { ...theme, colors: darkModeColors };
+export const lightTheme = {
+  ...theme,
+  colors: lightModeColors,
+  filters: lightModeFilters,
+};
+export const darkTheme = {
+  ...theme,
+  colors: darkModeColors,
+  filters: darkModeFilters,
+};
 
 // All keys should be the same, so we can just type the theme obj as any of the themes
 export type ThemeShape = typeof lightTheme;
