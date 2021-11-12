@@ -7,6 +7,7 @@ import { Spacing } from '~/typings/theme';
 import { AuthLink } from '../AuthLink';
 // import { MutableRefObject, useContext, useState } from 'react';
 import { FlexBox } from '../box/FlexBox';
+import { IconButton } from '../buttons/IconButton';
 import { LogIn } from '../icons/LogIn';
 import { LogOut } from '../icons/LogOut';
 import { Link } from '../Link';
@@ -67,16 +68,6 @@ const ExpandedPortal = styled(Portal)`
   width: 100%;
 `;
 
-const AuthenticationLink = styled(AuthLink)(({ theme }) => ({
-  // Styles largely copied from IconButton
-  height: theme.spacing[32],
-  width: theme.spacing[32],
-  ':hover': {
-    backgroundColor: theme.colors.accentLight,
-    filter: 'brightness(1.0)',
-  },
-}));
-
 interface NavBarProps {
   title: string;
   isExpanded: boolean;
@@ -108,13 +99,17 @@ export const NavBar: React.FC<NavBarProps> = ({
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
             <ColorModeToggle />
             {!user ? (
-              <AuthenticationLink type="login">
-                <LogIn title="Log In" titleId="login-signup" />
-              </AuthenticationLink>
+              <AuthLink type="login">
+                <IconButton buttonLike>
+                  <LogIn title="Log In / Sign Up" titleId="login-signup" />
+                </IconButton>
+              </AuthLink>
             ) : (
-              <AuthenticationLink type="logout">
-                <LogOut title="Log Out" titleId="log-out" />
-              </AuthenticationLink>
+              <AuthLink type="logout">
+                <IconButton buttonLike>
+                  <LogOut title="Log Out" titleId="log-out" />
+                </IconButton>
+              </AuthLink>
             )}
           </FlexBox>
         </TopRow>

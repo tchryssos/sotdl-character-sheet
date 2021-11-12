@@ -6,6 +6,7 @@ export interface CoreButtonProps {
   className?: string;
   disabled?: boolean;
   transparent?: boolean;
+  buttonLike?: boolean;
 }
 
 export interface BaseButtonProps extends CoreButtonProps {

@@ -25,6 +25,8 @@ const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
   },
 }));
 
+const ButtonLike = StyledButton.withComponent('div');
+
 export const BaseButton: React.FC<BaseButtonProps> = ({
   onClick,
   className,
@@ -32,15 +34,25 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
   disabled,
   children,
   transparent,
-}) => (
-  <StyledButton
-    className={className}
-    disabled={disabled || !onClick}
-    transparent={Boolean(transparent)}
-    // eslint-disable-next-line react/button-has-type
-    type={type}
-    onClick={onClick}
-  >
-    {children}
-  </StyledButton>
-);
+  buttonLike,
+}) => {
+  if (buttonLike) {
+    return (
+      <ButtonLike className={className} transparent={Boolean(transparent)}>
+        {children}
+      </ButtonLike>
+    );
+  }
+  return (
+    <StyledButton
+      className={className}
+      disabled={disabled || !onClick}
+      transparent={Boolean(transparent)}
+      // eslint-disable-next-line react/button-has-type
+      type={type}
+      onClick={onClick}
+    >
+      {children}
+    </StyledButton>
+  );
+};
