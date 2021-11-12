@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { ColorMode } from '~/constants/theme';
 import { ThemeContext } from '~/logic/contexts/themeContext';
@@ -15,8 +15,19 @@ const colorToggleObj: Record<ColorMode, ColorMode> = {
 export const ColorModeToggle = () => {
   const { colorMode, setColorMode } = useContext(ThemeContext);
 
+  useEffect(() => {
+    const savedColorMode = localStorage.getItem(
+      'colorMode'
+    ) as ColorMode | null;
+    if (savedColorMode) {
+      setColorMode(savedColorMode);
+    }
+  }, [setColorMode]);
+
   const onSwitch = () => {
-    setColorMode(colorToggleObj[colorMode]);
+    const nextMode = colorToggleObj[colorMode];
+    setColorMode(nextMode);
+    localStorage.setItem('colorMode', nextMode);
   };
 
   return (

@@ -3,13 +3,13 @@ import styled from '@emotion/styled';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
-import { Divider } from '~/components/Divider';
+// import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
 import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
 import { HomeNav } from '~/components/nav/HomeNav';
 import { Pane } from '~/components/Pane';
-import { Body } from '~/components/typography/Body';
+// import { Body } from '~/components/typography/Body';
 import { Title } from '~/components/typography/Title';
 
 const HomeWrapper = styled(FlexBox)`
@@ -29,10 +29,10 @@ const Logo = styled(LogoAscii)`
   margin-bottom: ${({ theme }) => theme.spacing[16]};
 `;
 
-const MadeBy = styled(Body)`
-  align-self: flex-start;
-  color: ${({ theme }) => theme.colors.accentLight};
-`;
+// const MadeBy = styled(Body)`
+//   align-self: flex-start;
+//   color: ${({ theme }) => theme.colors.accentLight};
+// `;
 
 const Home: React.FC = () => (
   <Layout
@@ -50,7 +50,8 @@ const Home: React.FC = () => (
             <TextButton label="Create Account" />
           </GridBox>
           <Divider label="or" /> */}
-          <Link href="/games" isInternal>
+          {/* Until there are more games, just direct right to SOTDL */}
+          <Link href="/sotdl" isInternal>
             <CreateButton label="Create a Character" onClick={() => null} />
           </Link>
         </ButtonWrapper>

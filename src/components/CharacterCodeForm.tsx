@@ -40,23 +40,15 @@ const ErrorMessage = styled(SubBody)`
 `;
 
 interface UploadFormProps {
-  isVisible: boolean;
   className?: string;
 }
 
 const uploadName = 'upload_character_code';
 
-export const CharacterCodeForm: React.FC<UploadFormProps> = ({
-  isVisible,
-  className,
-}) => {
+export const CharacterCodeForm: React.FC<UploadFormProps> = ({ className }) => {
   const [value, setValue] = useState('');
   const [hasError, setHasError] = useState(false);
   const { reset } = useFormContext();
-
-  if (!isVisible) {
-    return null;
-  }
 
   const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);

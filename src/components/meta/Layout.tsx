@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
 
@@ -22,12 +22,20 @@ const PageWrapper = styled(FlexBox)`
 
 export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
   const [navTitle, setNavTitle] = useState('');
-  const [portalNode, setPortalNode] = useState<HTMLDivElement>();
+  const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
+  const [expandedPortalNode, setExpandedPortalNode] =
+    useState<HTMLDivElement>();
 
   const [navExpanded, setNavExpanded] = useState(false);
-  const setPortalNodeCallback = useCallback((node: HTMLDivElement) => {
+  const setIconPortalNodeCallback = useCallback((node: HTMLDivElement) => {
     if (node !== null) {
-      setPortalNode(node);
+      setIconPortalNode(node);
+    }
+  }, []);
+
+  const setExpandedPortalNodeCallback = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      setExpandedPortalNode(node);
     }
   }, []);
 
@@ -36,14 +44,16 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
       value={{
         setNavTitle,
         setNavExpanded,
-        portalNode,
+        iconPortalNode,
+        expandedPortalNode,
         isNavExpanded: navExpanded,
       }}
     >
       <Head meta={meta} title={title} />
       <NavBar
         isExpanded={navExpanded}
-        setPortalNode={setPortalNodeCallback}
+        setExpandedPortalNode={setExpandedPortalNodeCallback}
+        setIconPortalNode={setIconPortalNodeCallback}
         title={navTitle}
       />
       <FlexBox flex={1} justifyContent="center" pb={8} px={16}>

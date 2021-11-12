@@ -23,8 +23,7 @@ const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   left: 0,
   width: '100%',
   padding: theme.spacing[16],
-  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
-  boxShadow: `${theme.colors.smudge} 0 ${theme.spacing[4]}`,
+  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.accentHeavy}`,
   [theme.breakpoints.sm]: {
     padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
   },
@@ -49,16 +48,23 @@ const Portal = styled.div`
   gap: ${pxToRem(flexGap)};
 `;
 
+const ExpandedPortal = styled(Portal)`
+  width: 100%;
+  margin-top: ${({ theme }) => theme.spacing[16]};
+`;
+
 interface NavBarProps {
   title: string;
   isExpanded: boolean;
-  setPortalNode: (node: HTMLDivElement) => void;
+  setIconPortalNode: (node: HTMLDivElement) => void;
+  setExpandedPortalNode: (node: HTMLDivElement) => void;
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
   title,
   isExpanded,
-  setPortalNode,
+  setIconPortalNode,
+  setExpandedPortalNode,
 }) => (
   <Toolbar center flex={1} isExpanded={isExpanded}>
     <InnerToolbar alignItems="flex-end" column flex={1}>
@@ -70,7 +76,7 @@ export const NavBar: React.FC<NavBarProps> = ({
           {title && <Body variant="decorative">{title}</Body>}
         </FlexBox>
         <FlexBox alignItems="center" gap={flexGap}>
-          <Portal ref={setPortalNode} />
+          <Portal ref={setIconPortalNode} />
           <ColorModeToggle />
           {/* {!user.isAuthenticated ? (
               <IconButton>
@@ -83,6 +89,7 @@ export const NavBar: React.FC<NavBarProps> = ({
             )} */}
         </FlexBox>
       </TopRow>
+      <ExpandedPortal ref={setExpandedPortalNode} />
     </InnerToolbar>
   </Toolbar>
 );

@@ -8,6 +8,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 
 import { IconButton } from '../buttons/IconButton';
+import { CharacterCodeForm } from '../CharacterCodeForm';
 import { ClipboardCopy } from '../icons/ClipboardCopy';
 import { ClipboardCopyFail } from '../icons/ClipboardCopyFail';
 import { ClipboardCopySuccess } from '../icons/ClipboardCopySuccess';
@@ -116,8 +117,13 @@ export const FormNav: React.FC = () => {
   const expertPath = watch(FIELD_NAMES.paths.expert_path);
   const masterPath = watch(FIELD_NAMES.paths.master_path);
 
-  const { portalNode, setNavExpanded, isNavExpanded, setNavTitle } =
-    useContext(NavContext);
+  const {
+    iconPortalNode,
+    setNavExpanded,
+    isNavExpanded,
+    setNavTitle,
+    expandedPortalNode,
+  } = useContext(NavContext);
 
   useEffect(() => {
     const titleClass = masterPath || expertPath || novicePath || '';
@@ -127,11 +133,19 @@ export const FormNav: React.FC = () => {
     setNavTitle(title || 'Create a Character');
   }, [name, ancestry, novicePath, expertPath, masterPath, setNavTitle]);
 
-  if (portalNode) {
-    return createPortal(
-      <NavButtons isExpanded={isNavExpanded} setIsExpanded={setNavExpanded} />,
-      portalNode
-    );
-  }
-  return null;
+  return (
+    <>
+      {iconPortalNode &&
+        createPortal(
+          <NavButtons
+            isExpanded={isNavExpanded}
+            setIsExpanded={setNavExpanded}
+          />,
+          iconPortalNode
+        )}
+      {isNavExpanded &&
+        expandedPortalNode &&
+        createPortal(<CharacterCodeForm />, expandedPortalNode)}
+    </>
+  );
 };
