@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
-import { MutableRefObject, useContext, useState } from 'react';
 
-import { AuthContext } from '~/logic/contexts/authContext';
+// import { MutableRefObject, useContext, useState } from 'react';
+// import { AuthContext } from '~/logic/contexts/authContext';
 import { pxToRem } from '~/utils/styles';
 
 import { FlexBox } from '../box/FlexBox';
-import { IconButton } from '../buttons/IconButton';
-import { TextButton } from '../buttons/TextButton';
-import { LogIn } from '../icons/LogIn';
-import { LogOut } from '../icons/LogOut';
+// import { IconButton } from '../buttons/IconButton';
+// import { TextButton } from '../buttons/TextButton';
+// import { LogIn } from '../icons/LogIn';
+// import { LogOut } from '../icons/LogOut';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
