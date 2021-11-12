@@ -13,8 +13,8 @@ export const TextArea = styled.textarea(({ theme }) => ({
   minHeight: theme.spacing[40],
   fontSize: theme.fontSize.subBody,
   width: '100%',
-  padding: theme.spacing[8],
-  fontFamily: theme.fontFamily,
+  padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
+  fontFamily: theme.fontFamily.normal,
   resize: 'vertical',
 }));
 
