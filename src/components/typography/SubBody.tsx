@@ -8,6 +8,6 @@ type SubBodyProps = Pick<MarginProps, 'mb'> & TypographyProps;
 
 export const SubBody = styled.p<SubBodyProps>`
   ${({ theme, variant = 'normal', ...rest }) =>
-    createTextSharedStyles(theme, { ...rest, variant })}
+    createTextSharedStyles(theme, { ...rest, variant })};
   font-size: ${({ theme }) => theme.fontSize.subBody};
 `;

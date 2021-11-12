@@ -65,6 +65,7 @@ const theme = {
     2: pxToRem(2),
     4: pxToRem(4),
     8: pxToRem(8),
+    10: pxToRem(10),
     12: pxToRem(12),
     16: pxToRem(16),
     20: pxToRem(20),

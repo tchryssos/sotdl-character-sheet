@@ -2,12 +2,10 @@ import { NumberInputProps, Validations } from '~/components/form/typings';
 
 import { Input } from './Input';
 
-type NumberInputComponentProps = Omit<
-  NumberInputProps,
-  'type' | 'validations'
-> & {
+export interface NumberInputComponentProps
+  extends Omit<NumberInputProps, 'type' | 'validations'> {
   validations?: Validations<Record<string, unknown>>;
-};
+}
 
 export const NumberInput: React.FC<NumberInputComponentProps> = ({
   label,
