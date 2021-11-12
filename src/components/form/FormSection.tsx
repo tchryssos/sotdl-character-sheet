@@ -100,7 +100,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(!isCollapsable);
   const [isVisible, setIsVisible] = useState(true);
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (

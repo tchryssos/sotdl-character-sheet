@@ -4,16 +4,30 @@ import { SCIMITAR } from '~/constants/ascii';
 import { pxToRem } from '~/utils/styles';
 
 interface LogoAsciiProps {
-  size?: 'sm' | 'md';
+  size?: 'xs' | 'sm' | 'md';
   className?: string;
 }
 
 const AsciiText = styled.pre<Required<Pick<LogoAsciiProps, 'size'>>>(
-  ({ theme, size }) => ({
-    color: theme.colors.text,
-    fontSize: size === 'md' ? pxToRem(6) : pxToRem(2),
-    userSelect: 'none',
-  })
+  ({ theme, size }) => {
+    let fontSize: string;
+    switch (size) {
+      case 'xs':
+        fontSize = pxToRem(1);
+        break;
+      case 'sm':
+        fontSize = pxToRem(2);
+        break;
+      default:
+        fontSize = pxToRem(6);
+        break;
+    }
+    return {
+      color: theme.colors.text,
+      fontSize,
+      userSelect: 'none',
+    };
+  }
 );
 
 export const LogoAscii: React.FC<LogoAsciiProps> = ({

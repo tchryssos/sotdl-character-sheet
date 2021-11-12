@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import { useBreakpointsIsExactly } from '~/logic/hooks/useBreakpoints';
 // import { MutableRefObject, useContext, useState } from 'react';
 // import { AuthContext } from '~/logic/contexts/authContext';
 import { pxToRem } from '~/utils/styles';
@@ -50,7 +51,6 @@ const Portal = styled.div`
 
 const ExpandedPortal = styled(Portal)`
   width: 100%;
-  margin-top: ${({ theme }) => theme.spacing[16]};
 `;
 
 interface NavBarProps {
@@ -65,31 +65,34 @@ export const NavBar: React.FC<NavBarProps> = ({
   isExpanded,
   setIconPortalNode,
   setExpandedPortalNode,
-}) => (
-  <Toolbar center flex={1} isExpanded={isExpanded}>
-    <InnerToolbar alignItems="flex-end" column flex={1}>
-      <TopRow alignItems="center" justifyContent="space-between">
-        <FlexBox alignItems="center" gap={flexGap}>
-          <HomeLink href="/" isInternal>
-            <LogoAscii size="sm" />
-          </HomeLink>
-          {title && <Body variant="decorative">{title}</Body>}
-        </FlexBox>
-        <FlexBox alignItems="center" gap={flexGap}>
-          <Portal ref={setIconPortalNode} />
-          <ColorModeToggle />
-          {/* {!user.isAuthenticated ? (
-              <IconButton>
-                <LogIn title="Log In / Sign Up" titleId="login-signup" />
-              </IconButton>
-            ) : (
-              <IconButton>
-                <LogOut title="Log Out" titleId="log-out" />
-              </IconButton>
-            )} */}
-        </FlexBox>
-      </TopRow>
-      <ExpandedPortal ref={setExpandedPortalNode} />
-    </InnerToolbar>
-  </Toolbar>
-);
+}) => {
+  const isXxs = useBreakpointsIsExactly('xxs');
+  return (
+    <Toolbar center flex={1} isExpanded={isExpanded}>
+      <InnerToolbar alignItems="flex-end" column flex={1}>
+        <TopRow alignItems="center" justifyContent="space-between">
+          <FlexBox alignItems="center" gap={flexGap}>
+            <HomeLink href="/" isInternal>
+              <LogoAscii size={isXxs ? 'xs' : 'sm'} />
+            </HomeLink>
+            {title && <Body variant="decorative">{title}</Body>}
+          </FlexBox>
+          <FlexBox alignItems="center" gap={flexGap}>
+            <Portal ref={setIconPortalNode} />
+            <ColorModeToggle />
+            {/* {!user.isAuthenticated ? (
+                <IconButton>
+                  <LogIn title="Log In / Sign Up" titleId="login-signup" />
+                </IconButton>
+              ) : (
+                <IconButton>
+                  <LogOut title="Log Out" titleId="log-out" />
+                </IconButton>
+              )} */}
+          </FlexBox>
+        </TopRow>
+        <ExpandedPortal ref={setExpandedPortalNode} />
+      </InnerToolbar>
+    </Toolbar>
+  );
+};

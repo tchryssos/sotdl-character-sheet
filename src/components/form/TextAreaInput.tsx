@@ -29,7 +29,7 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
   alwaysEditable,
 }) => {
   const { register } = useFormContext();
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
   const nonEditLocked = !isEditMode && !alwaysEditable;
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>

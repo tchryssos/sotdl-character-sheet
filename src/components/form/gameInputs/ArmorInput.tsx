@@ -39,7 +39,7 @@ interface ArmorFieldProps {
 
 const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useFormContext();
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
 
   const activeArmorIndex: number | undefined = watch(
     FIELD_NAMES.activeArmorIndex

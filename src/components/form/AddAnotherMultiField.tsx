@@ -30,7 +30,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     name: parentFieldName,
   });
   const { watch, setValue } = useFormContext();
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
 
   const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);

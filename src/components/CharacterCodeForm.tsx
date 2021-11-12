@@ -13,6 +13,7 @@ import { SubBody } from './typography/SubBody';
 
 const FormWrapper = styled(FlexBox)(({ theme }) => ({
   alignSelf: 'flex-start',
+  marginTop: theme.spacing[16],
   width: '100%',
   [theme.breakpoints.sm]: {
     width: '75%',
