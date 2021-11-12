@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
-// import { Divider } from '~/components/Divider';
+import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
 import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
@@ -45,11 +45,8 @@ const Home: React.FC = () => (
         <Logo />
         <Title mb={16}>rpg sheet dot&nbsp;games</Title>
         <ButtonWrapper columns={1} rowGap={8}>
-          {/* <GridBox columnGap={8}>
-            <TextButton label="Log In" transparent />
-            <TextButton label="Create Account" />
-          </GridBox>
-          <Divider label="or" /> */}
+          <TextButton label="Authenticate" onClick={() => null} />
+          <Divider label="or" />
           {/* Until there are more games, just direct right to SOTDL */}
           <Link href="/sotdl" isInternal>
             <CreateButton label="Create a Character" onClick={() => null} />
