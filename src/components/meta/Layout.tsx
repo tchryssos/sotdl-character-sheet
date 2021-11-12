@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useCallback, useState } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
+import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 
 import { FlexBox } from '../box/FlexBox';
 import { NavBar } from '../nav/NavBar';
@@ -25,8 +26,9 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
   const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
   const [expandedPortalNode, setExpandedPortalNode] =
     useState<HTMLDivElement>();
-
   const [navExpanded, setNavExpanded] = useState(false);
+  const isAtLeastXs = useBreakpointsAtLeast('xs');
+
   const setIconPortalNodeCallback = useCallback((node: HTMLDivElement) => {
     if (node !== null) {
       setIconPortalNode(node);
@@ -56,7 +58,12 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
         setIconPortalNode={setIconPortalNodeCallback}
         title={navTitle}
       />
-      <FlexBox flex={1} justifyContent="center" pb={8} px={16}>
+      <FlexBox
+        flex={1}
+        justifyContent="center"
+        pb={8}
+        px={isAtLeastXs ? 32 : 16}
+      >
         <PageWrapper alignItems="center" column>
           {children}
         </PageWrapper>
