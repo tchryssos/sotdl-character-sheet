@@ -19,13 +19,9 @@ export const Head: React.FC<HeadProps> = ({
     <link href="/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180" />
     <link href="/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png" />
     <link href="/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png" />
-    <link href="/site.webmanifest" rel="manifest" />
-    <link color="#1d1f21" href="/safari-pinned-tab.svg" rel="mask-icon" />
     <title>{title}</title>
     <meta charSet="utf-8" />
     <meta content="initial-scale=1.0, width=device-width" name="viewport" />
     <meta content={meta} name="description" />
-    <meta content="#1d1f21" name="msapplication-TileColor" />
-    <meta content="#1d1f21" name="theme-color" />
   </NextHead>
 );
