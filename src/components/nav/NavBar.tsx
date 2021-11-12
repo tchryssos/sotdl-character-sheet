@@ -1,11 +1,15 @@
 import styled from '@emotion/styled';
 import { MutableRefObject, useState } from 'react';
 
+import { pxToRem } from '~/utils/styles';
+
 import { FlexBox } from '../box/FlexBox';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
 import { ColorModeToggle } from './ColorModeToggle';
+
+const flexGap = 16;
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
@@ -34,6 +38,12 @@ const HomeLink = styled(Link)`
   text-decoration: none;
 `;
 
+const Portal = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${pxToRem(flexGap)};
+`;
+
 interface NavBarProps {
   title: string;
   isExpanded: boolean;
@@ -48,14 +58,14 @@ export const NavBar: React.FC<NavBarProps> = ({
   <Toolbar center flex={1} isExpanded={isExpanded}>
     <InnerToolbar alignItems="flex-end" column flex={1}>
       <TopRow alignItems="center" justifyContent="space-between">
-        <FlexBox>
+        <FlexBox alignItems="center" gap={flexGap}>
           <HomeLink href="/" isInternal>
             <LogoAscii size="sm" />
           </HomeLink>
-          {title && <Body>{title}</Body>}
+          {title && <Body variant="decorative">{title}</Body>}
         </FlexBox>
-        <FlexBox>
-          <div ref={portalRef} />
+        <FlexBox alignItems="center" gap={flexGap}>
+          <Portal ref={portalRef} />
           <ColorModeToggle />
         </FlexBox>
       </TopRow>

@@ -12,6 +12,7 @@ const AsciiText = styled.pre<Required<Pick<LogoAsciiProps, 'size'>>>(
   ({ theme, size }) => ({
     color: theme.colors.text,
     fontSize: size === 'md' ? pxToRem(6) : pxToRem(2),
+    userSelect: 'none',
   })
 );
 

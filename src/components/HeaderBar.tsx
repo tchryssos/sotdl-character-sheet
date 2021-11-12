@@ -141,36 +141,37 @@ export const FormToolbar: React.FC<FormToolbarProps> = ({
   title,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  return (
-    <Toolbar center flex={1} isExpanded={isExpanded}>
-      <InnerToolbar alignItems="flex-end" column flex={1}>
-        <TopRow
-          alignItems="center"
-          justifyContent={title ? 'space-between' : 'flex-end'}
-        >
-          {title && <Body>{title}</Body>}
-          <FlexBox gap={16}>
-            <ColorModeToggle />
-            <IconButton onClick={() => setIsExpanded(!isExpanded)}>
-              <Upload
-                color={isExpanded ? 'success' : undefined}
-                title="Upload code"
-                titleId="upload-code-icon"
-              />
-            </IconButton>
-            <CopyButton />
-            <IconButton onClick={() => setIsEditMode(!isEditMode)}>
-              <Pencil
-                color={isEditMode ? 'success' : 'text'}
-                title="Edit pencil"
-                titleId="edit-pencil-icon"
-              />
-            </IconButton>
-          </FlexBox>
-        </TopRow>
-        <CharacterCodeForm isVisible={isExpanded} />
-      </InnerToolbar>
-    </Toolbar>
-  );
+  // return (
+  //   <Toolbar center flex={1} isExpanded={isExpanded}>
+  //     <InnerToolbar alignItems="flex-end" column flex={1}>
+  //       <TopRow
+  //         alignItems="center"
+  //         justifyContent={title ? 'space-between' : 'flex-end'}
+  //       >
+  //         {title && <Body>{title}</Body>}
+  //         <FlexBox gap={16}>
+  //           <ColorModeToggle />
+  //           <IconButton onClick={() => setIsExpanded(!isExpanded)}>
+  //             <Upload
+  //               color={isExpanded ? 'success' : undefined}
+  //               title="Upload code"
+  //               titleId="upload-code-icon"
+  //             />
+  //           </IconButton>
+  //           <CopyButton />
+  //           <IconButton onClick={() => setIsEditMode(!isEditMode)}>
+  //             <Pencil
+  //               color={isEditMode ? 'success' : 'text'}
+  //               title="Edit pencil"
+  //               titleId="edit-pencil-icon"
+  //             />
+  //           </IconButton>
+  //         </FlexBox>
+  //       </TopRow>
+  //       <CharacterCodeForm isVisible={isExpanded} />
+  //     </InnerToolbar>
+  //   </Toolbar>
+  // );
+  return null;
 };
 // END - Toolbar - END

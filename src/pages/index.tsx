@@ -7,6 +7,7 @@ import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
 import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
+import { HomeNav } from '~/components/nav/HomeNav';
 import { Pane } from '~/components/Pane';
 import { Body } from '~/components/typography/Body';
 import { Title } from '~/components/typography/Title';
@@ -38,6 +39,7 @@ const Home: React.FC = () => (
     meta="A collection of online ttrpg character sheets"
     title="Character Sheets"
   >
+    <HomeNav />
     <HomeWrapper center>
       <Pane>
         <Logo />
