@@ -1,15 +1,14 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { Spacing } from '~/typings/theme';
 
+import { AuthLink } from '../AuthLink';
 // import { MutableRefObject, useContext, useState } from 'react';
-// import { AuthContext } from '~/logic/contexts/authContext';
 import { FlexBox } from '../box/FlexBox';
-// import { IconButton } from '../buttons/IconButton';
-// import { TextButton } from '../buttons/TextButton';
-// import { LogIn } from '../icons/LogIn';
-// import { LogOut } from '../icons/LogOut';
+import { LogIn } from '../icons/LogIn';
+import { LogOut } from '../icons/LogOut';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
@@ -68,6 +67,16 @@ const ExpandedPortal = styled(Portal)`
   width: 100%;
 `;
 
+const AuthenticationLink = styled(AuthLink)(({ theme }) => ({
+  // Styles largely copied from IconButton
+  height: theme.spacing[32],
+  width: theme.spacing[32],
+  ':hover': {
+    backgroundColor: theme.colors.accentLight,
+    filter: 'brightness(1.0)',
+  },
+}));
+
 interface NavBarProps {
   title: string;
   isExpanded: boolean;
@@ -83,6 +92,8 @@ export const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
+  const { user, isLoading, error } = useUser();
+
   return (
     <Toolbar center flex={1} isExpanded={isExpanded}>
       <InnerToolbar alignItems="flex-end" column flex={1}>
@@ -96,15 +107,15 @@ export const NavBar: React.FC<NavBarProps> = ({
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
             <ColorModeToggle />
-            {/* {!user.isAuthenticated ? (
-                <IconButton>
-                  <LogIn title="Log In / Sign Up" titleId="login-signup" />
-                </IconButton>
-              ) : (
-                <IconButton>
-                  <LogOut title="Log Out" titleId="log-out" />
-                </IconButton>
-              )} */}
+            {!user ? (
+              <AuthenticationLink type="login">
+                <LogIn title="Log In" titleId="login-signup" />
+              </AuthenticationLink>
+            ) : (
+              <AuthenticationLink type="logout">
+                <LogOut title="Log Out" titleId="log-out" />
+              </AuthenticationLink>
+            )}
           </FlexBox>
         </TopRow>
         <ExpandedPortal flexGap={flexGap} ref={setExpandedPortalNode} />
