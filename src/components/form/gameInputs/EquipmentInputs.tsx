@@ -22,7 +22,7 @@ const itemSmallTemplateColumns = '2fr 3fr';
 const { fieldName, name, notes, value } = FIELD_NAMES.equipment;
 
 const ItemField: React.FC<ItemFieldProps> = ({ index, onDelete }) => {
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
   const isAtLeastSm = useBreakpointsAtLeast('sm');
   return (
     <GridBox

@@ -57,7 +57,7 @@ const weaponTemplateColumns = '3fr 1fr 1fr 3fr';
 
 const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useFormContext();
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
   const isLessThanSm = useBreakpointsLessThan('sm');
 
   const activeWeaponIndex: number | undefined = watch(

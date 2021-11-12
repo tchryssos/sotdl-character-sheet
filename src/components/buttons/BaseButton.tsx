@@ -2,12 +2,28 @@ import styled from '@emotion/styled';
 
 import { BaseButtonProps } from './types';
 
-const StyledButton = styled.button`
-  cursor: pointer;
-  min-height: ${({ theme }) => theme.spacing[32]};
-  min-width: ${({ theme }) => theme.spacing[32]};
-  background-color: ${({ theme }) => theme.colors.accentHeavy};
-`;
+type StyledProps = Pick<Required<BaseButtonProps>, 'transparent'>;
+
+const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
+  color: theme.colors.text,
+  cursor: 'pointer',
+  minHeight: theme.spacing[32],
+  minWidth: theme.spacing[32],
+  backgroundColor: transparent ? 'transparent' : theme.colors.accentHeavy,
+  border: transparent
+    ? `${theme.border.borderWidth[1]} solid ${theme.colors.text}`
+    : 'none',
+  borderRadius: theme.spacing[2],
+  ':hover': {
+    filter: `brightness(${theme.filters.brightnessMod})`,
+  },
+  ':disabled': {
+    cursor: 'not-allowed',
+    backgroundColor: theme.colors.accentLight,
+    border: 'none',
+    filter: 'brightness(1.0)',
+  },
+}));
 
 export const BaseButton: React.FC<BaseButtonProps> = ({
   onClick,
@@ -15,10 +31,12 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
   type = 'button',
   disabled,
   children,
+  transparent,
 }) => (
   <StyledButton
     className={className}
     disabled={disabled || !onClick}
+    transparent={Boolean(transparent)}
     // eslint-disable-next-line react/button-has-type
     type={type}
     onClick={onClick}

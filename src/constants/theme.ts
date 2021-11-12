@@ -1,3 +1,5 @@
+import { pxToRem } from '~/utils/styles';
+
 const breakpointValues = {
   xxs: 479,
   xs: 480,
@@ -30,14 +32,22 @@ const darkModeColors: ColorModeColors = {
   smudge: 'rgba(255,255,255,0.1)',
 };
 
+const darkModeFilters = {
+  brightnessMod: 1.2,
+};
+
 const lightModeColors: ColorModeColors = {
-  background: '#fff',
-  text: '#000',
+  background: '#fafafa',
+  text: '#17242b',
   success: '#00784e',
   danger: '#db0033',
   accentHeavy: '#adadad',
   accentLight: '#e8e8e8',
   smudge: 'rgba(0,0,0,0.05)',
+};
+
+const lightModeFilters = {
+  brightnessMod: 0.8,
 };
 
 const theme = {
@@ -51,44 +61,56 @@ const theme = {
     xl: `@media only screen and (min-width: ${breakpointValues.xl}px)`,
   },
   spacing: {
-    0: '0rem',
-    4: '0.25rem',
-    8: '0.5rem',
-    12: '0.75rem',
-    16: '1rem',
-    20: '1.25rem',
-    24: '1.5rem',
-    32: '2rem',
-    40: '2.5rem',
-    48: '3rem',
-    64: '4rem',
-    80: '5rem',
-    128: '8rem',
+    0: pxToRem(0),
+    2: pxToRem(2),
+    4: pxToRem(4),
+    8: pxToRem(8),
+    12: pxToRem(12),
+    16: pxToRem(16),
+    20: pxToRem(20),
+    24: pxToRem(24),
+    32: pxToRem(32),
+    40: pxToRem(40),
+    48: pxToRem(48),
+    64: pxToRem(64),
+    80: pxToRem(80),
+    96: pxToRem(96),
+    128: pxToRem(128),
   },
   border: {
     borderWidth: {
-      1: '0.0625rem',
-      3: '0.1875rem',
+      1: pxToRem(1),
+      3: pxToRem(3),
     },
   },
   fontSize: {
-    subBody: '0.8rem',
-    body: '1rem',
-    title: '2rem',
+    subBody: pxToRem(14),
+    body: pxToRem(18),
+    title: pxToRem(36),
   },
-  fontFamily: 'sans-serif',
+  fontFamily: {
+    normal: '"Inconsolata", sans-serif',
+    decorative: "'Uchen', garamond",
+  },
   lineHeight: {
     normal: 1.2,
   },
   fontWeight: {
     regular: 400,
     bold: 700,
-    black: 800,
   },
 };
 
-export const lightTheme = { ...theme, colors: lightModeColors };
-export const darkTheme = { ...theme, colors: darkModeColors };
+export const lightTheme = {
+  ...theme,
+  colors: lightModeColors,
+  filters: lightModeFilters,
+};
+export const darkTheme = {
+  ...theme,
+  colors: darkModeColors,
+  filters: darkModeFilters,
+};
 
 // All keys should be the same, so we can just type the theme obj as any of the themes
 export type ThemeShape = typeof lightTheme;

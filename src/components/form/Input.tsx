@@ -38,7 +38,7 @@ export const Input: React.FC<InputProps> = (props) => {
   } = props as InputProps;
   const { min, max, step = 1 } = props as NumberInputProps;
   const { register } = useFormContext();
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
   const registeredInput = register(name, validations);
   const nonEditLocked = !isEditMode && !alwaysEditable;
   return (

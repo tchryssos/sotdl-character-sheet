@@ -8,3 +8,4 @@ export type Spacing = keyof CustomTheme['spacing'];
 export type Color = keyof CustomTheme['colors'];
 export type BorderWidth = keyof CustomTheme['border']['borderWidth'];
 export type BreakpointSize = keyof typeof lightTheme.breakpointValues;
+export type FontVariant = keyof typeof lightTheme.fontFamily;

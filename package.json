@@ -1,6 +1,6 @@
 {
   "name": "next-typescript-template",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "author": "<troychryssos@gmail.com>",
   "description": "A website by Troy Chryssos",
@@ -21,7 +21,7 @@
     "clipboard-copy": "^4.0.1",
     "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
-    "next": "^11.0.1",
+    "next": "^12.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.15.0"

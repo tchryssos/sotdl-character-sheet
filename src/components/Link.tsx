@@ -4,6 +4,9 @@ import NextLink from 'next/link';
 const StyledLink = styled.a`
   color: ${({ theme }) => theme.colors.text};
   display: inline-block;
+  :hover {
+    filter: brightness(${({ theme }) => theme.filters.brightnessMod});
+  }
 `;
 
 interface LinkProps {

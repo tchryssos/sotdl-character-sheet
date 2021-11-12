@@ -13,8 +13,8 @@ export const TextArea = styled.textarea(({ theme }) => ({
   minHeight: theme.spacing[40],
   fontSize: theme.fontSize.subBody,
   width: '100%',
-  padding: theme.spacing[8],
-  fontFamily: theme.fontFamily,
+  padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
+  fontFamily: theme.fontFamily.normal,
   resize: 'vertical',
 }));
 
@@ -29,7 +29,7 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
   alwaysEditable,
 }) => {
   const { register } = useFormContext();
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
   const nonEditLocked = !isEditMode && !alwaysEditable;
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>

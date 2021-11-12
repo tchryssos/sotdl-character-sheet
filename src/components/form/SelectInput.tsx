@@ -45,7 +45,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   alwaysEditable,
 }) => {
   const { register, setValue } = useFormContext();
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
   const nonEditLocked = !isEditMode && !alwaysEditable;
 
   useEffect(() => {
