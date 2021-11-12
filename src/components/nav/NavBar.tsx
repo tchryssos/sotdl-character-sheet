@@ -1,6 +1,10 @@
 import styled from '@emotion/styled';
 
-import { useBreakpointsIsExactly } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsIsExactly,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
+import { Spacing } from '~/typings/theme';
 // import { MutableRefObject, useContext, useState } from 'react';
 // import { AuthContext } from '~/logic/contexts/authContext';
 import { pxToRem } from '~/utils/styles';
@@ -14,8 +18,6 @@ import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
 import { ColorModeToggle } from './ColorModeToggle';
-
-const flexGap = 16;
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
@@ -39,14 +41,31 @@ const TopRow = styled(FlexBox)`
   width: 100%;
 `;
 
+const LogoTitleBox = styled(FlexBox)`
+  overflow: hidden;
+`;
+
 const HomeLink = styled(Link)`
   text-decoration: none;
 `;
 
-const Portal = styled.div`
+const Logo = styled(LogoAscii)(({ theme }) => ({
+  marginBottom: theme.spacing[8],
+  [theme.breakpoints.xs]: {
+    marginBottom: 0,
+  },
+}));
+
+const Title = styled(Body)`
+  -webkit-line-clamp: 2;
+  display: -webkit-inline-box;
+  -webkit-box-orient: vertical;
+`;
+
+const Portal = styled.div<{ flexGap: Spacing }>`
   display: flex;
   align-items: center;
-  gap: ${pxToRem(flexGap)};
+  gap: ${({ theme, flexGap }) => theme.spacing[flexGap]};
 `;
 
 const ExpandedPortal = styled(Portal)`
@@ -66,19 +85,20 @@ export const NavBar: React.FC<NavBarProps> = ({
   setIconPortalNode,
   setExpandedPortalNode,
 }) => {
-  const isXxs = useBreakpointsIsExactly('xxs');
+  const isXxs = useBreakpointsLessThan('xs');
+  const flexGap = isXxs ? 8 : 16;
   return (
     <Toolbar center flex={1} isExpanded={isExpanded}>
       <InnerToolbar alignItems="flex-end" column flex={1}>
         <TopRow alignItems="center" justifyContent="space-between">
-          <FlexBox alignItems="center" gap={flexGap}>
+          <LogoTitleBox alignItems="center" gap={flexGap}>
             <HomeLink href="/" isInternal>
-              <LogoAscii size={isXxs ? 'xs' : 'sm'} />
+              <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
-            {title && <Body variant="decorative">{title}</Body>}
-          </FlexBox>
+            {title && <Title variant="decorative">{title}</Title>}
+          </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
-            <Portal ref={setIconPortalNode} />
+            <Portal flexGap={flexGap} ref={setIconPortalNode} />
             <ColorModeToggle />
             {/* {!user.isAuthenticated ? (
                 <IconButton>
@@ -91,7 +111,7 @@ export const NavBar: React.FC<NavBarProps> = ({
               )} */}
           </FlexBox>
         </TopRow>
-        <ExpandedPortal ref={setExpandedPortalNode} />
+        <ExpandedPortal flexGap={flexGap} ref={setExpandedPortalNode} />
       </InnerToolbar>
     </Toolbar>
   );

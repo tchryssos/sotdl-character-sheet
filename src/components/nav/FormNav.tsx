@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { IconButton } from '../buttons/IconButton';
 import { CharacterCodeForm } from '../CharacterCodeForm';
@@ -116,6 +117,7 @@ export const FormNav: React.FC = () => {
   const novicePath = watch(FIELD_NAMES.paths.novice_path);
   const expertPath = watch(FIELD_NAMES.paths.expert_path);
   const masterPath = watch(FIELD_NAMES.paths.master_path);
+  const isXxs = useBreakpointsLessThan('xs');
 
   const {
     iconPortalNode,
@@ -128,10 +130,12 @@ export const FormNav: React.FC = () => {
   useEffect(() => {
     const titleClass = masterPath || expertPath || novicePath || '';
     const title = `${name}${
-      ancestry ? ` - ${ancestry}${titleClass ? ` ${titleClass}` : ''}` : ''
+      ancestry && !isXxs
+        ? ` - ${ancestry}${titleClass ? ` ${titleClass}` : ''}`
+        : ''
     }`;
     setNavTitle(title || 'Create a Character');
-  }, [name, ancestry, novicePath, expertPath, masterPath, setNavTitle]);
+  }, [name, ancestry, novicePath, expertPath, masterPath, setNavTitle, isXxs]);
 
   return (
     <>
