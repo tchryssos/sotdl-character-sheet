@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import { FlexBox } from '../box/FlexBox';
 import { BaseButtonProps } from './types';
 
 type StyledProps = Pick<Required<BaseButtonProps>, 'transparent'>;
@@ -25,7 +26,7 @@ const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
   },
 }));
 
-const ButtonLike = StyledButton.withComponent('div');
+const ButtonLike = StyledButton.withComponent(FlexBox);
 
 export const BaseButton: React.FC<BaseButtonProps> = ({
   onClick,
@@ -38,7 +39,11 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
 }) => {
   if (buttonLike) {
     return (
-      <ButtonLike className={className} transparent={Boolean(transparent)}>
+      <ButtonLike
+        center
+        className={className}
+        transparent={Boolean(transparent)}
+      >
         {children}
       </ButtonLike>
     );

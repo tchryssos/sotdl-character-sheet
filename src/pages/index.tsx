@@ -1,5 +1,7 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
+import { AuthLink } from '~/components/AuthLink';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
@@ -42,30 +44,37 @@ const Logo = styled(LogoAscii)`
 //   color: ${({ theme }) => theme.colors.accentLight};
 // `;
 
-const Home: React.FC = () => (
-  <Layout
-    meta="A collection of online ttrpg character sheets"
-    title="Character Sheets"
-  >
-    <HomeNav />
-    <HomeWrapper alignItems="flex-start" justifyContent="center">
-      <HomePane mt={16}>
-        <Logo />
-        <Title mb={16}>rpg sheet dot&nbsp;games</Title>
-        <ButtonWrapper columns={1} rowGap={8}>
-          <TextButton label="Authenticate" onClick={() => null} />
-          <Divider label="or" />
-          {/* Until there are more games, just direct right to SOTDL */}
-          <Link href={createCharacterSheetRoute(999)} isInternal>
-            <CreateButton label="Create a Character" onClick={() => null} />
-          </Link>
-        </ButtonWrapper>
-      </HomePane>
-    </HomeWrapper>
-    {/* <MadeBy mb={8} variant="decorative">
-      Created by Troy Chryssos
-    </MadeBy> */}
-  </Layout>
-);
-
+const Home: React.FC = () => {
+  const { user, isLoading } = useUser();
+  return (
+    <Layout
+      meta="A collection of online ttrpg character sheets"
+      title="Character Sheets"
+    >
+      <HomeNav />
+      <HomeWrapper alignItems="flex-start" justifyContent="center">
+        <HomePane mt={16}>
+          <Logo />
+          <Title mb={16}>rpg sheet dot&nbsp;games</Title>
+          <ButtonWrapper columns={1} rowGap={8}>
+            {!isLoading && !user && (
+              <>
+                <AuthLink type="login">
+                  <TextButton buttonLike label="Authenticate" />
+                </AuthLink>
+                <Divider label="or" />
+              </>
+            )}
+            <Link href={createCharacterSheetRoute(999)} isInternal>
+              <CreateButton buttonLike label="Create a Character" />
+            </Link>
+          </ButtonWrapper>
+        </HomePane>
+      </HomeWrapper>
+      {/* <MadeBy mb={8} variant="decorative">
+        Created by Troy Chryssos
+      </MadeBy> */}
+    </Layout>
+  );
+};
 export default Home;
