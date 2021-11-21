@@ -54,4 +54,12 @@ model character {
   playerId       Int
   rulebook       rulebook @relation(fields: [rulebookId], references: [id])
   rulebookId     Int
+  // characterSheetSettings characterSheetSettings[]
 }
+
+// model characterSheetSettings {
+//   id              Int       @id @default(autoincrement())
+//   character       character @relation(fields: [characterId], references: [id])
+//   characterId     Int
+//   hiddenFieldKeys String[]
+// }
