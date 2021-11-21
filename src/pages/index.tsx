@@ -7,6 +7,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
+import { LoadingSpinner } from '~/components/LoadingSpinner';
 import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
 import { HomeNav } from '~/components/nav/HomeNav';
@@ -55,6 +56,7 @@ const Home: React.FC = () => {
       <HomeWrapper alignItems="flex-start" justifyContent="center">
         <HomePane>
           <Logo />
+          <LoadingSpinner />
           <Title mb={16}>rpg sheet dot&nbsp;games</Title>
           <ButtonWrapper columns={1} rowGap={8}>
             {!isLoading && !user && !error && (
