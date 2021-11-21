@@ -2,7 +2,7 @@
 import { Layout } from '~/components/meta/Layout';
 import { CharacterForm } from '~/components/sotdl/CharacterForm';
 
-const SOTDL: React.FC = () => (
+const CharacterSheetPage: React.FC = () => (
   <Layout
     meta="A character sheet for Shadow of the Demon Lord"
     title="Shadow of the Demon Lord"
@@ -11,4 +11,4 @@ const SOTDL: React.FC = () => (
   </Layout>
 );
 
-export default SOTDL;
+export default CharacterSheetPage;
