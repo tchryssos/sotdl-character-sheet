@@ -22,7 +22,7 @@ const StyledLink = styled.a<StyledProps>`
 
 export const Link: React.FC<LinkProps> = ({
   href,
-  isInternal,
+  isInternal = true,
   children,
   className,
 }) => (

@@ -90,7 +90,7 @@ export const NavBar: React.FC<NavBarProps> = ({
       <InnerToolbar alignItems="flex-end" column flex={1}>
         <TopRow alignItems="center" justifyContent="space-between">
           <LogoTitleBox alignItems="center" gap={flexGap}>
-            <HomeLink href="/" isInternal>
+            <HomeLink href="/">
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
             {title && <Title variant="decorative">{title}</Title>}

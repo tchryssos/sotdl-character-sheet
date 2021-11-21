@@ -36,7 +36,7 @@ const FourOhFour: React.FC = () => (
     <FourOhFourPane>
       <Logo />
       <Title mb={16}>404</Title>
-      <Link href="/" isInternal>
+      <Link href="/">
         <TextButton buttonLike label="Click to return home" />
       </Link>
     </FourOhFourPane>

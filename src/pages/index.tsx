@@ -65,7 +65,7 @@ const Home: React.FC = () => {
                 <Divider label="or" />
               </>
             )}
-            <Link href={createCharacterSheetRoute(999)} isInternal>
+            <Link href={createCharacterSheetRoute(999)}>
               <CreateButton buttonLike label="Create a Character" />
             </Link>
           </ButtonWrapper>
