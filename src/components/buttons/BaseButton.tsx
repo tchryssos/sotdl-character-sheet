@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import { pxToRem } from '~/utils/styles';
+
 import { FlexBox } from '../box/FlexBox';
 import { BaseButtonProps } from './types';
 
@@ -15,6 +17,8 @@ const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
     ? `${theme.border.borderWidth[1]} solid ${theme.colors.text}`
     : 'none',
   borderRadius: theme.spacing[2],
+  // Non-standard padding matches default button padding
+  padding: `${pxToRem(1)} ${pxToRem(6)}`,
   ':hover': {
     filter: `brightness(${theme.filters.brightnessMod})`,
   },

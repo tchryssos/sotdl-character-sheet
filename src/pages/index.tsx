@@ -49,7 +49,7 @@ const Home: React.FC = () => {
   return (
     <Layout
       meta="A collection of online ttrpg character sheets"
-      title="Character Sheets"
+      title="rpg sheet"
     >
       <HomeNav />
       <HomeWrapper alignItems="flex-start" justifyContent="center">
