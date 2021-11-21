@@ -1,6 +1,5 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { getProfilePicture } from '~/logic/utils/user/getProfilePicture';
@@ -11,11 +10,11 @@ import { AuthLink } from '../AuthLink';
 import { FlexBox } from '../box/FlexBox';
 import { IconButton } from '../buttons/IconButton';
 import { LogIn } from '../icons/LogIn';
-import { LogOut } from '../icons/LogOut';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
 import { ColorModeToggle } from './ColorModeToggle';
+import { ProfileDropdown } from './ProfileDropdown';
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
@@ -85,7 +84,7 @@ export const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
 
   return (
     <Toolbar center flex={1} isExpanded={isExpanded}>
@@ -100,21 +99,14 @@ export const NavBar: React.FC<NavBarProps> = ({
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
             <ColorModeToggle />
-            {!user ? (
+            {!user && !isLoading ? (
               <AuthLink type="login">
                 <IconButton buttonLike>
                   <LogIn title="Log In / Sign Up" titleId="login-signup" />
                 </IconButton>
               </AuthLink>
             ) : (
-              <IconButton>
-                <Image
-                  alt="Profile picture"
-                  height={32}
-                  src={getProfilePicture(user)}
-                  width={32}
-                />
-              </IconButton>
+              <ProfileDropdown userImageSrc={getProfilePicture(user)} />
             )}
           </FlexBox>
         </TopRow>
