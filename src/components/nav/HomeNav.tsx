@@ -6,7 +6,7 @@ export const HomeNav: React.FC = () => {
   const { setNavTitle } = useContext(NavContext);
 
   useEffect(() => {
-    setNavTitle('rsdg');
+    setNavTitle('rpg sheet');
   }, [setNavTitle]);
 
   return null;

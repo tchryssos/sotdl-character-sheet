@@ -45,7 +45,7 @@ const Logo = styled(LogoAscii)`
 // `;
 
 const Home: React.FC = () => {
-  const { user, isLoading } = useUser();
+  const { user, isLoading, error } = useUser();
   return (
     <Layout
       meta="A collection of online ttrpg character sheets"
@@ -53,11 +53,11 @@ const Home: React.FC = () => {
     >
       <HomeNav />
       <HomeWrapper alignItems="flex-start" justifyContent="center">
-        <HomePane mt={16}>
+        <HomePane>
           <Logo />
           <Title mb={16}>rpg sheet dot&nbsp;games</Title>
           <ButtonWrapper columns={1} rowGap={8}>
-            {!isLoading && !user && (
+            {!isLoading && !user && !error && (
               <>
                 <AuthLink type="login">
                   <TextButton buttonLike label="Authenticate" />

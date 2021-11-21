@@ -83,7 +83,7 @@ export const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
-  const { user, isLoading, error } = useUser();
+  const { user } = useUser();
 
   return (
     <Toolbar center flex={1} isExpanded={isExpanded}>
