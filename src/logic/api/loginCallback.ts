@@ -32,6 +32,6 @@ export const loginCallback = async (
   }
 
   // eslint-disable-next-line no-param-reassign
-  session.user = { ...session.user, ...dbUser };
+  session.user = { ...dbUser, authProviderData: { ...session.user } };
   return session;
 };

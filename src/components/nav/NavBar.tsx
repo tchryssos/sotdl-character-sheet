@@ -1,7 +1,9 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
+import Image from 'next/image';
 
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { getProfilePicture } from '~/logic/utils/user/getProfilePicture';
 import { Spacing } from '~/typings/theme';
 
 import { AuthLink } from '../AuthLink';
@@ -105,11 +107,14 @@ export const NavBar: React.FC<NavBarProps> = ({
                 </IconButton>
               </AuthLink>
             ) : (
-              <AuthLink type="logout">
-                <IconButton buttonLike>
-                  <LogOut title="Log Out" titleId="log-out" />
-                </IconButton>
-              </AuthLink>
+              <IconButton>
+                <Image
+                  alt="Profile picture"
+                  height={32}
+                  src={getProfilePicture(user)}
+                  width={32}
+                />
+              </IconButton>
             )}
           </FlexBox>
         </TopRow>
