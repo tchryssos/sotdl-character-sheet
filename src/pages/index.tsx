@@ -56,7 +56,6 @@ const Home: React.FC = () => {
       <HomeWrapper alignItems="flex-start" justifyContent="center">
         <HomePane>
           <Logo />
-          <LoadingSpinner />
           <Title mb={16}>rpg sheet dot&nbsp;games</Title>
           <ButtonWrapper columns={1} rowGap={8}>
             {!isLoading && !user && !error && (
