@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useFormContext } from 'react-hook-form';
 
-import { pxToRem } from '~/utils/styles';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FlexBox } from '../box/FlexBox';
 import { Body } from '../typography/Body';

@@ -7,7 +7,6 @@ import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
-import { LoadingSpinner } from '~/components/LoadingSpinner';
 import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
 import { HomeNav } from '~/components/nav/HomeNav';

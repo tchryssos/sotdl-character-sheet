@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { SCIMITAR } from '~/constants/ascii';
-import { pxToRem } from '~/utils/styles';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 interface LogoAsciiProps {
   size?: 'xs' | 'sm' | 'md';

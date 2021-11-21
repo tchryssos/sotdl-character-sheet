@@ -1,32 +1,40 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useEffect, useState } from 'react';
 
-import { Check } from './icons/Check';
-import { Close } from './icons/Close';
-import { LoadingSpinner } from './LoadingSpinner';
+import { Color } from '~/typings/theme';
 
-interface ButtonStatusProps {
+import { LoadingSpinner } from '../LoadingSpinner';
+import { Check } from './Check';
+import { Close } from './Close';
+
+export interface StatusIconProps {
   isLoading?: boolean;
   isSuccessful?: boolean;
   hasError?: boolean;
   forceNeutral?: boolean;
   statusOf: string;
+  color?: Color;
+  className?: string;
 }
 
-export const ButtonStatus: React.FC<ButtonStatusProps> = ({
+export const StatusIcon: React.FC<StatusIconProps> = ({
   isLoading,
   isSuccessful,
   hasError,
   forceNeutral,
   statusOf,
+  color,
+  className,
 }) => {
   const [status, setStatus] = useState<
     'neutral' | 'loading' | 'error' | 'success'
   >('neutral');
 
-  const titleProps = {
+  const sharedProps = {
     title: `${statusOf} ${status}`,
     titleId: `${statusOf}-${status}`,
+    color,
+    className,
   };
 
   useEffect(() => {
@@ -54,15 +62,19 @@ export const ButtonStatus: React.FC<ButtonStatusProps> = ({
   }, [forceNeutral]);
 
   if (status === 'loading') {
-    return <LoadingSpinner {...titleProps} />;
+    return <LoadingSpinner {...sharedProps} />;
   }
 
   if (status === 'error') {
-    return <Close color="danger" {...titleProps} />;
+    const closeProps = {
+      ...sharedProps,
+      color: sharedProps.color || 'danger',
+    };
+    return <Close {...closeProps} />;
   }
 
   if (status === 'success') {
-    return <Check {...titleProps} />;
+    return <Check {...sharedProps} />;
   }
 
   return null;

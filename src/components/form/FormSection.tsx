@@ -4,7 +4,7 @@ import { useContext, useState } from 'react';
 
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
-import { pxToRem } from '~/utils/styles';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';

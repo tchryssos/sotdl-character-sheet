@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Color } from '~/typings/theme';
-import { pxToRem } from '~/utils/styles';
 
 import { FlexBox } from './box/FlexBox';
 import { TextButton } from './buttons/TextButton';

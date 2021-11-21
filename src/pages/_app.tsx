@@ -8,8 +8,8 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { ColorMode, Theme, themes } from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { BreakpointSize } from '~/typings/theme';
-import { pxToRem } from '~/utils/styles';
 
 const marPadZero = css`
   margin: 0;
