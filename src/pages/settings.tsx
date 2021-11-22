@@ -5,17 +5,19 @@ import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
 import { Layout } from '~/components/meta/Layout';
-import { ColorModeToggle } from '~/components/nav/ColorModeToggle';
+import { ColorMode } from '~/components/settings/ColorMode';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 
 const SettingsWrapper = styled(GridBox)`
   width: 100%;
 `;
 
+export const colorModeKey = 'colorMode';
+
 const SettingsPage: React.FC = () => {
   const { colorMode } = useContext(ThemeContext);
   const defaulValues = {
-    colorMode,
+    [colorModeKey]: colorMode,
   };
 
   return (
@@ -23,7 +25,7 @@ const SettingsPage: React.FC = () => {
       <SettingsWrapper columns={1}>
         <Form defaultValues={defaulValues} onSubmit={() => null}>
           <FormSection canToggleVisibility={false} title="Personalization">
-            <ColorModeToggle />
+            <ColorMode colorModeKey={colorModeKey} />
           </FormSection>
         </Form>
       </SettingsWrapper>
