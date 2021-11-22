@@ -1,19 +1,28 @@
 import { useContext, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { ColorMode } from '~/constants/theme';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 
-import { IconButton } from '../buttons/IconButton';
-import { Moon } from '../icons/Moon';
-import { Sun } from '../icons/Sun';
+import { SelectInput } from '../form/SelectInput';
+import { SelectInputProps } from '../form/typings';
 
-const colorToggleObj: Record<ColorMode, ColorMode> = {
-  light: 'dark',
-  dark: 'light',
-};
+const options: SelectInputProps['options'] = [
+  {
+    label: 'Dark',
+    value: 'dark',
+  },
+  {
+    label: 'Light',
+    value: 'light',
+  },
+];
 
 export const ColorModeToggle = () => {
-  const { colorMode, setColorMode } = useContext(ThemeContext);
+  const { watch, setValue } = useFormContext();
+  const { setColorMode } = useContext(ThemeContext);
+
+  const colorMode = watch('colorMode');
 
   useEffect(() => {
     const savedColorMode = localStorage.getItem(
@@ -21,22 +30,21 @@ export const ColorModeToggle = () => {
     ) as ColorMode | null;
     if (savedColorMode) {
       setColorMode(savedColorMode);
+      setValue('colorMode', savedColorMode);
     }
-  }, [setColorMode]);
+  }, [setColorMode, setValue]);
 
-  const onSwitch = () => {
-    const nextMode = colorToggleObj[colorMode];
-    setColorMode(nextMode);
-    localStorage.setItem('colorMode', nextMode);
-  };
+  useEffect(() => {
+    setColorMode(colorMode);
+    localStorage.setItem('colorMode', colorMode);
+  }, [colorMode]);
 
   return (
-    <IconButton onClick={onSwitch}>
-      {colorMode === 'light' ? (
-        <Sun title="Light mode" titleId="light-mode-icon" />
-      ) : (
-        <Moon title="Dark mode" titleId="dark-mode-icon" />
-      )}
-    </IconButton>
+    <SelectInput
+      alwaysEditable
+      label="Color mode"
+      name="colorMode"
+      options={options}
+    />
   );
 };

@@ -14,7 +14,6 @@ import { LogIn } from '../icons/LogIn';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
-import { ColorModeToggle } from './ColorModeToggle';
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
@@ -98,7 +97,6 @@ export const NavBar: React.FC<NavBarProps> = ({
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            <ColorModeToggle />
             {!user && !isLoading ? (
               <AuthLink type="login">
                 <IconButton buttonLike>
