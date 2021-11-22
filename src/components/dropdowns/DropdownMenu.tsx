@@ -83,17 +83,10 @@ export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
   menuItems,
   children,
 }) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen(!isOpen);
-  const setClosed = () => setIsOpen(false);
-
-  const onClickOutsideDropdown: EventListener = useCallback((e) => {
-    if (!dropdownRef.current?.contains(e.target as Node)) {
-      setClosed();
-    }
-  }, []);
+  const setClosed = useCallback(() => setIsOpen(false), []);
 
   useEffect(() => {
     if (isOpen) {
@@ -101,10 +94,11 @@ export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
     } else {
       window.removeEventListener('click', setClosed);
     }
-  }, [isOpen, onClickOutsideDropdown]);
+    return () => window.removeEventListener('click', setClosed);
+  }, [isOpen, setClosed]);
 
   return (
-    <DropdownWrapper ref={dropdownRef}>
+    <DropdownWrapper>
       {children({ toggleOpen })}
       <DropdownPane isHidden={!isOpen} shadowed>
         {menuItems.map((item, i) => (
