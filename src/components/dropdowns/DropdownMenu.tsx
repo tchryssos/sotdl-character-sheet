@@ -97,9 +97,9 @@ export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      window.addEventListener('click', onClickOutsideDropdown);
+      window.addEventListener('click', setClosed);
     } else {
-      window.removeEventListener('click', onClickOutsideDropdown);
+      window.removeEventListener('click', setClosed);
     }
   }, [isOpen, onClickOutsideDropdown]);
 

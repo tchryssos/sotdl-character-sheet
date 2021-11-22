@@ -5,6 +5,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
 import { Layout } from '~/components/meta/Layout';
+import { SettingsNav } from '~/components/nav/SettingsNav';
 import { ColorMode } from '~/components/settings/ColorMode';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 
@@ -22,6 +23,7 @@ const SettingsPage: React.FC = () => {
 
   return (
     <Layout meta="rpg sheet settings page" title="Settings">
+      <SettingsNav />
       <SettingsWrapper columns={1}>
         <Form defaultValues={defaulValues} onSubmit={() => null}>
           <FormSection canToggleVisibility={false} title="Personalization">

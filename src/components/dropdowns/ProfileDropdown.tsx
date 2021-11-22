@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { MY_CHARACTERS_ROUTE } from '~/constants/routing';
+import { MY_CHARACTERS_ROUTE, SETTINGS_ROUTE } from '~/constants/routing';
 
 import { AuthLink } from '../AuthLink';
 import { ProfilePicture } from '../ProfilePicture';
@@ -22,6 +22,11 @@ const menuItems: DropdowmMenuProps['menuItems'] = [
     type: 'link',
     href: MY_CHARACTERS_ROUTE,
     text: 'My characters',
+  },
+  {
+    type: 'link',
+    href: SETTINGS_ROUTE,
+    text: 'Settings',
   },
   {
     type: 'special',
