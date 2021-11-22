@@ -1,8 +1,13 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { MY_CHARACTERS_ROUTE } from '~/constants/routing';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { AuthLink } from '../AuthLink';
 import { Divider } from '../Divider';
@@ -57,18 +62,34 @@ interface ProfileDropdownProps {
 export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   userImageSrc,
 }) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen(!isOpen);
+  const setClosed = () => setIsOpen(false);
+
+  const onClickOutsideDropdown: EventListener = useCallback((e) => {
+    if (!dropdownRef.current?.contains(e.target as Node)) {
+      setClosed();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener('click', onClickOutsideDropdown);
+    } else {
+      window.removeEventListener('click', onClickOutsideDropdown);
+    }
+  }, [isOpen, onClickOutsideDropdown]);
 
   return (
-    <DropdownWrapper>
+    <DropdownWrapper ref={dropdownRef}>
       <ProfilePicture
         alt="Profile picture"
         imageSrc={userImageSrc}
         onClick={toggleOpen}
       />
-      <DropdownPane isHidden={!isOpen}>
+      <DropdownPane isHidden={!isOpen} shadowed>
         <DropdownLink href={MY_CHARACTERS_ROUTE}>
           <Body>My characters</Body>
         </DropdownLink>

@@ -23,7 +23,6 @@ const HomeWrapper = styled(FlexBox)`
 const HomePane = styled(Pane)(({ theme }) => ({
   [theme.breakpoints.xxs]: {
     border: 'none',
-    boxShadow: 'none',
   },
 }));
 
@@ -46,7 +45,6 @@ const Logo = styled(LogoAscii)`
 
 const Home: React.FC = () => {
   const { user, isLoading, error } = useUser();
-  // console.log(user);
   return (
     <Layout
       meta="A collection of online ttrpg character sheets"

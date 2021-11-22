@@ -4,16 +4,24 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FlexBox, FlexBoxProps } from './box/FlexBox';
 
-const StyledPane = styled(FlexBox)(({ theme }) => ({
-  borderColor: theme.colors.accentLight,
-  borderWidth: theme.border.borderWidth[1],
-  borderRadius: theme.spacing[4],
-  borderStyle: 'solid',
-  boxShadow: `${pxToRem(4)} ${pxToRem(6)} ${theme.colors.accentHeavy}`,
-  minWidth: pxToRem(256),
-}));
+interface PaneProps extends FlexBoxProps {
+  shadowed?: boolean;
+}
 
-export const Pane: React.FC<FlexBoxProps> = ({
+const StyledPane = styled(FlexBox)<Pick<PaneProps, 'shadowed'>>(
+  ({ theme, shadowed }) => ({
+    borderColor: theme.colors.accentLight,
+    borderWidth: theme.border.borderWidth[1],
+    borderRadius: theme.spacing[4],
+    borderStyle: 'solid',
+    boxShadow: shadowed
+      ? `${pxToRem(4)} ${pxToRem(6)} ${theme.colors.accentHeavy}`
+      : 'none',
+    minWidth: pxToRem(256),
+  })
+);
+
+export const Pane: React.FC<PaneProps> = ({
   px = 24,
   py = 16,
   justifyContent = 'center',
