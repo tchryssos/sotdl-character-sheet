@@ -9,12 +9,12 @@ import { AuthLink } from '../AuthLink';
 // import { MutableRefObject, useContext, useState } from 'react';
 import { FlexBox } from '../box/FlexBox';
 import { IconButton } from '../buttons/IconButton';
+import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { LogIn } from '../icons/LogIn';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
 import { ColorModeToggle } from './ColorModeToggle';
-import { ProfileDropdown } from './ProfileDropdown';
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',

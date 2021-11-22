@@ -134,7 +134,7 @@ export const FormNav: React.FC = () => {
         ? ` - ${ancestry}${titleClass ? ` ${titleClass}` : ''}`
         : ''
     }`;
-    setNavTitle(title || 'Create a Character');
+    setNavTitle(title || '');
   }, [name, ancestry, novicePath, expertPath, masterPath, setNavTitle, isXxs]);
 
   return (

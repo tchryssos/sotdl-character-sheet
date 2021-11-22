@@ -1,19 +1,10 @@
 import styled from '@emotion/styled';
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { MY_CHARACTERS_ROUTE } from '~/constants/routing';
-
-import { AuthLink } from '../AuthLink';
+import { FlexBox } from '../box/FlexBox';
 import { Divider } from '../Divider';
 import { Link } from '../Link';
 import { Pane } from '../Pane';
-import { ProfilePicture } from '../ProfilePicture';
 import { Body } from '../typography/Body';
 
 const DropdownWrapper = styled.div`
@@ -38,16 +29,6 @@ const DropdownPane = styled(Pane)<{ isHidden: boolean }>(
   })
 );
 
-const DropdownAuthLink = styled(AuthLink)`
-  width: 100%;
-  text-align: right;
-  box-sizing: border-box;
-  padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[8]}`};
-  :hover {
-    filter: brightness(${({ theme }) => theme.filters.brightnessMod});
-  }
-`;
-
 const DropdownLink = styled(Link)`
   width: 100%;
   text-align: right;
@@ -55,12 +36,48 @@ const DropdownLink = styled(Link)`
   padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[8]}`};
 `;
 
-interface ProfileDropdownProps {
-  userImageSrc?: string;
+const MenuItem = styled(FlexBox)`
+  width: 100%;
+`;
+
+export interface DropdowmMenuProps {
+  menuItems: (
+    | {
+        type: 'link';
+        href: string;
+        text: string;
+      }
+    | {
+        type: 'special';
+        component: React.ReactNode;
+      }
+  )[];
+  children: (props: { toggleOpen: () => void }) => React.ReactNode;
 }
 
-export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
-  userImageSrc,
+type MenuItemsProps = Pick<DropdowmMenuProps, 'menuItems'>;
+
+const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => (
+  <>
+    {menuItems.map((item, i) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <MenuItem column key={`${item.type}-${i}`}>
+        {item.type === 'link' ? (
+          <DropdownLink href={item.href}>
+            <Body>{item.text}</Body>
+          </DropdownLink>
+        ) : (
+          item.component
+        )}
+        {i !== menuItems.length - 1 && <Divider color="accentLight" />}
+      </MenuItem>
+    ))}
+  </>
+);
+
+export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
+  menuItems,
+  children,
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -84,19 +101,9 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
 
   return (
     <DropdownWrapper ref={dropdownRef}>
-      <ProfilePicture
-        alt="Profile picture"
-        imageSrc={userImageSrc}
-        onClick={toggleOpen}
-      />
+      {children({ toggleOpen })}
       <DropdownPane isHidden={!isOpen} shadowed>
-        <DropdownLink href={MY_CHARACTERS_ROUTE}>
-          <Body>My characters</Body>
-        </DropdownLink>
-        <Divider color="accentLight" />
-        <DropdownAuthLink type="logout">
-          <Body>Logout</Body>
-        </DropdownAuthLink>
+        <MenuItems menuItems={menuItems} />
       </DropdownPane>
     </DropdownWrapper>
   );
