@@ -36,44 +36,48 @@ const DropdownLink = styled(Link)`
   padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[8]}`};
 `;
 
-const MenuItem = styled(FlexBox)`
+const ItemWrapper = styled(FlexBox)`
   width: 100%;
 `;
 
+type MenuItemObj =
+  | {
+      type: 'link';
+      href: string;
+      text: string;
+    }
+  | {
+      type: 'special';
+      component: React.ReactNode;
+    }
+  | {
+      type: 'button';
+      text: string;
+      onClick: () => void;
+    };
+
 export interface DropdowmMenuProps {
-  menuItems: (
-    | {
-        type: 'link';
-        href: string;
-        text: string;
-      }
-    | {
-        type: 'special';
-        component: React.ReactNode;
-      }
-  )[];
+  menuItems: MenuItemObj[];
   children: (props: { toggleOpen: () => void }) => React.ReactNode;
 }
 
-type MenuItemsProps = Pick<DropdowmMenuProps, 'menuItems'>;
-
-const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => (
-  <>
-    {menuItems.map((item, i) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <MenuItem column key={`${item.type}-${i}`}>
-        {item.type === 'link' ? (
-          <DropdownLink href={item.href}>
-            <Body>{item.text}</Body>
-          </DropdownLink>
-        ) : (
-          item.component
-        )}
-        {i !== menuItems.length - 1 && <Divider color="accentLight" />}
-      </MenuItem>
-    ))}
-  </>
-);
+interface MenuItemProps {
+  item: MenuItemObj;
+}
+const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
+  switch (item.type) {
+    case 'link':
+      return (
+        <DropdownLink href={item.href}>
+          <Body>{item.text}</Body>
+        </DropdownLink>
+      );
+    case 'button':
+      return null;
+    default:
+      return <>{item.component}</>;
+  }
+};
 
 export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
   menuItems,
@@ -103,7 +107,13 @@ export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
     <DropdownWrapper ref={dropdownRef}>
       {children({ toggleOpen })}
       <DropdownPane isHidden={!isOpen} shadowed>
-        <MenuItems menuItems={menuItems} />
+        {menuItems.map((item, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <ItemWrapper column key={`${item.type}-${i}`}>
+            <MenuItem item={item} />
+            {i !== menuItems.length - 1 && <Divider color="accentLight" />}
+          </ItemWrapper>
+        ))}
       </DropdownPane>
     </DropdownWrapper>
   );
