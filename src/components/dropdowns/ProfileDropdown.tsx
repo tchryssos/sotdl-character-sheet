@@ -1,6 +1,8 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
 import { MY_CHARACTERS_ROUTE, SETTINGS_ROUTE } from '~/constants/routing';
+import { User } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';
 import { ProfilePicture } from '../ProfilePicture';
@@ -17,41 +19,65 @@ const DropdownAuthLink = styled(AuthLink)`
   }
 `;
 
-const menuItems: DropdowmMenuProps['menuItems'] = [
-  {
-    type: 'link',
-    href: MY_CHARACTERS_ROUTE,
-    text: 'My characters',
-  },
-  {
-    type: 'link',
-    href: SETTINGS_ROUTE,
-    text: 'Settings',
-  },
-  {
-    type: 'special',
-    component: (
-      <DropdownAuthLink type="logout">
-        <Body>Logout</Body>
-      </DropdownAuthLink>
-    ),
-  },
-];
+const createMenuItems = (
+  loggedIn: boolean,
+  isLoading: boolean
+): DropdowmMenuProps['menuItems'] => {
+  const sharedItems: DropdowmMenuProps['menuItems'] = [
+    {
+      type: 'link',
+      href: SETTINGS_ROUTE,
+      text: 'Settings',
+    },
+  ];
 
-interface ProfileDropdownProps {
-  userImageSrc?: string;
-}
+  if (isLoading) {
+    return sharedItems;
+  }
 
-export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
-  userImageSrc,
-}) => (
-  <DropdownMenu menuItems={menuItems}>
-    {({ toggleOpen }) => (
-      <ProfilePicture
-        alt="Profile picture"
-        imageSrc={userImageSrc}
-        onClick={toggleOpen}
-      />
-    )}
-  </DropdownMenu>
-);
+  if (loggedIn) {
+    return [
+      {
+        type: 'link',
+        href: MY_CHARACTERS_ROUTE,
+        text: 'My characters',
+      },
+      ...sharedItems,
+      {
+        type: 'special',
+        component: (
+          <DropdownAuthLink type="logout">
+            <Body>Log out</Body>
+          </DropdownAuthLink>
+        ),
+      },
+    ];
+  }
+
+  return [
+    ...sharedItems,
+    {
+      type: 'special',
+      component: (
+        <DropdownAuthLink type="login">
+          <Body>Authenticate</Body>
+        </DropdownAuthLink>
+      ),
+    },
+  ];
+};
+
+export const ProfileDropdown: React.FC = () => {
+  const { isLoading, user } = useUser();
+  return (
+    <DropdownMenu menuItems={createMenuItems(Boolean(user), isLoading)}>
+      {({ toggleOpen }) => (
+        <ProfilePicture
+          alt="Profile picture"
+          imageSrc={user?.authProviderData.picture}
+          onClick={toggleOpen}
+        />
+      )}
+    </DropdownMenu>
+  );
+};

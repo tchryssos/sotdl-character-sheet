@@ -83,7 +83,6 @@ export const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
-  const { user, isLoading } = useUser();
 
   return (
     <Toolbar center flex={1} isExpanded={isExpanded}>
@@ -97,15 +96,7 @@ export const NavBar: React.FC<NavBarProps> = ({
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            {!user && !isLoading ? (
-              <AuthLink type="login">
-                <IconButton buttonLike>
-                  <LogIn title="Log In / Sign Up" titleId="login-signup" />
-                </IconButton>
-              </AuthLink>
-            ) : (
-              <ProfileDropdown userImageSrc={getProfilePicture(user)} />
-            )}
+            <ProfileDropdown />
           </FlexBox>
         </TopRow>
         <ExpandedPortal flexGap={flexGap} ref={setExpandedPortalNode} />
