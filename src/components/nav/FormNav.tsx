@@ -83,8 +83,13 @@ const FormDropdown: React.FC<FormDropdownProps> = ({ loggedIn, isLoading }) => {
   let menuItems: DropdowmMenuProps['menuItems'] = [
     {
       type: 'button',
-      text: 'Upload with code',
+      text: isNavExpanded ? 'Close code form' : 'Upload with code',
       onClick: () => setNavExpanded(!isNavExpanded),
+    },
+    {
+      type: 'link',
+      text: ' testing',
+      href: '/',
     },
   ];
 

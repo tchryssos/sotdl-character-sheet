@@ -10,10 +10,11 @@ interface TextButtonProps extends CoreButtonProps {
 }
 
 const StyledButton = styled(BaseButton)<Pick<TextButtonProps, 'transparent'>>(
-  ({ theme, transparent }) => ({
+  ({ transparent }) => ({
     ...(transparent && {
       backgroundColor: 'transparent',
       border: 'none',
+      padding: 0,
     }),
   })
 );

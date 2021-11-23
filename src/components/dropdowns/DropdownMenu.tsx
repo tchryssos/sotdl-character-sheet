@@ -41,6 +41,11 @@ const ItemWrapper = styled(FlexBox)`
   width: 100%;
 `;
 
+const DropdownButton = styled(TextButton)`
+  text-align: end;
+  padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[8]}`};
+`;
+
 type MenuItemObj =
   | {
       type: 'link';
@@ -75,7 +80,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
       );
     case 'button':
       return (
-        <TextButton label={item.text} transparent onClick={item.onClick} />
+        <DropdownButton label={item.text} transparent onClick={item.onClick} />
       );
     default:
       return <>{item.component}</>;
