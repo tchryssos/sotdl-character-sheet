@@ -1,16 +1,11 @@
-import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { getProfilePicture } from '~/logic/utils/user/getProfilePicture';
 import { Spacing } from '~/typings/theme';
 
-import { AuthLink } from '../AuthLink';
 // import { MutableRefObject, useContext, useState } from 'react';
 import { FlexBox } from '../box/FlexBox';
-import { IconButton } from '../buttons/IconButton';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
-import { LogIn } from '../icons/LogIn';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';

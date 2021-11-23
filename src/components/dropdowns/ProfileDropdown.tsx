@@ -2,7 +2,6 @@ import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
 import { MY_CHARACTERS_ROUTE, SETTINGS_ROUTE } from '~/constants/routing';
-import { User } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';
 import { ProfilePicture } from '../ProfilePicture';
