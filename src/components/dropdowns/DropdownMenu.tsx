@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { MouseEventHandler, useCallback, useEffect, useState } from 'react';
 
 import { FlexBox } from '../box/FlexBox';
+import { TextButton } from '../buttons/TextButton';
 import { Divider } from '../Divider';
 import { Link } from '../Link';
 import { Pane } from '../Pane';
@@ -58,7 +59,7 @@ type MenuItemObj =
 
 export interface DropdowmMenuProps {
   menuItems: MenuItemObj[];
-  children: (props: { toggleOpen: () => void }) => React.ReactNode;
+  children: (props: { toggleOpen: MouseEventHandler }) => React.ReactNode;
 }
 
 interface MenuItemProps {
@@ -73,7 +74,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
         </DropdownLink>
       );
     case 'button':
-      return null;
+      return (
+        <TextButton label={item.text} transparent onClick={item.onClick} />
+      );
     default:
       return <>{item.component}</>;
   }
@@ -85,7 +88,10 @@ export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleOpen = () => setIsOpen(!isOpen);
+  const toggleOpen: MouseEventHandler = (e) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+  };
   const setClosed = useCallback(() => setIsOpen(false), []);
 
   useEffect(() => {

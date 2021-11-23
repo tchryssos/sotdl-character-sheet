@@ -1,4 +1,4 @@
-import clipboardCopy from 'clipboard-copy';
+import { useUser } from '@auth0/nextjs-auth0';
 import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
@@ -7,14 +7,16 @@ import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { useCopyCode } from '~/logic/hooks/useCopyCode';
 
 import { IconButton } from '../buttons/IconButton';
 import { CharacterCodeForm } from '../CharacterCodeForm';
+import { DropdowmMenuProps, DropdownMenu } from '../dropdowns/DropdownMenu';
 import { ClipboardCopy } from '../icons/ClipboardCopy';
 import { ClipboardCopyFail } from '../icons/ClipboardCopyFail';
 import { ClipboardCopySuccess } from '../icons/ClipboardCopySuccess';
 import { Pencil } from '../icons/Pencil';
-import { Upload } from '../icons/Upload';
+import { Sun } from '../icons/Sun';
 
 interface CopyIconProps {
   copySuccess?: boolean;
@@ -44,19 +46,10 @@ const CopyIcon: React.FC<CopyIconProps> = ({ copySuccess }) => {
 
 const CopyButton: React.FC = () => {
   const [copySuccess, setCopySuccess] = useState<boolean | undefined>();
-  const { getValues, formState, handleSubmit, reset } = useFormContext();
+  const { getValues, formState, reset } = useFormContext();
   const { isDirty } = formState;
 
-  const copyCode = async () => {
-    const valueObj = getValues();
-    const code = window.btoa(encodeURIComponent(JSON.stringify(valueObj)));
-    try {
-      await clipboardCopy(code);
-      return handleSubmit(async () => setCopySuccess(true))();
-    } catch (e) {
-      return setCopySuccess(false);
-    }
-  };
+  const { copyCode } = useCopyCode(setCopySuccess);
 
   useEffect(() => {
     if (isDirty) {
@@ -77,28 +70,54 @@ const CopyButton: React.FC = () => {
     </IconButton>
   );
 };
-// END - Icons and Buttons - End
 
-interface NavButtonsProps {
-  setIsExpanded: (isExpanded: boolean) => void;
-  isExpanded: boolean;
+interface FormDropdownProps {
+  loggedIn: boolean;
+  isLoading: boolean;
 }
 
-const NavButtons: React.FC<NavButtonsProps> = ({
-  setIsExpanded,
-  isExpanded,
-}) => {
+const FormDropdown: React.FC<FormDropdownProps> = ({ loggedIn, isLoading }) => {
+  const { setNavExpanded, isNavExpanded } = useContext(NavContext);
+  const { copyCode } = useCopyCode();
+
+  let menuItems: DropdowmMenuProps['menuItems'] = [
+    {
+      type: 'button',
+      text: 'Upload with code',
+      onClick: () => setNavExpanded(!isNavExpanded),
+    },
+  ];
+
+  if (loggedIn) {
+    menuItems = [
+      {
+        type: 'button',
+        text: 'Copy character code',
+        onClick: copyCode,
+      },
+      ...menuItems,
+    ];
+  }
+
+  return (
+    <DropdownMenu menuItems={menuItems}>
+      {({ toggleOpen }) => (
+        <IconButton onClick={toggleOpen}>
+          <Sun title="Form menu" titleId="form-menu" />
+        </IconButton>
+      )}
+    </DropdownMenu>
+  );
+};
+// END - Icons and Buttons - End
+
+const NavButtons: React.FC = () => {
+  const { user, isLoading } = useUser();
   const { isEditMode, setIsEditMode } = useContext(EditContext);
+
   return (
     <>
-      <IconButton onClick={() => setIsExpanded(!isExpanded)}>
-        <Upload
-          color={isExpanded ? 'success' : undefined}
-          title="Upload code"
-          titleId="upload-code-icon"
-        />
-      </IconButton>
-      <CopyButton />
+      {Boolean(!user) && <CopyButton />}
       <IconButton onClick={() => setIsEditMode(!isEditMode)}>
         <Pencil
           color={isEditMode ? 'success' : 'text'}
@@ -106,6 +125,7 @@ const NavButtons: React.FC<NavButtonsProps> = ({
           titleId="edit-pencil-icon"
         />
       </IconButton>
+      <FormDropdown isLoading={isLoading} loggedIn={Boolean(user)} />
     </>
   );
 };
@@ -119,13 +139,8 @@ export const FormNav: React.FC = () => {
   const masterPath = watch(FIELD_NAMES.paths.master_path);
   const isXxs = useBreakpointsLessThan('xs');
 
-  const {
-    iconPortalNode,
-    setNavExpanded,
-    isNavExpanded,
-    setNavTitle,
-    expandedPortalNode,
-  } = useContext(NavContext);
+  const { iconPortalNode, isNavExpanded, setNavTitle, expandedPortalNode } =
+    useContext(NavContext);
 
   useEffect(() => {
     const titleClass = masterPath || expertPath || novicePath || '';
@@ -139,14 +154,7 @@ export const FormNav: React.FC = () => {
 
   return (
     <>
-      {iconPortalNode &&
-        createPortal(
-          <NavButtons
-            isExpanded={isNavExpanded}
-            setIsExpanded={setNavExpanded}
-          />,
-          iconPortalNode
-        )}
+      {iconPortalNode && createPortal(<NavButtons />, iconPortalNode)}
       {isNavExpanded &&
         expandedPortalNode &&
         createPortal(<CharacterCodeForm />, expandedPortalNode)}

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { MouseEventHandler } from 'react';
 
 import { IconButton } from './buttons/IconButton';
 
@@ -7,7 +8,7 @@ interface ProfilePictureProps {
   imageSrc?: string;
   alt: string;
   className?: string;
-  onClick?: () => void;
+  onClick?: MouseEventHandler;
 }
 
 const ButtonFrame = styled(IconButton)<Pick<ProfilePictureProps, 'onClick'>>`
