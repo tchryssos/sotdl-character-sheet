@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { character } from '@prisma/client';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
@@ -10,12 +11,36 @@ import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { ApiResponse } from '~/typings/api';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
+import { FlexBox } from '../box/FlexBox';
+import { LoadingSpinner } from '../LoadingSpinner';
+
+const LoadingOuter = styled(FlexBox)`
+  width: 100%;
+`;
+
+const LoadingInner = styled(FlexBox)(({ theme }) => ({
+  width: '25%',
+  [theme.breakpoints.xs]: {
+    width: '15%',
+  },
+  [theme.breakpoints.md]: {
+    width: '12%',
+  },
+  [theme.breakpoints.lg]: {
+    width: '10%',
+  },
+}));
+
 interface ResetIntermediaryProps {
   setIsLoading: (isLoading: boolean) => void;
+  isLoading: boolean;
+  children: React.ReactNode[] | React.ReactNode;
 }
 
 export const ResetIntermediary: React.FC<ResetIntermediaryProps> = ({
   setIsLoading,
+  isLoading,
+  children,
 }) => {
   const {
     query: { id },
@@ -43,5 +68,14 @@ export const ResetIntermediary: React.FC<ResetIntermediaryProps> = ({
     }
   }, [id, reset, setIsLoading]);
 
-  return null;
+  if (isLoading) {
+    return (
+      <LoadingOuter center>
+        <LoadingInner>
+          <LoadingSpinner title="Form loading" titleId="form-loading" />
+        </LoadingInner>
+      </LoadingOuter>
+    );
+  }
+  return <>{children}</>;
 };
