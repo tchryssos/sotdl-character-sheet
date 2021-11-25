@@ -1,13 +1,19 @@
 import { useUser } from '@auth0/nextjs-auth0';
+import { useRouter } from 'next/dist/client/router';
 import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useFormState } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
+import { createCharacterSheetRoute } from '~/constants/routing';
+import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useCopyCode } from '~/logic/hooks/useCopyCode';
+import { useGetCharacterCode } from '~/logic/hooks/useGetCharacterCode';
+import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
+import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
 import { IconButton } from '../buttons/IconButton';
 import { CharacterCodeForm } from '../CharacterCodeForm';
@@ -15,8 +21,10 @@ import { DropdowmMenuProps, DropdownMenu } from '../dropdowns/DropdownMenu';
 import { ClipboardCopy } from '../icons/ClipboardCopy';
 import { ClipboardCopyFail } from '../icons/ClipboardCopyFail';
 import { ClipboardCopySuccess } from '../icons/ClipboardCopySuccess';
+import { Hamburger } from '../icons/Hamburger';
 import { Pencil } from '../icons/Pencil';
-import { Sun } from '../icons/Sun';
+import { Save } from '../icons/Save';
+import { LoadingStatus } from '../icons/StatusIcon';
 
 interface CopyIconProps {
   copySuccess?: boolean;
@@ -86,11 +94,6 @@ const FormDropdown: React.FC<FormDropdownProps> = ({ loggedIn, isLoading }) => {
       text: isNavExpanded ? 'Close code form' : 'Upload with code',
       onClick: () => setNavExpanded(!isNavExpanded),
     },
-    {
-      type: 'link',
-      text: ' testing',
-      href: '/',
-    },
   ];
 
   if (loggedIn) {
@@ -108,10 +111,53 @@ const FormDropdown: React.FC<FormDropdownProps> = ({ loggedIn, isLoading }) => {
     <DropdownMenu menuItems={menuItems}>
       {({ toggleOpen }) => (
         <IconButton onClick={toggleOpen}>
-          <Sun title="Form menu" titleId="form-menu" />
+          <Hamburger title="Form menu" titleId="form-menu" />
         </IconButton>
       )}
     </DropdownMenu>
+  );
+};
+
+interface SaveButtonProps {
+  playerId: number;
+}
+
+const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
+  const [saveStatus, setSaveStatus] = useState<LoadingStatus>('neutral');
+  const { query } = useRouter();
+  const { watch } = useFormContext();
+  const characterCode = useGetCharacterCode();
+  const { push } = useRouter();
+
+  const characterName = watch('name');
+
+  const onSave = async () => {
+    setSaveStatus('loading');
+    const resp = await saveCharacter({
+      id: query.id as number | 'new',
+      characterCode,
+      playerId,
+      name: characterName,
+    });
+    if (isSuccessfulCharacterResponse(resp)) {
+      setSaveStatus('success');
+      push(createCharacterSheetRoute(resp.id));
+    } else {
+      setSaveStatus('error');
+    }
+  };
+
+  return (
+    <IconButton
+      hasError={saveStatus === 'error'}
+      isLoading={saveStatus === 'loading'}
+      isNeutral={saveStatus === 'neutral'}
+      isSuccessful={saveStatus === 'success'}
+      type="submit"
+      onClick={onSave}
+    >
+      <Save title="Save character" titleId="save-character" />
+    </IconButton>
   );
 };
 // END - Icons and Buttons - End
@@ -122,7 +168,7 @@ const NavButtons: React.FC = () => {
 
   return (
     <>
-      {Boolean(!user) && <CopyButton />}
+      {user ? <SaveButton playerId={user.id} /> : <CopyButton />}
       <IconButton onClick={() => setIsEditMode(!isEditMode)}>
         <Pencil
           color={isEditMode ? 'success' : 'text'}

@@ -22,13 +22,13 @@ model user {
 }
 
 model rulebook {
-  id             Int         @id @default(autoincrement())
-  createdOn      DateTime    @db.Timestamp(6)
-  lastModifiedOn DateTime    @db.Timestamp(6)
+  id             Int      @id @default(autoincrement())
+  createdOn      DateTime @db.Timestamp(6)
+  lastModifiedOn DateTime @db.Timestamp(6)
   name           String
   description    String?
   // campaigns      campaign[]
-  characters     character[]
+  // characters     character[]
 }
 
 // model campaign {
@@ -52,8 +52,8 @@ model character {
   // imageUrl       String?
   player         user     @relation(fields: [playerId], references: [id])
   playerId       Int
-  rulebook       rulebook @relation(fields: [rulebookId], references: [id])
-  rulebookId     Int
+  // rulebook       rulebook @relation(fields: [rulebookId], references: [id])
+  // rulebookId     Int
   // characterSheetSettings characterSheetSettings[]
 }
 

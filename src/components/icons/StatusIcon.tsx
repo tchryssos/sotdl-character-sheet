@@ -7,11 +7,13 @@ import { LoadingSpinner } from '../LoadingSpinner';
 import { Check } from './Check';
 import { Close } from './Close';
 
+export type LoadingStatus = 'neutral' | 'loading' | 'error' | 'success';
+
 export interface StatusIconProps {
   isLoading?: boolean;
   isSuccessful?: boolean;
   hasError?: boolean;
-  forceNeutral?: boolean;
+  isNeutral?: boolean;
   statusOf: string;
   color?: Color;
   className?: string;
@@ -21,14 +23,12 @@ export const StatusIcon: React.FC<StatusIconProps> = ({
   isLoading,
   isSuccessful,
   hasError,
-  forceNeutral,
+  isNeutral,
   statusOf,
   color,
   className,
 }) => {
-  const [status, setStatus] = useState<
-    'neutral' | 'loading' | 'error' | 'success'
-  >('neutral');
+  const [status, setStatus] = useState<LoadingStatus>('neutral');
 
   const sharedProps = {
     title: `${statusOf} ${status}`,
@@ -38,28 +38,28 @@ export const StatusIcon: React.FC<StatusIconProps> = ({
   };
 
   useEffect(() => {
-    if (isLoading && !forceNeutral) {
+    if (isLoading && !isNeutral) {
       setStatus('loading');
     }
-  }, [isLoading, forceNeutral]);
+  }, [isLoading, isNeutral]);
 
   useEffect(() => {
-    if (hasError && !forceNeutral) {
+    if (hasError && !isNeutral) {
       setStatus('error');
     }
-  }, [hasError, forceNeutral]);
+  }, [hasError, isNeutral]);
 
   useEffect(() => {
-    if (isSuccessful && !forceNeutral) {
+    if (isSuccessful && !isNeutral) {
       setStatus('success');
     }
-  }, [isSuccessful, forceNeutral]);
+  }, [isSuccessful, isNeutral]);
 
   useEffect(() => {
-    if (forceNeutral) {
+    if (isNeutral) {
       setStatus('neutral');
     }
-  }, [forceNeutral]);
+  }, [isNeutral]);
 
   if (status === 'loading') {
     return <LoadingSpinner {...sharedProps} />;

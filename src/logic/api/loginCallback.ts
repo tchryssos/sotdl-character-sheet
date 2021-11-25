@@ -16,10 +16,12 @@ export const loginCallback = async (
     },
   });
 
+  const now = new Date();
+
   if (!dbUser) {
     const data = {
-      createdOn: new Date(),
-      lastModifiedOn: new Date(),
+      createdOn: now,
+      lastModifiedOn: now,
       authId: user.sub,
       role: 'player',
     };

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Color } from '~/typings/theme';
 
@@ -57,10 +58,7 @@ export const CharacterCodeForm: React.FC<UploadFormProps> = ({ className }) => {
 
   const onSubmit = () => {
     try {
-      const objString = window.atob(value);
-      const characterObj: Record<string, unknown> = JSON.parse(
-        decodeURIComponent(objString)
-      );
+      const characterObj = decodeCharacterObj(value);
       reset(characterObj);
       setHasError(false);
     } catch (e) {
