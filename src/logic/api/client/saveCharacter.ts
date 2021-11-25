@@ -2,7 +2,7 @@ import { character } from '@prisma/client';
 
 import {
   CREATE_CHARACTER_ROUTE,
-  createCharacterSheetRoute,
+  createCharacterApiRoute,
   NEW_CHARACTER_ID,
 } from '~/constants/routing';
 import { ApiResponse } from '~/typings/api';
@@ -17,7 +17,7 @@ export const saveCharacter = async (
   const resp = await fetch(
     // technically, query.id could be many strings or undefined
     // but routing logic prevents it from being anything other than a single string
-    isCreateCharacter ? CREATE_CHARACTER_ROUTE : createCharacterSheetRoute(id),
+    isCreateCharacter ? CREATE_CHARACTER_ROUTE : createCharacterApiRoute(id),
     {
       method: isCreateCharacter ? 'POST' : 'PATCH',
       body: JSON.stringify({
@@ -29,10 +29,7 @@ export const saveCharacter = async (
     }
   );
 
-  const respData = await resp.json();
+  const respData: ApiResponse<character> = await resp.json();
 
-  if (resp.status === 200) {
-    return respData;
-  }
-  return { error: respData.error };
+  return respData;
 };

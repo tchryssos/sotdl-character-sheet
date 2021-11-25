@@ -1,0 +1,10 @@
+import { createCharacterApiRoute } from '~/constants/routing';
+
+export const fetchCharacter = async (id: string) => {
+  const resp = await fetch(createCharacterApiRoute(id), {
+    method: 'GET',
+  });
+  const respData = await resp.json();
+
+  return respData;
+};

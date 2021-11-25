@@ -2,7 +2,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/dist/client/router';
 import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useFormContext, useFormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
 import { createCharacterSheetRoute } from '~/constants/routing';
@@ -12,7 +12,6 @@ import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useCopyCode } from '~/logic/hooks/useCopyCode';
 import { useGetCharacterCode } from '~/logic/hooks/useGetCharacterCode';
-import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
 import { IconButton } from '../buttons/IconButton';
@@ -84,7 +83,7 @@ interface FormDropdownProps {
   isLoading: boolean;
 }
 
-const FormDropdown: React.FC<FormDropdownProps> = ({ loggedIn, isLoading }) => {
+const FormDropdown: React.FC<FormDropdownProps> = ({ loggedIn }) => {
   const { setNavExpanded, isNavExpanded } = useContext(NavContext);
   const { copyCode } = useCopyCode();
 
