@@ -15,24 +15,7 @@ import { ApiResponse } from '~/typings/api';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
 import { FlexBox } from '../box/FlexBox';
-import { LoadingSpinner } from '../LoadingSpinner';
-
-const LoadingOuter = styled(FlexBox)`
-  width: 100%;
-`;
-
-const LoadingInner = styled(FlexBox)(({ theme }) => ({
-  width: '25%',
-  [theme.breakpoints.xs]: {
-    width: '15%',
-  },
-  [theme.breakpoints.md]: {
-    width: '12%',
-  },
-  [theme.breakpoints.lg]: {
-    width: '10%',
-  },
-}));
+import { LoadingPageSpinner } from '../LoadingSpinner';
 
 interface ResetIntermediaryProps {
   setIsLoading: (isLoading: boolean) => void;
@@ -75,13 +58,7 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
   }, [id, reset, setIsLoading, push]);
 
   if (isLoading) {
-    return (
-      <LoadingOuter center>
-        <LoadingInner>
-          <LoadingSpinner title="Form loading" titleId="form-loading" />
-        </LoadingInner>
-      </LoadingOuter>
-    );
+    return <LoadingPageSpinner title="Form loading" titleId="form-loading" />;
   }
   return <>{children}</>;
 };

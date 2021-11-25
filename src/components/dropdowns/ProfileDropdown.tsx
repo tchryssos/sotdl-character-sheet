@@ -1,7 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
-import { MY_CHARACTERS_ROUTE, SETTINGS_ROUTE } from '~/constants/routing';
+import { createProfileRoute, SETTINGS_ROUTE } from '~/constants/routing';
 
 import { AuthLink } from '../AuthLink';
 import { ProfilePicture } from '../ProfilePicture';
@@ -19,7 +19,7 @@ const DropdownAuthLink = styled(AuthLink)`
 `;
 
 const createMenuItems = (
-  loggedIn: boolean,
+  userId: number | undefined,
   isLoading: boolean
 ): DropdowmMenuProps['menuItems'] => {
   const sharedItems: DropdowmMenuProps['menuItems'] = [
@@ -34,11 +34,11 @@ const createMenuItems = (
     return sharedItems;
   }
 
-  if (loggedIn) {
+  if (userId) {
     return [
       {
         type: 'link',
-        href: MY_CHARACTERS_ROUTE,
+        href: createProfileRoute(userId),
         text: 'My characters',
       },
       ...sharedItems,
@@ -69,7 +69,7 @@ const createMenuItems = (
 export const ProfileDropdown: React.FC = () => {
   const { isLoading, user } = useUser();
   return (
-    <DropdownMenu menuItems={createMenuItems(Boolean(user), isLoading)}>
+    <DropdownMenu menuItems={createMenuItems(user?.id, isLoading)}>
       {({ toggleOpen }) => (
         <ProfilePicture
           alt="Profile picture"
