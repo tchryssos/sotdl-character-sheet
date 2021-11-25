@@ -19,7 +19,7 @@ export const Label: React.FC<LabelProps> = ({
   className,
   children,
 }) =>
-  label && labelFor ? (
+  label ? (
     <StyledLabel className={className} htmlFor={labelFor}>
       <SubBody bold>{label}</SubBody>
       {children}

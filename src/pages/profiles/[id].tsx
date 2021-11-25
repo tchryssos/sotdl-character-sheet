@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
+import { format, parseISO } from 'date-fns';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { FormSection } from '~/components/form/FormSection';
+import { Label } from '~/components/form/Label';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
@@ -59,7 +61,18 @@ const ProfilePage = () => {
           <ProfileNav name={profileName} />
           <ProfileWrapper columns={1}>
             <FormSection canToggleVisibility={false} title="Profile Info">
-              <Body>Some data</Body>
+              {profileName && (
+                <Label label="Name">
+                  <Body>{profileName}</Body>
+                </Label>
+              )}
+              {profile?.createdOn && (
+                <Label label="Joined">
+                  <Body>
+                    {format(parseISO(profile.createdOn), 'MM/dd/yyyy')}
+                  </Body>
+                </Label>
+              )}
             </FormSection>
           </ProfileWrapper>
         </>
