@@ -36,36 +36,40 @@ export const CharacterForm: React.FC = () => {
     <EditContext.Provider value={{ isEditMode, setIsEditMode }}>
       <FormComponent defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
         <ResetIntermediary setIsLoading={setIsLoading} />
-        <FormNav />
-        <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
-          <TextInput name={FIELD_NAMES.name} />
-          <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
-        </GridBox>
-        <HistoryInputs />
-        <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
-          {ATTRIBUTES.map((a) => (
-            <AttributeInput key={a} name={a} />
-          ))}
-        </FormSection>
-        <GridBox columns={isLessThanSm ? 1 : 2}>
-          <FormSection title="Defenses">
-            <HealthInputs />
-          </FormSection>
-          <GridBox columns={isLessThanXs ? 1 : 2}>
-            <PhysicalTraitsInputs />
-            <FormSection title="Metaphysical Traits">
-              <EvilInputs />
-              <FortuneFateInputs />
+        {isLoading ? null : (
+          <>
+            <FormNav />
+            <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
+              <TextInput name={FIELD_NAMES.name} />
+              <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
+            </GridBox>
+            <HistoryInputs />
+            <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
+              {ATTRIBUTES.map((a) => (
+                <AttributeInput key={a} name={a} />
+              ))}
             </FormSection>
-          </GridBox>
-        </GridBox>
-        <MagicInputs />
-        <ArmorInput />
-        <WeaponInput />
-        <EquipmentInputs />
-        <CurrencyInputs />
-        <DescriptionInputs />
-        <GeneralNotesInputs />
+            <GridBox columns={isLessThanSm ? 1 : 2}>
+              <FormSection title="Defenses">
+                <HealthInputs />
+              </FormSection>
+              <GridBox columns={isLessThanXs ? 1 : 2}>
+                <PhysicalTraitsInputs />
+                <FormSection title="Metaphysical Traits">
+                  <EvilInputs />
+                  <FortuneFateInputs />
+                </FormSection>
+              </GridBox>
+            </GridBox>
+            <MagicInputs />
+            <ArmorInput />
+            <WeaponInput />
+            <EquipmentInputs />
+            <CurrencyInputs />
+            <DescriptionInputs />
+            <GeneralNotesInputs />
+          </>
+        )}
       </FormComponent>
     </EditContext.Provider>
   );
