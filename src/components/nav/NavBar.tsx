@@ -51,6 +51,7 @@ const Title = styled(Body)`
   -webkit-line-clamp: 2;
   display: -webkit-inline-box;
   -webkit-box-orient: vertical;
+  word-break: break-word;
 `;
 
 const Portal = styled.div<{ flexGap: Spacing }>`

@@ -5,7 +5,10 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { DEFAULT_VALUES } from '~/constants/form';
-import { NEW_CHARACTER_ID } from '~/constants/routing';
+import {
+  createCharacterSheetRoute,
+  NEW_CHARACTER_ID,
+} from '~/constants/routing';
 import { fetchCharacter } from '~/logic/api/client/fetchCharacter';
 import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { ApiResponse } from '~/typings/api';
@@ -60,13 +63,16 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
           );
           if (isSuccessfulCharacterResponse(resp)) {
             reset(decodeCharacterObj(resp.characterCode));
+          } else {
+            push(createCharacterSheetRoute('new'));
           }
           setIsLoading(false);
         };
+
         onLoad();
       }
     }
-  }, [id, reset, setIsLoading]);
+  }, [id, reset, setIsLoading, push]);
 
   if (isLoading) {
     return (
