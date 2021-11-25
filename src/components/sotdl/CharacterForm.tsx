@@ -23,7 +23,7 @@ import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
-import { ResetIntermediary } from '../form/ResetIntermediary';
+import { LoadingIntermediary } from '../form/LoadingIntermediary';
 import { FormNav } from '../nav/FormNav';
 
 export const CharacterForm: React.FC = () => {
@@ -35,7 +35,7 @@ export const CharacterForm: React.FC = () => {
   return (
     <EditContext.Provider value={{ isEditMode, setIsEditMode }}>
       <FormComponent defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
-        <ResetIntermediary isLoading={isLoading} setIsLoading={setIsLoading}>
+        <LoadingIntermediary isLoading={isLoading} setIsLoading={setIsLoading}>
           <FormNav />
           <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
             <TextInput name={FIELD_NAMES.name} />
@@ -66,7 +66,7 @@ export const CharacterForm: React.FC = () => {
           <CurrencyInputs />
           <DescriptionInputs />
           <GeneralNotesInputs />
-        </ResetIntermediary>
+        </LoadingIntermediary>
       </FormComponent>
     </EditContext.Provider>
   );

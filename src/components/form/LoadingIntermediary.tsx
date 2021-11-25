@@ -37,7 +37,7 @@ interface ResetIntermediaryProps {
   children: React.ReactNode[] | React.ReactNode;
 }
 
-export const ResetIntermediary: React.FC<ResetIntermediaryProps> = ({
+export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
   setIsLoading,
   isLoading,
   children,
