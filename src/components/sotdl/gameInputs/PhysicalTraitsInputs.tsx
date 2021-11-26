@@ -1,8 +1,8 @@
 import { FIELD_NAMES } from '~/constants/form';
 
-import { BonusInput } from '../BonusInput';
-import { FormSection } from '../FormSection';
-import { NumberInput } from '../NumberInput';
+import { BonusInput } from '../../form/BonusInput';
+import { FormSection } from '../../form/FormSection';
+import { NumberInput } from '../../form/NumberInput';
 
 const calcPerceptionBonus = (per: number) => per - 10;
 

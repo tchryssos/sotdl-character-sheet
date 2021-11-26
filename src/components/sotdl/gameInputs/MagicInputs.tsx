@@ -7,9 +7,9 @@ import { SubBody } from '~/components/typography/SubBody';
 import { FIELD_NAMES } from '~/constants/form';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
-import { FormSection } from '../FormSection';
-import { NumberInput } from '../NumberInput';
-import { TextAreaInput } from '../TextAreaInput';
+import { FormSection } from '../../form/FormSection';
+import { NumberInput } from '../../form/NumberInput';
+import { TextAreaInput } from '../../form/TextAreaInput';
 
 const powersTemplateColumns = '1fr 8fr';
 

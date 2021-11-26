@@ -10,11 +10,11 @@ import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
-import { AddAnotherMultiField } from '../AddAnotherMultiField';
-import { FormSection } from '../FormSection';
-import { Label } from '../Label';
-import { TextAreaInput } from '../TextAreaInput';
-import { TextInput } from '../TextInput';
+import { AddAnotherMultiField } from '../../form/AddAnotherMultiField';
+import { FormSection } from '../../form/FormSection';
+import { Label } from '../../form/Label';
+import { TextAreaInput } from '../../form/TextAreaInput';
+import { TextInput } from '../../form/TextInput';
 
 const RemoveButton = styled(DeleteButton)(({ theme }) => ({
   marginTop: theme.spacing[20],

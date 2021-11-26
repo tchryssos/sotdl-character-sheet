@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { FIELD_NAMES } from '~/constants/form';
 
-import { TextAreaInput } from '../TextAreaInput';
+import { TextAreaInput } from '../../form/TextAreaInput';
 
 const NotesInput = styled(TextAreaInput)`
   height: ${({ theme }) => theme.spacing[80]};

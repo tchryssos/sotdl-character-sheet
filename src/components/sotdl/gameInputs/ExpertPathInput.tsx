@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
 
-import { TextInput } from '../TextInput';
+import { TextInput } from '../../form/TextInput';
 
 export const ExpertPathInput = () => {
   const { watch } = useFormContext();

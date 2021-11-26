@@ -7,10 +7,10 @@ import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 
-import { AddAnotherMultiField } from '../AddAnotherMultiField';
-import { FormSection } from '../FormSection';
-import { TextAreaInput } from '../TextAreaInput';
-import { TextInput } from '../TextInput';
+import { AddAnotherMultiField } from '../../form/AddAnotherMultiField';
+import { FormSection } from '../../form/FormSection';
+import { TextAreaInput } from '../../form/TextAreaInput';
+import { TextInput } from '../../form/TextInput';
 
 interface ItemFieldProps {
   index: number;
