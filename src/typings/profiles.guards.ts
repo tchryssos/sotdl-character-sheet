@@ -1,6 +1,12 @@
+import { character } from '@prisma/client';
+
 import { ApiResponse } from './api';
 import { User } from './user';
 
 export const isSuccessfulProfileResponse = (
   resp: ApiResponse<User>
 ): resp is User => (resp as User).id !== undefined;
+
+export const isSuccessfulProfileCharactersResponse = (
+  resp: ApiResponse<character[]>
+): resp is character[] => (resp as character[]).length !== undefined;

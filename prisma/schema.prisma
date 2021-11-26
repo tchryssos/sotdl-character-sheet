@@ -16,7 +16,7 @@ model user {
   lastModifiedOn DateTime    @db.Timestamp(6)
   authId         String      @unique
   role           String
-  name           String?
+  // name           String?
   characters     character[]
   // gmCampaigns     campaign[]  @relation("gm")
   // playerCampaigns campaign[]  @relation("players")

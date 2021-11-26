@@ -15,3 +15,5 @@ export const createCharacterApiRoute = (id: number | string) =>
   `/api/${createCharacterSheetRoute(id)}`;
 export const createProfileApiRoute = (id: number | string) =>
   `/api/${createProfileRoute(id)}`;
+export const createProfileCharactersApiRoute = (id: number | string) =>
+  `${createProfileApiRoute(id)}/characters`;

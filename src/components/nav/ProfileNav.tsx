@@ -2,16 +2,12 @@ import { useContext, useEffect } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
 
-interface ProfileNavProps {
-  name?: string;
-}
-
-export const ProfileNav: React.FC<ProfileNavProps> = ({ name }) => {
+export const ProfileNav: React.FC = () => {
   const { setNavTitle } = useContext(NavContext);
 
   useEffect(() => {
-    setNavTitle(name || '');
-  }, [setNavTitle, name]);
+    setNavTitle('Profile');
+  }, [setNavTitle]);
 
   return null;
 };

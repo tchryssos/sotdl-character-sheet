@@ -24,7 +24,6 @@ export const loginCallback = async (
       lastModifiedOn: now,
       authId: user.sub,
       role: 'player',
-      name: user.nickname || user.name,
     };
     await prisma.user.create({ data });
     dbUser = await prisma.user.findUnique({

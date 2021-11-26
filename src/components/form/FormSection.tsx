@@ -21,6 +21,7 @@ interface FormSectionProps {
   columns?: GridBoxProps['columns'];
   isCollapsable?: boolean;
   canToggleVisibility?: boolean;
+  className?: string;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -99,6 +100,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   columns,
   isCollapsable,
   canToggleVisibility = true,
+  className,
 }) => {
   const [isOpen, setIsOpen] = useState(!isCollapsable);
   const [isVisible, setIsVisible] = useState(true);
@@ -106,7 +108,11 @@ export const FormSection: React.FC<FormSectionProps> = ({
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (
-      <Section addMargin={isCollapsable || isEditMode} column>
+      <Section
+        addMargin={isCollapsable || isEditMode}
+        className={className}
+        column
+      >
         <FlexBox alignItems="flex-end" ml={4}>
           <TitleBox>
             {isCollapsable && (
