@@ -5,13 +5,17 @@ import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
 import { FIELD_NAMES } from '~/constants/form';
-import { createCharacterSheetRoute } from '~/constants/routing';
+import {
+  createCharacterSheetRoute,
+  NEW_CHARACTER_ID,
+} from '~/constants/routing';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useCopyCode } from '~/logic/hooks/useCopyCode';
 import { useGetCharacterCode } from '~/logic/hooks/useGetCharacterCode';
+import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
 import { IconButton } from '../buttons/IconButton';
@@ -132,15 +136,18 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
 
   const onSave = async () => {
     setSaveStatus('loading');
+    // console.log(decodeCharacterObj(characterCode));
     const resp = await saveCharacter({
-      id: query.id as number | 'new',
+      id: query.id as number | typeof NEW_CHARACTER_ID,
       characterCode,
       playerId,
       name: characterName,
     });
     if (isSuccessfulCharacterResponse(resp)) {
       setSaveStatus('success');
-      push(createCharacterSheetRoute(resp.id));
+      if (query.id === NEW_CHARACTER_ID) {
+        push(createCharacterSheetRoute(resp.id));
+      }
     } else {
       setSaveStatus('error');
     }
