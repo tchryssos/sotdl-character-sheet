@@ -136,7 +136,6 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
 
   const onSave = async () => {
     setSaveStatus('loading');
-    // console.log(decodeCharacterObj(characterCode));
     const resp = await saveCharacter({
       id: query.id as number | typeof NEW_CHARACTER_ID,
       characterCode,

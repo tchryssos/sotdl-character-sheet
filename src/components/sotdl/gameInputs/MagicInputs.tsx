@@ -1,16 +1,20 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
+import { AddAnotherButton } from '~/components/form/AddAnotherButton';
 import { Label } from '~/components/form/Label';
 import { SubBody } from '~/components/typography/SubBody';
 import { SHY } from '~/constants/characterEntities';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FormSection } from '../../form/FormSection';
@@ -26,37 +30,61 @@ const MagicSectionLabel = styled(SubBody)`
   }
 `;
 
-const AddCastingButton = styled(TextButton)`
-  border: ${({ theme }) =>
-    `${theme.border.borderWidth[1]} dashed ${theme.colors.accentLight}`};
-  height: ${({ theme }) => theme.spacing[40]};
-  width: 100%;
-`;
-
 // parseInt(level, 10) <= power
 const CastingsByLevel: React.FC = () => {
+  const initialized = useRef(false);
   const { control } = useForm();
+  const { watch, setValue } = useFormContext();
   const { isEditMode } = useContext(EditContext);
-  const { fields, append } = useFieldArray({
+  const castings: { value: string }[] = watch(
+    FIELD_NAMES.spellPower.castings.fieldName
+  );
+  const { fields, append, remove } = useFieldArray({
     control,
     name: FIELD_NAMES.spellPower.castings.fieldName,
   });
+  const isAtLeastSm = useBreakpointsAtLeast('sm');
+  const isAtLeastMd = useBreakpointsAtLeast('md');
+
+  useEffect(() => {
+    if (castings && castings.length > fields.length && !initialized.current) {
+      append(castings);
+      initialized.current = true;
+    }
+  }, [castings, append, fields]);
+
+  let columns = 4;
+  if (isAtLeastSm) {
+    columns = 6;
+  }
+  if (isAtLeastMd) {
+    columns = 8;
+  }
+
+  const onRemove = () => {
+    remove(fields.length - 1);
+    const nextCastings = [...castings];
+    nextCastings.pop();
+    setValue(FIELD_NAMES.spellPower.castings.fieldName, nextCastings);
+  };
+
   return (
-    <>
-      {fields.map((field, i) => (
+    <GridBox alignItems="end" gridTemplateColumns={`repeat(${columns}, 1fr)`}>
+      {fields?.map((field, i) => (
         <NumberInput
           key={field.id}
           label={`Lvl ${i}`}
           min={0}
-          name={`${FIELD_NAMES.spellPower.castings.fieldName}.${i}`}
+          name={`${FIELD_NAMES.spellPower.castings.fieldName}.${i}.value`}
         />
       ))}
       {fields.length <= 10 && isEditMode && (
-        <Label label={SHY}>
-          <AddCastingButton label="+" transparent onClick={() => append({})} />
-        </Label>
+        <AddAnotherButton includeLabel onClick={() => append({ value: '0' })} />
       )}
-    </>
+      {fields.length && isEditMode && (
+        <AddAnotherButton includeLabel label="-" onClick={onRemove} />
+      )}
+    </GridBox>
   );
 };
 
@@ -97,14 +125,7 @@ export const MagicInputs: React.FC = () => {
               Castings by Level
             </MagicSectionLabel>
           )}
-          <GridBox
-            alignItems="end"
-            gridTemplateColumns={
-              isLessThanSm ? 'repeat(4, 1fr)' : 'repeat(11, 1fr)'
-            }
-          >
-            <CastingsByLevel />
-          </GridBox>
+          <CastingsByLevel />
         </FlexBox>
       </GridBox>
       {/* <MagicSectionLabel bold>Spells by Level</MagicSectionLabel>
