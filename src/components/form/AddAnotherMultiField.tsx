@@ -4,8 +4,6 @@ import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { EditContext } from '~/logic/contexts/editContext';
 
 import { Box } from '../box/Box';
-import { IconButton } from '../buttons/IconButton';
-import { Plus } from '../icons/Plus';
 import { SubBody } from '../typography/SubBody';
 import { AddAnotherButton } from './AddAnotherButton';
 

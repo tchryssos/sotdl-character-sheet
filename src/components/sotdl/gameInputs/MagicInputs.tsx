@@ -39,6 +39,7 @@ const CastingsByLevel: React.FC = () => {
   const castings: { value: string }[] = watch(
     FIELD_NAMES.spellPower.castings.fieldName
   );
+  const spells: { value: string }[] = watch(FIELD_NAMES.spells.fieldName);
   const { fields, append, remove } = useFieldArray({
     control,
     name: FIELD_NAMES.spellPower.castings.fieldName,
@@ -66,6 +67,10 @@ const CastingsByLevel: React.FC = () => {
     const nextCastings = [...castings];
     nextCastings.pop();
     setValue(FIELD_NAMES.spellPower.castings.fieldName, nextCastings);
+
+    const nextSpells = [...spells];
+    nextSpells.pop();
+    setValue(FIELD_NAMES.spells.fieldName, nextSpells);
   };
 
   return (
@@ -81,7 +86,7 @@ const CastingsByLevel: React.FC = () => {
       {fields.length <= 10 && isEditMode && (
         <AddAnotherButton includeLabel onClick={() => append({ value: '0' })} />
       )}
-      {fields.length && isEditMode && (
+      {Boolean(fields.length) && isEditMode && (
         <AddAnotherButton includeLabel label="-" onClick={onRemove} />
       )}
     </GridBox>
@@ -89,12 +94,48 @@ const CastingsByLevel: React.FC = () => {
 };
 
 const SpellsByLevel = () => {
+  const initialized = useRef(false);
+
   const { control } = useForm();
-  const fields = useFieldArray({
+  const { watch } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
     control,
     name: FIELD_NAMES.spells.fieldName,
   });
-  return null;
+
+  const spells = watch(FIELD_NAMES.spells.fieldName);
+  const castings: { value: string }[] = watch(
+    FIELD_NAMES.spellPower.castings.fieldName
+  );
+
+  useEffect(() => {
+    if (castings && castings.length > fields.length && !initialized.current) {
+      append(castings.map((_c, i) => spells[i]));
+      initialized.current = true;
+    }
+  }, [spells, append, fields, castings]);
+
+  // useEffect(() => {
+  //   if (initialized.current) {
+  //     if (castings.length > fields.length) {
+  //       remove(fields.length - 1);
+  //     } else if (castings.length < fields.length) {
+  //       append({ value: '' });
+  //     }
+  //   }
+  // }, [castings, spells, append, remove, fields]);
+
+  return (
+    <GridBox>
+      {fields.map((field, i) => (
+        <TextAreaInput
+          key={field.id}
+          label={`Lvl ${i}`}
+          name={`${FIELD_NAMES.spells.fieldName}.${i}.value`}
+        />
+      ))}
+    </GridBox>
+  );
 };
 
 export const MagicInputs: React.FC = () => {
@@ -128,19 +169,7 @@ export const MagicInputs: React.FC = () => {
           <CastingsByLevel />
         </FlexBox>
       </GridBox>
-      {/* <MagicSectionLabel bold>Spells by Level</MagicSectionLabel>
-      <GridBox>
-        {Object.keys(FIELD_NAMES.spells.spellsByLevel).map(
-          (level) =>
-            parseInt(level, 10) <= power && (
-              <TextAreaInput
-                key={FIELD_NAMES.spells.spellsByLevel[level]}
-                label={`Lvl ${level}`}
-                name={FIELD_NAMES.spells.spellsByLevel[level]}
-              />
-            )
-        )}
-      </GridBox> */}
+      <SpellsByLevel />
     </FormSection>
   );
 };

@@ -15,7 +15,6 @@ import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useCopyCode } from '~/logic/hooks/useCopyCode';
 import { useGetCharacterCode } from '~/logic/hooks/useGetCharacterCode';
-import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
 import { IconButton } from '../buttons/IconButton';
