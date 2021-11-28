@@ -15,6 +15,7 @@ import { Pane } from '~/components/Pane';
 import { Title } from '~/components/typography/Title';
 import {
   createCharacterSheetRoute,
+  createProfileRoute,
   NEW_CHARACTER_ID,
 } from '~/constants/routing';
 
@@ -64,6 +65,14 @@ const Home: React.FC = () => {
                 <AuthLink type="login">
                   <TextButton buttonLike label="Authenticate" />
                 </AuthLink>
+                <Divider label="or" />
+              </>
+            )}
+            {user && (
+              <>
+                <Link href={createProfileRoute(user.id)}>
+                  <TextButton buttonLike label="My Characters" />
+                </Link>
                 <Divider label="or" />
               </>
             )}
