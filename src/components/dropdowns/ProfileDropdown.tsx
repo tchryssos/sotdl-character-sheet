@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useMemo } from 'react';
 
 import { createProfileRoute, SETTINGS_ROUTE } from '~/constants/routing';
+import { User } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';
 import { IconButton } from '../buttons/IconButton';
@@ -21,7 +22,7 @@ const DropdownAuthLink = styled(AuthLink)`
 `;
 
 const createMenuItems = (
-  userId: number | undefined,
+  user: User | undefined,
   isLoading: boolean
 ): DropdowmMenuProps['menuItems'] => {
   let items: DropdowmMenuProps['menuItems'] = [
@@ -33,11 +34,11 @@ const createMenuItems = (
   ];
 
   if (!isLoading) {
-    if (userId) {
+    if (user?.id) {
       items = [
         {
           type: 'link',
-          href: createProfileRoute(userId),
+          href: createProfileRoute(user.id),
           text: 'My characters',
         },
         ...items,
@@ -65,7 +66,12 @@ const createMenuItems = (
     }
   }
 
-  items = [{ type: 'label', text: 'Profile' }, ...items];
+  const name =
+    user?.authProviderData.nickname ||
+    user?.authProviderData.name ||
+    user?.authProviderData.email;
+
+  items = [{ type: 'label', text: name || 'Profile' }, ...items];
 
   return items;
 };
@@ -80,7 +86,7 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   const { isLoading, user } = useUser();
 
   const menuItems = useMemo(
-    () => [...dropdownMenuItems, ...createMenuItems(user?.id, isLoading)],
+    () => [...dropdownMenuItems, ...createMenuItems(user, isLoading)],
     [dropdownMenuItems, user?.id, isLoading]
   );
 
