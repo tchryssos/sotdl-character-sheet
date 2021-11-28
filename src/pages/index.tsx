@@ -60,19 +60,17 @@ const Home: React.FC = () => {
           <Logo />
           <Title mb={16}>rpg sheet dot&nbsp;games</Title>
           <ButtonWrapper columns={1} rowGap={8}>
-            {!isLoading && !user && !error && (
+            {!isLoading && !error && (
               <>
-                <AuthLink type="login">
-                  <TextButton buttonLike label="Authenticate" />
-                </AuthLink>
-                <Divider label="or" />
-              </>
-            )}
-            {user && (
-              <>
-                <Link href={createProfileRoute(user.id)}>
-                  <TextButton buttonLike label="My Characters" />
-                </Link>
+                {user ? (
+                  <Link href={createProfileRoute(user.id)}>
+                    <TextButton buttonLike label="My Characters" />
+                  </Link>
+                ) : (
+                  <AuthLink type="login">
+                    <TextButton buttonLike label="Authenticate" />
+                  </AuthLink>
+                )}
                 <Divider label="or" />
               </>
             )}
