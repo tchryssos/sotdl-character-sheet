@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
@@ -29,8 +29,25 @@ import { FormNav } from '../nav/FormNav';
 export const CharacterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  // Edit ref for hotKey handler
+  const isEditRef = useRef(isEditMode);
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isLessThanXs = useBreakpointsLessThan('xs');
+
+  useEffect(() => {
+    const formHotKeys = (e: KeyboardEvent) => {
+      if (e.key === 'e' && e.ctrlKey) {
+        setIsEditMode(!isEditRef.current);
+      }
+    };
+
+    window.addEventListener('keyup', formHotKeys);
+    return () => window.removeEventListener('keyup', formHotKeys);
+  }, []);
+
+  useEffect(() => {
+    isEditRef.current = isEditMode;
+  }, [isEditMode]);
 
   return (
     <EditContext.Provider value={{ isEditMode, setIsEditMode }}>
