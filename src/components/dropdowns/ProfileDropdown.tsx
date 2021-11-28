@@ -87,7 +87,7 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
 
   const menuItems = useMemo(
     () => [...dropdownMenuItems, ...createMenuItems(user, isLoading)],
-    [dropdownMenuItems, user?.id, isLoading]
+    [dropdownMenuItems, user, isLoading]
   );
 
   return (
