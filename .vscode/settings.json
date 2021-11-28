@@ -6,5 +6,8 @@
     "source.fixAll.eslint": true
   },
   "editor.codeActionsOnSaveTimeout": 750,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
 }

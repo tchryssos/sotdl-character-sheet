@@ -1,11 +1,20 @@
 import styled from '@emotion/styled';
 
+import { Color } from '~/typings/theme';
+
+import { StatusIcon, StatusIconProps } from '../icons/StatusIcon';
 import { BaseButton } from './BaseButton';
 import { BaseButtonProps } from './types';
 
-export interface IconButtonProps extends BaseButtonProps {
+interface StandardButtonProps extends BaseButtonProps {
   size?: 'sm' | 'md' | 'lg';
 }
+
+interface StatusButtonProps extends StandardButtonProps, StatusIconProps {
+  statusColor?: Color;
+}
+
+export type IconButtonProps = StandardButtonProps | StatusButtonProps;
 
 const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
   ({ theme, size }) => {
@@ -27,6 +36,7 @@ const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
       minHeight: dimension,
       backgroundColor: 'transparent',
       border: 'none',
+      padding: theme.spacing[4],
       ':hover': {
         backgroundColor: theme.colors.accentLight,
         filter: 'brightness(1.0)',
@@ -38,13 +48,40 @@ const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
   }
 );
 
-export const IconButton: React.FC<IconButtonProps> = ({
-  children,
-  size = 'sm',
-  ...rest
-}) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <IconSafeButton {...rest} size={size}>
-    {children}
-  </IconSafeButton>
-);
+const IconsWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
+
+const Status = styled(StatusIcon)(({ theme }) => ({
+  backgroundColor: theme.colors.background,
+  position: 'absolute',
+  borderRadius: '50%',
+  bottom: 0,
+  right: 0,
+  height: theme.spacing[12],
+  width: theme.spacing[12],
+  boxSizing: 'border-box',
+}));
+
+export const IconButton: React.FC<IconButtonProps> = (props) => {
+  const { children, size = 'sm', ...rest } = props as StandardButtonProps;
+  const { isLoading, isSuccessful, hasError, statusColor, statusOf } =
+    props as StatusButtonProps;
+  return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <IconSafeButton {...rest} size={size}>
+      <IconsWrapper>
+        {children}
+        <Status
+          color={statusColor}
+          hasError={hasError}
+          isLoading={isLoading}
+          isSuccessful={isSuccessful}
+          statusOf={statusOf}
+        />
+      </IconsWrapper>
+    </IconSafeButton>
+  );
+};

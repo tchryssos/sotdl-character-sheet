@@ -1,4 +1,4 @@
-import { pxToRem } from '~/utils/styles';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 const breakpointValues = {
   xxs: 479,

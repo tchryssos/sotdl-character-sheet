@@ -16,6 +16,10 @@ export const TextArea = styled.textarea(({ theme }) => ({
   padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
   fontFamily: theme.fontFamily.normal,
   resize: 'vertical',
+  '-webkit-resizer': {
+    height: 40,
+    width: 40,
+  },
 }));
 
 export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({

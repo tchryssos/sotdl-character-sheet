@@ -4,9 +4,8 @@ import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { EditContext } from '~/logic/contexts/editContext';
 
 import { Box } from '../box/Box';
-import { IconButton } from '../buttons/IconButton';
-import { Plus } from '../icons/Plus';
 import { SubBody } from '../typography/SubBody';
+import { AddAnotherButton } from './AddAnotherButton';
 
 interface AddAnotherMultiFieldProps {
   parentFieldName: string;
@@ -60,11 +59,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
 
   return (
     <>
-      {isEditMode && (
-        <IconButton onClick={onCreate}>
-          <Plus title="Add another plus" titleId="add-another-plus-icon" />
-        </IconButton>
-      )}
+      {isEditMode && <AddAnotherButton onClick={onCreate} />}
       {Boolean(controlledFields.length) && HeaderRow && <HeaderRow />}
       {controlledFields.map((field, i) => (
         <Box key={field.id}>

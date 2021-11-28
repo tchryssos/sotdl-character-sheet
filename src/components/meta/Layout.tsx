@@ -5,6 +5,7 @@ import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 
 import { FlexBox } from '../box/FlexBox';
+import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
 import { NavBar } from '../nav/NavBar';
 import { Head } from './Head';
 
@@ -21,11 +22,15 @@ const PageWrapper = styled(FlexBox)`
   padding-top: ${({ theme }) => theme.spacing[96]};
 `;
 
+const emptyArr: DropdowmMenuProps['menuItems'] = [];
+
 export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
   const [navTitle, setNavTitle] = useState('');
   const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
   const [expandedPortalNode, setExpandedPortalNode] =
     useState<HTMLDivElement>();
+  const [dropdownItems, setDropdownItems] =
+    useState<DropdowmMenuProps['menuItems']>(emptyArr);
   const [navExpanded, setNavExpanded] = useState(false);
   const isAtLeastXs = useBreakpointsAtLeast('xs');
 
@@ -49,10 +54,12 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
         iconPortalNode,
         expandedPortalNode,
         isNavExpanded: navExpanded,
+        setDropdownItems,
       }}
     >
       <Head meta={meta} title={title} />
       <NavBar
+        dropdownMenuItems={dropdownItems}
         isExpanded={navExpanded}
         setExpandedPortalNode={setExpandedPortalNodeCallback}
         setIconPortalNode={setIconPortalNodeCallback}

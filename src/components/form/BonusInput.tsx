@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useFormContext } from 'react-hook-form';
 
-import { pxToRem } from '~/utils/styles';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FlexBox } from '../box/FlexBox';
 import { Body } from '../typography/Body';
@@ -26,6 +26,8 @@ const BonusWrapper = styled(FlexBox)`
   padding-bottom: ${pxToRem(11)};
 `;
 
+const BonusAligner = styled(FlexBox)``;
+
 const Bar = styled.span`
   user-select: none;
 `;
@@ -47,11 +49,12 @@ export const BonusInput: React.FC<BonusInputProps> = ({
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <NumberInput name={name} {...rest} />
       <BonusWrapper alignItems="flex-end" pr={8}>
-        <Body>
-          <Bar>|</Bar>
-          {bonusIsPositive ? '+' : '-'}
-          {String(Math.abs(bonus))}
-        </Body>
+        <BonusAligner center>
+          <Body>
+            <Bar>|</Bar>
+            {` ${bonusIsPositive ? '+' : '-'}${String(Math.abs(bonus))}`}
+          </Body>
+        </BonusAligner>
       </BonusWrapper>
     </AttributeWrapper>
   );

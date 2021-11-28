@@ -4,16 +4,12 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { Spacing } from '~/typings/theme';
 
 // import { MutableRefObject, useContext, useState } from 'react';
-// import { AuthContext } from '~/logic/contexts/authContext';
 import { FlexBox } from '../box/FlexBox';
-// import { IconButton } from '../buttons/IconButton';
-// import { TextButton } from '../buttons/TextButton';
-// import { LogIn } from '../icons/LogIn';
-// import { LogOut } from '../icons/LogOut';
+import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
+import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
-import { ColorModeToggle } from './ColorModeToggle';
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
@@ -56,6 +52,11 @@ const Title = styled(Body)`
   -webkit-line-clamp: 2;
   display: -webkit-inline-box;
   -webkit-box-orient: vertical;
+  word-break: break-word;
+  font-size: ${({ theme }) => theme.fontSize.subBody};
+  ${({ theme }) => theme.breakpoints.xs} {
+    font-size: ${({ theme }) => theme.fontSize.body};
+  }
 `;
 
 const Portal = styled.div<{ flexGap: Spacing }>`
@@ -73,6 +74,7 @@ interface NavBarProps {
   isExpanded: boolean;
   setIconPortalNode: (node: HTMLDivElement) => void;
   setExpandedPortalNode: (node: HTMLDivElement) => void;
+  dropdownMenuItems: DropdowmMenuProps['menuItems'];
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
@@ -80,31 +82,24 @@ export const NavBar: React.FC<NavBarProps> = ({
   isExpanded,
   setIconPortalNode,
   setExpandedPortalNode,
+  dropdownMenuItems,
 }) => {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
+
   return (
     <Toolbar center flex={1} isExpanded={isExpanded}>
       <InnerToolbar alignItems="flex-end" column flex={1}>
         <TopRow alignItems="center" justifyContent="space-between">
           <LogoTitleBox alignItems="center" gap={flexGap}>
-            <HomeLink href="/" isInternal>
+            <HomeLink href="/">
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
             {title && <Title variant="decorative">{title}</Title>}
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            <ColorModeToggle />
-            {/* {!user.isAuthenticated ? (
-                <IconButton>
-                  <LogIn title="Log In / Sign Up" titleId="login-signup" />
-                </IconButton>
-              ) : (
-                <IconButton>
-                  <LogOut title="Log Out" titleId="log-out" />
-                </IconButton>
-              )} */}
+            <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>
         </TopRow>
         <ExpandedPortal flexGap={flexGap} ref={setExpandedPortalNode} />

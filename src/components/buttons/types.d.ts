@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
 export interface CoreButtonProps {
-  onClick?: () => void;
+  onClick?: MouseEventHandler;
   type?: 'button' | 'submit';
   className?: string;
   disabled?: boolean;
   transparent?: boolean;
+  buttonLike?: boolean;
 }
 
 export interface BaseButtonProps extends CoreButtonProps {

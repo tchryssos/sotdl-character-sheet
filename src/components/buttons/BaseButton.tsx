@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
 
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
+
+import { FlexBox } from '../box/FlexBox';
 import { BaseButtonProps } from './types';
 
 type StyledProps = Pick<Required<BaseButtonProps>, 'transparent'>;
@@ -14,6 +17,8 @@ const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
     ? `${theme.border.borderWidth[1]} solid ${theme.colors.text}`
     : 'none',
   borderRadius: theme.spacing[2],
+  // Non-standard padding matches default button padding
+  padding: `${pxToRem(1)} ${pxToRem(6)}`,
   ':hover': {
     filter: `brightness(${theme.filters.brightnessMod})`,
   },
@@ -25,6 +30,8 @@ const StyledButton = styled.button<StyledProps>(({ theme, transparent }) => ({
   },
 }));
 
+const ButtonLike = StyledButton.withComponent(FlexBox);
+
 export const BaseButton: React.FC<BaseButtonProps> = ({
   onClick,
   className,
@@ -32,15 +39,29 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
   disabled,
   children,
   transparent,
-}) => (
-  <StyledButton
-    className={className}
-    disabled={disabled || !onClick}
-    transparent={Boolean(transparent)}
-    // eslint-disable-next-line react/button-has-type
-    type={type}
-    onClick={onClick}
-  >
-    {children}
-  </StyledButton>
-);
+  buttonLike,
+}) => {
+  if (buttonLike) {
+    return (
+      <ButtonLike
+        center
+        className={className}
+        transparent={Boolean(transparent)}
+      >
+        {children}
+      </ButtonLike>
+    );
+  }
+  return (
+    <StyledButton
+      className={className}
+      disabled={disabled || !onClick}
+      transparent={Boolean(transparent)}
+      // eslint-disable-next-line react/button-has-type
+      type={type}
+      onClick={onClick}
+    >
+      {children}
+    </StyledButton>
+  );
+};
