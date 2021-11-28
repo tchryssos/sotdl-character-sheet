@@ -1,4 +1,3 @@
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
@@ -10,7 +9,6 @@ import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
-import { SubBody } from '../typography/SubBody';
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
   position: 'fixed',
@@ -49,19 +47,15 @@ const Logo = styled(LogoAscii)(({ theme }) => ({
   },
 }));
 
-const titleStyles = css`
+const Title = styled(Body)`
   -webkit-line-clamp: 2;
   display: -webkit-inline-box;
   -webkit-box-orient: vertical;
   word-break: break-word;
-`;
-
-const BodyTitle = styled(Body)`
-  ${titleStyles}
-`;
-
-const SubBodyTitle = styled(SubBody)`
-  ${titleStyles}
+  font-size: ${({ theme }) => theme.fontSize.subBody};
+  ${({ theme }) => theme.breakpoints.xs} {
+    font-size: ${({ theme }) => theme.fontSize.body};
+  }
 `;
 
 const Portal = styled.div<{ flexGap: Spacing }>`
@@ -81,19 +75,6 @@ interface NavBarProps {
   setExpandedPortalNode: (node: HTMLDivElement) => void;
 }
 
-interface TitleProps {
-  title: string;
-}
-
-const Title: React.FC<TitleProps> = ({ title }) => {
-  const lessThanXs = useBreakpointsLessThan('xs');
-
-  if (lessThanXs) {
-    return <SubBodyTitle variant="decorative">{title}</SubBodyTitle>;
-  }
-  return <BodyTitle variant="decorative">{title}</BodyTitle>;
-};
-
 export const NavBar: React.FC<NavBarProps> = ({
   title,
   isExpanded,
@@ -111,7 +92,7 @@ export const NavBar: React.FC<NavBarProps> = ({
             <HomeLink href="/">
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
-            {title && <Title title={title} />}
+            {title && <Title variant="decorative">{title}</Title>}
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
