@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { character } from '@prisma/client';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
@@ -14,7 +13,6 @@ import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { ApiResponse } from '~/typings/api';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
-import { FlexBox } from '../box/FlexBox';
 import { LoadingPageSpinner } from '../LoadingSpinner';
 
 interface ResetIntermediaryProps {

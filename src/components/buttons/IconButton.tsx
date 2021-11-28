@@ -67,14 +67,8 @@ const Status = styled(StatusIcon)(({ theme }) => ({
 
 export const IconButton: React.FC<IconButtonProps> = (props) => {
   const { children, size = 'sm', ...rest } = props as StandardButtonProps;
-  const {
-    isLoading,
-    isSuccessful,
-    hasError,
-    forceNeutral,
-    statusColor,
-    statusOf,
-  } = props as StatusButtonProps;
+  const { isLoading, isSuccessful, hasError, statusColor, statusOf } =
+    props as StatusButtonProps;
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
     <IconSafeButton {...rest} size={size}>
@@ -82,7 +76,6 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
         {children}
         <Status
           color={statusColor}
-          forceNeutral={forceNeutral}
           hasError={hasError}
           isLoading={isLoading}
           isSuccessful={isSuccessful}
