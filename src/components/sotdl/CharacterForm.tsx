@@ -29,6 +29,7 @@ import { FormNav } from '../nav/FormNav';
 export const CharacterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [isMyCharacter, setIsMyCharacter] = useState(true);
   // Edit ref for hotKey handler
   const isEditRef = useRef(isEditMode);
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -52,8 +53,12 @@ export const CharacterForm: React.FC = () => {
   return (
     <EditContext.Provider value={{ isEditMode, setIsEditMode }}>
       <FormComponent defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
-        <LoadingIntermediary isLoading={isLoading} setIsLoading={setIsLoading}>
-          <FormNav />
+        <LoadingIntermediary
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          setIsMyCharacter={setIsMyCharacter}
+        >
+          <FormNav isMyCharacter={isMyCharacter} />
           <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
             <TextInput name={FIELD_NAMES.name} />
             <NumberInput max={10} min={0} name={FIELD_NAMES.level} />

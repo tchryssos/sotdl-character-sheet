@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { character } from '@prisma/client';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
@@ -19,18 +20,21 @@ interface ResetIntermediaryProps {
   setIsLoading: (isLoading: boolean) => void;
   isLoading: boolean;
   children: React.ReactNode[] | React.ReactNode;
+  setIsMyCharacter: (isMine: boolean) => void;
 }
 
 export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
   setIsLoading,
   isLoading,
   children,
+  setIsMyCharacter,
 }) => {
   const {
     query: { id },
     push,
   } = useRouter();
   const { reset } = useFormContext();
+  const { user } = useUser();
 
   useEffect(() => {
     if (id) {
@@ -43,6 +47,7 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
             id as string
           );
           if (isSuccessfulCharacterResponse(resp)) {
+            setIsMyCharacter(resp.playerId === user?.id);
             reset(decodeCharacterObj(resp.characterCode));
           } else {
             push(createCharacterSheetRoute('new'));
@@ -53,7 +58,7 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
         onLoad();
       }
     }
-  }, [id, reset, setIsLoading, push]);
+  }, [id, reset, setIsLoading, push, user?.id, setIsMyCharacter]);
 
   if (isLoading) {
     return <LoadingPageSpinner title="Form loading" titleId="form-loading" />;

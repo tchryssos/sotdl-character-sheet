@@ -20,6 +20,7 @@ const DropdownPane = styled(Pane)<{ isHidden: boolean }>(
     right: 0,
     padding: 0,
     backgroundColor: theme.colors.background,
+    zIndex: 100,
     ...(isHidden && {
       display: 'hidden',
       height: 0,

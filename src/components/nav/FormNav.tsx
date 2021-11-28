@@ -27,6 +27,10 @@ import { Pencil } from '../icons/Pencil';
 import { Save } from '../icons/Save';
 import { LoadingStatus } from '../icons/StatusIcon';
 
+interface FormNavProps {
+  isMyCharacter: boolean;
+}
+
 interface CopyIconProps {
   copySuccess?: boolean;
 }
@@ -126,13 +130,19 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
 };
 // END - Icons and Buttons - End
 
-const NavButtons: React.FC = () => {
+const NavButtons: React.FC<Pick<FormNavProps, 'isMyCharacter'>> = ({
+  isMyCharacter,
+}) => {
   const { user } = useUser();
   const { isEditMode, setIsEditMode } = useContext(EditContext);
 
   return (
     <>
-      {user ? <SaveButton playerId={user.id} /> : <CopyButton />}
+      {user && isMyCharacter ? (
+        <SaveButton playerId={user.id} />
+      ) : (
+        <CopyButton />
+      )}
       <IconButton onClick={() => setIsEditMode(!isEditMode)}>
         <Pencil
           color={isEditMode ? 'success' : 'text'}
@@ -144,7 +154,7 @@ const NavButtons: React.FC = () => {
   );
 };
 
-export const FormNav: React.FC = () => {
+export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
   const { user } = useUser();
 
   const copyCode = useCopyCode();
@@ -212,7 +222,11 @@ export const FormNav: React.FC = () => {
 
   return (
     <>
-      {iconPortalNode && createPortal(<NavButtons />, iconPortalNode)}
+      {iconPortalNode &&
+        createPortal(
+          <NavButtons isMyCharacter={isMyCharacter} />,
+          iconPortalNode
+        )}
       {isNavExpanded &&
         expandedPortalNode &&
         createPortal(<CharacterCodeForm />, expandedPortalNode)}
