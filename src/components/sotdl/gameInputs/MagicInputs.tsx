@@ -4,9 +4,7 @@ import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { TextButton } from '~/components/buttons/TextButton';
 import { AddAnotherButton } from '~/components/form/AddAnotherButton';
-import { Label } from '~/components/form/Label';
 import { SubBody } from '~/components/typography/SubBody';
 import { SHY } from '~/constants/characterEntities';
 import { FIELD_NAMES } from '~/constants/form';
@@ -15,7 +13,6 @@ import {
   useBreakpointsAtLeast,
   useBreakpointsLessThan,
 } from '~/logic/hooks/useBreakpoints';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FormSection } from '../../form/FormSection';
 import { NumberInput } from '../../form/NumberInput';
@@ -31,28 +28,66 @@ const MagicSectionLabel = styled(SubBody)`
 `;
 
 // parseInt(level, 10) <= power
-const CastingsByLevel: React.FC = () => {
+const Inputs: React.FC = () => {
   const initialized = useRef(false);
+
   const { control } = useForm();
   const { watch, setValue } = useFormContext();
-  const { isEditMode } = useContext(EditContext);
   const castings: { value: string }[] = watch(
     FIELD_NAMES.spellPower.castings.fieldName
   );
   const spells: { value: string }[] = watch(FIELD_NAMES.spells.fieldName);
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: castingsFields,
+    append: appendCastings,
+    remove: removeCastings,
+  } = useFieldArray({
     control,
     name: FIELD_NAMES.spellPower.castings.fieldName,
   });
+  const {
+    fields: spellsFields,
+    append: appendSpells,
+    remove: removeSpells,
+  } = useFieldArray({
+    control,
+    name: FIELD_NAMES.spells.fieldName,
+  });
+
+  const { isEditMode } = useContext(EditContext);
+
   const isAtLeastSm = useBreakpointsAtLeast('sm');
   const isAtLeastMd = useBreakpointsAtLeast('md');
+  const isLessThanSm = useBreakpointsLessThan('sm');
 
   useEffect(() => {
-    if (castings && castings.length > fields.length && !initialized.current) {
-      append(castings);
+    if (
+      castings &&
+      castings.length > castingsFields.length &&
+      !initialized.current
+    ) {
+      appendCastings(castings);
+      appendSpells(castings.map((_c, i) => spells[i]));
       initialized.current = true;
     }
-  }, [castings, append, fields]);
+  }, [castings, appendCastings, castingsFields, spells, appendSpells]);
+
+  const onAdd = () => {
+    appendCastings({ value: '0' });
+    appendSpells({ values: '' });
+  };
+
+  const onRemove = () => {
+    removeCastings(castingsFields.length - 1);
+    const nextCastings = [...castings];
+    nextCastings.pop();
+    setValue(FIELD_NAMES.spellPower.castings.fieldName, nextCastings);
+
+    removeSpells(spellsFields.length - 1);
+    const nextSpells = [...spells];
+    nextSpells.pop();
+    setValue(FIELD_NAMES.spells.fieldName, nextSpells);
+  };
 
   let columns = 4;
   if (isAtLeastSm) {
@@ -62,96 +97,8 @@ const CastingsByLevel: React.FC = () => {
     columns = 8;
   }
 
-  const onRemove = () => {
-    remove(fields.length - 1);
-    const nextCastings = [...castings];
-    nextCastings.pop();
-    setValue(FIELD_NAMES.spellPower.castings.fieldName, nextCastings);
-
-    const nextSpells = [...spells];
-    nextSpells.pop();
-    setValue(FIELD_NAMES.spells.fieldName, nextSpells);
-  };
-
   return (
-    <GridBox alignItems="end" gridTemplateColumns={`repeat(${columns}, 1fr)`}>
-      {fields?.map((field, i) => (
-        <NumberInput
-          key={field.id}
-          label={`Lvl ${i}`}
-          min={0}
-          name={`${FIELD_NAMES.spellPower.castings.fieldName}.${i}.value`}
-        />
-      ))}
-      {fields.length <= 10 && isEditMode && (
-        <AddAnotherButton includeLabel onClick={() => append({ value: '0' })} />
-      )}
-      {Boolean(fields.length) && isEditMode && (
-        <AddAnotherButton includeLabel label="-" onClick={onRemove} />
-      )}
-    </GridBox>
-  );
-};
-
-const SpellsByLevel = () => {
-  const initialized = useRef(false);
-
-  const { control } = useForm();
-  const { watch } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: FIELD_NAMES.spells.fieldName,
-  });
-
-  const spells = watch(FIELD_NAMES.spells.fieldName);
-  const castings: { value: string }[] = watch(
-    FIELD_NAMES.spellPower.castings.fieldName
-  );
-
-  useEffect(() => {
-    if (castings && castings.length > fields.length && !initialized.current) {
-      append(castings.map((_c, i) => spells[i]));
-      initialized.current = true;
-    }
-  }, [spells, append, fields, castings]);
-
-  // useEffect(() => {
-  //   if (initialized.current) {
-  //     if (castings.length > fields.length) {
-  //       remove(fields.length - 1);
-  //     } else if (castings.length < fields.length) {
-  //       append({ value: '' });
-  //     }
-  //   }
-  // }, [castings, spells, append, remove, fields]);
-
-  return (
-    <GridBox>
-      {fields.map((field, i) => (
-        <TextAreaInput
-          key={field.id}
-          label={`Lvl ${i}`}
-          name={`${FIELD_NAMES.spells.fieldName}.${i}.value`}
-        />
-      ))}
-    </GridBox>
-  );
-};
-
-export const MagicInputs: React.FC = () => {
-  const { watch } = useFormContext();
-  const isLessThanSm = useBreakpointsLessThan('sm');
-  let power: number = watch(FIELD_NAMES.spellPower.fieldName);
-  power = parseInt(`${power || 0}`, 10);
-
-  return (
-    <FormSection columns={1} isCollapsable title="Spells">
-      {!isLessThanSm && (
-        <GridBox gridTemplateColumns={powersTemplateColumns}>
-          <SubBody bold>Power</SubBody>
-          <SubBody bold>Castings by Level</SubBody>
-        </GridBox>
-      )}
+    <>
       <GridBox
         gridTemplateColumns={isLessThanSm ? '100%' : powersTemplateColumns}
       >
@@ -166,10 +113,49 @@ export const MagicInputs: React.FC = () => {
               Castings by Level
             </MagicSectionLabel>
           )}
-          <CastingsByLevel />
+          <GridBox gridTemplateColumns={`repeat(${columns}, 1fr)`}>
+            {castingsFields?.map((cField, i) => (
+              <NumberInput
+                key={cField.id}
+                label={`Lvl ${i}`}
+                min={0}
+                name={`${FIELD_NAMES.spellPower.castings.fieldName}.${i}.value`}
+              />
+            ))}
+            {castingsFields.length <= 10 && isEditMode && (
+              <AddAnotherButton includeLabel onClick={onAdd} />
+            )}
+            {Boolean(castingsFields.length) && isEditMode && (
+              <AddAnotherButton includeLabel label="-" onClick={onRemove} />
+            )}
+          </GridBox>
         </FlexBox>
       </GridBox>
-      <SpellsByLevel />
+      <GridBox>
+        {spellsFields.map((sField, i) => (
+          <TextAreaInput
+            key={sField.id}
+            label={`Lvl ${i}`}
+            name={`${FIELD_NAMES.spells.fieldName}.${i}.value`}
+          />
+        ))}
+      </GridBox>
+    </>
+  );
+};
+
+export const MagicInputs: React.FC = () => {
+  const isLessThanSm = useBreakpointsLessThan('sm');
+
+  return (
+    <FormSection columns={1} isCollapsable title="Spells">
+      {!isLessThanSm && (
+        <GridBox gridTemplateColumns={powersTemplateColumns}>
+          <SubBody bold>Power</SubBody>
+          <SubBody bold>Castings by Level</SubBody>
+        </GridBox>
+      )}
+      <Inputs />
     </FormSection>
   );
 };
