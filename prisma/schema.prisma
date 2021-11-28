@@ -23,15 +23,15 @@ model user {
   // playerCampaigns campaign[]  @relation("players")
 }
 
-model rulebook {
-  id             Int      @id @default(autoincrement())
-  createdOn      DateTime @db.Timestamp(6)
-  lastModifiedOn DateTime @db.Timestamp(6)
-  name           String
-  description    String?
-  // campaigns      campaign[]
-  // characters     character[]
-}
+// model rulebook {
+//   id             Int      @id @default(autoincrement())
+//   createdOn      DateTime @db.Timestamp(6)
+//   lastModifiedOn DateTime @db.Timestamp(6)
+//   name           String
+//   description    String?
+// campaigns      campaign[]
+// characters     character[]
+// }
 
 // model campaign {
 //   id             Int      @id @default(autoincrement())
