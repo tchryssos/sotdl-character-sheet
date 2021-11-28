@@ -34,10 +34,6 @@ const ButtonWrapper = styled(GridBox)`
   width: 100%;
 `;
 
-const CreateButton = styled(TextButton)`
-  width: 100%;
-`;
-
 const Logo = styled(LogoAscii)`
   margin-bottom: ${({ theme }) => theme.spacing[16]};
 `;
@@ -75,7 +71,7 @@ const Home: React.FC = () => {
               </>
             )}
             <Link href={createCharacterSheetRoute(NEW_CHARACTER_ID)}>
-              <CreateButton buttonLike label="Create a Character" />
+              <TextButton buttonLike label="Create a Character" />
             </Link>
           </ButtonWrapper>
         </HomePane>
