@@ -24,7 +24,7 @@ const createMenuItems = (
   userId: number | undefined,
   isLoading: boolean
 ): DropdowmMenuProps['menuItems'] => {
-  const sharedItems: DropdowmMenuProps['menuItems'] = [
+  let items: DropdowmMenuProps['menuItems'] = [
     {
       type: 'link',
       href: SETTINGS_ROUTE,
@@ -32,40 +32,42 @@ const createMenuItems = (
     },
   ];
 
-  if (isLoading) {
-    return sharedItems;
+  if (!isLoading) {
+    if (userId) {
+      items = [
+        {
+          type: 'link',
+          href: createProfileRoute(userId),
+          text: 'My characters',
+        },
+        ...items,
+        {
+          type: 'special',
+          component: (
+            <DropdownAuthLink type="logout">
+              <Body>Log out</Body>
+            </DropdownAuthLink>
+          ),
+        },
+      ];
+    } else {
+      items = [
+        ...items,
+        {
+          type: 'special',
+          component: (
+            <DropdownAuthLink type="login">
+              <Body>Authenticate</Body>
+            </DropdownAuthLink>
+          ),
+        },
+      ];
+    }
   }
 
-  if (userId) {
-    return [
-      {
-        type: 'link',
-        href: createProfileRoute(userId),
-        text: 'My characters',
-      },
-      ...sharedItems,
-      {
-        type: 'special',
-        component: (
-          <DropdownAuthLink type="logout">
-            <Body>Log out</Body>
-          </DropdownAuthLink>
-        ),
-      },
-    ];
-  }
+  items = [{ type: 'label', text: 'Profile' }, ...items];
 
-  return [
-    ...sharedItems,
-    {
-      type: 'special',
-      component: (
-        <DropdownAuthLink type="login">
-          <Body>Authenticate</Body>
-        </DropdownAuthLink>
-      ),
-    },
-  ];
+  return items;
 };
 
 interface ProfileDropdownProps {

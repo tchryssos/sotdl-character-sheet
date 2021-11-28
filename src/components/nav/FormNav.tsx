@@ -198,6 +198,8 @@ export const FormNav: React.FC = () => {
       ];
     }
 
+    items = [{ type: 'label', text: 'Form' }, ...items];
+
     return items;
   }, [copyCode, isNavExpanded, setNavExpanded, user?.id]);
 

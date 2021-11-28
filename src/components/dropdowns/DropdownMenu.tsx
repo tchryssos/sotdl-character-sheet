@@ -7,6 +7,7 @@ import { Divider } from '../Divider';
 import { Link } from '../Link';
 import { Pane } from '../Pane';
 import { Body } from '../typography/Body';
+import { SubBody } from '../typography/SubBody';
 
 const DropdownWrapper = styled.div`
   position: relative;
@@ -46,6 +47,12 @@ const DropdownButton = styled(TextButton)`
   padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[8]}`};
 `;
 
+const DropdownLabel = styled(SubBody)`
+  text-align: center;
+  padding: ${({ theme }) => `${theme.spacing[12]} ${theme.spacing[8]}`};
+  user-select: none;
+`;
+
 type MenuItemObj =
   | {
       type: 'link';
@@ -60,6 +67,10 @@ type MenuItemObj =
       type: 'button';
       text: string;
       onClick: () => void;
+    }
+  | {
+      type: 'label';
+      text: string;
     };
 
 export interface DropdowmMenuProps {
@@ -82,6 +93,8 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
       return (
         <DropdownButton label={item.text} transparent onClick={item.onClick} />
       );
+    case 'label':
+      return <DropdownLabel>-- {item.text} --</DropdownLabel>;
     default:
       return <>{item.component}</>;
   }
