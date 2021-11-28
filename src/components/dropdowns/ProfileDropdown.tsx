@@ -1,10 +1,12 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
+import { useMemo } from 'react';
 
 import { createProfileRoute, SETTINGS_ROUTE } from '~/constants/routing';
 
 import { AuthLink } from '../AuthLink';
-import { ProfilePicture } from '../ProfilePicture';
+import { IconButton } from '../buttons/IconButton';
+import { Hamburger } from '../icons/Hamburger';
 import { Body } from '../typography/Body';
 import { DropdowmMenuProps, DropdownMenu } from './DropdownMenu';
 
@@ -66,16 +68,26 @@ const createMenuItems = (
   ];
 };
 
-export const ProfileDropdown: React.FC = () => {
+interface ProfileDropdownProps {
+  dropdownMenuItems: DropdowmMenuProps['menuItems'];
+}
+
+export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
+  dropdownMenuItems,
+}) => {
   const { isLoading, user } = useUser();
+
+  const menuItems = useMemo(
+    () => [...dropdownMenuItems, ...createMenuItems(user?.id, isLoading)],
+    [dropdownMenuItems, user?.id, isLoading]
+  );
+
   return (
-    <DropdownMenu menuItems={createMenuItems(user?.id, isLoading)}>
+    <DropdownMenu menuItems={menuItems}>
       {({ toggleOpen }) => (
-        <ProfilePicture
-          alt="Profile picture"
-          imageSrc={user?.authProviderData.picture}
-          onClick={toggleOpen}
-        />
+        <IconButton onClick={toggleOpen}>
+          <Hamburger title="Menu" titleId="menu" />
+        </IconButton>
       )}
     </DropdownMenu>
   );

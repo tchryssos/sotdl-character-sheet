@@ -1,10 +1,13 @@
 import { createContext } from 'react';
 
+import { DropdowmMenuProps } from '~/components/dropdowns/DropdownMenu';
+
 type NavContext = {
   iconPortalNode: HTMLDivElement | undefined;
   expandedPortalNode: HTMLDivElement | undefined;
   setNavExpanded: (isExpanded: boolean) => void;
   setNavTitle: (title: string) => void;
+  setDropdownItems: (items: DropdowmMenuProps['menuItems']) => void;
   isNavExpanded: boolean;
 };
 
@@ -14,4 +17,5 @@ export const NavContext = createContext<NavContext>({
   setNavExpanded: () => null,
   setNavTitle: () => null,
   isNavExpanded: false,
+  setDropdownItems: () => null,
 });

@@ -1,6 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/dist/client/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
@@ -19,11 +19,10 @@ import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
 import { IconButton } from '../buttons/IconButton';
 import { CharacterCodeForm } from '../CharacterCodeForm';
-import { DropdowmMenuProps, DropdownMenu } from '../dropdowns/DropdownMenu';
+import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
 import { ClipboardCopy } from '../icons/ClipboardCopy';
 import { ClipboardCopyFail } from '../icons/ClipboardCopyFail';
 import { ClipboardCopySuccess } from '../icons/ClipboardCopySuccess';
-import { Hamburger } from '../icons/Hamburger';
 import { Pencil } from '../icons/Pencil';
 import { Save } from '../icons/Save';
 import { LoadingStatus } from '../icons/StatusIcon';
@@ -59,7 +58,7 @@ const CopyButton: React.FC = () => {
   const { getValues, formState, reset } = useFormContext();
   const { isDirty } = formState;
 
-  const { copyCode } = useCopyCode(setCopySuccess);
+  const copyCode = useCopyCode(setCopySuccess);
 
   useEffect(() => {
     if (isDirty) {
@@ -78,45 +77,6 @@ const CopyButton: React.FC = () => {
     <IconButton type="submit" onClick={copyCode}>
       <CopyIcon copySuccess={copySuccess} />
     </IconButton>
-  );
-};
-
-interface FormDropdownProps {
-  loggedIn: boolean;
-  isLoading: boolean;
-}
-
-const FormDropdown: React.FC<FormDropdownProps> = ({ loggedIn }) => {
-  const { setNavExpanded, isNavExpanded } = useContext(NavContext);
-  const { copyCode } = useCopyCode();
-
-  let menuItems: DropdowmMenuProps['menuItems'] = [
-    {
-      type: 'button',
-      text: isNavExpanded ? 'Close code form' : 'Upload with code',
-      onClick: () => setNavExpanded(!isNavExpanded),
-    },
-  ];
-
-  if (loggedIn) {
-    menuItems = [
-      {
-        type: 'button',
-        text: 'Copy character code',
-        onClick: copyCode,
-      },
-      ...menuItems,
-    ];
-  }
-
-  return (
-    <DropdownMenu menuItems={menuItems}>
-      {({ toggleOpen }) => (
-        <IconButton onClick={toggleOpen}>
-          <Hamburger title="Form menu" titleId="form-menu" />
-        </IconButton>
-      )}
-    </DropdownMenu>
   );
 };
 
@@ -167,7 +127,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
 // END - Icons and Buttons - End
 
 const NavButtons: React.FC = () => {
-  const { user, isLoading } = useUser();
+  const { user } = useUser();
   const { isEditMode, setIsEditMode } = useContext(EditContext);
 
   return (
@@ -180,22 +140,32 @@ const NavButtons: React.FC = () => {
           titleId="edit-pencil-icon"
         />
       </IconButton>
-      <FormDropdown isLoading={isLoading} loggedIn={Boolean(user)} />
     </>
   );
 };
 
 export const FormNav: React.FC = () => {
+  const { user } = useUser();
+
+  const copyCode = useCopyCode();
+
   const { watch } = useFormContext();
   const name = watch(FIELD_NAMES.name);
   const ancestry = watch(FIELD_NAMES.ancestry);
   const novicePath = watch(FIELD_NAMES.paths.novice_path);
   const expertPath = watch(FIELD_NAMES.paths.expert_path);
   const masterPath = watch(FIELD_NAMES.paths.master_path);
+
   const isXxs = useBreakpointsLessThan('xs');
 
-  const { iconPortalNode, isNavExpanded, setNavTitle, expandedPortalNode } =
-    useContext(NavContext);
+  const {
+    iconPortalNode,
+    isNavExpanded,
+    setNavTitle,
+    expandedPortalNode,
+    setNavExpanded,
+    setDropdownItems,
+  } = useContext(NavContext);
 
   useEffect(() => {
     const titleClass = masterPath || expertPath || novicePath || '';
@@ -206,6 +176,37 @@ export const FormNav: React.FC = () => {
     }`;
     setNavTitle(title || '');
   }, [name, ancestry, novicePath, expertPath, masterPath, setNavTitle, isXxs]);
+
+  // START - NAV MENU ITEMS - START
+  const menuItems = useMemo(() => {
+    let items: DropdowmMenuProps['menuItems'] = [
+      {
+        type: 'button',
+        text: isNavExpanded ? 'Close code form' : 'Upload with code',
+        onClick: () => setNavExpanded(!isNavExpanded),
+      },
+    ];
+
+    if (user?.id) {
+      items = [
+        {
+          type: 'button',
+          text: 'Copy character code',
+          onClick: copyCode,
+        },
+        ...items,
+      ];
+    }
+
+    return items;
+  }, [copyCode, isNavExpanded, setNavExpanded, user?.id]);
+
+  useEffect(() => {
+    if (setDropdownItems) {
+      setDropdownItems(menuItems);
+    }
+  }, [menuItems, setDropdownItems]);
+  // END - NAV MENU ITEMS - END
 
   return (
     <>

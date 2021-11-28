@@ -5,6 +5,7 @@ import { Spacing } from '~/typings/theme';
 
 // import { MutableRefObject, useContext, useState } from 'react';
 import { FlexBox } from '../box/FlexBox';
+import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { Link } from '../Link';
 import { LogoAscii } from '../LogoAscii';
@@ -73,6 +74,7 @@ interface NavBarProps {
   isExpanded: boolean;
   setIconPortalNode: (node: HTMLDivElement) => void;
   setExpandedPortalNode: (node: HTMLDivElement) => void;
+  dropdownMenuItems: DropdowmMenuProps['menuItems'];
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
@@ -80,6 +82,7 @@ export const NavBar: React.FC<NavBarProps> = ({
   isExpanded,
   setIconPortalNode,
   setExpandedPortalNode,
+  dropdownMenuItems,
 }) => {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
@@ -96,7 +99,7 @@ export const NavBar: React.FC<NavBarProps> = ({
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            <ProfileDropdown />
+            <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>
         </TopRow>
         <ExpandedPortal flexGap={flexGap} ref={setExpandedPortalNode} />
