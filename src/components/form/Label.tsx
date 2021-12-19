@@ -7,6 +7,7 @@ interface LabelProps {
   label?: string;
   className?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
 const StyledLabel = styled.label`
@@ -18,9 +19,10 @@ export const Label: React.FC<LabelProps> = ({
   label,
   className,
   children,
+  onClick,
 }) =>
   label ? (
-    <StyledLabel className={className} htmlFor={labelFor}>
+    <StyledLabel className={className} htmlFor={labelFor} onClick={onClick}>
       <SubBody bold>{label}</SubBody>
       {children}
     </StyledLabel>

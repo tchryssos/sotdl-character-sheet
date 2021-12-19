@@ -45,7 +45,7 @@ export const Input: React.FC<InputProps> = (props) => {
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <StyledInput
         className={className}
-        disabled={disabled}
+        disabled={disabled || (type === 'checkbox' && nonEditLocked)}
         max={max}
         min={min}
         name={registeredInput.name}
