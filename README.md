@@ -6,6 +6,7 @@
 
 1. Add more advanced query/fetch support ([React Query](https://react-query.tanstack.com/) or [SWR](https://swr.vercel.app/))
 1. Use `getServerSideProps` for data fetching
+1. Optimize bundle sizes / initial loads with lazy loading ([Next dynamic?](https://nextjs.org/docs/advanced-features/dynamic-import))
 
 ### UX/UI
 

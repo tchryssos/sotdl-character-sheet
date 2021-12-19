@@ -1,7 +1,7 @@
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { css, Global, ThemeProvider } from '@emotion/react';
 import styled from '@emotion/styled';
-import type { AppProps /* , AppContext */ } from 'next/app';
+import type { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
