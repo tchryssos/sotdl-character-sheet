@@ -1,9 +1,9 @@
 {
-  "name": "next-typescript-template",
+  "name": "rpg-sheet-dot-games",
   "version": "0.1.2",
   "private": false,
   "author": "<troychryssos@gmail.com>",
-  "description": "A website by Troy Chryssos",
+  "description": "An online TTRPG character sheet compendium",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
