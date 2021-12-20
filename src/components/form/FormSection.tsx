@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/dist/client/router';
 import { useContext, useState } from 'react';
 
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
+import { useSectionVisibility } from '~/logic/hooks/useSectionVisibility';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Box } from '../box/Box';
@@ -102,16 +104,21 @@ export const FormSection: React.FC<FormSectionProps> = ({
   canToggleVisibility = true,
   className,
 }) => {
-  // const sectionVisibi = localStorage.getItem(
-  //   'sectionVisibility'
-  // )
+  const { getSectionVisibility, setSectionVisibility } = useSectionVisibility();
+  const { asPath } = useRouter();
 
-  const [isOpen, setIsOpen] = useState(!isCollapsable);
+  // console.log(getSectionVisibility(asPath.split('?')[0], title));
+
+  const [isOpen, setIsOpen] = useState(
+    getSectionVisibility(asPath.split('?')[0], title) ?? true
+  );
   const [isVisible, setIsVisible] = useState(true);
   const { isEditMode } = useContext(EditContext);
 
   const onChangeVisibility = () => {
-    setIsVisible(!isVisible);
+    const nextVisibility = !isVisible;
+    setIsVisible(nextVisibility);
+    setSectionVisibility(asPath.split('?')[0], title, nextVisibility);
   };
 
   if ((!isEditMode && isVisible) || isEditMode) {
@@ -138,7 +145,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
               {title}
             </Text>
             {isEditMode && canToggleVisibility && (
-              <VisibilityButton onClick={() => setIsVisible(!isVisible)}>
+              <VisibilityButton onClick={onChangeVisibility}>
                 {isVisible ? (
                   <Visible
                     title="Form section visibility"

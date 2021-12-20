@@ -41,8 +41,8 @@ export const CharacterForm: React.FC = () => {
       }
     };
 
-    window.addEventListener('keyup', formHotKeys);
-    return () => window.removeEventListener('keyup', formHotKeys);
+    globalThis.addEventListener('keyup', formHotKeys);
+    return () => globalThis.removeEventListener('keyup', formHotKeys);
   }, []);
 
   useEffect(() => {

@@ -1,45 +1,60 @@
-type VisibilityTriplet = `${number}:${string}:${boolean}`;
+import { useEffect, useState } from 'react';
+
+type VisibilityTriplet = `${string}:${string}:${boolean}`;
 
 type VisibilityObj = {
-  [key: `${number}`]: {
+  [key: string]: {
     [key: string]: boolean;
   };
 };
 
 const visKey = 'sectionVisibility';
 
+const emptyVis: VisibilityObj = {};
+
 export const useSectionVisibility = () => {
-  const sectionVisibityString = localStorage.getItem(visKey) || '';
+  const [visibilityObject, setVisibilityObject] = useState(emptyVis);
+  const sectionVisibityString = globalThis.localStorage?.getItem(visKey) || '';
 
-  let visibilityObject: VisibilityObj = {};
+  useEffect(() => {
+    if (sectionVisibityString !== undefined) {
+      const visibilityTriplets = sectionVisibityString.split(' ') as
+        | VisibilityTriplet[];
 
-  if (sectionVisibityString) {
-    const visibilityTriplets = sectionVisibityString.split(' ') as
-      | VisibilityTriplet[];
+      setVisibilityObject(
+        visibilityTriplets.reduce((acc, curr) => {
+          const [pageId, sectionTitle, isVisible] = curr.split(':') as [
+            string,
+            string,
+            `${boolean}`
+          ];
 
-    visibilityObject = visibilityTriplets.reduce((acc, curr) => {
-      const [id, sectionTitle, isVisible] = curr.split(':') as [
-        `${number}`,
-        string,
-        `${boolean}`
-      ];
+          acc[pageId] = {
+            ...acc[pageId],
+            [sectionTitle]: isVisible === 'true',
+          };
 
-      acc[id] = { ...acc[id], [sectionTitle]: isVisible === 'true' };
+          return acc;
+        }, {} as VisibilityObj)
+      );
+    }
+  }, [sectionVisibityString]);
 
-      return acc;
-    }, {} as VisibilityObj);
-  }
+  const getSectionVisibility = (
+    pageId: string,
+    sectionTitle: string
+  ): boolean | undefined => visibilityObject[pageId]?.[sectionTitle];
 
   const setSectionVisibility = (
-    id: number,
+    pageId: string,
     title: string,
     isVisible: boolean
   ) => {
     localStorage.setItem(
       visKey,
-      `${id}:${title}${isVisible} ${sectionVisibityString}`
+      `${pageId}:${title}${isVisible} ${sectionVisibityString}`
     );
   };
 
-  return { visibilityObject, setSectionVisibility };
+  return { visibilityObject, setSectionVisibility, getSectionVisibility };
 };
