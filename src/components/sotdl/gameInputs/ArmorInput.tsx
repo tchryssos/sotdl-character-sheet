@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { SubBody } from '~/components/typography/SubBody';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -16,13 +17,6 @@ import { Label } from '../../form/Label';
 import { NumberInput } from '../../form/NumberInput';
 import { TextAreaInput } from '../../form/TextAreaInput';
 import { TextInput } from '../../form/TextInput';
-
-const ArmorCheckbox = styled.input`
-  min-width: ${({ theme }) => theme.spacing[40]};
-  min-height: ${({ theme }) => theme.spacing[40]};
-  padding: 0;
-  margin: 0;
-`;
 
 const SmArmorActiveLabel = styled(Label)`
   width: unset;
@@ -68,11 +62,12 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
           label="Act."
           labelFor={FIELD_NAMES.activeArmorIndex}
         >
-          <ArmorCheckbox
-            checked={activeArmorIndex === index}
+          <CheckboxInput
+            customOnChange={onArmorCheck}
+            hideLabel
+            inputLike
+            isChecked={activeArmorIndex === index}
             name={FIELD_NAMES.activeArmorIndex}
-            type="checkbox"
-            onChange={onArmorCheck}
           />
         </SmArmorActiveLabel>
         <FlexBox column mx={8}>
@@ -100,11 +95,12 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   return (
     <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
       <GridBox gridTemplateColumns="auto 1fr">
-        <ArmorCheckbox
-          checked={activeArmorIndex === index}
+        <CheckboxInput
+          customOnChange={onArmorCheck}
+          hideLabel
+          inputLike
+          isChecked={activeArmorIndex === index}
           name={FIELD_NAMES.activeArmorIndex}
-          type="checkbox"
-          onChange={onArmorCheck}
         />
         <TextInput
           hideLabel

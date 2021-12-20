@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import startCase from 'lodash.startcase';
 import { useFormContext } from 'react-hook-form';
 
 import { CheckboxInputProps } from '~/components/form/typings';
@@ -7,6 +8,7 @@ import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 import { BaseButton } from '../buttons/BaseButton';
 import { Check } from '../icons/Check';
 import { Input } from './Input';
+import { Label } from './Label';
 
 const Wrapper = styled.div`
   width: fit-content;
@@ -59,7 +61,7 @@ export const CheckboxInput: React.FC<CheckboxProps> = ({
   isChecked,
 }) => {
   const { watch, setValue } = useFormContext();
-  const checked = watch(name) || isChecked;
+  const checked = inputLike ? isChecked : watch(name);
 
   const isEditingLocked = useIsEditingLocked(Boolean(alwaysEditable));
   const canEdit = !disabled && !readOnly && !isEditingLocked;
@@ -88,15 +90,17 @@ export const CheckboxInput: React.FC<CheckboxProps> = ({
           validations={validations}
         />
       )}
-      <CheckButton disabled={!canEdit} transparent onClick={onChange}>
-        {checked && (
-          <Check
-            color="text"
-            title={`${name} checked`}
-            titleId={`${name}-checked`}
-          />
-        )}
-      </CheckButton>
+      <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
+        <CheckButton disabled={!canEdit} transparent onClick={onChange}>
+          {checked && (
+            <Check
+              color="text"
+              title={`${name} checked`}
+              titleId={`${name}-checked`}
+            />
+          )}
+        </CheckButton>
+      </Label>
     </Wrapper>
   );
 };
