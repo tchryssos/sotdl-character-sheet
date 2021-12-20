@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/dist/client/router';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -107,12 +107,9 @@ export const FormSection: React.FC<FormSectionProps> = ({
   const { getSectionVisibility, setSectionVisibility } = useSectionVisibility();
   const { asPath } = useRouter();
 
-  // console.log(getSectionVisibility(asPath.split('?')[0], title));
-
-  const [isOpen, setIsOpen] = useState(
-    getSectionVisibility(asPath.split('?')[0], title) ?? true
-  );
+  const [isOpen, setIsOpen] = useState(true);
   const [isVisible, setIsVisible] = useState(true);
+
   const { isEditMode } = useContext(EditContext);
 
   const onChangeVisibility = () => {
@@ -120,6 +117,13 @@ export const FormSection: React.FC<FormSectionProps> = ({
     setIsVisible(nextVisibility);
     setSectionVisibility(asPath.split('?')[0], title, nextVisibility);
   };
+
+  const savedVisibility = getSectionVisibility(asPath.split('?')[0], title);
+  useEffect(() => {
+    if (savedVisibility !== undefined) {
+      setIsVisible(savedVisibility);
+    }
+  }, [savedVisibility]);
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (

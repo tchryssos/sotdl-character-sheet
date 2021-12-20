@@ -40,7 +40,7 @@ export const ColorMode: React.FC<ColorModeProps> = ({ colorModeKey }) => {
 
   useEffect(() => {
     setColorMode(colorMode);
-    localStorage.setItem(colorModeKey, colorMode);
+    globalThis.localStorage.setItem(colorModeKey, colorMode);
   }, [colorMode, setColorMode, colorModeKey]);
 
   return (
