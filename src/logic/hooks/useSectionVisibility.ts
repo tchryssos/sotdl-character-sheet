@@ -1,9 +1,13 @@
 import camelCase from 'lodash.camelcase';
+import set from 'lodash.set';
 import { useEffect, useState } from 'react';
 
 type VisibilityObj = {
   [key: string]: {
-    [key: string]: boolean;
+    [key: string]: {
+      isVisible: boolean;
+      isExpanded: boolean;
+    };
   };
 };
 
@@ -11,7 +15,7 @@ const visKey = 'sectionVisibility';
 
 const emptyVis: VisibilityObj = {};
 
-export const useSectionVisibility = () => {
+export const useSectionVisibility = (pageId: string, sectionTitle: string) => {
   const [visibilityObject, setVisibilityObject] = useState(emptyVis);
   const sectionVisibityString =
     globalThis.localStorage?.getItem(visKey) || '{}';
@@ -20,26 +24,20 @@ export const useSectionVisibility = () => {
     setVisibilityObject(JSON.parse(sectionVisibityString));
   }, [sectionVisibityString]);
 
-  const getSectionVisibility = (
-    pageId: string,
-    sectionTitle: string
-  ): boolean | undefined => visibilityObject[pageId]?.[camelCase(sectionTitle)];
+  const getSectionVisibility = (): VisibilityObj[string][string] | undefined =>
+    visibilityObject[pageId]?.[camelCase(sectionTitle)];
 
   const setSectionVisibility = (
-    pageId: string,
-    title: string,
-    isVisible: boolean
+    visibilityKey: 'isVisible' | 'isExpanded',
+    visibilityValue: boolean
   ) => {
-    globalThis.localStorage?.setItem(
-      visKey,
-      JSON.stringify({
-        ...visibilityObject,
-        [pageId]: {
-          ...visibilityObject[pageId],
-          [camelCase(title)]: isVisible,
-        },
-      })
+    const nextObj = set(
+      visibilityObject,
+      [pageId, camelCase(sectionTitle), visibilityKey],
+      visibilityValue
     );
+    globalThis.localStorage?.setItem(visKey, JSON.stringify(nextObj));
+    setVisibilityObject(nextObj);
   };
 
   return { setSectionVisibility, getSectionVisibility };

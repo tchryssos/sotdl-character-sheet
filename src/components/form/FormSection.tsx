@@ -104,26 +104,48 @@ export const FormSection: React.FC<FormSectionProps> = ({
   canToggleVisibility = true,
   className,
 }) => {
-  const { getSectionVisibility, setSectionVisibility } = useSectionVisibility();
   const { asPath } = useRouter();
-
-  const [isOpen, setIsOpen] = useState(true);
-  const [isVisible, setIsVisible] = useState(true);
+  const visibilityPageKey = asPath.split('?')[0];
+  const { getSectionVisibility, setSectionVisibility } = useSectionVisibility(
+    visibilityPageKey,
+    title
+  );
+  const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
+    getSectionVisibility() || {};
 
   const { isEditMode } = useContext(EditContext);
+
+  // START - SECTION VISIBILITY - START
+  const [isVisible, setIsVisible] = useState(true);
 
   const onChangeVisibility = () => {
     const nextVisibility = !isVisible;
     setIsVisible(nextVisibility);
-    setSectionVisibility(asPath.split('?')[0], title, nextVisibility);
+    setSectionVisibility('isVisible', nextVisibility);
   };
 
-  const savedVisibility = getSectionVisibility(asPath.split('?')[0], title);
   useEffect(() => {
-    if (savedVisibility !== undefined) {
-      setIsVisible(savedVisibility);
+    if (initIsVisible !== undefined) {
+      setIsVisible(initIsVisible);
     }
-  }, [savedVisibility]);
+  }, [initIsVisible]);
+  // END - SECTION VISIBILITY - END
+
+  // START - SECTION EXPANDED STATUS - START
+  const [isOpen, setIsOpen] = useState(true);
+
+  const onChangeExpanded = () => {
+    const nextOpenState = !isOpen;
+    setIsOpen(nextOpenState);
+    setSectionVisibility('isExpanded', nextOpenState);
+  };
+
+  useEffect(() => {
+    if (initIsExpanded !== undefined) {
+      setIsOpen(initIsExpanded);
+    }
+  }, [initIsExpanded]);
+  // END - SECTION COLLAPSED STATUST - END
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (
@@ -135,10 +157,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
         <FlexBox alignItems="flex-end" ml={4}>
           <TitleBox>
             {isCollapsable && (
-              <CollapseButton
-                isOpen={isOpen}
-                onClick={() => setIsOpen(!isOpen)}
-              >
+              <CollapseButton isOpen={isOpen} onClick={onChangeExpanded}>
                 <ChevRight
                   title="Collapsable arrow"
                   titleId={`collapseable-arrow-icon-${title}`}
