@@ -98,13 +98,21 @@ export const FormSection: React.FC<FormSectionProps> = ({
   title,
   children,
   columns,
-  isCollapsable,
+  isCollapsable = true,
   canToggleVisibility = true,
   className,
 }) => {
+  // const sectionVisibi = localStorage.getItem(
+  //   'sectionVisibility'
+  // )
+
   const [isOpen, setIsOpen] = useState(!isCollapsable);
   const [isVisible, setIsVisible] = useState(true);
   const { isEditMode } = useContext(EditContext);
+
+  const onChangeVisibility = () => {
+    setIsVisible(!isVisible);
+  };
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (

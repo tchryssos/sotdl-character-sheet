@@ -58,7 +58,7 @@ const ItemHeader: React.FC = () => {
 };
 
 export const EquipmentInputs: React.FC = () => (
-  <FormSection columns={1} title="Equipment">
+  <FormSection columns={1} isCollapsable title="Equipment">
     <AddAnotherMultiField
       HeaderRow={ItemHeader}
       parentFieldName={FIELD_NAMES.equipment.fieldName}
