@@ -90,7 +90,10 @@ export const CheckboxInput: React.FC<CheckboxProps> = ({
           validations={validations}
         />
       )}
-      <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
+      <Label
+        label={hideLabel || !inputLike ? '' : label || startCase(name)}
+        labelFor={name}
+      >
         <CheckButton disabled={!canEdit} transparent onClick={onChange}>
           {checked && (
             <Check
