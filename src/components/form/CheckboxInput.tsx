@@ -1,17 +1,24 @@
 import styled from '@emotion/styled';
-import startCase from 'lodash.startcase';
 import { useFormContext } from 'react-hook-form';
 
 import { CheckboxInputProps } from '~/components/form/typings';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
-import { FlexBox } from '../box/FlexBox';
+import { BaseButton } from '../buttons/BaseButton';
 import { Check } from '../icons/Check';
 import { Input } from './Input';
-import { Label } from './Label';
+
+const Wrapper = styled.div`
+  width: fit-content;
+  position: relative;
+`;
+
+const CheckButton = styled(BaseButton)(({ theme }) => ({
+  width: theme.spacing[40],
+  height: theme.spacing[40],
+}));
 
 const CheckInput = styled(Input)`
-  width: ${({ theme }) => theme.spacing[40]};
   padding: 0;
   margin: 0;
   position: absolute;
@@ -19,22 +26,26 @@ const CheckInput = styled(Input)`
   z-index: -1;
 `;
 
-const WrapperLabel = styled(Label)`
-  position: relative;
-  cursor: pointer;
-  width: fit-content;
-`;
+type CheckboxBaseProps = Omit<
+  CheckboxInputProps,
+  'type' | 'onChange' | 'customOnChange'
+>;
 
-const FakeBox = styled(FlexBox)(({ theme }) => ({
-  border: `${theme.colors.accentLight} solid ${theme.border.borderWidth[1]}`,
-  width: theme.spacing[40],
-  height: theme.spacing[40],
-  borderRadius: pxToRem(4),
-}));
+type CheckboxProps = CheckboxBaseProps &
+  (
+    | {
+        inputLike?: false;
+        customOnChange?: () => void;
+        isChecked?: false;
+      }
+    | {
+        inputLike: true;
+        customOnChange: () => void;
+        isChecked: boolean;
+      }
+  );
 
-export const CheckboxInput: React.FC<
-  Omit<CheckboxInputProps, 'type' | 'customOnChange' | 'onChange'>
-> = ({
+export const CheckboxInput: React.FC<CheckboxProps> = ({
   label,
   name,
   readOnly,
@@ -43,30 +54,41 @@ export const CheckboxInput: React.FC<
   validations,
   hideLabel,
   alwaysEditable,
+  customOnChange,
+  inputLike,
+  isChecked,
 }) => {
   const { watch, setValue } = useFormContext();
-  const checked = watch(name);
+  const checked = watch(name) || isChecked;
+
+  const isEditingLocked = useIsEditingLocked(Boolean(alwaysEditable));
+  const canEdit = !disabled && !readOnly && !isEditingLocked;
 
   const onChange = () => {
-    setValue(name, !checked);
+    if (canEdit) {
+      if (customOnChange) {
+        customOnChange();
+      } else {
+        setValue(name, !checked);
+      }
+    }
   };
 
   return (
-    <WrapperLabel
-      label={hideLabel ? '' : label || startCase(name)}
-      labelFor={name}
-      onClick={onChange}
-    >
-      <CheckInput
-        alwaysEditable={alwaysEditable}
-        className={className}
-        disabled={disabled || readOnly}
-        hideLabel
-        name={name}
-        type="checkbox"
-        validations={validations}
-      />
-      <FakeBox>
+    <Wrapper>
+      {!inputLike && (
+        <CheckInput
+          alwaysEditable={alwaysEditable}
+          className={className}
+          disabled={disabled || readOnly}
+          hideLabel={hideLabel}
+          label={label}
+          name={name}
+          type="checkbox"
+          validations={validations}
+        />
+      )}
+      <CheckButton disabled={!canEdit} transparent onClick={onChange}>
         {checked && (
           <Check
             color="text"
@@ -74,7 +96,7 @@ export const CheckboxInput: React.FC<
             titleId={`${name}-checked`}
           />
         )}
-      </FakeBox>
-    </WrapperLabel>
+      </CheckButton>
+    </Wrapper>
   );
 };

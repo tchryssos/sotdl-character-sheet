@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
 import startCase from 'lodash.startcase';
-import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Label } from '~/components/form/Label';
 import { InputProps, NumberInputProps } from '~/components/form/typings';
-import { EditContext } from '~/logic/contexts/editContext';
+import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
 const StyledInput = styled.input<Pick<InputProps, 'noOutline'>>(
   ({ theme, noOutline }) => ({
@@ -38,19 +37,19 @@ export const Input: React.FC<InputProps> = (props) => {
   } = props as InputProps;
   const { min, max, step = 1 } = props as NumberInputProps;
   const { register } = useFormContext();
-  const { isEditMode } = useContext(EditContext);
   const registeredInput = register(name, validations);
-  const nonEditLocked = !isEditMode && !alwaysEditable;
+  const isEditingLocked = useIsEditingLocked(Boolean(alwaysEditable));
+
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <StyledInput
         className={className}
-        disabled={disabled || (type === 'checkbox' && nonEditLocked)}
+        disabled={disabled || (type === 'checkbox' && isEditingLocked)}
         max={max}
         min={min}
         name={registeredInput.name}
         noOutline={noOutline}
-        readOnly={readOnly || noOutline || nonEditLocked}
+        readOnly={readOnly || noOutline || isEditingLocked}
         ref={registeredInput.ref}
         step={step}
         type={type}
