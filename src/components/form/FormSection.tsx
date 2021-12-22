@@ -1,11 +1,10 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/dist/client/router';
 import { useContext, useEffect, useState } from 'react';
 
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useSectionVisibility } from '~/logic/hooks/useSectionVisibility';
+import { VisibilityContext } from '~/logic/contexts/visibilityContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Box } from '../box/Box';
@@ -104,14 +103,9 @@ export const FormSection: React.FC<FormSectionProps> = ({
   canToggleVisibility = true,
   className,
 }) => {
-  const { asPath } = useRouter();
-  const visibilityPageKey = asPath.split('?')[0];
-  const { getSectionVisibility, setSectionVisibility } = useSectionVisibility(
-    visibilityPageKey,
-    title
-  );
+  const { getVisibility, setVisibility } = useContext(VisibilityContext);
   const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
-    getSectionVisibility() || {};
+    getVisibility(title) || {};
 
   const { isEditMode } = useContext(EditContext);
 
@@ -121,7 +115,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   const onChangeVisibility = () => {
     const nextVisibility = !isVisible;
     setIsVisible(nextVisibility);
-    setSectionVisibility('isVisible', nextVisibility);
+    setVisibility(title, 'isVisible', nextVisibility);
   };
 
   useEffect(() => {
@@ -137,7 +131,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   const onChangeExpanded = () => {
     const nextOpenState = !isOpen;
     setIsOpen(nextOpenState);
-    setSectionVisibility('isExpanded', nextOpenState);
+    setVisibility(title, 'isExpanded', nextOpenState);
   };
 
   useEffect(() => {
