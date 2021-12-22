@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { FlexBox } from '../box/FlexBox';
-import { VisibilityContextProvider } from '../providers/visibilityContextProvider';
+import { VisibilityContextProvider } from '../providers/VisibilityContextProvider';
 
 interface FormProps {
   onSubmit: () => void;
