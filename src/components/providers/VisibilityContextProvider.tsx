@@ -20,7 +20,7 @@ const visKey = 'sectionVisibility';
 export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps> =
   ({ children }) => {
     const { asPath } = useRouter();
-    const pageId = asPath.split('?')[0];
+    const pageId = camelCase(asPath.split('?')[0]);
 
     const [visibilityObject, setSectionVisibilityInfoObject] =
       useState(emptyVis);
@@ -34,7 +34,7 @@ export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps>
 
     // START - SECTION - START
     const getSectionVisibilityInfo = (sectionTitle: string) =>
-      visibilityObject[camelCase(pageId)]?.sections?.[camelCase(sectionTitle)];
+      visibilityObject[pageId]?.sections?.[camelCase(sectionTitle)];
 
     const setSectionVisibilityInfo = (
       sectionTitle: string,
@@ -42,7 +42,7 @@ export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps>
       visibilityValue: NonNullable<SectionInfo[keyof SectionInfo]>
     ) => {
       const nextObj = set(
-        visibilityObject,
+        { ...visibilityObject },
         [pageId, 'sections', camelCase(sectionTitle), visibilityKey],
         visibilityValue
       );
@@ -58,7 +58,7 @@ export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps>
       value: NonNullable<FieldInfo[keyof FieldInfo]>
     ) => {
       const nextObj = set(
-        visibilityObject,
+        { ...visibilityObject },
         [pageId, 'fields', camelCase(fieldName), fieldKey],
         value
       );

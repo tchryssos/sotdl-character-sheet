@@ -40,16 +40,19 @@ export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
 }) => {
   const [height, setHeight] = useState<number>(defaultHeight);
 
-  const { getFieldVisibilityInfo, setFieldVisibilityInfo } =
-    useContext(VisibilityContext);
-
   const { register } = useFormContext();
 
   const nonEditLocked = useIsEditingLocked(Boolean(alwaysEditable));
 
+  const { getFieldVisibilityInfo, setFieldVisibilityInfo } =
+    useContext(VisibilityContext);
+  const savedHeight = getFieldVisibilityInfo(name)?.height;
+
   useEffect(() => {
-    setHeight(getFieldVisibilityInfo(name)?.height || defaultHeight);
-  }, [getFieldVisibilityInfo, name]);
+    if (savedHeight) {
+      setHeight(savedHeight);
+    }
+  }, [savedHeight]);
 
   // https://stackoverflow.com/a/58989538
   const onMouseUp: MouseEventHandler<HTMLTextAreaElement> = (e) => {
