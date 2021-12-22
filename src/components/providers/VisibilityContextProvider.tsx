@@ -51,7 +51,7 @@ export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps>
     return (
       <VisibilityContext.Provider
         value={{
-          visbility: visibilityObject,
+          visibility: visibilityObject,
           getVisibility,
           setVisibility,
         }}
