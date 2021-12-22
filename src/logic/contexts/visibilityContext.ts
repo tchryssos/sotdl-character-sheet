@@ -1,28 +1,49 @@
 import { createContext } from 'react';
 
+export type SectionInfo = {
+  isVisible?: boolean;
+  isExpanded?: boolean;
+};
+
+export type FieldInfo = {
+  height?: number;
+};
+
 export type VisibilityObj = {
-  [key: string]: {
-    [key: string]: {
-      isVisible: boolean;
-      isExpanded: boolean;
+  [pageId: string]: {
+    sections: {
+      [sectionId: string]: SectionInfo;
+    };
+    fields: {
+      [fieldName: string]: FieldInfo;
     };
   };
 };
 
 interface VisibilityContextState {
   visibility: VisibilityObj;
-  setVisibility: (
+
+  // Section
+  setSectionVisibilityInfo: <T extends keyof SectionInfo>(
     sectionTitle: string,
-    visibilityKey: 'isVisible' | 'isExpanded',
-    visibilityValue: boolean
+    visibilityKey: T,
+    visibilityValue: NonNullable<SectionInfo[T]>
   ) => void;
-  getVisibility: (
-    sectionTitle: string
-  ) => VisibilityObj[string][string] | undefined;
+  getSectionVisibilityInfo: (sectionTitle: string) => SectionInfo | undefined;
+
+  // Field
+  setFieldVisibilityInfo: <T extends keyof FieldInfo>(
+    fieldName: string,
+    fieldKey: T,
+    fieldValue: NonNullable<FieldInfo[T]>
+  ) => void;
+  getFieldVisibilityInfo: (fieldName: string) => FieldInfo | undefined;
 }
 
 export const VisibilityContext = createContext<VisibilityContextState>({
   visibility: {},
-  setVisibility: () => null,
-  getVisibility: () => undefined,
+  setSectionVisibilityInfo: () => null,
+  getSectionVisibilityInfo: () => undefined,
+  setFieldVisibilityInfo: () => null,
+  getFieldVisibilityInfo: () => undefined,
 });

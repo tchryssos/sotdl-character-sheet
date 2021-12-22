@@ -103,9 +103,10 @@ export const FormSection: React.FC<FormSectionProps> = ({
   canToggleVisibility = true,
   className,
 }) => {
-  const { getVisibility, setVisibility } = useContext(VisibilityContext);
+  const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
+    useContext(VisibilityContext);
   const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
-    getVisibility(title) || {};
+    getSectionVisibilityInfo(title) || {};
 
   const { isEditMode } = useContext(EditContext);
 
@@ -115,7 +116,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   const onChangeVisibility = () => {
     const nextVisibility = !isVisible;
     setIsVisible(nextVisibility);
-    setVisibility(title, 'isVisible', nextVisibility);
+    setSectionVisibilityInfo(title, 'isVisible', nextVisibility);
   };
 
   useEffect(() => {
@@ -131,7 +132,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   const onChangeExpanded = () => {
     const nextOpenState = !isOpen;
     setIsOpen(nextOpenState);
-    setVisibility(title, 'isExpanded', nextOpenState);
+    setSectionVisibilityInfo(title, 'isExpanded', nextOpenState);
   };
 
   useEffect(() => {
