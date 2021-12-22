@@ -9,10 +9,10 @@ import {
 } from 'react-hook-form';
 
 // React Hooks Form
-export type RHFRegister = UseFormRegister<FieldValues>;
-export type RHFErrors = DeepMap<FieldValues, FieldErrors>;
-export type RHFWatch = UseFormWatch<FieldValues>;
-export type RHFSetValue = UseFormSetValue;
+// export type RHFRegister = UseFormRegister<FieldValues>;
+// export type RHFErrors = DeepMap<FieldValues, FieldErrors>;
+// export type RHFWatch = UseFormWatch<FieldValues>;
+// export type RHFSetValue = UseFormSetValue;
 
 export type Validations<T> = {
   required?: boolean;

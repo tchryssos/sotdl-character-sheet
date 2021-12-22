@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn lint:prune && next build",
     "build:serve": "yarn build && yarn next start -p 3003",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",

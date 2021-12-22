@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import { HOME_ROUTE } from '~/constants/routing';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { Spacing } from '~/typings/theme';
 
@@ -92,7 +93,7 @@ export const NavBar: React.FC<NavBarProps> = ({
       <InnerToolbar alignItems="flex-end" column flex={1}>
         <TopRow alignItems="center" justifyContent="space-between">
           <LogoTitleBox alignItems="center" gap={flexGap}>
-            <HomeLink href="/">
+            <HomeLink href={HOME_ROUTE}>
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
             {title && <Title variant="decorative">{title}</Title>}
