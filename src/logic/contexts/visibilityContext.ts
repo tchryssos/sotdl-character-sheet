@@ -10,7 +10,7 @@ export type VisibilityObj = {
 };
 
 interface VisibilityContextState {
-  visbility: VisibilityObj;
+  visibility: VisibilityObj;
   setVisibility: (
     sectionTitle: string,
     visibilityKey: 'isVisible' | 'isExpanded',
@@ -22,7 +22,7 @@ interface VisibilityContextState {
 }
 
 export const VisibilityContext = createContext<VisibilityContextState>({
-  visbility: {},
+  visibility: {},
   setVisibility: () => null,
   getVisibility: () => undefined,
 });
