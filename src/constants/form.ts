@@ -1,9 +1,6 @@
-import startCase from 'lodash.startcase';
-
-import { SelectOption } from '~/components/form/typings';
 import { Attribute } from '~/typings/game';
 
-import { ATTRIBUTES, EXPERT_PATHS, MASTER_PATHS } from './game';
+import { ATTRIBUTES } from './game';
 
 // START - Attributes - START
 type AttrObj<T> = Record<Attribute, T>;
@@ -27,27 +24,6 @@ const spellObjBuilder = (label: string) =>
 const castings = spellObjBuilder('castings');
 const spells = spellObjBuilder('spells');
 // END - Spells and Magic - END
-
-// START - Paths - START
-export const generatePathOptions = (pathObj: Record<string, string[]>) =>
-  Object.keys(pathObj).reduce((options, key) => {
-    const keyOpts: SelectOption[] = pathObj[key].map((p) => ({
-      label: startCase(p),
-      value: p,
-    }));
-    keyOpts.unshift({
-      label: `-- Paths of ${startCase(key)} --`,
-      value: key,
-      disabled: true,
-    });
-    return [...options, ...keyOpts];
-  }, [] as SelectOption[]);
-
-export const expertPathSelectOptions = generatePathOptions(EXPERT_PATHS);
-export const masterPathSelectOptions = generatePathOptions(MASTER_PATHS);
-
-export const SECOND_EXPERT_PATH = 'second_expert_path';
-// END - Paths - END
 
 // START - Form - START
 export const FIELD_NAMES = {

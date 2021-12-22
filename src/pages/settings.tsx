@@ -26,7 +26,11 @@ const SettingsPage: React.FC = () => {
       <SettingsNav />
       <SettingsWrapper columns={1}>
         <Form defaultValues={defaulValues} onSubmit={() => null}>
-          <FormSection canToggleVisibility={false} title="Personalization">
+          <FormSection
+            canToggleVisibility={false}
+            isCollapsable={false}
+            title="Personalization"
+          >
             <ColorMode colorModeKey={colorModeKey} />
           </FormSection>
         </Form>

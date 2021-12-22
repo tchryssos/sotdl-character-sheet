@@ -115,11 +115,11 @@ export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      window.addEventListener('click', setClosed);
+      globalThis.addEventListener('click', setClosed);
     } else {
-      window.removeEventListener('click', setClosed);
+      globalThis.removeEventListener('click', setClosed);
     }
-    return () => window.removeEventListener('click', setClosed);
+    return () => globalThis.removeEventListener('click', setClosed);
   }, [isOpen, setClosed]);
 
   return (

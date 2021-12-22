@@ -83,7 +83,7 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
     Object.keys(theme.breakpointValues).forEach((key, i, arr) => {
       const queryAdjective = key === 'xss' ? 'max' : 'min';
-      const query = window.matchMedia(
+      const query = globalThis.matchMedia(
         `(${queryAdjective}-width: ${
           theme.breakpointValues[key as BreakpointSize]
         }px)`

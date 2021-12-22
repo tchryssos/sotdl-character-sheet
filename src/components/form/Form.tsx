@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { FlexBox } from '../box/FlexBox';
+import { VisibilityContextProvider } from '../providers/VisibilityContextProvider';
 
 interface FormProps {
   onSubmit: () => void;
@@ -37,14 +38,16 @@ export const Form: React.FC<FormProps> = ({
   });
 
   return (
-    <FormWrapper center>
-      <StyledForm
-        className={className}
-        onSubmit={formMethods.handleSubmit(onSubmit)}
-      >
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <FormProvider {...formMethods}>{children}</FormProvider>
-      </StyledForm>
-    </FormWrapper>
+    <VisibilityContextProvider>
+      <FormWrapper center>
+        <StyledForm
+          className={className}
+          onSubmit={formMethods.handleSubmit(onSubmit)}
+        >
+          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+          <FormProvider {...formMethods}>{children}</FormProvider>
+        </StyledForm>
+      </FormWrapper>
+    </VisibilityContextProvider>
   );
 };

@@ -7,13 +7,14 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn lint:prune && next build",
     "build:serve": "yarn build && yarn next start -p 3003",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:prune": "! ts-prune -i src/pages/* | grep -v -e 'used in module' -e src/pages"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.6.1",
@@ -21,7 +22,9 @@
     "@emotion/styled": "^11.3.0",
     "@prisma/client": "3.5.0",
     "clipboard-copy": "^4.0.1",
+    "lodash.camelcase": "^4.3.0",
     "lodash.debounce": "^4.0.8",
+    "lodash.set": "^4.3.2",
     "lodash.startcase": "^4.4.0",
     "next": "^12.0.3",
     "prisma": "3.5.0",
@@ -40,7 +43,9 @@
     "@storybook/react": "^6.3.2",
     "@testing-library/react": "^12.0.0",
     "@tsconfig/recommended": "^1.0.1",
+    "@types/lodash.camelcase": "^4.3.6",
     "@types/lodash.debounce": "^4.0.6",
+    "@types/lodash.set": "^4.3.6",
     "@types/lodash.startcase": "^4.4.6",
     "@types/node": "^14.14.35",
     "@types/react": "^17.0.3",
@@ -60,6 +65,7 @@
     "jest": "^27.0.6",
     "lint-staged": "^10.5.4",
     "prettier": "2.3.2",
+    "ts-prune": "^0.10.3",
     "typescript": "^4.3.5"
   },
   "husky": {

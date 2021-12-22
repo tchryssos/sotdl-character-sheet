@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { SubBody } from '~/components/typography/SubBody';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -23,23 +24,12 @@ const RemoveButton = styled(DeleteButton)(({ theme }) => ({
   },
 }));
 
-const WeaponCheckbox = styled.input`
-  min-width: ${({ theme }) => theme.spacing[40]};
-  min-height: ${({ theme }) => theme.spacing[40]};
-  padding: 0;
-  margin: 0;
-`;
-
 const SmWeaponActiveLabel = styled(Label)`
   width: unset;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
-
-// const AmmoContainer = styled(GridBox)`
-//   max-width: 25%;
-// `;
 
 interface WeaponFieldProps {
   index: number;
@@ -76,11 +66,12 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
           label="Act."
           labelFor={FIELD_NAMES.activeArmorIndex}
         >
-          <WeaponCheckbox
-            checked={activeWeaponIndex === index}
+          <CheckboxInput
+            customOnChange={onWeaponCheck}
+            hideLabel
+            inputLike
+            isChecked={activeWeaponIndex === index}
             name={FIELD_NAMES.activeWeaponIndex}
-            type="checkbox"
-            onChange={onWeaponCheck}
           />
         </SmWeaponActiveLabel>
         <FlexBox column mx={8}>
@@ -113,11 +104,12 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
   return (
     <GridBox gridTemplateColumns={weaponTemplateColumns}>
       <GridBox gridTemplateColumns="auto 1fr">
-        <WeaponCheckbox
-          checked={activeWeaponIndex === index}
+        <CheckboxInput
+          customOnChange={onWeaponCheck}
+          hideLabel
+          inputLike
+          isChecked={activeWeaponIndex === index}
           name={FIELD_NAMES.activeWeaponIndex}
-          type="checkbox"
-          onChange={onWeaponCheck}
         />
         <TextInput
           hideLabel
@@ -170,30 +162,6 @@ export const WeaponInput: React.FC = () => {
           <WeaponField index={index} onDelete={onDelete} />
         )}
       </AddAnotherMultiField>
-      {/*
-        Ammo tracker doesn't seem STRICTLY necessary
-        and I need to figure out a good way to toggle them on and off
-      */}
-      {/* {Boolean(weapons?.length) && (
-        <Label label="Ammo Trackers" labelFor="ammo_trackers">
-          <AmmoContainer>
-            <NumberInput
-              hideLabel
-              max={5}
-              min={0}
-              name={FIELD_NAMES.ammoTrackers.one}
-            />
-            {Boolean(weapons?.length > 1) && (
-              <NumberInput
-                hideLabel
-                max={5}
-                min={0}
-                name={FIELD_NAMES.ammoTrackers.two}
-              />
-            )}
-          </AmmoContainer>
-        </Label>
-      )} */}
     </FormSection>
   );
 };

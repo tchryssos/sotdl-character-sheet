@@ -29,7 +29,7 @@ export const ColorMode: React.FC<ColorModeProps> = ({ colorModeKey }) => {
   const colorMode = watch(colorModeKey);
 
   useEffect(() => {
-    const savedColorMode = localStorage.getItem(
+    const savedColorMode = globalThis.localStorage.getItem(
       colorModeKey
     ) as ColorModeType | null;
     if (savedColorMode) {
@@ -40,8 +40,8 @@ export const ColorMode: React.FC<ColorModeProps> = ({ colorModeKey }) => {
 
   useEffect(() => {
     setColorMode(colorMode);
-    localStorage.setItem(colorModeKey, colorMode);
-  }, [colorMode]);
+    globalThis.localStorage.setItem(colorModeKey, colorMode);
+  }, [colorMode, setColorMode, colorModeKey]);
 
   return (
     <SelectInput

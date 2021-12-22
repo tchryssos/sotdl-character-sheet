@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
-import { NumberInput } from '~/components/form/NumberInput';
-import { TextInput } from '~/components/form/TextInput';
 import { ArmorInput } from '~/components/sotdl/gameInputs/ArmorInput';
 import { AttributeInput } from '~/components/sotdl/gameInputs/AttributeInput';
 import { CurrencyInputs } from '~/components/sotdl/gameInputs/CurrencyInputs';
@@ -18,13 +16,14 @@ import { HistoryInputs } from '~/components/sotdl/gameInputs/HistoryInputs';
 import { MagicInputs } from '~/components/sotdl/gameInputs/MagicInputs';
 import { PhysicalTraitsInputs } from '~/components/sotdl/gameInputs/PhysicalTraitsInputs';
 import { WeaponInput } from '~/components/sotdl/gameInputs/WeaponInput';
-import { DEFAULT_VALUES, FIELD_NAMES } from '~/constants/form';
+import { DEFAULT_VALUES } from '~/constants/form';
 import { ATTRIBUTES } from '~/constants/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { LoadingIntermediary } from '../form/LoadingIntermediary';
 import { FormNav } from '../nav/FormNav';
+import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
 export const CharacterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +41,8 @@ export const CharacterForm: React.FC = () => {
       }
     };
 
-    window.addEventListener('keyup', formHotKeys);
-    return () => window.removeEventListener('keyup', formHotKeys);
+    globalThis.addEventListener('keyup', formHotKeys);
+    return () => globalThis.removeEventListener('keyup', formHotKeys);
   }, []);
 
   useEffect(() => {
@@ -59,10 +58,7 @@ export const CharacterForm: React.FC = () => {
           setIsMyCharacter={setIsMyCharacter}
         >
           <FormNav isMyCharacter={isMyCharacter} />
-          <GridBox gridTemplateColumns={isLessThanSm ? '5fr 1fr' : '7fr 1fr'}>
-            <TextInput name={FIELD_NAMES.name} />
-            <NumberInput max={10} min={0} name={FIELD_NAMES.level} />
-          </GridBox>
+          <BasicInfoInputs />
           <HistoryInputs />
           <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
             {ATTRIBUTES.map((a) => (

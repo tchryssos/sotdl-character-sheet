@@ -1,9 +1,10 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
+import { VisibilityContext } from '~/logic/contexts/visibilityContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Box } from '../box/Box';
@@ -98,13 +99,47 @@ export const FormSection: React.FC<FormSectionProps> = ({
   title,
   children,
   columns,
-  isCollapsable,
+  isCollapsable = true,
   canToggleVisibility = true,
   className,
 }) => {
-  const [isOpen, setIsOpen] = useState(!isCollapsable);
-  const [isVisible, setIsVisible] = useState(true);
+  const { getVisibility, setVisibility } = useContext(VisibilityContext);
+  const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
+    getVisibility(title) || {};
+
   const { isEditMode } = useContext(EditContext);
+
+  // START - SECTION VISIBILITY - START
+  const [isVisible, setIsVisible] = useState(true);
+
+  const onChangeVisibility = () => {
+    const nextVisibility = !isVisible;
+    setIsVisible(nextVisibility);
+    setVisibility(title, 'isVisible', nextVisibility);
+  };
+
+  useEffect(() => {
+    if (initIsVisible !== undefined) {
+      setIsVisible(initIsVisible);
+    }
+  }, [initIsVisible]);
+  // END - SECTION VISIBILITY - END
+
+  // START - SECTION EXPANDED STATUS - START
+  const [isOpen, setIsOpen] = useState(true);
+
+  const onChangeExpanded = () => {
+    const nextOpenState = !isOpen;
+    setIsOpen(nextOpenState);
+    setVisibility(title, 'isExpanded', nextOpenState);
+  };
+
+  useEffect(() => {
+    if (initIsExpanded !== undefined) {
+      setIsOpen(initIsExpanded);
+    }
+  }, [initIsExpanded]);
+  // END - SECTION COLLAPSED STATUST - END
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (
@@ -116,10 +151,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
         <FlexBox alignItems="flex-end" ml={4}>
           <TitleBox>
             {isCollapsable && (
-              <CollapseButton
-                isOpen={isOpen}
-                onClick={() => setIsOpen(!isOpen)}
-              >
+              <CollapseButton isOpen={isOpen} onClick={onChangeExpanded}>
                 <ChevRight
                   title="Collapsable arrow"
                   titleId={`collapseable-arrow-icon-${title}`}
@@ -130,7 +162,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
               {title}
             </Text>
             {isEditMode && canToggleVisibility && (
-              <VisibilityButton onClick={() => setIsVisible(!isVisible)}>
+              <VisibilityButton onClick={onChangeVisibility}>
                 {isVisible ? (
                   <Visible
                     title="Form section visibility"
