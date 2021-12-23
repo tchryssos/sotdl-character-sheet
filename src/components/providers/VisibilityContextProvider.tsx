@@ -4,6 +4,8 @@ import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
 import {
+  FieldInfo,
+  SectionInfo,
   VisibilityContext,
   VisibilityObj,
 } from '~/logic/contexts/visibilityContext';
@@ -18,42 +20,64 @@ const visKey = 'sectionVisibility';
 export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps> =
   ({ children }) => {
     const { asPath } = useRouter();
-    const pageId = asPath.split('?')[0];
+    const pageId = camelCase(asPath.split('?')[0]);
 
-    const [visibilityObject, setVisibilityObject] = useState(emptyVis);
+    const [visibilityObject, setSectionVisibilityInfoObject] =
+      useState(emptyVis);
 
     const sectionVisibityString =
       globalThis.localStorage?.getItem(visKey) || '{}';
 
     useEffect(() => {
-      setVisibilityObject(JSON.parse(sectionVisibityString));
+      setSectionVisibilityInfoObject(JSON.parse(sectionVisibityString));
     }, [sectionVisibityString]);
 
-    const getVisibility = (
-      sectionTitle: string
-    ): VisibilityObj[string][string] | undefined =>
-      visibilityObject[pageId]?.[camelCase(sectionTitle)];
+    // START - SECTION - START
+    const getSectionVisibilityInfo = (sectionTitle: string) =>
+      visibilityObject[pageId]?.sections?.[camelCase(sectionTitle)];
 
-    const setVisibility = (
+    const setSectionVisibilityInfo = (
       sectionTitle: string,
-      visibilityKey: 'isVisible' | 'isExpanded',
-      visibilityValue: boolean
+      visibilityKey: keyof SectionInfo,
+      visibilityValue: NonNullable<SectionInfo[keyof SectionInfo]>
     ) => {
       const nextObj = set(
-        visibilityObject,
-        [pageId, camelCase(sectionTitle), visibilityKey],
+        { ...visibilityObject },
+        [pageId, 'sections', camelCase(sectionTitle), visibilityKey],
         visibilityValue
       );
       globalThis.localStorage?.setItem(visKey, JSON.stringify(nextObj));
-      setVisibilityObject(nextObj);
+      setSectionVisibilityInfoObject(nextObj);
     };
+    // END - SECTION - END
+
+    // START - FIELDS - START
+    const setFieldVisibilityInfo = (
+      fieldName: string,
+      fieldKey: keyof FieldInfo,
+      value: NonNullable<FieldInfo[keyof FieldInfo]>
+    ) => {
+      const nextObj = set(
+        { ...visibilityObject },
+        [pageId, 'fields', camelCase(fieldName), fieldKey],
+        value
+      );
+      globalThis.localStorage?.setItem(visKey, JSON.stringify(nextObj));
+      setSectionVisibilityInfoObject(nextObj);
+    };
+
+    const getFieldVisibilityInfo = (fieldName: string) =>
+      visibilityObject[pageId]?.fields?.[camelCase(fieldName)];
+    // END - FIELDS - END
 
     return (
       <VisibilityContext.Provider
         value={{
           visibility: visibilityObject,
-          getVisibility,
-          setVisibility,
+          getSectionVisibilityInfo,
+          setSectionVisibilityInfo,
+          getFieldVisibilityInfo,
+          setFieldVisibilityInfo,
         }}
       >
         {children}
