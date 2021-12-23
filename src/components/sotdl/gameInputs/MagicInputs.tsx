@@ -45,46 +45,73 @@ const spellTypeOptions = [
 
 const SpellField: React.FC<SpellFieldProps> = ({ index, onDelete }) => {
   const isEditMode = useContext(EditContext);
+  const { watch } = useFormContext();
+
+  const name =
+    watch(
+      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.name}`
+    ) || `Spell ${index + 1}`;
+
+  const remainingCastings =
+    watch(
+      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.remainingCastings}`
+    ) || 0;
+  const totalCastings =
+    watch(
+      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.totalCastings}`
+    ) || 0;
 
   return (
-    <GridBox columns={1} rowGap={16}>
-      <GridBox gridTemplateColumns="4fr 2fr">
-        <TextInput
-          label="Name"
-          name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.name}`}
-        />
-        <FlexBox alignItems="flex-end" gap={8}>
-          <NumberInput
-            label="Castings Remaining"
-            min={0}
-            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.remainingCastings}`}
+    <FormSection
+      canToggleVisibility={false}
+      columns={1}
+      title={`${name} ${remainingCastings}/${totalCastings}`}
+      visibilityTitle={`spell${index}`}
+    >
+      <GridBox columns={1} rowGap={16}>
+        <GridBox gridTemplateColumns="4fr 2fr">
+          <TextInput
+            label="Name"
+            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.name}`}
           />
-          <SpellSlash>/</SpellSlash>
-          <NumberInput
-            label="Total Castings"
-            min={0}
-            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.totalCastings}`}
+          <FlexBox alignItems="flex-end" gap={8}>
+            <NumberInput
+              alwaysEditable
+              label="Remaining Castings"
+              min={0}
+              name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.remainingCastings}`}
+            />
+            <SpellSlash>/</SpellSlash>
+            <NumberInput
+              label="Total Castings"
+              min={0}
+              name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.totalCastings}`}
+            />
+          </FlexBox>
+        </GridBox>
+        <GridBox columns={3}>
+          <TextInput
+            label="Tradition"
+            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.tradition}`}
           />
-        </FlexBox>
-      </GridBox>
-      <GridBox columns={3}>
-        <TextInput
-          label="Tradition"
-          name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.tradition}`}
-        />
-        <SelectInput
-          label="Type"
-          name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.type}`}
-          options={spellTypeOptions}
-        />
-        <NumberInput
-          label="Level"
-          max={10}
-          min={0}
-          name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.level}`}
+          <SelectInput
+            label="Type"
+            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.type}`}
+            options={spellTypeOptions}
+          />
+          <NumberInput
+            label="Level"
+            max={10}
+            min={0}
+            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.level}`}
+          />
+        </GridBox>
+        <TextAreaInput
+          label="Description"
+          name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.description}`}
         />
       </GridBox>
-    </GridBox>
+    </FormSection>
   );
 };
 

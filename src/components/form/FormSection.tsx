@@ -23,6 +23,7 @@ interface FormSectionProps {
   isCollapsable?: boolean;
   canToggleVisibility?: boolean;
   className?: string;
+  visibilityTitle?: string;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -102,11 +103,12 @@ export const FormSection: React.FC<FormSectionProps> = ({
   isCollapsable = true,
   canToggleVisibility = true,
   className,
+  visibilityTitle,
 }) => {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
   const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
-    getSectionVisibilityInfo(title) || {};
+    getSectionVisibilityInfo(visibilityTitle || title) || {};
 
   const { isEditMode } = useContext(EditContext);
 
@@ -116,7 +118,11 @@ export const FormSection: React.FC<FormSectionProps> = ({
   const onChangeVisibility = () => {
     const nextVisibility = !isVisible;
     setIsVisible(nextVisibility);
-    setSectionVisibilityInfo(title, 'isVisible', nextVisibility);
+    setSectionVisibilityInfo(
+      visibilityTitle || title,
+      'isVisible',
+      nextVisibility
+    );
   };
 
   useEffect(() => {
@@ -132,7 +138,11 @@ export const FormSection: React.FC<FormSectionProps> = ({
   const onChangeExpanded = () => {
     const nextOpenState = !isOpen;
     setIsOpen(nextOpenState);
-    setSectionVisibilityInfo(title, 'isExpanded', nextOpenState);
+    setSectionVisibilityInfo(
+      visibilityTitle || title,
+      'isExpanded',
+      nextOpenState
+    );
   };
 
   useEffect(() => {
