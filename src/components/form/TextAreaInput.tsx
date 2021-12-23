@@ -10,9 +10,11 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Label } from './Label';
 
-export const TextArea = styled.textarea<{ height: number }>(
+const defaultHeight = 40;
+
+export const TextArea = styled.textarea<{ height?: number }>(
   ({ theme, height }) => ({
-    height: pxToRem(height),
+    height: pxToRem(height || defaultHeight),
     minHeight: theme.spacing[40],
     fontSize: theme.fontSize.subBody,
     width: '100%',
@@ -25,8 +27,6 @@ export const TextArea = styled.textarea<{ height: number }>(
     },
   })
 );
-
-const defaultHeight = 40;
 
 export const TextAreaInput: React.FC<Omit<TextInputProps, 'type'>> = ({
   label,
