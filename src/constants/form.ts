@@ -88,20 +88,16 @@ export const FIELD_NAMES = {
   background: 'background',
   appearance: 'appearance',
   generalNotes: 'general_notes',
-  spellPower: {
-    fieldName: 'spell_power',
-    castings: {
-      fieldName: 'castings',
-      castingsByLevel: {
-        ...castings,
-      },
-    },
-  },
+  spellPower: 'spell_power',
   spells: {
     fieldName: 'spells',
-    spellsByLevel: {
-      ...spells,
-    },
+    name: 'spell_name',
+    level: 'spell_level',
+    type: 'spell_type',
+    tradition: 'spell_tradition',
+    description: 'spell_description',
+    totalCastings: 'spell_total_castings',
+    remainingCastings: 'spell_remaining_castings',
   },
 };
 
