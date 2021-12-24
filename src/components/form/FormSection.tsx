@@ -161,7 +161,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
         className={className}
         column
       >
-        <FlexBox alignItems="flex-end" ml={4}>
+        <FlexBox alignItems="flex-end" ml={borderless ? 0 : 4}>
           <TitleBox>
             {isCollapsable && (
               <CollapseButton isOpen={isOpen} onClick={onChangeExpanded}>
@@ -197,7 +197,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
           columns={columns}
           isOpen={isOpen}
           pt={borderless ? 16 : undefined}
-          px={borderless ? 12 : 8}
+          px={8}
           py={borderless ? 0 : 16}
         >
           {children}
