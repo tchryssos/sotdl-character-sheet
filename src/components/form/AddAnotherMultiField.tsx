@@ -1,27 +1,43 @@
+import styled from '@emotion/styled';
+import sortBy from 'lodash.sortby';
 import { useContext, useEffect } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
+import { FieldNames } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
+import { KeysOfUnion } from '~/typings/util';
 
 import { Box } from '../box/Box';
 import { SubBody } from '../typography/SubBody';
 import { AddAnotherButton } from './AddAnotherButton';
 
+type MultiFields = {
+  [K in keyof FieldNames as FieldNames[K] extends Record<string, string>
+    ? K
+    : never]: FieldNames[K];
+};
+
 interface AddAnotherMultiFieldProps {
-  parentFieldName: string;
+  parentFieldName: keyof MultiFields;
   children: (fieldProps: {
     index: number;
     onDelete: (index: number) => void;
   }) => React.ReactNode;
   createDefaultValue?: () => Record<string, unknown>;
   HeaderRow?: React.FC;
+  sortProperties?: string[];
 }
+
+const ChildContainer = styled(Box)`
+  max-width: 100%;
+`;
 
 export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   parentFieldName,
   children,
   createDefaultValue,
   HeaderRow,
+  sortProperties,
 }) => {
   const { control } = useForm();
   const { fields, append, remove, replace } = useFieldArray({
@@ -34,10 +50,14 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);
 
-  const controlledFields = fields.map((field, i) => ({
+  let controlledFields = fields.map((field, i) => ({
     ...field,
     ...parentField?.[i],
   }));
+
+  if (sortProperties) {
+    controlledFields = sortBy(controlledFields, sortProperties);
+  }
 
   useEffect(() => {
     if (parentField && parentField.length > controlledFields.length) {
@@ -62,12 +82,12 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
       {isEditMode && <AddAnotherButton onClick={onCreate} />}
       {Boolean(controlledFields.length) && HeaderRow && <HeaderRow />}
       {controlledFields.map((field, i) => (
-        <Box key={field.id}>
+        <ChildContainer key={field.id}>
           {children({
             index: i,
             onDelete,
           })}
-        </Box>
+        </ChildContainer>
       ))}
       {!controlledFields.length && (
         <SubBody italic>

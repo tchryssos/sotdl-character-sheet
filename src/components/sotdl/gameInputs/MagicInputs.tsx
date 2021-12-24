@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import capitalize from 'lodash.capitalize';
 import { useContext, useEffect, useRef } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
@@ -46,6 +47,7 @@ const spellTypeOptions = [
 const SpellField: React.FC<SpellFieldProps> = ({ index, onDelete }) => {
   const isEditMode = useContext(EditContext);
   const { watch } = useFormContext();
+  const isLessThanSm = useBreakpointsLessThan('sm');
 
   const name =
     watch(
@@ -60,13 +62,27 @@ const SpellField: React.FC<SpellFieldProps> = ({ index, onDelete }) => {
     watch(
       `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.totalCastings}`
     ) || 0;
+  const tradition =
+    watch(
+      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.tradition}`
+    ) || '';
+  const level =
+    watch(
+      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.rank}`
+    ) || 0;
+  const type =
+    watch(
+      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.type}`
+    ) || 'Utility';
 
   return (
     <FormSection
       borderless
       canToggleVisibility={false}
       columns={1}
-      title={`${name} ${remainingCastings}/${totalCastings}`}
+      title={`${isLessThanSm ? '' : '"'}${name}${isLessThanSm ? '' : '"'}${
+        isLessThanSm ? '' : ` ${tradition} ${capitalize(type)} ${level}`
+      }: ${remainingCastings}/${totalCastings}`}
       visibilityTitle={`spell${index}`}
     >
       <GridBox columns={1} rowGap={16}>
@@ -78,13 +94,13 @@ const SpellField: React.FC<SpellFieldProps> = ({ index, onDelete }) => {
           <FlexBox alignItems="flex-end" gap={8}>
             <NumberInput
               alwaysEditable
-              label="Curr. Castings"
+              label="Curr. Casts"
               min={0}
               name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.remainingCastings}`}
             />
             <SpellSlash>/</SpellSlash>
             <NumberInput
-              label="Total Castings"
+              label="Total Casts"
               min={0}
               name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.totalCastings}`}
             />
@@ -101,10 +117,10 @@ const SpellField: React.FC<SpellFieldProps> = ({ index, onDelete }) => {
             options={spellTypeOptions}
           />
           <NumberInput
-            label="Level"
+            label="Rank"
             max={10}
             min={0}
-            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.level}`}
+            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.rank}`}
           />
         </GridBox>
         <TextAreaInput
@@ -118,7 +134,7 @@ const SpellField: React.FC<SpellFieldProps> = ({ index, onDelete }) => {
 
 const createDefaultSpell = () => ({
   [FIELD_NAMES.spells.name]: '',
-  [FIELD_NAMES.spells.level]: 0,
+  [FIELD_NAMES.spells.rank]: 0,
   [FIELD_NAMES.spells.tradition]: '',
   [FIELD_NAMES.spells.type]: 'utility',
   [FIELD_NAMES.spells.description]: '',
@@ -138,6 +154,11 @@ export const MagicInputs: React.FC = () => {
         HeaderRow={undefined}
         createDefaultValue={createDefaultSpell}
         parentFieldName={FIELD_NAMES.spells.fieldName}
+        sortProperties={[
+          FIELD_NAMES.spells.tradition,
+          FIELD_NAMES.spells.rank,
+          FIELD_NAMES.spells.name,
+        ]}
       >
         {({ index, onDelete }) => (
           <SpellField index={index} onDelete={onDelete} />
