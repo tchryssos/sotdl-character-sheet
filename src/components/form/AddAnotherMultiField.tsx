@@ -1,30 +1,33 @@
 import styled from '@emotion/styled';
 import sortBy from 'lodash.sortby';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
 import { FieldNames } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import { KeysOfUnion } from '~/typings/util';
 
 import { Box } from '../box/Box';
 import { SubBody } from '../typography/SubBody';
 import { AddAnotherButton } from './AddAnotherButton';
 
 type MultiFields = {
-  [K in keyof FieldNames as FieldNames[K] extends Record<string, string>
+  [K in keyof FieldNames as FieldNames[K] extends { fieldName: string }
     ? K
     : never]: FieldNames[K];
 };
 
 interface AddAnotherMultiFieldProps {
-  parentFieldName: keyof MultiFields;
+  parentFieldName: MultiFields[keyof MultiFields]['fieldName'];
   children: (fieldProps: {
     index: number;
     onDelete: (index: number) => void;
+    fieldId: string;
+    sortIndexMap: Map<string, number>;
   }) => React.ReactNode;
   createDefaultValue?: () => Record<string, unknown>;
   HeaderRow?: React.FC;
+  // @TODO Type this so that it knows which properties are available via
+  // parentFieldName
   sortProperties?: string[];
 }
 
@@ -55,9 +58,18 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     ...parentField?.[i],
   }));
 
+  // START - SORT - START
   if (sortProperties) {
     controlledFields = sortBy(controlledFields, sortProperties);
   }
+
+  // https://github.com/react-hook-form/react-hook-form/discussions/4264#discussioncomment-398509
+  const sortIndexMap = useMemo(
+    () => new Map(fields.map(({ id }, index) => [id, index])),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fields.length]
+  );
+  // END - SORT - END
 
   useEffect(() => {
     if (parentField && parentField.length > controlledFields.length) {
@@ -86,6 +98,8 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
           {children({
             index: i,
             onDelete,
+            fieldId: field.id,
+            sortIndexMap,
           })}
         </ChildContainer>
       ))}

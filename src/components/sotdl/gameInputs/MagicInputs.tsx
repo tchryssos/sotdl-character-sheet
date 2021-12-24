@@ -29,8 +29,9 @@ const SpellSlash = styled.span(({ theme }) => ({
 }));
 
 interface SpellFieldProps {
-  index: number;
   onDelete: (index: number) => void;
+  sortIndexMap: Map<string, number>;
+  fieldId: string;
 }
 
 const spellTypeOptions = [
@@ -44,10 +45,17 @@ const spellTypeOptions = [
   },
 ];
 
-const SpellField: React.FC<SpellFieldProps> = ({ index, onDelete }) => {
+const SpellField: React.FC<SpellFieldProps> = ({
+  sortIndexMap,
+  fieldId,
+  onDelete,
+}) => {
   const isEditMode = useContext(EditContext);
   const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const index = sortIndexMap.get(fieldId)!;
 
   const name =
     watch(
@@ -160,8 +168,12 @@ export const MagicInputs: React.FC = () => {
           FIELD_NAMES.spells.name,
         ]}
       >
-        {({ index, onDelete }) => (
-          <SpellField index={index} onDelete={onDelete} />
+        {({ onDelete, sortIndexMap, fieldId }) => (
+          <SpellField
+            fieldId={fieldId}
+            sortIndexMap={sortIndexMap}
+            onDelete={onDelete}
+          />
         )}
       </AddAnotherMultiField>
     </FormSection>
