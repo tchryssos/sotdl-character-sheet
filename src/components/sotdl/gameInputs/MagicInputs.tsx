@@ -5,6 +5,7 @@ import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { AddAnotherButton } from '~/components/form/AddAnotherButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { SelectInput } from '~/components/form/SelectInput';
@@ -18,6 +19,7 @@ import {
   useBreakpointsAtLeast,
   useBreakpointsLessThan,
 } from '~/logic/hooks/useBreakpoints';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FormSection } from '../../form/FormSection';
 import { NumberInput } from '../../form/NumberInput';
@@ -28,10 +30,15 @@ const SpellSlash = styled.span(({ theme }) => ({
   fontSize: theme.fontSize.title,
 }));
 
+const SpellDelete = styled(DeleteButton)`
+  margin-top: ${pxToRem(18)};
+`;
+
 interface SpellFieldProps {
-  onDelete: (index: number) => void;
+  onDeleteFn: (index: number) => void;
   sortIndexMap: Map<string, number>;
   fieldId: string;
+  sortedIndex: number;
 }
 
 const spellTypeOptions = [
@@ -48,7 +55,8 @@ const spellTypeOptions = [
 const SpellField: React.FC<SpellFieldProps> = ({
   sortIndexMap,
   fieldId,
-  onDelete,
+  onDeleteFn,
+  sortedIndex,
 }) => {
   const isEditMode = useContext(EditContext);
   const { watch } = useFormContext();
@@ -83,14 +91,20 @@ const SpellField: React.FC<SpellFieldProps> = ({
       `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.type}`
     ) || 'Utility';
 
+  const sectionTitle = `${isLessThanSm ? '' : '"'}${name}${
+    isLessThanSm ? '' : '"'
+  }${
+    isLessThanSm ? '' : ` ${tradition} ${capitalize(type)} ${level}`
+  }: ${remainingCastings}/${totalCastings}`;
+
+  const onDelete = () => onDeleteFn(sortedIndex);
+
   return (
     <FormSection
       borderless
       canToggleVisibility={false}
-      columns={1}
-      title={`${isLessThanSm ? '' : '"'}${name}${isLessThanSm ? '' : '"'}${
-        isLessThanSm ? '' : ` ${tradition} ${capitalize(type)} ${level}`
-      }: ${remainingCastings}/${totalCastings}`}
+      gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      title={sectionTitle}
       visibilityTitle={`spell${index}`}
     >
       <GridBox columns={1} rowGap={16}>
@@ -136,6 +150,7 @@ const SpellField: React.FC<SpellFieldProps> = ({
           name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.description}`}
         />
       </GridBox>
+      {isEditMode && <SpellDelete onDelete={onDelete} />}
     </FormSection>
   );
 };
@@ -168,11 +183,12 @@ export const MagicInputs: React.FC = () => {
           FIELD_NAMES.spells.name,
         ]}
       >
-        {({ onDelete, sortIndexMap, fieldId }) => (
+        {({ index, onDelete, sortIndexMap, fieldId }) => (
           <SpellField
             fieldId={fieldId}
             sortIndexMap={sortIndexMap}
-            onDelete={onDelete}
+            sortedIndex={index}
+            onDeleteFn={onDelete}
           />
         )}
       </AddAnotherMultiField>

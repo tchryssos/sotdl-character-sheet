@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import sortBy from 'lodash.sortby';
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 
 import { FieldNames } from '~/constants/form';
@@ -50,43 +50,76 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   const { watch, setValue } = useFormContext();
   const { isEditMode } = useContext(EditContext);
 
-  const parentField: Record<string, unknown>[] | undefined =
+  // https://github.com/react-hook-form/react-hook-form/discussions/4264#discussioncomment-398509
+  const [sortIndexMap, setSortIndexMap] = useState(
+    new Map(fields.map(({ id }, index) => [id, index]))
+  );
+
+  useEffect(() => {
+    if (fields.length > sortIndexMap.size) {
+      setSortIndexMap(new Map(fields.map(({ id }, index) => [id, index])));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields]);
+
+  const parentField: Record<string, Record<string, unknown>> | undefined =
     watch(parentFieldName);
+
+  if (parentFieldName === 'spells') {
+    console.log(
+      'parentField: ',
+      parentField,
+      '\nSort Map: ',
+      sortIndexMap,
+      '\nFields: ',
+      fields
+    );
+  }
 
   let controlledFields = fields.map((field, i) => ({
     ...field,
     ...parentField?.[i],
   }));
 
-  // START - SORT - START
   if (sortProperties) {
     controlledFields = sortBy(controlledFields, sortProperties);
   }
 
-  // https://github.com/react-hook-form/react-hook-form/discussions/4264#discussioncomment-398509
-  const sortIndexMap = useMemo(
-    () => new Map(fields.map(({ id }, index) => [id, index])),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [fields.length]
-  );
-  // END - SORT - END
-
-  useEffect(() => {
-    if (parentField && parentField.length > controlledFields.length) {
-      replace(parentField);
-    }
-  }, [parentField, controlledFields, replace]);
+  // useEffect(() => {
+  //   if (
+  //     parentField &&
+  //     Object.keys(parentField).length > controlledFields.length
+  //   ) {
+  //     replace(parentField);
+  //   }
+  // }, [parentField, controlledFields, replace]);
 
   const onCreate = () => {
     const nextValue = createDefaultValue?.() || {};
+    console.log('onCreate: ', nextValue);
     append(nextValue);
   };
 
   const onDelete = (index: number) => {
-    const nextFields = controlledFields;
-    nextFields.splice(index, 1);
-    setValue(parentFieldName, nextFields);
-    remove(index);
+    const removedId = controlledFields[index].id;
+    const valueRemovedIndex = sortIndexMap.get(removedId)!;
+
+    const nextValue = Object.keys(parentField!).reduce(
+      (nextValueObj, currKey, i) => {
+        if (i < valueRemovedIndex) {
+          // eslint-disable-next-line no-param-reassign
+          nextValueObj[currKey] = parentField![currKey];
+        } else if (i > valueRemovedIndex) {
+          // eslint-disable-next-line no-param-reassign
+          nextValueObj[i - 1] = parentField![currKey];
+        }
+        return nextValueObj;
+      },
+      {} as Record<string, unknown>
+    );
+    console.log('onDelete: ', nextValue);
+    // setValue(parentFieldName, nextValue);
+    // remove(index);
   };
 
   return (

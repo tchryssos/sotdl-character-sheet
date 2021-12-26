@@ -25,6 +25,7 @@ interface FormSectionProps {
   className?: string;
   visibilityTitle?: string;
   borderless?: boolean;
+  gridTemplateColumns?: GridBoxProps['gridTemplateColumns'];
 }
 
 const TitleBox = styled(FlexBox)`
@@ -106,6 +107,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   className,
   visibilityTitle,
   borderless,
+  gridTemplateColumns,
 }) => {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -195,6 +197,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
         <Container
           borderless={borderless}
           columns={columns}
+          gridTemplateColumns={gridTemplateColumns}
           isOpen={isOpen}
           pt={borderless ? 16 : undefined}
           px={8}
