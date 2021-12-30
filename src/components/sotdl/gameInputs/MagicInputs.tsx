@@ -31,7 +31,7 @@ const SpellSlash = styled.span(({ theme }) => ({
 }));
 
 const SpellDelete = styled(DeleteButton)`
-  margin-top: ${pxToRem(18)};
+  margin-top: ${pxToRem(17)};
 `;
 
 interface SpellFieldProps {
@@ -64,6 +64,8 @@ const SpellField: React.FC<SpellFieldProps> = ({
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const index = sortIndexMap.get(fieldId)!;
+
+  console.log('input index: ', index);
 
   const name =
     watch(

@@ -24,7 +24,7 @@ interface AddAnotherMultiFieldProps {
     fieldId: string;
     sortIndexMap: Map<string, number>;
   }) => React.ReactNode;
-  createDefaultValue?: () => Record<string, unknown>;
+  createDefaultValue: () => Record<string, unknown>;
   HeaderRow?: React.FC;
   // @TODO Type this so that it knows which properties are available via
   // parentFieldName
@@ -76,14 +76,14 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     );
   }
 
-  let controlledFields = fields.map((field, i) => ({
+  const controlledFields = fields.map((field, i) => ({
     ...field,
     ...parentField?.[i],
   }));
 
-  if (sortProperties) {
-    controlledFields = sortBy(controlledFields, sortProperties);
-  }
+  // if (sortProperties) {
+  //   controlledFields = sortBy(controlledFields, sortProperties);
+  // }
 
   // useEffect(() => {
   //   if (
@@ -95,8 +95,8 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   // }, [parentField, controlledFields, replace]);
 
   const onCreate = () => {
-    const nextValue = createDefaultValue?.() || {};
-    console.log('onCreate: ', nextValue);
+    const nextValue = createDefaultValue();
+    console.log('ON CREATE');
     append(nextValue);
   };
 
