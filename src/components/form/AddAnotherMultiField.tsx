@@ -42,12 +42,12 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   HeaderRow,
   sortProperties,
 }) => {
-  const { control } = useForm();
-  const { fields, append, remove, replace } = useFieldArray({
+  const { control, setValue } = useForm();
+  const { fields, append, remove } = useFieldArray({
     control,
     name: parentFieldName,
   });
-  const { watch, setValue } = useFormContext();
+  const { watch } = useFormContext();
   const { isEditMode } = useContext(EditContext);
 
   // https://github.com/react-hook-form/react-hook-form/discussions/4264#discussioncomment-398509
@@ -62,8 +62,17 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
-  const parentField: Record<string, Record<string, unknown>> | undefined =
+  const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);
+
+  let controlledFields = fields.map((field, i) => ({
+    ...field,
+    ...parentField?.[i],
+  }));
+
+  if (sortProperties) {
+    controlledFields = sortBy(controlledFields, sortProperties);
+  }
 
   if (parentFieldName === 'spells') {
     console.log(
@@ -71,19 +80,10 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
       parentField,
       '\nSort Map: ',
       sortIndexMap,
-      '\nFields: ',
-      fields
+      '\nControlled Fields: ',
+      controlledFields
     );
   }
-
-  const controlledFields = fields.map((field, i) => ({
-    ...field,
-    ...parentField?.[i],
-  }));
-
-  // if (sortProperties) {
-  //   controlledFields = sortBy(controlledFields, sortProperties);
-  // }
 
   // useEffect(() => {
   //   if (
@@ -96,7 +96,6 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
 
   const onCreate = () => {
     const nextValue = createDefaultValue();
-    console.log('ON CREATE');
     append(nextValue);
   };
 
@@ -104,22 +103,25 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     const removedId = controlledFields[index].id;
     const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
-    const nextValue = Object.keys(parentField!).reduce(
-      (nextValueObj, currKey, i) => {
-        if (i < valueRemovedIndex) {
-          // eslint-disable-next-line no-param-reassign
-          nextValueObj[currKey] = parentField![currKey];
-        } else if (i > valueRemovedIndex) {
-          // eslint-disable-next-line no-param-reassign
-          nextValueObj[i - 1] = parentField![currKey];
-        }
-        return nextValueObj;
-      },
-      {} as Record<string, unknown>
-    );
-    console.log('onDelete: ', nextValue);
+    console.log('Id deleted: ', removedId, valueRemovedIndex);
+
+    const nextMap = new Map(sortIndexMap);
+    nextMap.delete(removedId);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [mapId, mapIndex] of nextMap.entries()) {
+      if (mapIndex > valueRemovedIndex) {
+        nextMap.set(mapId, mapIndex - 1);
+      }
+    }
+
+    const nextValue = [...(parentField || [])];
+    nextValue.splice(valueRemovedIndex, 1);
+
+    console.log('ON DELETE: ', parentField, nextValue, nextMap);
+
+    setSortIndexMap(nextMap);
     // setValue(parentFieldName, nextValue);
-    // remove(index);
+    remove(index);
   };
 
   return (

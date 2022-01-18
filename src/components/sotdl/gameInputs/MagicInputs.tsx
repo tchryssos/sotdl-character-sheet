@@ -38,7 +38,7 @@ interface SpellFieldProps {
   onDeleteFn: (index: number) => void;
   sortIndexMap: Map<string, number>;
   fieldId: string;
-  sortedIndex: number;
+  postSortIndex: number;
 }
 
 const spellTypeOptions = [
@@ -52,54 +52,52 @@ const spellTypeOptions = [
   },
 ];
 
+const createMakeSpellName =
+  (index: number) => (spellKey: keyof typeof FIELD_NAMES['spells']) =>
+    `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells[spellKey]}`;
+
 const SpellField: React.FC<SpellFieldProps> = ({
   sortIndexMap,
   fieldId,
   onDeleteFn,
-  sortedIndex,
+  postSortIndex,
 }) => {
   const isEditMode = useContext(EditContext);
   const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const index = sortIndexMap.get(fieldId)!;
+  const index = sortIndexMap.get(fieldId);
 
-  console.log('input index: ', index);
+  if (index === undefined) {
+    return null;
+  }
 
-  const name =
-    watch(
-      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.name}`
-    ) || `Spell ${index + 1}`;
+  const makeSpellName = createMakeSpellName(index);
 
-  const remainingCastings =
-    watch(
-      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.remainingCastings}`
-    ) || 0;
-  const totalCastings =
-    watch(
-      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.totalCastings}`
-    ) || 0;
-  const tradition =
-    watch(
-      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.tradition}`
-    ) || '';
-  const level =
-    watch(
-      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.rank}`
-    ) || 0;
-  const type =
-    watch(
-      `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.type}`
-    ) || 'Utility';
+  const name = watch(makeSpellName('name')) || `Spell ${index + 1}`;
 
+  console.log('LI: ', name, fieldId, postSortIndex);
+
+  const remainingCastings = watch(makeSpellName('remainingCastings')) || 0;
+  const totalCastings = watch(makeSpellName('totalCastings')) || 0;
+  const tradition = watch(makeSpellName('tradition')) || '';
+  const level = watch(makeSpellName('rank')) || 0;
+  const type = watch(makeSpellName('type')) || 'Utility';
+
+  /**
+   * Switches between the following formats for spell names based on screen size:
+   * Fireball (on mobile and very small screens)
+   * vs
+   * "Fireball" Flame Attack 1: 2/2 (on everything else)
+   */
   const sectionTitle = `${isLessThanSm ? '' : '"'}${name}${
     isLessThanSm ? '' : '"'
   }${
     isLessThanSm ? '' : ` ${tradition} ${capitalize(type)} ${level}`
   }: ${remainingCastings}/${totalCastings}`;
 
-  const onDelete = () => onDeleteFn(sortedIndex);
+  const onDelete = () => onDeleteFn(postSortIndex);
 
   return (
     <FormSection
@@ -111,45 +109,39 @@ const SpellField: React.FC<SpellFieldProps> = ({
     >
       <GridBox columns={1} rowGap={16}>
         <GridBox gridTemplateColumns="2fr 1fr">
-          <TextInput
-            label="Name"
-            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.name}`}
-          />
+          <TextInput label="Name" name={makeSpellName('name')} />
           <FlexBox alignItems="flex-end" gap={8}>
             <NumberInput
               alwaysEditable
               label="Curr. Casts"
               min={0}
-              name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.remainingCastings}`}
+              name={makeSpellName('remainingCastings')}
             />
             <SpellSlash>/</SpellSlash>
             <NumberInput
               label="Total Casts"
               min={0}
-              name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.totalCastings}`}
+              name={makeSpellName('totalCastings')}
             />
           </FlexBox>
         </GridBox>
         <GridBox columns={3}>
-          <TextInput
-            label="Tradition"
-            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.tradition}`}
-          />
+          <TextInput label="Tradition" name={makeSpellName('tradition')} />
           <SelectInput
             label="Type"
-            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.type}`}
+            name={makeSpellName('type')}
             options={spellTypeOptions}
           />
           <NumberInput
             label="Rank"
             max={10}
             min={0}
-            name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.rank}`}
+            name={makeSpellName('rank')}
           />
         </GridBox>
         <TextAreaInput
           label="Description"
-          name={`${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells.description}`}
+          name={makeSpellName('description')}
         />
       </GridBox>
       {isEditMode && <SpellDelete onDelete={onDelete} />}
@@ -188,8 +180,8 @@ export const MagicInputs: React.FC = () => {
         {({ index, onDelete, sortIndexMap, fieldId }) => (
           <SpellField
             fieldId={fieldId}
+            postSortIndex={index}
             sortIndexMap={sortIndexMap}
-            sortedIndex={index}
             onDeleteFn={onDelete}
           />
         )}
