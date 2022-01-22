@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import sortBy from 'lodash.sortby';
-import { useContext, useEffect, useMemo, useState } from 'react';
-import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import { useContext, useEffect, useState } from 'react';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { FieldNames } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -64,11 +64,6 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
-  if (parentFieldName === 'spells') {
-    console.log('PARENT FIELD: ', parentField);
-    console.log('FIELDS: ', fields);
-  }
-
   let controlledFields = fields.map((field, i) => ({
     ...field,
     ...parentField?.[i],
@@ -78,26 +73,6 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     controlledFields = sortBy(controlledFields, sortProperties);
   }
 
-  // if (parentFieldName === 'spells') {
-  //   console.log(
-  //     'parentField: ',
-  //     parentField,
-  //     '\nSort Map: ',
-  //     sortIndexMap,
-  //     '\nControlled Fields: ',
-  //     controlledFields
-  //   );
-  // }
-
-  // useEffect(() => {
-  //   if (
-  //     parentField &&
-  //     Object.keys(parentField).length > controlledFields.length
-  //   ) {
-  //     replace(parentField);
-  //   }
-  // }, [parentField, controlledFields, replace]);
-
   const onCreate = () => {
     const nextValue = createDefaultValue();
     append(nextValue);
@@ -106,8 +81,6 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   const onDelete = (index: number) => {
     const removedId = controlledFields[index].id;
     const valueRemovedIndex = sortIndexMap.get(removedId)!;
-
-    console.log('Id deleted: ', removedId, valueRemovedIndex);
 
     const nextMap = new Map(sortIndexMap);
     nextMap.delete(removedId);
@@ -121,10 +94,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     const nextValue = [...(parentField || [])];
     nextValue.splice(valueRemovedIndex, 1);
 
-    console.log('ON DELETE: ', parentField, nextValue, nextMap);
-
-    // setSortIndexMap(nextMap);
-    // setValue(parentFieldName, nextValue);
+    setSortIndexMap(nextMap);
     remove(valueRemovedIndex);
   };
 

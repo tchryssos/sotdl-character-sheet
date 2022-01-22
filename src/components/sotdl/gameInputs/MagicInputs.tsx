@@ -62,10 +62,10 @@ const SpellField: React.FC<SpellFieldProps> = ({
   onDeleteFn,
   postSortIndex,
 }) => {
-  const isEditMode = useContext(EditContext);
+  const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
-
+  const isLessThanXs = useBreakpointsLessThan('xs');
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const index = sortIndexMap.get(fieldId);
 
@@ -76,8 +76,6 @@ const SpellField: React.FC<SpellFieldProps> = ({
   const makeSpellName = createMakeSpellName(index);
 
   const name = watch(makeSpellName('name')) || `Spell ${index + 1}`;
-
-  // console.log('LI: ', name, fieldId, postSortIndex);
 
   const remainingCastings = watch(makeSpellName('remainingCastings')) || 0;
   const totalCastings = watch(makeSpellName('totalCastings')) || 0;
@@ -108,18 +106,19 @@ const SpellField: React.FC<SpellFieldProps> = ({
       visibilityTitle={`spell${index}`}
     >
       <GridBox columns={1} rowGap={16}>
-        <GridBox gridTemplateColumns="2fr 1fr">
+        <GridBox gridTemplateColumns={isLessThanSm ? '1fr 1fr' : '2fr 1fr'}>
           <TextInput label="Name" name={makeSpellName('name')} />
           <FlexBox alignItems="flex-end" gap={8}>
             <NumberInput
               alwaysEditable
-              label="Curr. Casts"
+              label={`${isLessThanXs ? '' : 'Cur. '}Casts`}
               min={0}
               name={makeSpellName('remainingCastings')}
             />
             <SpellSlash>/</SpellSlash>
             <NumberInput
-              label="Total Casts"
+              hideLabel={isLessThanXs}
+              label="Max Casts"
               min={0}
               name={makeSpellName('totalCastings')}
             />
