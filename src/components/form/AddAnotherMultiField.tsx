@@ -42,12 +42,14 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   HeaderRow,
   sortProperties,
 }) => {
-  const { control, setValue } = useForm();
+  const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
     name: parentFieldName,
   });
-  const { watch } = useFormContext();
+  const parentField: Record<string, unknown>[] | undefined =
+    watch(parentFieldName);
+
   const { isEditMode } = useContext(EditContext);
 
   // https://github.com/react-hook-form/react-hook-form/discussions/4264#discussioncomment-398509
@@ -62,8 +64,10 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
-  const parentField: Record<string, unknown>[] | undefined =
-    watch(parentFieldName);
+  if (parentFieldName === 'spells') {
+    console.log('PARENT FIELD: ', parentField);
+    console.log('FIELDS: ', fields);
+  }
 
   let controlledFields = fields.map((field, i) => ({
     ...field,
@@ -74,16 +78,16 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     controlledFields = sortBy(controlledFields, sortProperties);
   }
 
-  if (parentFieldName === 'spells') {
-    console.log(
-      'parentField: ',
-      parentField,
-      '\nSort Map: ',
-      sortIndexMap,
-      '\nControlled Fields: ',
-      controlledFields
-    );
-  }
+  // if (parentFieldName === 'spells') {
+  //   console.log(
+  //     'parentField: ',
+  //     parentField,
+  //     '\nSort Map: ',
+  //     sortIndexMap,
+  //     '\nControlled Fields: ',
+  //     controlledFields
+  //   );
+  // }
 
   // useEffect(() => {
   //   if (
@@ -119,9 +123,9 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
 
     console.log('ON DELETE: ', parentField, nextValue, nextMap);
 
-    setSortIndexMap(nextMap);
+    // setSortIndexMap(nextMap);
     // setValue(parentFieldName, nextValue);
-    remove(index);
+    remove(valueRemovedIndex);
   };
 
   return (

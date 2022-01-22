@@ -77,7 +77,7 @@ const SpellField: React.FC<SpellFieldProps> = ({
 
   const name = watch(makeSpellName('name')) || `Spell ${index + 1}`;
 
-  console.log('LI: ', name, fieldId, postSortIndex);
+  // console.log('LI: ', name, fieldId, postSortIndex);
 
   const remainingCastings = watch(makeSpellName('remainingCastings')) || 0;
   const totalCastings = watch(makeSpellName('totalCastings')) || 0;
