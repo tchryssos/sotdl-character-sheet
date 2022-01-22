@@ -1,24 +1,17 @@
 import styled from '@emotion/styled';
 import capitalize from 'lodash.capitalize';
-import { useContext, useEffect, useRef } from 'react';
-import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
-import { AddAnotherButton } from '~/components/form/AddAnotherButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextInput } from '~/components/form/TextInput';
-import { Body } from '~/components/typography/Body';
-import { SubBody } from '~/components/typography/SubBody';
-import { SHY } from '~/constants/characterEntities';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import {
-  useBreakpointsAtLeast,
-  useBreakpointsLessThan,
-} from '~/logic/hooks/useBreakpoints';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FormSection } from '../../form/FormSection';
@@ -66,7 +59,6 @@ const SpellField: React.FC<SpellFieldProps> = ({
   const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isLessThanXs = useBreakpointsLessThan('xs');
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const index = sortIndexMap.get(fieldId);
 
   if (index === undefined) {
@@ -82,10 +74,11 @@ const SpellField: React.FC<SpellFieldProps> = ({
   const tradition = watch(makeSpellName('tradition')) || '';
   const level = watch(makeSpellName('rank')) || 0;
   const type = watch(makeSpellName('type')) || 'Utility';
+  const maxCasts = watch(makeSpellName('totalCastings')) || 100;
 
   /**
    * Switches between the following formats for spell names based on screen size:
-   * Fireball (on mobile and very small screens)
+   * Fireball: 2/2 (on mobile and very small screens)
    * vs
    * "Fireball" Flame Attack 1: 2/2 (on everything else)
    */
@@ -112,6 +105,7 @@ const SpellField: React.FC<SpellFieldProps> = ({
             <NumberInput
               alwaysEditable
               label={`${isLessThanXs ? '' : 'Cur. '}Casts`}
+              max={maxCasts}
               min={0}
               name={makeSpellName('remainingCastings')}
             />

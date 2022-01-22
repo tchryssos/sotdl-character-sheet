@@ -7,6 +7,7 @@ type NavContext = {
   expandedPortalNode: HTMLDivElement | undefined;
   setNavExpanded: (isExpanded: boolean) => void;
   setNavTitle: (title: string) => void;
+  setDocTitle: (title: string) => void;
   setDropdownItems: (items: DropdowmMenuProps['menuItems']) => void;
   isNavExpanded: boolean;
 };
@@ -16,6 +17,7 @@ export const NavContext = createContext<NavContext>({
   expandedPortalNode: undefined,
   setNavExpanded: () => null,
   setNavTitle: () => null,
+  setDocTitle: () => null,
   isNavExpanded: false,
   setDropdownItems: () => null,
 });

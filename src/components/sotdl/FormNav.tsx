@@ -175,6 +175,7 @@ export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
     expandedPortalNode,
     setNavExpanded,
     setDropdownItems,
+    setDocTitle,
   } = useContext(NavContext);
 
   useEffect(() => {
@@ -184,8 +185,18 @@ export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
         ? ` - ${ancestry}${titleClass ? ` ${titleClass}` : ''}`
         : ''
     }`;
-    setNavTitle(title || '');
-  }, [name, ancestry, novicePath, expertPath, masterPath, setNavTitle, isXxs]);
+    setNavTitle(title);
+    setDocTitle(title);
+  }, [
+    name,
+    ancestry,
+    novicePath,
+    expertPath,
+    masterPath,
+    setNavTitle,
+    setDocTitle,
+    isXxs,
+  ]);
 
   // START - NAV MENU ITEMS - START
   const menuItems = useMemo(() => {
