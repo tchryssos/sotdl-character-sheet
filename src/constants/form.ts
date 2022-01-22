@@ -74,7 +74,7 @@ export const FIELD_NAMES = {
   },
 } as const;
 
-export type FieldNames = typeof FIELD_NAMES;
+export type SotdlFields = typeof FIELD_NAMES;
 
 // Per https://react-hook-form.com/api/useform
 // it is encouraged to have default values for all fields

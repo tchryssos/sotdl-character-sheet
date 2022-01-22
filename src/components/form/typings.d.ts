@@ -7,19 +7,26 @@ import {
   FieldErrors,
   UseFormSetValue,
 } from 'react-hook-form';
-
-// React Hooks Form
-// export type RHFRegister = UseFormRegister<FieldValues>;
-// export type RHFErrors = DeepMap<FieldValues, FieldErrors>;
-// export type RHFWatch = UseFormWatch<FieldValues>;
-// export type RHFSetValue = UseFormSetValue;
+import { SotdlFields } from '~/constants/form';
+import {
+  MultiFields,
+  NestedFieldTypes,
+  UnnestedFieldTypes,
+} from '~/typings/form';
+import { KeysOfUnion, ValuesOf } from '~/typings/util';
 
 export type Validations<T> = {
   required?: boolean;
 } & T;
 
+type test = ValuesOf<NestedFieldTypes<SotdlFields>>;
+
 type BaseInputProps<T> = T & {
-  name: string;
+  name:
+    | ValuesOf<UnnestedFieldTypes<SotdlFields>>
+    | `${ValuesOf<MultiFields<SotdlFields>>['fieldName']}.${number}.${string}`
+    | NestedFieldTypes<SotdlFields>[keyof NestedFieldTypes<SotdlFields>];
+
   label?: string;
   readOnly?: boolean;
   type: 'checkbox' | 'text' | 'textarea' | 'number' | 'textarea';

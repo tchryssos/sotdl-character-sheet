@@ -3,21 +3,18 @@ import sortBy from 'lodash.sortby';
 import { useContext, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import { FieldNames } from '~/constants/form';
+import { SotdlFields } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
+import { MultiFields } from '~/typings/form';
 
 import { Box } from '../box/Box';
 import { SubBody } from '../typography/SubBody';
 import { AddAnotherButton } from './AddAnotherButton';
 
-type MultiFields = {
-  [K in keyof FieldNames as FieldNames[K] extends { fieldName: string }
-    ? K
-    : never]: FieldNames[K];
-};
+type AddAnotherMultiField = MultiFields<SotdlFields>;
 
 interface AddAnotherMultiFieldProps {
-  parentFieldName: MultiFields[keyof MultiFields]['fieldName'];
+  parentFieldName: AddAnotherMultiField[keyof AddAnotherMultiField]['fieldName'];
   children: (fieldProps: {
     index: number;
     onDelete: (index: number) => void;
@@ -71,6 +68,12 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
 
   if (sortProperties) {
     controlledFields = sortBy(controlledFields, sortProperties);
+  }
+
+  if (parentFieldName === 'equipment') {
+    console.log(sortProperties);
+    console.log(controlledFields);
+    console.log(fields);
   }
 
   const onCreate = () => {

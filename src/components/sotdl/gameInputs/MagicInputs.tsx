@@ -13,6 +13,7 @@ import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { FormSection } from '../../form/FormSection';
 import { NumberInput } from '../../form/NumberInput';
@@ -27,13 +28,6 @@ const SpellDelete = styled(DeleteButton)`
   margin-top: ${pxToRem(17)};
 `;
 
-interface SpellFieldProps {
-  onDeleteFn: (index: number) => void;
-  sortIndexMap: Map<string, number>;
-  fieldId: string;
-  postSortIndex: number;
-}
-
 const spellTypeOptions = [
   {
     value: 'utility',
@@ -46,10 +40,13 @@ const spellTypeOptions = [
 ];
 
 const createMakeSpellName =
-  (index: number) => (spellKey: keyof typeof FIELD_NAMES['spells']) =>
+  (index: number) =>
+  (
+    spellKey: keyof typeof FIELD_NAMES['spells']
+  ): `spells.${number}.${string}` =>
     `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells[spellKey]}`;
 
-const SpellField: React.FC<SpellFieldProps> = ({
+const SpellField: React.FC<SortableAddAnotherChildProps> = ({
   sortIndexMap,
   fieldId,
   onDeleteFn,
