@@ -55,7 +55,7 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
   );
 
   useEffect(() => {
-    if (fields.length > sortIndexMap.size) {
+    if (fields.length !== sortIndexMap.size) {
       setSortIndexMap(new Map(fields.map(({ id }, index) => [id, index])));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,12 +70,6 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     controlledFields = sortBy(controlledFields, sortProperties);
   }
 
-  if (parentFieldName === 'equipment') {
-    console.log(sortProperties);
-    console.log(controlledFields);
-    console.log(fields);
-  }
-
   const onCreate = () => {
     const nextValue = createDefaultValue();
     append(nextValue);
@@ -85,19 +79,9 @@ export const AddAnotherMultiField: React.FC<AddAnotherMultiFieldProps> = ({
     const removedId = controlledFields[index].id;
     const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
-    const nextMap = new Map(sortIndexMap);
-    nextMap.delete(removedId);
-    // eslint-disable-next-line no-restricted-syntax
-    for (const [mapId, mapIndex] of nextMap.entries()) {
-      if (mapIndex > valueRemovedIndex) {
-        nextMap.set(mapId, mapIndex - 1);
-      }
-    }
-
     const nextValue = [...(parentField || [])];
     nextValue.splice(valueRemovedIndex, 1);
 
-    setSortIndexMap(nextMap);
     remove(valueRemovedIndex);
   };
 

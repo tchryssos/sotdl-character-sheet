@@ -25,7 +25,8 @@ type BaseInputProps<T> = T & {
   name:
     | ValuesOf<UnnestedFieldTypes<SotdlFields>>
     | `${ValuesOf<MultiFields<SotdlFields>>['fieldName']}.${number}.${string}`
-    | NestedFieldTypes<SotdlFields>[keyof NestedFieldTypes<SotdlFields>];
+    // | NestedFieldTypes<SotdlFields>[keyof NestedFieldTypes<SotdlFields>]
+    | string;
 
   label?: string;
   readOnly?: boolean;

@@ -28,10 +28,6 @@ const ItemField: React.FC<SortableAddAnotherChildProps> = ({
 
   const index = sortIndexMap.get(fieldId);
 
-  if (index === undefined) {
-    return null;
-  }
-
   const onDelete = () => onDeleteFn(postSortIndex);
 
   return (
@@ -46,7 +42,9 @@ const ItemField: React.FC<SortableAddAnotherChildProps> = ({
       )}
       <GridBox gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}>
         <TextAreaInput hideLabel name={`${fieldName}.${index}.${notes}`} />
-        {isEditMode && <DeleteButton onDelete={onDelete} />}
+        {isEditMode && (
+          <DeleteButton disabled={index === undefined} onDelete={onDelete} />
+        )}
       </GridBox>
     </GridBox>
   );

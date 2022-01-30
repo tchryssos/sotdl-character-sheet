@@ -134,7 +134,9 @@ const SpellField: React.FC<SortableAddAnotherChildProps> = ({
           name={makeSpellName('description')}
         />
       </GridBox>
-      {isEditMode && <SpellDelete onDelete={onDelete} />}
+      {isEditMode && (
+        <SpellDelete disabled={index === undefined} onDelete={onDelete} />
+      )}
     </FormSection>
   );
 };
