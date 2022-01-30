@@ -5,6 +5,7 @@
   "author": "<troychryssos@gmail.com>",
   "description": "An online TTRPG character sheet compendium",
   "license": "MIT",
+  "homepage": "https://rpgsheet.games/",
   "scripts": {
     "dev": "next dev",
     "build": "yarn lint:prune && next build",
