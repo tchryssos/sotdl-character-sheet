@@ -19,8 +19,6 @@ export type Validations<T> = {
   required?: boolean;
 } & T;
 
-type test = ValuesOf<NestedFieldTypes<SotdlFields>>;
-
 type BaseInputProps<T> = T & {
   name:
     | ValuesOf<UnnestedFieldTypes<SotdlFields>>
