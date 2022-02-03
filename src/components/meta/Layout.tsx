@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
@@ -25,6 +25,7 @@ const PageWrapper = styled(FlexBox)`
 const emptyArr: DropdowmMenuProps['menuItems'] = [];
 
 export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
+  const [docTitle, setDocTitle] = useState(title);
   const [navTitle, setNavTitle] = useState('');
   const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
   const [expandedPortalNode, setExpandedPortalNode] =
@@ -33,6 +34,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
     useState<DropdowmMenuProps['menuItems']>(emptyArr);
   const [navExpanded, setNavExpanded] = useState(false);
   const isAtLeastXs = useBreakpointsAtLeast('xs');
+
+  useEffect(() => {
+    setDocTitle(title);
+  }, [title]);
 
   const setIconPortalNodeCallback = useCallback((node: HTMLDivElement) => {
     if (node !== null) {
@@ -55,9 +60,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
         expandedPortalNode,
         isNavExpanded: navExpanded,
         setDropdownItems,
+        setDocTitle,
       }}
     >
-      <Head meta={meta} title={title} />
+      <Head meta={meta} title={docTitle} />
       <NavBar
         dropdownMenuItems={dropdownItems}
         isExpanded={navExpanded}

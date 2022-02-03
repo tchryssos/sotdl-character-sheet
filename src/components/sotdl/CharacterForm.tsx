@@ -22,7 +22,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { LoadingIntermediary } from '../form/LoadingIntermediary';
-import { FormNav } from '../nav/FormNav';
+import { FormNav } from './FormNav';
 import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
 export const CharacterForm: React.FC = () => {

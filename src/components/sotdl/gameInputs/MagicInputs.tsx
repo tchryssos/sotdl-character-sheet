@@ -1,161 +1,183 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useRef } from 'react';
-import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
+import capitalize from 'lodash.capitalize';
+import { useContext } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { AddAnotherButton } from '~/components/form/AddAnotherButton';
-import { SubBody } from '~/components/typography/SubBody';
-import { SHY } from '~/constants/characterEntities';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
+import { SelectInput } from '~/components/form/SelectInput';
+import { TextInput } from '~/components/form/TextInput';
 import { FIELD_NAMES } from '~/constants/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import {
-  useBreakpointsAtLeast,
-  useBreakpointsLessThan,
-} from '~/logic/hooks/useBreakpoints';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { FormSection } from '../../form/FormSection';
 import { NumberInput } from '../../form/NumberInput';
 import { TextAreaInput } from '../../form/TextAreaInput';
 
-const powersTemplateColumns = '1fr 8fr';
+const SpellSlash = styled.span(({ theme }) => ({
+  color: theme.colors.text,
+  fontSize: theme.fontSize.title,
+}));
 
-const MagicSectionLabel = styled(SubBody)`
-  margin-top: ${({ theme }) => theme.spacing[8]};
-  ${({ theme }) => theme.breakpoints.sm} {
-    margin-top: 0;
-  }
+const SpellDelete = styled(DeleteButton)`
+  margin-top: ${pxToRem(17)};
 `;
 
-// parseInt(level, 10) <= power
-const Inputs: React.FC = () => {
-  const initialized = useRef(false);
+const spellTypeOptions = [
+  {
+    value: 'utility',
+    label: 'Utility',
+  },
+  {
+    value: 'attack',
+    label: 'Attack',
+  },
+];
 
-  const { control } = useForm();
-  const { watch, setValue } = useFormContext();
-  const castings: { value: string }[] = watch(
-    FIELD_NAMES.spellPower.castings.fieldName
-  );
-  const spells: { value: string }[] = watch(FIELD_NAMES.spells.fieldName);
-  const {
-    fields: castingsFields,
-    append: appendCastings,
-    remove: removeCastings,
-  } = useFieldArray({
-    control,
-    name: FIELD_NAMES.spellPower.castings.fieldName,
-  });
-  const {
-    fields: spellsFields,
-    append: appendSpells,
-    remove: removeSpells,
-  } = useFieldArray({
-    control,
-    name: FIELD_NAMES.spells.fieldName,
-  });
+const createMakeSpellName =
+  (index: number) =>
+  (
+    spellKey: keyof typeof FIELD_NAMES['spells']
+  ): `spells.${number}.${string}` =>
+    `${FIELD_NAMES.spells.fieldName}.${index}.${FIELD_NAMES.spells[spellKey]}`;
 
+const SpellField: React.FC<SortableAddAnotherChildProps> = ({
+  sortIndexMap,
+  fieldId,
+  onDeleteFn,
+  postSortIndex,
+}) => {
   const { isEditMode } = useContext(EditContext);
-
-  const isAtLeastSm = useBreakpointsAtLeast('sm');
-  const isAtLeastMd = useBreakpointsAtLeast('md');
+  const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
+  const isLessThanXs = useBreakpointsLessThan('xs');
+  const index = sortIndexMap.get(fieldId);
 
-  useEffect(() => {
-    if (
-      castings &&
-      castings.length > castingsFields.length &&
-      !initialized.current
-    ) {
-      appendCastings(castings);
-      appendSpells(castings.map((_c, i) => spells[i]));
-      initialized.current = true;
-    }
-  }, [castings, appendCastings, castingsFields, spells, appendSpells]);
-
-  const onAdd = () => {
-    appendCastings({ value: '0' });
-    appendSpells({ values: '' });
-  };
-
-  const onRemove = () => {
-    removeCastings(castingsFields.length - 1);
-    const nextCastings = [...castings];
-    nextCastings.pop();
-    setValue(FIELD_NAMES.spellPower.castings.fieldName, nextCastings);
-
-    removeSpells(spellsFields.length - 1);
-    const nextSpells = [...spells];
-    nextSpells.pop();
-    setValue(FIELD_NAMES.spells.fieldName, nextSpells);
-  };
-
-  let columns = 4;
-  if (isAtLeastSm) {
-    columns = 6;
+  if (index === undefined) {
+    return null;
   }
-  if (isAtLeastMd) {
-    columns = 8;
-  }
+
+  const makeSpellName = createMakeSpellName(index);
+
+  const name = watch(makeSpellName('name')) || `Spell ${index + 1}`;
+
+  const remainingCastings = watch(makeSpellName('remainingCastings')) || 0;
+  const totalCastings = watch(makeSpellName('totalCastings')) || 0;
+  const tradition = watch(makeSpellName('tradition')) || '';
+  const level = watch(makeSpellName('rank')) || 0;
+  const type = watch(makeSpellName('type')) || 'Utility';
+  const maxCasts = watch(makeSpellName('totalCastings')) || 100;
+
+  /**
+   * Switches between the following formats for spell names based on screen size:
+   * Fireball: 2/2 (on mobile and very small screens)
+   * vs
+   * "Fireball" Flame Attack 1: 2/2 (on everything else)
+   */
+  const sectionTitle = `${isLessThanSm ? '' : '"'}${name}${
+    isLessThanSm ? '' : '"'
+  }${
+    isLessThanSm ? '' : ` ${tradition} ${capitalize(type)} ${level}`
+  }: ${remainingCastings}/${totalCastings}`;
+
+  const onDelete = () => onDeleteFn(postSortIndex);
 
   return (
-    <>
-      <GridBox
-        gridTemplateColumns={isLessThanSm ? '100%' : powersTemplateColumns}
-      >
-        <NumberInput
-          label={isLessThanSm ? 'Power' : SHY}
-          min={0}
-          name={FIELD_NAMES.spellPower.fieldName}
-        />
-        <FlexBox column>
-          {isLessThanSm && (
-            <MagicSectionLabel bold mb={8}>
-              Castings by Level
-            </MagicSectionLabel>
-          )}
-          <GridBox gridTemplateColumns={`repeat(${columns}, 1fr)`}>
-            {castingsFields?.map((cField, i) => (
-              <NumberInput
-                key={cField.id}
-                label={`Lvl ${i}`}
-                min={0}
-                name={`${FIELD_NAMES.spellPower.castings.fieldName}.${i}.value`}
-              />
-            ))}
-            {castingsFields.length <= 10 && isEditMode && (
-              <AddAnotherButton includeLabel onClick={onAdd} />
-            )}
-            {Boolean(castingsFields.length) && isEditMode && (
-              <AddAnotherButton includeLabel label="-" onClick={onRemove} />
-            )}
-          </GridBox>
-        </FlexBox>
-      </GridBox>
-      <GridBox>
-        {spellsFields.map((sField, i) => (
-          <TextAreaInput
-            key={sField.id}
-            label={`Lvl ${i}`}
-            name={`${FIELD_NAMES.spells.fieldName}.${i}.value`}
+    <FormSection
+      borderless
+      canToggleVisibility={false}
+      gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      title={sectionTitle}
+      visibilityTitle={`spell${index}`}
+    >
+      <GridBox columns={1} rowGap={16}>
+        <GridBox gridTemplateColumns={isLessThanSm ? '1fr 1fr' : '2fr 1fr'}>
+          <TextInput label="Name" name={makeSpellName('name')} />
+          <FlexBox alignItems="flex-end" gap={8}>
+            <NumberInput
+              alwaysEditable
+              label={`${isLessThanXs ? '' : 'Cur. '}Casts`}
+              max={maxCasts}
+              min={0}
+              name={makeSpellName('remainingCastings')}
+            />
+            <SpellSlash>/</SpellSlash>
+            <NumberInput
+              hideLabel={isLessThanXs}
+              label="Max Casts"
+              min={0}
+              name={makeSpellName('totalCastings')}
+            />
+          </FlexBox>
+        </GridBox>
+        <GridBox columns={3}>
+          <TextInput label="Tradition" name={makeSpellName('tradition')} />
+          <SelectInput
+            label="Type"
+            name={makeSpellName('type')}
+            options={spellTypeOptions}
           />
-        ))}
+          <NumberInput
+            label="Rank"
+            max={10}
+            min={0}
+            name={makeSpellName('rank')}
+          />
+        </GridBox>
+        <TextAreaInput
+          label="Description"
+          name={makeSpellName('description')}
+        />
       </GridBox>
-    </>
+      {isEditMode && (
+        <SpellDelete disabled={index === undefined} onDelete={onDelete} />
+      )}
+    </FormSection>
   );
 };
 
+const createDefaultSpell = () => ({
+  [FIELD_NAMES.spells.name]: '',
+  [FIELD_NAMES.spells.rank]: 0,
+  [FIELD_NAMES.spells.tradition]: '',
+  [FIELD_NAMES.spells.type]: 'utility',
+  [FIELD_NAMES.spells.description]: '',
+  [FIELD_NAMES.spells.totalCastings]: 1,
+  [FIELD_NAMES.spells.remainingCastings]: 1,
+});
+
 export const MagicInputs: React.FC = () => {
-  const isLessThanSm = useBreakpointsLessThan('sm');
+  const isLessThanMd = useBreakpointsLessThan('md');
 
   return (
     <FormSection columns={1} isCollapsable title="Spells">
-      {!isLessThanSm && (
-        <GridBox gridTemplateColumns={powersTemplateColumns}>
-          <SubBody bold>Power</SubBody>
-          <SubBody bold>Castings by Level</SubBody>
-        </GridBox>
-      )}
-      <Inputs />
+      <GridBox gridTemplateColumns={`repeat(${isLessThanMd ? 3 : 4}, 1fr)`}>
+        <NumberInput label="Power" min={0} name={FIELD_NAMES.spellPower} />
+      </GridBox>
+      <AddAnotherMultiField
+        HeaderRow={undefined}
+        createDefaultValue={createDefaultSpell}
+        parentFieldName={FIELD_NAMES.spells.fieldName}
+        sortProperties={[
+          FIELD_NAMES.spells.tradition,
+          FIELD_NAMES.spells.rank,
+          FIELD_NAMES.spells.name,
+        ]}
+      >
+        {({ index, onDelete, sortIndexMap, fieldId }) => (
+          <SpellField
+            fieldId={fieldId}
+            postSortIndex={index}
+            sortIndexMap={sortIndexMap}
+            onDeleteFn={onDelete}
+          />
+        )}
+      </AddAnotherMultiField>
     </FormSection>
   );
 };

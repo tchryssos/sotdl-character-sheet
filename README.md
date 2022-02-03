@@ -10,7 +10,6 @@
 
 ### UX/UI
 
-1. Spells should be add another multiple
 1. Add notifications
 1. Pressing 'enter' on add another multiple fields should create a new field (what to do about text area?)
 1. Adding another field should autofocus that field
@@ -21,3 +20,4 @@
 ### Other
 
 1. Links to official resources?
+1. Better TS typing for input names to only be actual possible field names

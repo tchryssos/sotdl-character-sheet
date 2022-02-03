@@ -1,30 +1,3 @@
-import { Attribute } from '~/typings/game';
-
-import { ATTRIBUTES } from './game';
-
-// START - Attributes - START
-type AttrObj<T> = Record<Attribute, T>;
-const createAttributes = (isBonus?: boolean) =>
-  ATTRIBUTES.reduce((attrObj: AttrObj<Attribute | string>, currAttr) => {
-    const clone = { ...attrObj };
-    clone[currAttr] = `${currAttr}${isBonus ? '_bonus' : ''}`;
-    return clone;
-  }, {} as AttrObj<Attribute | string>);
-// END - Attributes - END
-
-// START - Spells and Magic - START
-type CastingObj = Record<string, string>;
-const spellLevels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const spellObjBuilder = (label: string) =>
-  spellLevels.reduce((castingObj, currLevel) => {
-    const castClone = { ...castingObj };
-    castClone[currLevel] = `${label}_${currLevel}`;
-    return castClone;
-  }, {} as CastingObj);
-const castings = spellObjBuilder('castings');
-const spells = spellObjBuilder('spells');
-// END - Spells and Magic - END
-
 // START - Form - START
 export const FIELD_NAMES = {
   name: 'name',
@@ -39,8 +12,12 @@ export const FIELD_NAMES = {
   ancestryBenefits: 'ancestry_benefits',
   professions: 'professions',
   languages: 'languages',
-  attributes: createAttributes() as AttrObj<Attribute>,
-  attributeBonuses: createAttributes(true) as AttrObj<string>,
+  attributes: {
+    strength: 'strength',
+    agility: 'agility',
+    intellect: 'intellect',
+    will: 'will',
+  },
   defense: 'defense',
   damage: 'damage',
   health: 'health',
@@ -70,10 +47,6 @@ export const FIELD_NAMES = {
     notes: 'weapon_notes',
   },
   activeWeaponIndex: 'active_weapon_index',
-  ammoTrackers: {
-    one: 'ammo_tracker_one',
-    two: 'ammo_tracker_two',
-  },
   currency: {
     gold: 'currency_gold',
     silver: 'currency_silver',
@@ -88,22 +61,20 @@ export const FIELD_NAMES = {
   background: 'background',
   appearance: 'appearance',
   generalNotes: 'general_notes',
-  spellPower: {
-    fieldName: 'spell_power',
-    castings: {
-      fieldName: 'castings',
-      castingsByLevel: {
-        ...castings,
-      },
-    },
-  },
+  spellPower: 'spell_power',
   spells: {
     fieldName: 'spells',
-    spellsByLevel: {
-      ...spells,
-    },
+    name: 'spell_name',
+    rank: 'spell_rank',
+    type: 'spell_type',
+    tradition: 'spell_tradition',
+    description: 'spell_description',
+    totalCastings: 'spell_total_castings',
+    remainingCastings: 'spell_remaining_castings',
   },
-};
+} as const;
+
+export type SotdlFields = typeof FIELD_NAMES;
 
 // Per https://react-hook-form.com/api/useform
 // it is encouraged to have default values for all fields
@@ -123,10 +94,6 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.attributes.will]: 10,
   [FIELD_NAMES.attributes.intellect]: 10,
   [FIELD_NAMES.attributes.agility]: 10,
-  [FIELD_NAMES.attributeBonuses.strength]: 0,
-  [FIELD_NAMES.attributeBonuses.agility]: 0,
-  [FIELD_NAMES.attributeBonuses.intellect]: 0,
-  [FIELD_NAMES.attributeBonuses.will]: 0,
   [FIELD_NAMES.perception]: 10,
   [FIELD_NAMES.perception_bonus]: 0,
   [FIELD_NAMES.damage]: 0,
@@ -138,9 +105,7 @@ export const DEFAULT_VALUES = {
   [FIELD_NAMES.speed]: 10,
   [FIELD_NAMES.size]: 1,
   [FIELD_NAMES.fateRolls]: 0,
-  [FIELD_NAMES.ammoTrackers.one]: 5,
-  [FIELD_NAMES.ammoTrackers.two]: 5,
-  [FIELD_NAMES.spellPower.fieldName]: 0,
+  [FIELD_NAMES.spellPower]: 0,
   [FIELD_NAMES.fortune]: false,
   [FIELD_NAMES.activeArmorIndex]: 0,
   [FIELD_NAMES.activeWeaponIndex]: 0,
