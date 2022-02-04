@@ -45,6 +45,7 @@ const Text = styled(Body)<
 }));
 
 const Section = styled(FlexBox)<{ addMargin: boolean }>`
+  overflow: hidden;
   height: 100%;
 `;
 
