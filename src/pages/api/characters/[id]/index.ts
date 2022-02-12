@@ -1,10 +1,8 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
-import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { prisma } from '~/logic/utils/prisma';
 import { CharacterSaveData } from '~/typings/characters';
-
-const prisma = new PrismaClient();
 
 const getCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

@@ -1,8 +1,7 @@
 import { Session } from '@auth0/nextjs-auth0';
-import { PrismaClient } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const prisma = new PrismaClient();
+import { prisma } from '~/logic/utils/prisma';
 
 export const loginCallback = async (
   _req: NextApiRequest,

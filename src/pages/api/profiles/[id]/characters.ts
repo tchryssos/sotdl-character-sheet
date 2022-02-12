@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { NextApiHandler } from 'next';
 
-const prisma = new PrismaClient();
+import { prisma } from '~/logic/utils/prisma';
 
 const fetchProfileCharacters: NextApiHandler = async (req, res) => {
   try {
