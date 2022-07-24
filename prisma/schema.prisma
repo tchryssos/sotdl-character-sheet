@@ -6,60 +6,36 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("STAGING_DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model user {
-  id             Int         @id @default(autoincrement())
-  createdOn      DateTime    @db.Timestamp(6)
-  lastModifiedOn DateTime    @db.Timestamp(6)
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdOn      DateTime    @db.Timestamp()
+  lastModifiedOn DateTime    @db.Timestamp()
   authId         String      @unique
   role           String
-  // name           String?
   characters     character[]
-  // gmCampaigns     campaign[]  @relation("gm")
-  // playerCampaigns campaign[]  @relation("players")
 }
 
 model rulebook {
-  id             Int         @id @default(autoincrement())
-  createdOn      DateTime    @db.Timestamp(6)
-  lastModifiedOn DateTime    @db.Timestamp(6)
+  id             String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdOn      DateTime    @db.Timestamp()
+  lastModifiedOn DateTime    @db.Timestamp()
   name           String
   description    String?
   characters     character[]
 }
 
-// model campaign {
-//   id             Int      @id @default(autoincrement())
-//   createdOn      DateTime @db.Timestamp(6)
-//   lastModifiedOn DateTime @db.Timestamp(6)
-//   name           String
-//   gm             user     @relation("gm", fields: [gmId], references: [id])
-//   gmId           Int
-//   players        user[]   @relation("players")
-//   rulebook       rulebook @relation(fields: [rulebookId], references: [id])
-//   rulebookId     Int
-// }
-
 model character {
-  id             Int       @id @default(autoincrement())
-  createdOn      DateTime  @db.Timestamp(6)
-  lastModifiedOn DateTime  @db.Timestamp(6)
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdOn      DateTime  @db.Timestamp()
+  lastModifiedOn DateTime  @db.Timestamp()
   name           String
   characterCode  String
   player         user      @relation(fields: [playerId], references: [id])
-  playerId       Int
-  // characterSheetSettings characterSheetSettings[]
+  playerId       String    @db.ObjectId
   rulebook       rulebook? @relation(fields: [rulebookId], references: [id])
-  rulebookId     Int?
+  rulebookId     String    @db.ObjectId
 }
-
-// model characterSheetSettings {
-//   id              Int       @id @default(autoincrement())
-//   character       character @relation(fields: [characterId], references: [id])
-//   characterId     Int
-//   hiddenFieldKeys String[]
-// }
