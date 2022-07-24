@@ -19,13 +19,8 @@ export type Validations<T> = {
   required?: boolean;
 } & T;
 
-type BaseInputProps<T> = T & {
-  name:
-    | ValuesOf<UnnestedFieldTypes<SotdlFields>>
-    | `${ValuesOf<MultiFields<SotdlFields>>['fieldName']}.${number}.${string}`
-    // | NestedFieldTypes<SotdlFields>[keyof NestedFieldTypes<SotdlFields>]
-    | string;
-
+type BaseInputProps<T, U extends Record<string, unknown>> = T & {
+  name: Extract<keyof U, string>;
   label?: string;
   readOnly?: boolean;
   type: 'checkbox' | 'text' | 'textarea' | 'number' | 'textarea';
@@ -37,29 +32,38 @@ type BaseInputProps<T> = T & {
   alwaysEditable?: boolean;
 };
 
-export type TextInputProps = BaseInputProps<{
-  type: 'text';
-  validations?: Validations<{
-    minLength?: number;
-    maxLength?: number;
-  }>;
-}>;
+export type TextInputProps<U> = BaseInputProps<
+  {
+    type: 'text';
+    validations?: Validations<{
+      minLength?: number;
+      maxLength?: number;
+    }>;
+  },
+  U
+>;
 
-export type NumberInputProps = BaseInputProps<{
-  type: 'number';
-  min?: number;
-  max?: number;
-  step?: number;
-  validations?: Validations<{
+export type NumberInputProps<U> = BaseInputProps<
+  {
+    type: 'number';
     min?: number;
     max?: number;
-  }>;
-}>;
+    step?: number;
+    validations?: Validations<{
+      min?: number;
+      max?: number;
+    }>;
+  },
+  U
+>;
 
-export type CheckboxInputProps = BaseInputProps<{
-  type: 'checkbox';
-  validations?: Validations<{}>;
-}>;
+export type CheckboxInputProps<U> = BaseInputProps<
+  {
+    type: 'checkbox';
+    validations?: Validations<{}>;
+  },
+  U
+>;
 
 export type SelectOption = {
   value: string;
@@ -67,13 +71,19 @@ export type SelectOption = {
   disabled?: boolean;
 };
 
-export type SelectInputProps = Omit<
-  BaseInputProps<{
-    validations?: Validations<{}>;
-    options: SelectOption[];
-    placeholder?: string;
-  }>,
+export type SelectInputProps<U> = Omit<
+  BaseInputProps<
+    {
+      validations?: Validations<{}>;
+      options: SelectOption[];
+      placeholder?: string;
+    },
+    U
+  >,
   'type'
 >;
 
-export type InputProps = TextInputProps | NumberInputProps | CheckboxInputProps;
+export type InputProps<U> =
+  | TextInputProps<U>
+  | NumberInputProps<U>
+  | CheckboxInputProps<U>;

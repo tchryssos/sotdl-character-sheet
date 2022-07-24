@@ -40,4 +40,5 @@ model character {
   playerId       Int
   rulebook       rulebook @relation(fields: [rulebookId], references: [id])
   rulebookId     Int
+  characterData  Json
 }

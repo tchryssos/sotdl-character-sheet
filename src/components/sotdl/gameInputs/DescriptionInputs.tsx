@@ -1,4 +1,4 @@
-import { FIELD_NAMES } from '~/constants/form';
+import { FIELD_NAMES } from '~/constants/sotdl/form';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { FormSection } from '../../form/FormSection';

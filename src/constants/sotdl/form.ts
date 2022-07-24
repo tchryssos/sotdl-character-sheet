@@ -1,5 +1,7 @@
+import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+
 // START - Form - START
-export const FIELD_NAMES = {
+export const FIELD_NAMES: Record<string, keyof SotdlCharacterData> = {
   name: 'name',
   level: 'level',
   ancestry: 'ancestry',
