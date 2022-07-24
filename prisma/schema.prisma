@@ -23,15 +23,14 @@ model user {
   // playerCampaigns campaign[]  @relation("players")
 }
 
-// model rulebook {
-//   id             Int      @id @default(autoincrement())
-//   createdOn      DateTime @db.Timestamp(6)
-//   lastModifiedOn DateTime @db.Timestamp(6)
-//   name           String
-//   description    String?
-// campaigns      campaign[]
-// characters     character[]
-// }
+model rulebook {
+  id             Int         @id @default(autoincrement())
+  createdOn      DateTime    @db.Timestamp(6)
+  lastModifiedOn DateTime    @db.Timestamp(6)
+  name           String
+  description    String?
+  characters     character[]
+}
 
 // model campaign {
 //   id             Int      @id @default(autoincrement())
@@ -46,17 +45,16 @@ model user {
 // }
 
 model character {
-  id             Int      @id @default(autoincrement())
-  createdOn      DateTime @db.Timestamp(6)
-  lastModifiedOn DateTime @db.Timestamp(6)
+  id             Int       @id @default(autoincrement())
+  createdOn      DateTime  @db.Timestamp(6)
+  lastModifiedOn DateTime  @db.Timestamp(6)
   name           String
   characterCode  String
-  // imageUrl       String?
-  player         user     @relation(fields: [playerId], references: [id])
+  player         user      @relation(fields: [playerId], references: [id])
   playerId       Int
-  // rulebook       rulebook @relation(fields: [rulebookId], references: [id])
-  // rulebookId     Int
   // characterSheetSettings characterSheetSettings[]
+  rulebook       rulebook? @relation(fields: [rulebookId], references: [id])
+  rulebookId     Int?
 }
 
 // model characterSheetSettings {
