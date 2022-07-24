@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("STAGING_DATABASE_URL")
+}
+
+model user {
+  id             Int         @id @default(autoincrement())
+  createdOn      DateTime    @db.Timestamp(6)
+  lastModifiedOn DateTime    @db.Timestamp(6)
+  authId         String      @unique
+  role           String
+  characters     character[]
+}
+
+model rulebook {
+  id             Int         @id @default(autoincrement())
+  createdOn      DateTime    @db.Timestamp(6)
+  lastModifiedOn DateTime    @db.Timestamp(6)
+  name           String
+  description    String?
+  characters     character[]
+}
+
+model character {
+  id             Int      @id @default(autoincrement())
+  createdOn      DateTime @db.Timestamp(6)
+  lastModifiedOn DateTime @db.Timestamp(6)
+  name           String
+  characterCode  String
+  imageUrl       String?
+  player         user     @relation(fields: [playerId], references: [id])
+  playerId       Int
+  rulebook       rulebook @relation(fields: [rulebookId], references: [id])
+  rulebookId     Int
+}
