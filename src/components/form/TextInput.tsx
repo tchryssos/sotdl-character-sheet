@@ -11,7 +11,7 @@ export function TextInput<T extends Record<string, unknown>>({
   validations,
   hideLabel,
   alwaysEditable,
-}: TextInputProps<T>) {
+}: Omit<TextInputProps<T>, 'type'>) {
   return (
     <Input
       alwaysEditable={alwaysEditable}

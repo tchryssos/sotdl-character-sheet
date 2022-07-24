@@ -7,10 +7,9 @@ import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { SubBody } from '~/components/typography/SubBody';
-import { FIELD_NAMES } from '~/constants/sotdl/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { SotdlArmor, SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { AddAnotherMultiField } from '../../form/AddAnotherMultiField';
 import { FormSection } from '../../form/FormSection';
@@ -19,20 +18,13 @@ import { NumberInput } from '../../form/NumberInput';
 import { TextAreaInput } from '../../form/TextAreaInput';
 import { TextInput } from '../../form/TextInput';
 
-const SmArmorActiveLabel = styled(Label)`
-  width: unset;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 // Something about setValue is overwriting defaultArmor
 // if it is set as a constant, so I am setting it to a fn
 // that returns the obj, which fixes the problem
-const createDefaultArmor = () => ({
-  [FIELD_NAMES.armors.defense]: 0,
-  [FIELD_NAMES.armors.name]: '',
-  [FIELD_NAMES.armors.notes]: '',
+const createDefaultArmor = (): SotdlArmor => ({
+  armor_defense: 0,
+  armor_name: '',
+  armor_notes: '',
 });
 
 const armorTemplateColums = '4fr 1fr 4fr';
@@ -47,9 +39,8 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   const { isEditMode } = useContext(EditContext);
   const isLessThanSm = useBreakpointsLessThan('sm');
 
-  const activeArmorIndex: number | undefined = watch(
-    FIELD_NAMES.activeArmorIndex
-  );
+  const activeArmorIndex: number | undefined =
+    watch<keyof SotdlCharacterData>('active_armor_index');
 
   const onArmorCheck = () => {
     const newVal = index === activeArmorIndex ? undefined : index;
@@ -59,9 +50,10 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   if (isLessThanSm) {
     return (
       <FlexBox>
-        <SmArmorActiveLabel
+        <Label<SotdlCharacterData>
           label="Act."
-          labelFor={FIELD_NAMES.activeArmorIndex}
+          labelFor="active_armor_index"
+          size="sm"
         >
           <CheckboxInput
             customOnChange={onArmorCheck}
@@ -70,22 +62,22 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
             isChecked={activeArmorIndex === index}
             name={FIELD_NAMES.activeArmorIndex}
           />
-        </SmArmorActiveLabel>
+        </Label>
         <FlexBox column mx={8}>
           <GridBox gridTemplateColumns="6fr 2fr" mb={8}>
-            <TextInput
+            <TextInput<SotdlCharacterData>
               label="Name"
-              name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.name}`}
+              name={`armors.${index}.armor_name`}
             />
-            <NumberInput
+            <NumberInput<SotdlCharacterData>
               label="Defense"
               min={0}
-              name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.defense}`}
+              name={`armors.${index}.armor_defense`}
             />
           </GridBox>
-          <TextAreaInput
+          <TextAreaInput<SotdlCharacterData>
             label="Notes"
-            name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.notes}`}
+            name={`armors.${index}.armor_notes`}
           />
         </FlexBox>
         {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
@@ -103,9 +95,9 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
           isChecked={activeArmorIndex === index}
           name={FIELD_NAMES.activeArmorIndex}
         />
-        <TextInput
+        <TextInput<SotdlCharacterData>
           hideLabel
-          name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.name}`}
+          name={`armors.${index}.armor_name`}
         />
       </GridBox>
       <NumberInput<SotdlCharacterData>
