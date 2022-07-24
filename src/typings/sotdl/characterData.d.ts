@@ -1,3 +1,11 @@
+import { ListFieldTypes, UnnestedFieldTypes } from '../form';
+import {
+  ArrayElementType,
+  KeysOfUnion,
+  ListFieldRecord,
+  ValuesOf,
+} from '../util';
+
 export interface SotdlSpell {
   spell_name: string;
   spell_rank: number;
@@ -30,21 +38,17 @@ export type SotdlCharacterData = {
   name: string;
   level: number;
   ancestry: string;
-  paths: {
-    novice_path: string;
-    expert_path: string;
-    master_path: string;
-  };
+  novice_path: string;
+  expert_path: string;
+  master_path: string;
   pathBenefits: string;
   ancestryBenefits: string;
   professions: string;
   languages: string;
-  attributes: {
-    strength: number;
-    agility: number;
-    intellect: number;
-    will: number;
-  };
+  attribute_strength: number;
+  attribute_agility: number;
+  attribute_intellect: number;
+  attribute_will: number;
   defense: number;
   damage: number;
   health: number;
@@ -61,11 +65,9 @@ export type SotdlCharacterData = {
   spell_power: number;
   active_armor_index: number;
   active_weapon_index: number;
-  currency: {
-    currency_gold: number;
-    currency_silver: number;
-    currency_copper: number;
-  };
+  currency_gold: number;
+  currency_silver: number;
+  currency_copper: number;
   spells: SotdlSpell[];
   equipment: SotdlEquipment[];
   weapons: SotdlWeapon[];

@@ -9,18 +9,26 @@ import {
 } from 'react-hook-form';
 import { SotdlFields } from '~/constants/form';
 import {
+  ListFieldTypes,
   MultiFields,
   NestedFieldTypes,
   UnnestedFieldTypes,
 } from '~/typings/form';
-import { KeysOfUnion, ValuesOf } from '~/typings/util';
+import {
+  KeyOfListField,
+  KeysOfUnion,
+  ListFieldRecord,
+  ValuesOf,
+} from '~/typings/util';
 
 export type Validations<T> = {
   required?: boolean;
 } & T;
 
 type BaseInputProps<T, U extends Record<string, unknown>> = T & {
-  name: Extract<keyof U, string>;
+  name:
+    | Extract<keyof U, string>
+    | `${keyof ListFieldRecord<U>}.${number}.${KeyOfListField<U>}`;
   label?: string;
   readOnly?: boolean;
   type: 'checkbox' | 'text' | 'textarea' | 'number' | 'textarea';

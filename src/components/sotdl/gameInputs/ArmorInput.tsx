@@ -10,6 +10,7 @@ import { SubBody } from '~/components/typography/SubBody';
 import { FIELD_NAMES } from '~/constants/sotdl/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { AddAnotherMultiField } from '../../form/AddAnotherMultiField';
 import { FormSection } from '../../form/FormSection';
@@ -52,7 +53,7 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
 
   const onArmorCheck = () => {
     const newVal = index === activeArmorIndex ? undefined : index;
-    setValue(FIELD_NAMES.activeArmorIndex, newVal);
+    setValue<keyof SotdlCharacterData>('active_armor_index', newVal);
   };
 
   if (isLessThanSm) {
@@ -107,15 +108,15 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
           name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.name}`}
         />
       </GridBox>
-      <NumberInput
+      <NumberInput<SotdlCharacterData>
         hideLabel
         min={0}
-        name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.defense}`}
+        name={`armors.${index}.armor_defense`}
       />
       <GridBox gridTemplateColumns={isEditMode ? '7fr 1fr' : '1fr'}>
-        <TextAreaInput
+        <TextAreaInput<SotdlCharacterData>
           hideLabel
-          name={`${FIELD_NAMES.armors.fieldName}.${index}.${FIELD_NAMES.armors.notes}`}
+          name={`armors.${index}.armor_notes`}
         />
         {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
       </GridBox>
@@ -138,10 +139,10 @@ export const ArmorInput: React.FC = () => {
   const isLessThanSm = useBreakpointsLessThan('sm');
   return (
     <FormSection columns={1} isCollapsable title="Armor">
-      <AddAnotherMultiField
+      <AddAnotherMultiField<SotdlCharacterData>
         HeaderRow={isLessThanSm ? undefined : HeaderRow}
         createDefaultValue={createDefaultArmor}
-        parentFieldName={FIELD_NAMES.armors.fieldName}
+        parentFieldName="armors"
       >
         {({ index, onDelete }) => (
           <ArmorField index={index} onDelete={onDelete} />
