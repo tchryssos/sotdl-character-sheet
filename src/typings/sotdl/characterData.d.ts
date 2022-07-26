@@ -6,7 +6,7 @@ import {
   ValuesOf,
 } from '../util';
 
-export interface SotdlSpell {
+export type SotdlSpell = {
   spell_name: string;
   spell_rank: number;
   spell_tradition: string;
@@ -14,7 +14,7 @@ export interface SotdlSpell {
   spell_description: string;
   spell_total_castings: number;
   spell_remaining_castings: number;
-}
+};
 
 export type SotdlEquipment = {
   equipment_name: string;
@@ -41,8 +41,8 @@ export type SotdlCharacterData = {
   novice_path: string;
   expert_path: string;
   master_path: string;
-  pathBenefits: string;
-  ancestryBenefits: string;
+  path_benefits: string;
+  ancestry_benefits: string;
   professions: string;
   languages: string;
   attribute_strength: number;
@@ -60,7 +60,7 @@ export type SotdlCharacterData = {
   insanity: number;
   corruption: number;
   size: number;
-  fateRolls: number;
+  fate_rolls: number;
   fortune: boolean;
   spell_power: number;
   active_armor_index: number;
@@ -74,5 +74,5 @@ export type SotdlCharacterData = {
   armors: SotdlArmor[];
   background: string;
   appearance: string;
-  generalNotes: string;
+  general_notes: string;
 };
