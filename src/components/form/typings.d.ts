@@ -25,10 +25,12 @@ export type Validations<T> = {
   required?: boolean;
 } & T;
 
+export type KeyName<T extends Record<string, unknown>> =
+  | Extract<keyof T, string>
+  | `${keyof ListFieldRecord<T>}.${number}.${KeyOfListField<T>}`;
+
 type BaseInputProps<T, U extends Record<string, unknown>> = T & {
-  name:
-    | Extract<keyof U, string>
-    | `${keyof ListFieldRecord<U>}.${number}.${KeyOfListField<U>}`;
+  name: KeyName<U>;
   label?: string;
   readOnly?: boolean;
   type: 'checkbox' | 'text' | 'textarea' | 'number' | 'textarea';

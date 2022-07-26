@@ -16,23 +16,23 @@ export interface SotdlSpell {
   spell_remaining_castings: number;
 }
 
-export interface SotdlEquipment {
+export type SotdlEquipment = {
   equipment_name: string;
   equipment_notes?: string;
-}
+};
 
-export interface SotdlWeapon {
+export type SotdlWeapon = {
   weapon_name: string;
   weapon_hands: 'one' | 'off' | 'two';
   weapon_damage: string;
   weapon_notes?: string;
-}
+};
 
-export interface SotdlArmor {
+export type SotdlArmor = {
   armor_defense: number;
   armor_name: string;
   armor_notes?: string;
-}
+};
 
 export type SotdlCharacterData = {
   name: string;

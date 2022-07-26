@@ -2,14 +2,17 @@ import styled from '@emotion/styled';
 
 import { SubBody } from '~/components/typography/SubBody';
 
+import { KeyName } from './typings';
+
 type LabelProps<T extends Record<string, unknown>> = {
-  labelFor?: Extract<keyof T, string>;
+  labelFor?: KeyName<T>;
   label?: string;
   className?: string;
   children: React.ReactNode;
   size?: 'sm' | 'md';
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const StyledLabel = styled.label<{ size: LabelProps<any>['size'] }>(
   ({ size }) => ({
     width: size === 'sm' ? 'unset' : '100%',

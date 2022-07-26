@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -55,12 +54,12 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
           labelFor="active_armor_index"
           size="sm"
         >
-          <CheckboxInput
+          <CheckboxInput<SotdlCharacterData>
             customOnChange={onArmorCheck}
             hideLabel
             inputLike
             isChecked={activeArmorIndex === index}
-            name={FIELD_NAMES.activeArmorIndex}
+            name="active_armor_index"
           />
         </Label>
         <FlexBox column mx={8}>
@@ -88,12 +87,12 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
   return (
     <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
       <GridBox gridTemplateColumns="auto 1fr">
-        <CheckboxInput
+        <CheckboxInput<SotdlCharacterData>
           customOnChange={onArmorCheck}
           hideLabel
           inputLike
           isChecked={activeArmorIndex === index}
-          name={FIELD_NAMES.activeArmorIndex}
+          name="active_armor_index"
         />
         <TextInput<SotdlCharacterData>
           hideLabel
