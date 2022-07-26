@@ -39,7 +39,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: parentFieldName,
+    name: parentFieldName as string,
   });
   const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);
