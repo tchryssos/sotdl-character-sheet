@@ -6,14 +6,15 @@ import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 // it is encouraged to have default values for all fields
 // I have them for most that aren't add-another-multiple fields
 export const DEFAULT_VALUES: SotdlCharacterData = {
+  type: 'sotdl',
   name: '',
   level: 0,
   ancestry: '',
   novice_path: '',
   expert_path: '',
   master_path: '',
-  pathBenefits: '',
-  ancestryBenefits: '',
+  path_benefits: '',
+  ancestry_benefits: '',
   professions: '',
   languages: '',
   attribute_strength: 10,
@@ -30,7 +31,7 @@ export const DEFAULT_VALUES: SotdlCharacterData = {
   defense: 10,
   speed: 10,
   size: 1,
-  fateRolls: 0,
+  fate_rolls: 0,
   spell_power: 0,
   fortune: false,
   active_armor_index: 0,
@@ -40,6 +41,10 @@ export const DEFAULT_VALUES: SotdlCharacterData = {
   currency_copper: 0,
   background: '',
   appearance: '',
-  generalNotes: '',
+  general_notes: '',
+  spells: [],
+  weapons: [],
+  armors: [],
+  equipment: [],
 };
 // END - Form - END

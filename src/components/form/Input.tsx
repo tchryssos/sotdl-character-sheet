@@ -6,7 +6,8 @@ import { Label } from '~/components/form/Label';
 import { InputProps, NumberInputProps } from '~/components/form/typings';
 import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
-const StyledInput = styled.input<Pick<InputProps, 'noOutline'>>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const StyledInput = styled.input<Pick<InputProps<any>, 'noOutline'>>(
   ({ theme, noOutline }) => ({
     width: '100%',
     height: theme.spacing[40],
@@ -21,7 +22,7 @@ const StyledInput = styled.input<Pick<InputProps, 'noOutline'>>(
   })
 );
 
-export const Input: React.FC<InputProps> = (props) => {
+export function Input<T extends Record<string, unknown>>(props: InputProps<T>) {
   const {
     label,
     readOnly,
@@ -34,8 +35,8 @@ export const Input: React.FC<InputProps> = (props) => {
     noOutline,
     customOnChange,
     alwaysEditable,
-  } = props as InputProps;
-  const { min, max, step = 1 } = props as NumberInputProps;
+  } = props as InputProps<T>;
+  const { min, max, step = 1 } = props as NumberInputProps<T>;
   const { register } = useFormContext();
   const registeredInput = register(name, validations);
   const isEditingLocked = useIsEditingLocked(Boolean(alwaysEditable));
@@ -64,4 +65,4 @@ export const Input: React.FC<InputProps> = (props) => {
       />
     </Label>
   );
-};
+}
