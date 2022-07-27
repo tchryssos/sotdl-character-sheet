@@ -62,7 +62,7 @@ export const CharacterForm: React.FC = () => {
           <HistoryInputs />
           <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
             {ATTRIBUTES.map((a) => (
-              <AttributeInput key={a} name={a} />
+              <AttributeInput key={a} name={`attribute_${a}`} />
             ))}
           </FormSection>
           <GridBox columns={isLessThanSm ? 1 : 2}>

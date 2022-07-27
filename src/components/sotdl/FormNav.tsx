@@ -4,7 +4,6 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
-import { FIELD_NAMES } from '~/constants/sotdl/form';
 import {
   createCharacterSheetRoute,
   NEW_CHARACTER_ID,
@@ -16,6 +15,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useCopyCode } from '~/logic/hooks/useCopyCode';
 import { useGetCharacterCode } from '~/logic/hooks/useGetCharacterCode';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
+import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { IconButton } from '../buttons/IconButton';
 import { CharacterCodeForm } from '../CharacterCodeForm';
@@ -160,11 +160,15 @@ export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
   const copyCode = useCopyCode();
 
   const { watch } = useFormContext();
-  const name = watch(FIELD_NAMES.name);
-  const ancestry = watch(FIELD_NAMES.ancestry);
-  const novicePath = watch(FIELD_NAMES.paths.novice_path);
-  const expertPath = watch(FIELD_NAMES.paths.expert_path);
-  const masterPath = watch(FIELD_NAMES.paths.master_path);
+  const name: string | undefined = watch<keyof SotdlCharacterData>('name');
+  const ancestry: string | undefined =
+    watch<keyof SotdlCharacterData>('ancestry');
+  const novicePath: string | undefined =
+    watch<keyof SotdlCharacterData>('novice_path');
+  const expertPath: string | undefined =
+    watch<keyof SotdlCharacterData>('expert_path');
+  const masterPath: string | undefined =
+    watch<keyof SotdlCharacterData>('master_path');
 
   const isXxs = useBreakpointsLessThan('xs');
 
