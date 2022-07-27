@@ -1,5 +1,6 @@
 import { character } from '@prisma/client';
 import { ErrorResponse } from './api';
+import { SotdlCharacterData } from './sotdl/characterData';
 
 export type CharacterSaveData = Omit<
   character,
@@ -8,6 +9,8 @@ export type CharacterSaveData = Omit<
   id: number | 'new';
 };
 
-export type StrictCharacter = Omit<character> & {
-  characterData: Record<string, string>;
+export type CharacterData = SotdlCharacterData;
+
+export type StrictCharacter = Omit<character, 'characterData'> & {
+  characterData: CharacterData;
 };

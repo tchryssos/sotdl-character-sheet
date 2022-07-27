@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { character } from '@prisma/client';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect, useState } from 'react';
 
@@ -15,7 +14,7 @@ import { SubBody } from '~/components/typography/SubBody';
 import { createCharacterSheetRoute } from '~/constants/routing';
 import { fetchProfileCharacters } from '~/logic/api/client/fetchProfileCharacters';
 import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
-import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
+import { StrictCharacter } from '~/typings/characters';
 import { isSuccessfulProfileCharactersResponse } from '~/typings/profiles.guards';
 
 import FourOhFour from '../404';
@@ -38,7 +37,7 @@ const ProfilePage = () => {
   const {
     query: { id },
   } = useRouter();
-  const [characters, setCharacters] = useState<character[] | null>(null);
+  const [characters, setCharacters] = useState<StrictCharacter[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const greaterThanXxs = useBreakpointsIsGreaterThan('xxs');
   const greaterThanSm = useBreakpointsIsGreaterThan('sm');
@@ -49,7 +48,7 @@ const ProfilePage = () => {
         setIsLoading(true);
         const resp = await fetchProfileCharacters(id as string);
         if (isSuccessfulProfileCharactersResponse(resp)) {
-          setCharacters(resp);
+          setCharacters(resp as StrictCharacter[]);
         }
         setIsLoading(false);
       };
@@ -78,19 +77,18 @@ const ProfilePage = () => {
             >
               {characters.length ? (
                 characters.map((c) => {
-                  const characterObj = decodeCharacterObj(c.characterCode);
-                  const {
-                    level,
-                    ancestry,
-                  }: { level?: number; ancestry?: string } = characterObj;
+                  const { level, ancestry } = c.characterData;
                   return (
                     <CharacterLink
                       href={createCharacterSheetRoute(c.id)}
                       key={c.id}
                     >
                       <FlexBox column>
-                        <Body>{c.name}</Body>
-                        {(level !== undefined || ancestry) && (
+                        <FlexBox>
+                          <Body>{c.name}</Body>
+                          <Body>{c.characterData.type}</Body>
+                        </FlexBox>
+                        {level !== undefined && (
                           <SubBody>
                             {level !== undefined ? `Level ${level}` : ''}
                             {level && ancestry ? ' ' : ''}
