@@ -2,13 +2,13 @@ import clipboardCopy from 'clipboard-copy';
 import { useCallback } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { useGetCharacterCode } from './useGetCharacterCode';
-
 export const useCopyCode = (
   setCopySuccess?: (wasCopySuccessful: boolean) => void
 ) => {
-  const { handleSubmit } = useFormContext();
-  const code = useGetCharacterCode();
+  const { handleSubmit, getValues } = useFormContext();
+  const data = getValues() as CharacterData;
+  const code =
+    globalThis.btoa?.(encodeURIComponent(JSON.stringify(data))) || '';
 
   const copyCode = useCallback(async () => {
     try {

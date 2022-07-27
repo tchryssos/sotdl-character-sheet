@@ -19,7 +19,7 @@ const createCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         rulebook: {
           connect: {
-            id: body.rulebookId,
+            name: body.rulebookName,
           },
         },
         createdOn: now,

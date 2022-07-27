@@ -32,7 +32,7 @@ const Placeholder: React.FC<PlaceholderProps> = ({ placeholder }) =>
     </option>
   ) : null;
 
-export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
+export function SelectInput<T extends Record<string, unknown>>({
   label,
   name,
   readOnly,
@@ -43,14 +43,15 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
   placeholder,
   hideLabel,
   alwaysEditable,
-}) => {
+}: SelectInputProps<T>) {
   const { register, setValue } = useFormContext();
   const { isEditMode } = useContext(EditContext);
   const nonEditLocked = !isEditMode && !alwaysEditable;
 
   useEffect(() => {
     if (placeholder) {
-      setValue(name, 'placeholder-ignore');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setValue(name, 'placeholder-ignore' as any);
     }
   }, [setValue, placeholder, name]);
 
@@ -76,4 +77,4 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
       </Selecter>
     </Label>
   );
-};
+}

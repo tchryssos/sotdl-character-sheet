@@ -8,12 +8,12 @@ import {
   createCharacterSheetRoute,
   NEW_CHARACTER_ID,
 } from '~/constants/routing';
+import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useCopyCode } from '~/logic/hooks/useCopyCode';
-import { useGetCharacterCode } from '~/logic/hooks/useGetCharacterCode';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
@@ -104,7 +104,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
       id: query.id as number | typeof NEW_CHARACTER_ID,
       characterData,
       playerId,
-      rulebookId: 1000,
+      rulebookName: SOTDL_NAME,
       name: characterName,
       imageUrl: null,
     });

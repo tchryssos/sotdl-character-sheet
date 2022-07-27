@@ -1,4 +1,4 @@
-import { Attribute } from '~/typings/sotdl/game';
+import { Attribute, SotdlName } from '~/typings/sotdl/game';
 
 export const ATTRIBUTES: Attribute[] = [
   'strength',
@@ -6,3 +6,5 @@ export const ATTRIBUTES: Attribute[] = [
   'intellect',
   'will',
 ];
+
+export const SOTDL_NAME: SotdlName = 'sotdl';
