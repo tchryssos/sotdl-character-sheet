@@ -7,9 +7,9 @@ import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { SubBody } from '~/components/typography/SubBody';
-import { FIELD_NAMES } from '~/constants/sotdl/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { SotdlCharacterData, SotdlWeapon } from '~/typings/sotdl/characterData';
 
 import { AddAnotherMultiField } from '../../form/AddAnotherMultiField';
 import { FormSection } from '../../form/FormSection';
@@ -29,70 +29,75 @@ const SmWeaponActiveLabel = styled(Label)`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
+` as typeof Label;
 
 interface WeaponFieldProps {
   index: number;
   onDelete: (index: number) => void;
 }
 
-const createDefaultWeapon = () => ({
-  [FIELD_NAMES.weapons.name]: '',
-  [FIELD_NAMES.weapons.hands]: 'one',
-  [FIELD_NAMES.weapons.damage]: '1d3',
-  [FIELD_NAMES.weapons.notes]: '',
+const createDefaultWeapon = (): SotdlWeapon => ({
+  weapon_name: '',
+  weapon_hands: 'one',
+  weapon_damage: '1d3',
+  weapon_notes: '',
 });
 
 const weaponTemplateColumns = '3fr 1fr 1fr 3fr';
+
+const createWeaponFieldName = (
+  name: keyof SotdlWeapon,
+  index: number
+): `weapons.${number}.${keyof SotdlWeapon}` => `weapons.${index}.${name}`;
 
 const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
   const { setValue, watch } = useFormContext();
   const { isEditMode } = useContext(EditContext);
   const isLessThanSm = useBreakpointsLessThan('sm');
 
-  const activeWeaponIndex: number | undefined = watch(
-    FIELD_NAMES.activeWeaponIndex
+  const activeWeaponIndex: number | undefined = watch<keyof SotdlCharacterData>(
+    'active_weapon_index'
   );
 
   const onWeaponCheck = () => {
     const newVal = index === activeWeaponIndex ? undefined : index;
-    setValue(FIELD_NAMES.activeWeaponIndex, newVal);
+    setValue<keyof SotdlCharacterData>('active_weapon_index', newVal);
   };
 
   if (isLessThanSm) {
     return (
       <FlexBox>
-        <SmWeaponActiveLabel
+        <SmWeaponActiveLabel<SotdlCharacterData>
           label="Act."
-          labelFor={FIELD_NAMES.activeArmorIndex}
+          labelFor="active_weapon_index"
         >
-          <CheckboxInput
+          <CheckboxInput<SotdlCharacterData>
             customOnChange={onWeaponCheck}
             hideLabel
             inputLike
             isChecked={activeWeaponIndex === index}
-            name={FIELD_NAMES.activeWeaponIndex}
+            name="active_weapon_index"
           />
         </SmWeaponActiveLabel>
         <FlexBox column mx={8}>
           <GridBox gridTemplateColumns="6fr 2fr" mb={8}>
-            <TextInput
+            <TextInput<SotdlCharacterData>
               label="Name"
-              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.name}`}
+              name={createWeaponFieldName('weapon_name', index)}
             />
-            <TextInput
+            <TextInput<SotdlCharacterData>
               label="Hands"
-              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.hands}`}
+              name={createWeaponFieldName('weapon_hands', index)}
             />
           </GridBox>
           <GridBox gridTemplateColumns="2fr 6fr">
-            <TextInput
+            <TextInput<SotdlCharacterData>
               label="Damage"
-              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.damage}`}
+              name={createWeaponFieldName('weapon_damage', index)}
             />
-            <TextAreaInput
+            <TextAreaInput<SotdlCharacterData>
               label="Notes"
-              name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.notes}`}
+              name={createWeaponFieldName('weapon_notes', index)}
             />
           </GridBox>
         </FlexBox>
@@ -104,30 +109,30 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
   return (
     <GridBox gridTemplateColumns={weaponTemplateColumns}>
       <GridBox gridTemplateColumns="auto 1fr">
-        <CheckboxInput
+        <CheckboxInput<SotdlCharacterData>
           customOnChange={onWeaponCheck}
           hideLabel
           inputLike
           isChecked={activeWeaponIndex === index}
-          name={FIELD_NAMES.activeWeaponIndex}
+          name="active_weapon_index"
         />
-        <TextInput
+        <TextInput<SotdlCharacterData>
           hideLabel
-          name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.name}`}
+          name={createWeaponFieldName('weapon_name', index)}
         />
       </GridBox>
-      <TextInput
+      <TextInput<SotdlCharacterData>
         hideLabel
-        name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.hands}`}
+        name={createWeaponFieldName('weapon_hands', index)}
       />
       <TextInput
         hideLabel
-        name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.damage}`}
+        name={createWeaponFieldName('weapon_damage', index)}
       />
       <GridBox gridTemplateColumns={isEditMode ? '7fr 1fr' : '1fr'}>
-        <TextAreaInput
+        <TextAreaInput<SotdlCharacterData>
           hideLabel
-          name={`${FIELD_NAMES.weapons.fieldName}.${index}.${FIELD_NAMES.weapons.notes}`}
+          name={createWeaponFieldName('weapon_notes', index)}
         />
         {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}
       </GridBox>
@@ -153,10 +158,10 @@ export const WeaponInput: React.FC = () => {
   // const weapons = watch(FIELD_NAMES.weapons.fieldName);
   return (
     <FormSection columns={1} isCollapsable title="Weapons">
-      <AddAnotherMultiField
+      <AddAnotherMultiField<SotdlCharacterData>
         HeaderRow={isLessThanSm ? undefined : WeaponHeader}
         createDefaultValue={createDefaultWeapon}
-        parentFieldName={FIELD_NAMES.weapons.fieldName}
+        parentFieldName="weapons"
       >
         {({ index, onDelete }) => (
           <WeaponField index={index} onDelete={onDelete} />
