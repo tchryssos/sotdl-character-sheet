@@ -34,7 +34,6 @@ model character {
   createdOn      DateTime @db.Timestamp(6)
   lastModifiedOn DateTime @db.Timestamp(6)
   name           String
-  characterCode  String
   imageUrl       String?
   player         user     @relation(fields: [playerId], references: [id])
   playerId       Int

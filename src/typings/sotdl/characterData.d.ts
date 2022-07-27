@@ -35,6 +35,7 @@ export type SotdlArmor = {
 };
 
 export type SotdlCharacterData = {
+  type: 'sotdl';
   name: string;
   level: number;
   ancestry: string;

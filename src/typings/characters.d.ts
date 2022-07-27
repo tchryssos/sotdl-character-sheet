@@ -1,9 +1,9 @@
 import { character } from '@prisma/client';
 import { ErrorResponse } from './api';
 
-export type CharacterSaveData = Pick<
+export type CharacterSaveData = Omit<
   character,
-  'characterCode' | 'name' | 'playerId'
+  'createdOn' | 'lastModifiedOn' | 'id'
 > & {
   id: number | 'new';
 };

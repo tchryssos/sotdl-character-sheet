@@ -17,10 +17,15 @@ const createCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
             id: body.playerId,
           },
         },
+        rulebook: {
+          connect: {
+            id: body.rulebookId,
+          },
+        },
         createdOn: now,
         lastModifiedOn: now,
         name: body.name,
-        characterCode: body.characterCode,
+        characterData: body.characterData || {},
       },
     });
     res.status(200).json(newCharacter);
