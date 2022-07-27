@@ -32,7 +32,7 @@ const patchCharacter = withApiAuthRequired(
         },
         data: {
           name: body.name,
-          characterCode: body.characterCode,
+          characterData: body.characterData!,
           lastModifiedOn: new Date(),
         },
       });

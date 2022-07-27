@@ -1,17 +1,15 @@
-import { character } from '@prisma/client';
-
 import {
   CREATE_CHARACTER_ROUTE,
   createCharacterApiRoute,
   NEW_CHARACTER_ID,
 } from '~/constants/routing';
 import { ApiResponse } from '~/typings/api';
-import { CharacterSaveData } from '~/typings/characters';
+import { CharacterSaveData, StrictCharacter } from '~/typings/characters';
 
 export const saveCharacter = async (
   data: CharacterSaveData
-): Promise<ApiResponse<character>> => {
-  const { name, characterCode, playerId, id } = data;
+): Promise<ApiResponse<StrictCharacter>> => {
+  const { name, characterData, playerId, id } = data;
   const isCreateCharacter = id === NEW_CHARACTER_ID;
 
   const resp = await fetch(
@@ -23,13 +21,13 @@ export const saveCharacter = async (
       body: JSON.stringify({
         id,
         name,
-        characterCode,
+        characterData,
         playerId,
       }),
     }
   );
 
-  const respData: ApiResponse<character> = await resp.json();
+  const respData: ApiResponse<StrictCharacter> = await resp.json();
 
   return respData;
 };

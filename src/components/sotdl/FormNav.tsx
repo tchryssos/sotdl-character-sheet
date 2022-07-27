@@ -91,19 +91,22 @@ interface SaveButtonProps {
 const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
   const [saveStatus, setSaveStatus] = useState<LoadingStatus>('neutral');
   const { query } = useRouter();
-  const { watch } = useFormContext();
-  const characterCode = useGetCharacterCode();
+  const { watch, getValues } = useFormContext();
+
   const { push } = useRouter();
 
-  const characterName = watch('name');
+  const characterName: string = watch<keyof SotdlCharacterData>('name');
+  const characterData = getValues() as SotdlCharacterData;
 
   const onSave = async () => {
     setSaveStatus('loading');
     const resp = await saveCharacter({
       id: query.id as number | typeof NEW_CHARACTER_ID,
-      characterCode,
+      characterData,
       playerId,
+      rulebookId: 1000,
       name: characterName,
+      imageUrl: null,
     });
     if (isSuccessfulCharacterResponse(resp)) {
       setSaveStatus('success');

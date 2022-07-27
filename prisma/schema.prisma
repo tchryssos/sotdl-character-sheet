@@ -24,7 +24,8 @@ model rulebook {
   id             Int         @id @default(autoincrement())
   createdOn      DateTime    @db.Timestamp(6)
   lastModifiedOn DateTime    @db.Timestamp(6)
-  name           String
+  fullName       String
+  name           String      @unique
   description    String?
   characters     character[]
 }
@@ -37,7 +38,7 @@ model character {
   imageUrl       String?
   player         user     @relation(fields: [playerId], references: [id])
   playerId       Int
-  rulebook       rulebook @relation(fields: [rulebookId], references: [id])
-  rulebookId     Int
+  rulebook       rulebook @relation(fields: [rulebookName], references: [name])
+  rulebookName   String
   characterData  Json
 }
