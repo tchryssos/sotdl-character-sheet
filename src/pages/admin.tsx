@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
-import { Form } from '~/components/form/Form';
+import { Form, FormBox } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
@@ -61,16 +61,20 @@ const Rulebooks: React.FC = () => {
   };
 
   return (
-    <RulebookSection title="Edit Rulebooks">
-      <FlexBox column>
-        <Form<NewRulebook> defaultValues={defaultRulebook} onSubmit={onSubmit}>
+    <Form<NewRulebook>
+      defaultValues={defaultRulebook}
+      noStyles
+      onSubmit={onSubmit}
+    >
+      <RulebookSection title="Edit Rulebooks">
+        <FormBox>
           <TextInput<NewRulebook> label="Name" name="fullName" />
           <TextInput<NewRulebook> label="Abbreviation" name="name" />
           <TextAreaInput<NewRulebook> name="description" />
           <TextButton label="Submit" type="submit" />
-        </Form>
-      </FlexBox>
-    </RulebookSection>
+        </FormBox>
+      </RulebookSection>
+    </Form>
   );
 };
 

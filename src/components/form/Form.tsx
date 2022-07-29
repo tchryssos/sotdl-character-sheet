@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { VisibilityContextProvider } from '../providers/VisibilityContextProvider';
 
@@ -12,18 +13,23 @@ type FormProps<T> = {
   className?: string;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
   defaultValues: Partial<T>;
+  noStyles?: boolean;
 };
 
 const FormWrapper = styled(FlexBox)`
   width: 100%;
 `;
 
-const StyledForm = styled.form`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: ${({ theme }) => theme.spacing[32]};
-`;
+const StyledForm = styled.form<Pick<FormProps<any>, 'noStyles'>>(
+  ({ noStyles, theme }) => ({
+    width: '100%',
+    display: noStyles ? '' : 'grid',
+    gridTemplateColumns: noStyles ? '' : '1fr',
+    rowGap: noStyles ? '' : theme.spacing['32'],
+  })
+);
+
+export const FormBox = StyledForm.withComponent(Box);
 
 export function Form<T extends Record<string, unknown>>({
   onSubmit,
@@ -31,6 +37,7 @@ export function Form<T extends Record<string, unknown>>({
   className,
   mode = 'onSubmit',
   defaultValues,
+  noStyles,
 }: FormProps<T>) {
   const formMethods = useForm({
     defaultValues: defaultValues as Record<string, any>,
@@ -42,6 +49,7 @@ export function Form<T extends Record<string, unknown>>({
       <FormWrapper center>
         <StyledForm
           className={className}
+          noStyles={noStyles}
           onSubmit={formMethods.handleSubmit(
             onSubmit as (v: { [k: string]: any }) => void
           )}
