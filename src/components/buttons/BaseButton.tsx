@@ -55,7 +55,7 @@ export const BaseButton: React.FC<BaseButtonProps> = ({
   return (
     <StyledButton
       className={className}
-      disabled={disabled || !onClick}
+      disabled={disabled || (!onClick && type !== 'submit')}
       transparent={Boolean(transparent)}
       // eslint-disable-next-line react/button-has-type
       type={type}

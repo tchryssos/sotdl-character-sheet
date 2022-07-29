@@ -5,14 +5,14 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { FlexBox } from '../box/FlexBox';
 import { VisibilityContextProvider } from '../providers/VisibilityContextProvider';
 
-interface FormProps {
-  onSubmit: () => void;
+type FormProps<T> = {
+  onSubmit: (values: T) => void;
   submitLabel?: string;
   children: React.ReactNode;
   className?: string;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
-  defaultValues: Record<string, unknown>;
-}
+  defaultValues: Partial<T>;
+};
 
 const FormWrapper = styled(FlexBox)`
   width: 100%;
@@ -25,13 +25,13 @@ const StyledForm = styled.form`
   row-gap: ${({ theme }) => theme.spacing[32]};
 `;
 
-export const Form: React.FC<FormProps> = ({
+export function Form<T extends Record<string, unknown>>({
   onSubmit,
   children,
   className,
   mode = 'onSubmit',
   defaultValues,
-}) => {
+}: FormProps<T>) {
   const formMethods = useForm({
     defaultValues: defaultValues as Record<string, any>,
     mode,
@@ -42,7 +42,9 @@ export const Form: React.FC<FormProps> = ({
       <FormWrapper center>
         <StyledForm
           className={className}
-          onSubmit={formMethods.handleSubmit(onSubmit)}
+          onSubmit={formMethods.handleSubmit(
+            onSubmit as (v: { [k: string]: any }) => void
+          )}
         >
           {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <FormProvider {...formMethods}>{children}</FormProvider>
@@ -50,4 +52,4 @@ export const Form: React.FC<FormProps> = ({
       </FormWrapper>
     </VisibilityContextProvider>
   );
-};
+}

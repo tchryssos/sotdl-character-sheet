@@ -34,6 +34,7 @@ export type BoxProps = MarginProps & {
   borderColor?: Color;
   borderStyle?: 'solid' | 'none' | 'hidden';
   borderWidth?: BorderWidth;
+  width?: string;
 };
 
 export type JustifyContent =

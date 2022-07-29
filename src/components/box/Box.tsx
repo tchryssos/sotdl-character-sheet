@@ -25,6 +25,7 @@ export const Box = styled.div<BoxProps>(
     backgroundColor,
     display = 'block',
     theme,
+    width,
   }) => ({
     paddingTop: theme.spacing[pt || py || p],
     paddingRight: theme.spacing[pr || px || p],
@@ -42,5 +43,6 @@ export const Box = styled.div<BoxProps>(
     borderRadius,
     borderStyle,
     display,
+    width,
   })
 );
