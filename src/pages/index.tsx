@@ -15,7 +15,7 @@ import { Pane } from '~/components/Pane';
 import { Title } from '~/components/typography/Title';
 import {
   createCharacterRoute,
-  createProfileRoute,
+  createUsersRoute,
   NEW_ID,
 } from '~/constants/routing/shared';
 
@@ -61,7 +61,7 @@ const Home: React.FC = () => {
               {!error && (
                 <>
                   {user ? (
-                    <Link href={createProfileRoute(user.id)}>
+                    <Link href={createUsersRoute(user.id)}>
                       <TextButton buttonLike label="My Characters" />
                     </Link>
                   ) : (

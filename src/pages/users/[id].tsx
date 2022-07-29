@@ -12,10 +12,10 @@ import { ProfileNav } from '~/components/nav/ProfileNav';
 import { Body } from '~/components/typography/Body';
 import { SubBody } from '~/components/typography/SubBody';
 import { createCharacterRoute } from '~/constants/routing/shared';
-import { fetchProfileCharacters } from '~/logic/api/client/fetchProfileCharacters';
+import { fetchUserCharacters } from '~/logic/api/client/fetchUserCharacters';
 import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
 import { StrictCharacter } from '~/typings/characters';
-import { isSuccessfulProfileCharactersResponse } from '~/typings/profiles.guards';
+import { isSuccessfulUserCharactersResponse } from '~/typings/user.guards';
 
 import FourOhFour from '../404';
 
@@ -46,8 +46,8 @@ const ProfilePage = () => {
     if (id) {
       const loadProfile = async () => {
         setIsLoading(true);
-        const resp = await fetchProfileCharacters(id as string);
-        if (isSuccessfulProfileCharactersResponse(resp)) {
+        const resp = await fetchUserCharacters(id as string);
+        if (isSuccessfulUserCharactersResponse(resp)) {
           setCharacters(resp as StrictCharacter[]);
         }
         setIsLoading(false);

@@ -2,7 +2,7 @@ import { NextApiHandler } from 'next';
 
 import { prisma } from '~/logic/utils/prisma';
 
-const fetchProfileCharacters: NextApiHandler = async (req, res) => {
+const fetchUserCharacters: NextApiHandler = async (req, res) => {
   try {
     const { id } = req.query;
 
@@ -23,4 +23,4 @@ const fetchProfileCharacters: NextApiHandler = async (req, res) => {
   }
 };
 
-export default fetchProfileCharacters;
+export default fetchUserCharacters;

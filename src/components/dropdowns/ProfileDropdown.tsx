@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useMemo } from 'react';
 
 import { SETTINGS_ROUTE } from '~/constants/routing/client';
-import { createProfileRoute } from '~/constants/routing/shared';
+import { createUsersRoute } from '~/constants/routing/shared';
 import { User } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';
@@ -39,7 +39,7 @@ const createMenuItems = (
       items = [
         {
           type: 'link',
-          href: createProfileRoute(user.id),
+          href: createUsersRoute(user.id),
           text: 'My characters',
         },
         ...items,

@@ -6,6 +6,6 @@ import { ApiResponse } from './api';
 //   resp: ApiResponse<User>
 // ): resp is User => (resp as User).id !== undefined;
 
-export const isSuccessfulProfileCharactersResponse = (
+export const isSuccessfulUserCharactersResponse = (
   resp: ApiResponse<character[]>
 ): resp is character[] => (resp as character[]).length !== undefined;
