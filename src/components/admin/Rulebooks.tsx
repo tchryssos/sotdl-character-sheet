@@ -5,7 +5,9 @@ import { useFormContext } from 'react-hook-form';
 
 import { NEW_ID } from '~/constants/routing/shared';
 import { fetchRulebook } from '~/logic/api/client/fetchRulebook';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
+import { LoadingButton } from '../buttons/LoadingButton';
 import { TextButton } from '../buttons/TextButton';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
@@ -71,6 +73,8 @@ const RulebookSection = styled(FormSection)`
 `;
 
 export const Rulebooks: React.FC = () => {
+  const isLessThanSm = useBreakpointsLessThan('sm');
+
   const [rulebooks, setRulebooks] = useState<rulebook[]>([]);
   const [activeRulebook, setActiveRulebook] = useState<rulebook | NewRulebook>(
     defaultRulebook
@@ -103,17 +107,21 @@ export const Rulebooks: React.FC = () => {
       noStyles
       onSubmit={onSubmit}
     >
-      <RulebookSection title="Edit Rulebooks">
+      <RulebookSection columns={isLessThanSm ? 1 : 2} title="Edit Rulebooks">
         <RulebookSelect
           activeRulebook={activeRulebook}
           rulebooks={rulebooks}
           setActiveRulebook={setActiveRulebook}
         />
         <FormBox>
-          <TextInput<NewRulebook> label="Name" name="fullName" />
-          <TextInput<NewRulebook> label="Abbreviation" name="name" />
-          <TextAreaInput<NewRulebook> name="description" />
-          <TextButton label="Submit" type="submit" />
+          <TextInput<NewRulebook> alwaysEditable label="Name" name="fullName" />
+          <TextInput<NewRulebook>
+            alwaysEditable
+            label="Abbreviation"
+            name="name"
+          />
+          <TextAreaInput<NewRulebook> alwaysEditable name="description" />
+          <LoadingButton label="Submit" type="submit" />
         </FormBox>
       </RulebookSection>
     </Form>
