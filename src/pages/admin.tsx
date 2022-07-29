@@ -10,6 +10,8 @@ import { FormSection } from '~/components/form/FormSection';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { Layout } from '~/components/meta/Layout';
+import { NEW_ID } from '~/constants/routing/shared';
+import { fetchRulebook } from '~/logic/api/client/fetchRulebook';
 import { NavContext } from '~/logic/contexts/navContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
@@ -40,8 +42,22 @@ const Rulebooks: React.FC = () => {
   const [activeRulebook, setActiveRulebook] =
     useState<Partial<rulebook>>(defaultRulebook);
 
-  const onSubmit = (values: NewRulebook) => {
-    // console.log(values);
+  const onSubmit = async (values: NewRulebook | rulebook) => {
+    let rulebookBody;
+
+    if (!activeRulebook.id) {
+      rulebookBody = {
+        method: 'POST' as const,
+        rulebook: values as NewRulebook,
+      };
+    } else {
+      rulebookBody = {
+        method: 'PATCH' as const,
+        rulebook: values as rulebook,
+        id: activeRulebook.id,
+      };
+    }
+    await fetchRulebook(rulebookBody);
   };
 
   return (

@@ -2,6 +2,7 @@ import {
   CHARACTERS_PATH,
   createCharacterRoute,
   createProfileRoute,
+  createRulebookRoute,
 } from './shared';
 
 const API_PREFIX = '/api';
@@ -20,3 +21,8 @@ export const createProfileApiRoute = (id: number | string) =>
 export const createProfileCharactersApiRoute = (id: number | string) =>
   `${createProfileApiRoute(id)}/${CHARACTERS_PATH}`;
 // END - PROFILE ROUTES - END //
+
+// START - RULEBOOK ROUTES - START
+export const createRulebooksApiRoute = (id: number | string) =>
+  `${API_PREFIX}${createRulebookRoute(id)}`;
+// END - RULEBOOK ROUTES - END
