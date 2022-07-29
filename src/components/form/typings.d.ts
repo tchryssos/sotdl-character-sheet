@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, ChangeEventHandler } from 'react';
 import {
   FieldValues,
   UseFormRegister,
@@ -81,17 +81,36 @@ export type SelectOption = {
   disabled?: boolean;
 };
 
-export type SelectInputProps<U> = Omit<
+type BaseSelectProps = {
+  options: SelectOption[];
+  placeholder?: string;
+};
+
+export type ConnectedSelectProps<U> = Omit<
   BaseInputProps<
-    {
+    BaseSelectProps & {
       validations?: Validations<{}>;
-      options: SelectOption[];
-      placeholder?: string;
+      onChange?: never;
     },
     U
   >,
   'type'
 >;
+
+export type UnconnectedSelectProps = Omit<
+  BaseInputProps<
+    BaseSelectProps & {
+      onChange: ChangeEventHandler<HTMLSelectElement>;
+      validations?: never;
+    },
+    never
+  >,
+  'type' | 'name' | 'customOnChange' | 'alwaysEditable'
+>;
+
+export type SelectInputProps<U> =
+  | ConnectedSelectProps<U>
+  | UnconnectedSelectProps;
 
 export type InputProps<U> =
   | TextInputProps<U>
