@@ -3,12 +3,12 @@ import { rulebook } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { NEW_ID } from '~/constants/routing/shared';
 import { fetchRulebook } from '~/logic/api/client/fetchRulebook';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { LoadingButton } from '../buttons/LoadingButton';
-import { TextButton } from '../buttons/TextButton';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
@@ -27,12 +27,14 @@ interface RulebookSelectProps {
   rulebooks: rulebook[];
   setActiveRulebook: (rb: rulebook | NewRulebook) => void;
   activeRulebook: rulebook | NewRulebook;
+  isLoading: boolean;
 }
 
 const RulebookSelect: React.FC<RulebookSelectProps> = ({
   rulebooks,
   setActiveRulebook,
   activeRulebook,
+  isLoading,
 }) => {
   const { reset } = useFormContext();
 
@@ -54,6 +56,7 @@ const RulebookSelect: React.FC<RulebookSelectProps> = ({
 
   return (
     <SelectInput
+      disabled={isLoading}
       label="Rulebook"
       options={[
         { label: 'New Rulebook', value: NEW_ID },
@@ -79,8 +82,26 @@ export const Rulebooks: React.FC = () => {
   const [activeRulebook, setActiveRulebook] = useState<rulebook | NewRulebook>(
     defaultRulebook
   );
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getRulebooks = async () => {
+    setIsLoading(true);
+    const resp = await fetch(ALL_RULEBOOKS_API_PATH, {
+      method: 'GET',
+    });
+
+    const respData = await resp.json();
+
+    setRulebooks(respData);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getRulebooks();
+  }, []);
 
   const onSubmit = async (values: NewRulebook | rulebook) => {
+    setIsLoading(true);
     let rulebookBody;
 
     if ((activeRulebook as rulebook).id) {
@@ -99,6 +120,7 @@ export const Rulebooks: React.FC = () => {
       };
     }
     await fetchRulebook(rulebookBody);
+    await getRulebooks();
   };
 
   return (
@@ -110,6 +132,7 @@ export const Rulebooks: React.FC = () => {
       <RulebookSection columns={isLessThanSm ? 1 : 2} title="Edit Rulebooks">
         <RulebookSelect
           activeRulebook={activeRulebook}
+          isLoading={isLoading}
           rulebooks={rulebooks}
           setActiveRulebook={setActiveRulebook}
         />
@@ -121,7 +144,7 @@ export const Rulebooks: React.FC = () => {
             name="name"
           />
           <TextAreaInput<NewRulebook> alwaysEditable name="description" />
-          <LoadingButton label="Submit" type="submit" />
+          <LoadingButton label="Submit" loading={isLoading} type="submit" />
         </FormBox>
       </RulebookSection>
     </Form>

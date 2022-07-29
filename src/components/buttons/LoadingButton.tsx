@@ -23,8 +23,7 @@ type ButtonProps = {
 type LoadingButtonProps = LoadingButtonBaseProps & (SubmitProps | ButtonProps);
 
 const Spinner = styled(LoadingSpinner)`
-  height: 100%;
-  max-height: ${({ theme }) => theme.fontSize.title};
+  max-height: ${({ theme }) => theme.fontSize.body};
 `;
 
 const Button = styled(BaseButton)<Pick<LoadingButtonProps, 'loading'>>(
