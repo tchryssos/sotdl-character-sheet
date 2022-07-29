@@ -3,10 +3,7 @@ import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  createCharacterSheetRoute,
-  NEW_CHARACTER_ID,
-} from '~/constants/routing';
+import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { DEFAULT_VALUES } from '~/constants/sotdl/form';
 import { fetchCharacter } from '~/logic/api/client/fetchCharacter';
 import { ApiResponse } from '~/typings/api';
@@ -37,7 +34,7 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
 
   useEffect(() => {
     if (id) {
-      if (id === NEW_CHARACTER_ID) {
+      if (id === NEW_ID) {
         reset(DEFAULT_VALUES);
       } else {
         const onLoad = async () => {
@@ -49,7 +46,7 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
             setIsMyCharacter(resp.playerId === user?.id);
             reset(resp.characterData);
           } else {
-            push(createCharacterSheetRoute('new'));
+            push(createCharacterRoute(NEW_ID));
           }
           setIsLoading(false);
         };

@@ -4,10 +4,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
-import {
-  createCharacterSheetRoute,
-  NEW_CHARACTER_ID,
-} from '~/constants/routing';
+import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -101,7 +98,7 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
   const onSave = async () => {
     setSaveStatus('loading');
     const resp = await saveCharacter({
-      id: query.id as number | typeof NEW_CHARACTER_ID,
+      id: query.id as number | typeof NEW_ID,
       characterData,
       playerId,
       rulebookName: SOTDL_NAME,
@@ -110,8 +107,8 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
     });
     if (isSuccessfulCharacterResponse(resp)) {
       setSaveStatus('success');
-      if (query.id === NEW_CHARACTER_ID) {
-        push(createCharacterSheetRoute(resp.id));
+      if (query.id === NEW_ID) {
+        push(createCharacterRoute(resp.id));
       }
     } else {
       setSaveStatus('error');

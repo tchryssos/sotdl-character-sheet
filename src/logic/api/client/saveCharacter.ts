@@ -1,8 +1,8 @@
 import {
   CREATE_CHARACTER_ROUTE,
   createCharacterApiRoute,
-  NEW_CHARACTER_ID,
-} from '~/constants/routing';
+} from '~/constants/routing/api';
+import { NEW_ID } from '~/constants/routing/shared';
 import { ApiResponse } from '~/typings/api';
 import { CharacterSaveData, StrictCharacter } from '~/typings/characters';
 
@@ -10,7 +10,7 @@ export const saveCharacter = async (
   data: CharacterSaveData
 ): Promise<ApiResponse<StrictCharacter>> => {
   const { name, characterData, playerId, id } = data;
-  const isCreateCharacter = id === NEW_CHARACTER_ID;
+  const isCreateCharacter = id === NEW_ID;
 
   const resp = await fetch(
     // technically, query.id could be many strings or undefined

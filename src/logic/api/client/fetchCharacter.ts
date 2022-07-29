@@ -1,4 +1,4 @@
-import { createCharacterApiRoute } from '~/constants/routing';
+import { createCharacterApiRoute } from '~/constants/routing/api';
 
 export const fetchCharacter = async (id: string) => {
   try {

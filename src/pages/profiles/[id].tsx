@@ -11,7 +11,7 @@ import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
 import { Body } from '~/components/typography/Body';
 import { SubBody } from '~/components/typography/SubBody';
-import { createCharacterSheetRoute } from '~/constants/routing';
+import { createCharacterRoute } from '~/constants/routing/shared';
 import { fetchProfileCharacters } from '~/logic/api/client/fetchProfileCharacters';
 import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
 import { StrictCharacter } from '~/typings/characters';
@@ -79,10 +79,7 @@ const ProfilePage = () => {
                 characters.map((c) => {
                   const { level, ancestry } = c.characterData;
                   return (
-                    <CharacterLink
-                      href={createCharacterSheetRoute(c.id)}
-                      key={c.id}
-                    >
+                    <CharacterLink href={createCharacterRoute(c.id)} key={c.id}>
                       <FlexBox column>
                         <FlexBox>
                           <Body>{c.name}</Body>

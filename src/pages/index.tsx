@@ -14,10 +14,10 @@ import { HomeNav } from '~/components/nav/HomeNav';
 import { Pane } from '~/components/Pane';
 import { Title } from '~/components/typography/Title';
 import {
-  createCharacterSheetRoute,
+  createCharacterRoute,
   createProfileRoute,
-  NEW_CHARACTER_ID,
-} from '~/constants/routing';
+  NEW_ID,
+} from '~/constants/routing/shared';
 
 const HomeWrapper = styled(FlexBox)`
   width: 100%;
@@ -72,7 +72,7 @@ const Home: React.FC = () => {
                   <Divider label="or" />
                 </>
               )}
-              <Link href={createCharacterSheetRoute(NEW_CHARACTER_ID)}>
+              <Link href={createCharacterRoute(NEW_ID)}>
                 <TextButton buttonLike label="Create a Character" />
               </Link>
             </ButtonWrapper>

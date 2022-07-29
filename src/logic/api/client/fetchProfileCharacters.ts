@@ -1,4 +1,4 @@
-import { createProfileCharactersApiRoute } from '~/constants/routing';
+import { createProfileCharactersApiRoute } from '~/constants/routing/api';
 
 export const fetchProfileCharacters = async (id: string) => {
   try {

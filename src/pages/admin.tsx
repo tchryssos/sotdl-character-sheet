@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import { rulebook } from '@prisma/client';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
+import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Form } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
@@ -30,34 +31,37 @@ const defaultRulebook: NewRulebook = {
   description: '',
 };
 
-const RulebookSubmit = styled(TextButton)`
-  width: 30%;
-  min-width: ${pxToRem(256)};
+const RulebookSection = styled(FormSection)`
+  width: 100%;
+  height: unset;
 `;
 
-const AdminRulebookForm: React.FC = () => {
+const Rulebooks: React.FC = () => {
+  const [activeRulebook, setActiveRulebook] =
+    useState<Partial<rulebook>>(defaultRulebook);
+
   const onSubmit = (values: NewRulebook) => {
     // console.log(values);
   };
 
   return (
-    <FlexBox column width="100%">
-      <Form<NewRulebook> defaultValues={defaultRulebook} onSubmit={onSubmit}>
-        <FormSection columns={1} title="Add a Rulebook">
+    <RulebookSection title="Edit Rulebooks">
+      <FlexBox column>
+        <Form<NewRulebook> defaultValues={defaultRulebook} onSubmit={onSubmit}>
           <TextInput<NewRulebook> label="Name" name="fullName" />
           <TextInput<NewRulebook> label="Abbreviation" name="name" />
           <TextAreaInput<NewRulebook> name="description" />
-          <RulebookSubmit label="Submit" type="submit" />
-        </FormSection>
-      </Form>
-    </FlexBox>
+          <TextButton label="Submit" type="submit" />
+        </Form>
+      </FlexBox>
+    </RulebookSection>
   );
 };
 
 const AdminPage: React.FC = () => (
   <Layout meta="rpgsheet dot games admin console" title="Admin Console">
     <AdminNav />
-    <AdminRulebookForm />
+    <Rulebooks />
   </Layout>
 );
 
