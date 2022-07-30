@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
 
 import { SubBody } from '~/components/typography/SubBody';
@@ -10,6 +11,7 @@ type LabelProps<T extends Record<string, unknown>> = {
   className?: string;
   children: React.ReactNode;
   size?: 'sm' | 'md';
+  labelProps?: Record<string, unknown>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,9 +32,15 @@ export function Label<T extends Record<string, unknown>>({
   className,
   children,
   size = 'md',
+  labelProps,
 }: LabelProps<T>) {
   return label ? (
-    <StyledLabel className={className} htmlFor={labelFor} size={size}>
+    <StyledLabel
+      className={className}
+      htmlFor={labelFor}
+      size={size}
+      {...labelProps}
+    >
       <SubBody bold>{label}</SubBody>
       {children}
     </StyledLabel>

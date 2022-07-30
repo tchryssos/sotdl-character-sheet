@@ -5,13 +5,12 @@ import { useContext, useEffect, useState } from 'react';
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
 import { VisibilityContext } from '~/logic/contexts/visibilityContext';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { GridBox, GridBoxProps } from '../box/GridBox';
+import { CollapseButton } from '../buttons/CollapseButton';
 import { IconButton } from '../buttons/IconButton';
-import { ChevRight } from '../icons/ChevRight';
 import { Invisible } from '../icons/Invisible';
 import { Visible } from '../icons/Visible';
 import { Body } from '../typography/Body';
@@ -72,17 +71,6 @@ const Container = styled(GridBox)<{ isOpen?: boolean; borderless?: boolean }>`
   padding: ${({ isOpen }) => (isOpen ? '' : 0)};
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
 `;
-
-const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
-  ({ isOpen }) => ({
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
-      isOpen ? '-' : ''
-    }${pxToRem(6)})`,
-  })
-);
 
 const Collapsed = styled.div`
   ${({ theme }) => createCollapsibleStyles(theme)};
@@ -167,12 +155,11 @@ export const FormSection: React.FC<FormSectionProps> = ({
         <FlexBox alignItems="flex-end" ml={borderless ? 0 : 4}>
           <TitleBox>
             {isCollapsable && (
-              <CollapseButton isOpen={isOpen} onClick={onChangeExpanded}>
-                <ChevRight
-                  title="Collapsable arrow"
-                  titleId={`collapseable-arrow-icon-${title}`}
-                />
-              </CollapseButton>
+              <CollapseButton
+                isOpen={isOpen}
+                title={title}
+                onChangeExpanded={onChangeExpanded}
+              />
             )}
             <Text isCollapsable={isCollapsable} isEditMode={isEditMode} italic>
               {title}

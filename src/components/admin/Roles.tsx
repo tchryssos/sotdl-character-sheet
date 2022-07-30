@@ -6,14 +6,20 @@ import { USERS_API_ROUTE } from '~/constants/routing/api';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { StrictUser } from '~/typings/user';
 
+import { LoadingButton } from '../buttons/LoadingButton';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
+import { Label } from '../form/Label';
 import { SelectInput } from '../form/SelectInput';
 import { LoadingSpinner } from '../LoadingSpinner';
 
-const RulebookSection = styled(FormSection)`
+const RolesSection = styled(FormSection)`
   width: 100%;
   height: unset;
+`;
+
+const UsersSpinner = styled(LoadingSpinner)`
+  max-height: ${({ theme }) => theme.spacing[48]};
 `;
 
 interface UserSelectProps {
@@ -45,7 +51,11 @@ const UserSelect: React.FC<UserSelectProps> = ({
   };
 
   if (!users.length && isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <Label label="User">
+        <UsersSpinner title="Loading users" titleId="loading-users" />
+      </Label>
+    );
   }
 
   return (
@@ -92,7 +102,7 @@ export const Roles: React.FC = () => {
       noStyles
       onSubmit={onSubmit}
     >
-      <RulebookSection columns={isLessThanSm ? 1 : 2} title="Edit User Roles">
+      <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User Roles">
         <UserSelect
           activeUser={activeUser}
           isLoading={isLoading}
@@ -101,16 +111,18 @@ export const Roles: React.FC = () => {
         />
         {activeUser && (
           <FormBox>
-            <SelectInput
+            <SelectInput<UserRole>
+              alwaysEditable
               name="role"
               options={[
                 { value: 'player', label: 'Player' },
                 { value: 'admin', label: 'Admin' },
               ]}
             />
+            <LoadingButton label="Submit" loading={isLoading} type="submit" />
           </FormBox>
         )}
-      </RulebookSection>
+      </RolesSection>
     </Form>
   );
 };
