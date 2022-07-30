@@ -7,6 +7,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { StrictUser } from '~/typings/user';
 
 import { LoadingButton } from '../buttons/LoadingButton';
+import { Autocomplete } from '../form/Autocomplete';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
 import { Label } from '../form/Label';
@@ -16,6 +17,7 @@ import { LoadingSpinner } from '../LoadingSpinner';
 const RolesSection = styled(FormSection)`
   width: 100%;
   height: unset;
+  overflow: visible;
 `;
 
 const UsersSpinner = styled(LoadingSpinner)`
@@ -59,15 +61,23 @@ const UserSelect: React.FC<UserSelectProps> = ({
   }
 
   return (
-    <SelectInput
-      disabled={isLoading}
-      label="User"
-      options={users.map((u) => ({
+    // <SelectInput
+    //   disabled={isLoading}
+    //   label="User"
+    //   options={users.map((u) => ({
+    //     label: u.email,
+    //     value: String(u.id),
+    //   }))}
+    //   placeholder="Select a User"
+    //   onChange={onChange}
+    // />
+    <Autocomplete
+      items={users.map((u) => ({
         label: u.email,
         value: String(u.id),
       }))}
-      placeholder="Select a User"
-      onChange={onChange}
+      label="Find User"
+      onValueChange={(value) => console.log(value)}
     />
   );
 };

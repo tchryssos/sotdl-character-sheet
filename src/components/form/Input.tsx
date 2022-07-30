@@ -7,7 +7,7 @@ import { InputProps, NumberInputProps } from '~/components/form/typings';
 import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const StyledInput = styled.input<Pick<InputProps<any>, 'noOutline'>>(
+export const StyledInput = styled.input<Pick<InputProps<any>, 'noOutline'>>(
   ({ theme, noOutline }) => ({
     width: '100%',
     height: theme.spacing[40],

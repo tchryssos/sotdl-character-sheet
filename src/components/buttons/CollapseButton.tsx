@@ -19,6 +19,7 @@ type ThirdPartyButtonProps = {
 type CollapseButtonProps = {
   isOpen: boolean;
   title: string;
+  className?: string;
 } & (ControlledButtonProps | ThirdPartyButtonProps);
 
 const Button = styled(IconButton)<{ isOpen?: boolean }>(({ isOpen }) => ({
@@ -35,8 +36,14 @@ export const CollapseButton: React.FC<CollapseButtonProps> = ({
   onChangeExpanded,
   title,
   buttonProps,
+  className,
 }) => (
-  <Button isOpen={isOpen} onClick={onChangeExpanded} {...buttonProps}>
+  <Button
+    isOpen={isOpen}
+    onClick={onChangeExpanded}
+    {...buttonProps}
+    className={className}
+  >
     <ChevRight
       title="Collapsable arrow"
       titleId={`collapseable-arrow-icon-${title}`}

@@ -3,7 +3,10 @@ import styled from '@emotion/styled';
 import { useCombobox } from 'downshift';
 
 import { CollapseButton } from '../buttons/CollapseButton';
+import { Check } from '../icons/Check';
+import { Body } from '../typography/Body';
 import { SubBody } from '../typography/SubBody';
+import { StyledInput } from './Input';
 import { Label } from './Label';
 import { SelectOption } from './typings';
 
@@ -14,13 +17,57 @@ interface AutocompleteProps {
   className?: string;
 }
 
-const ComboBox = styled.div`
-  display: flex;
+const Wrapper = styled.div`
+  position: relative;
 `;
 
-const OptionsList = styled.ul``;
+const OpenButton = styled(CollapseButton)`
+  top: 0;
+  /*
+    A deeply nested bg hover color messes with the border of the input
+    so we just shift the button 1px over so the two borders don't overlap
+  */
+  right: 1px;
+  left: unset;
+`;
 
-const Option = styled.li<{ isHighlighted: boolean; isSelected: boolean }>``;
+const ComboBox = styled.div`
+  display: flex;
+  position: relative;
+`;
+
+const Search = styled(StyledInput)`
+  -webkit-appearance: none;
+`;
+
+const OptionsList = styled.ul<{ isOpen: boolean }>(({ theme, isOpen }) => ({
+  position: 'absolute',
+  backgroundColor: theme.colors.background,
+  border: isOpen
+    ? `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`
+    : 'none',
+  width: '100%',
+}));
+
+const Option = styled.li<{ isHighlighted: boolean; isSelected: boolean }>(
+  ({ theme, isHighlighted, isSelected }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing[4],
+    // eslint-disable-next-line no-nested-ternary
+    backgroundColor: isHighlighted
+      ? theme.colors.accentHeavy
+      : isSelected
+      ? theme.colors.accentLight
+      : 'transparent',
+  })
+);
+
+const SelectedCheck = styled(Check)(({ theme }) => ({
+  height: theme.fontSize.body,
+  width: 'fit-content',
+  marginRight: theme.spacing[4],
+}));
 
 export const Autocomplete: React.FC<AutocompleteProps> = ({
   onValueChange,
@@ -47,29 +94,38 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   });
   // See https://www.downshift-js.com/use-combobox#basic-usage
   return (
-    <Label className={className} label={label} labelProps={getLabelProps()}>
-      <ComboBox {...getComboboxProps()}>
-        <input {...getInputProps()} />
-        <CollapseButton
-          buttonProps={getToggleButtonProps()}
-          isOpen={isOpen}
-          title={`Toggle ${label} autocomplete`}
-        />
-      </ComboBox>
-      <OptionsList {...getMenuProps()}>
-        {isOpen &&
-          items.map((item, index) => (
-            <Option
-              {...getItemProps({ item, index })}
-              isHighlighted={highlightedIndex === index}
-              isSelected={selectedItem === item}
-              // eslint-disable-next-line react/no-array-index-key
-              key={`${item.value}${index}`}
-            >
-              <SubBody>{item.label}</SubBody>
-            </Option>
-          ))}
-      </OptionsList>
-    </Label>
+    <Wrapper>
+      <Label className={className} label={label} labelProps={getLabelProps()}>
+        <ComboBox {...getComboboxProps()}>
+          <Search {...getInputProps()} type="search" />
+          <OpenButton
+            buttonProps={getToggleButtonProps()}
+            isOpen={isOpen}
+            title={`Toggle ${label} autocomplete`}
+          />
+        </ComboBox>
+        <OptionsList {...getMenuProps()} isOpen={isOpen}>
+          {isOpen &&
+            items.map((item, index) => (
+              <Option
+                {...getItemProps({ item, index })}
+                isHighlighted={highlightedIndex === index}
+                isSelected={selectedItem === item}
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${item.value}${index}`}
+              >
+                {selectedItem === item && (
+                  <SelectedCheck
+                    color="text"
+                    title="Selected Item"
+                    titleId="selected-item-check"
+                  />
+                )}
+                <Body>{item.label}</Body>
+              </Option>
+            ))}
+        </OptionsList>
+      </Label>
+    </Wrapper>
   );
 };
