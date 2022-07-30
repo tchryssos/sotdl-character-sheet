@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -15,7 +16,7 @@ model user {
   authId         String      @unique
   role           String
   characters     character[]
-  email          String?     @unique
+  email          String      @unique
 }
 
 model rulebook {

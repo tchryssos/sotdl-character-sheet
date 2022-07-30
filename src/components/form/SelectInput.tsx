@@ -74,6 +74,7 @@ export function SelectInput<T extends Record<string, unknown>>(
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
       <Selector
         className={className}
+        defaultValue={onChange && placeholder ? placeholderVal : undefined}
         disabled={disabled}
         onChange={onChange}
         // eslint-disable-next-line react/jsx-props-no-spreading

@@ -2,12 +2,14 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { USERS_API_ROUTE } from '~/constants/routing/api';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { StrictUser } from '~/typings/user';
 
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
+import { LoadingSpinner } from '../LoadingSpinner';
 
 const RulebookSection = styled(FormSection)`
   width: 100%;
@@ -42,14 +44,19 @@ const UserSelect: React.FC<UserSelectProps> = ({
     }
   };
 
+  if (!users.length && isLoading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <SelectInput
       disabled={isLoading}
       label="User"
       options={users.map((u) => ({
-        label: u.email!,
+        label: u.email,
         value: String(u.id),
       }))}
+      placeholder="Select a User"
       onChange={onChange}
     />
   );
@@ -62,6 +69,18 @@ export const Roles: React.FC = () => {
   const [users, setUsers] = useState<StrictUser[]>([]);
   const [activeUser, setActiveUser] = useState<StrictUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      setIsLoading(true);
+      const res = await fetch(USERS_API_ROUTE, { method: 'GET' });
+      const data = await res.json();
+      setUsers(data);
+      setIsLoading(false);
+    };
+
+    getUsers();
+  }, []);
 
   const onSubmit = () => {
     const test = '';

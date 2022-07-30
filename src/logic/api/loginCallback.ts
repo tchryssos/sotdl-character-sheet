@@ -31,15 +31,6 @@ export const loginCallback = async (
         authId: user.sub,
       },
     });
-  } else if (!dbUser.email) {
-    await prisma.user.update({
-      where: {
-        authId: user.sub,
-      },
-      data: {
-        email: user.email,
-      },
-    });
   }
 
   // eslint-disable-next-line no-param-reassign

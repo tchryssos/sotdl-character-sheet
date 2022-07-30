@@ -4,6 +4,7 @@ import {
   createRulebookRoute,
   createUsersRoute,
   RULEBOOKS_PATH,
+  USERS_PATH,
 } from './shared';
 
 const API_PREFIX = '/api';
@@ -15,12 +16,13 @@ export const createCharacterApiRoute = (id: number | string) =>
   `${API_PREFIX}${createCharacterRoute(id)}`;
 // END - CHARACTER ROUTES - END //
 
-// START - PROFILE ROUTES - START //
-export const createUsersApiRoute = (id: number | string) =>
+// START - Users ROUTES - START //
+export const USERS_API_ROUTE = `${API_PREFIX}/${USERS_PATH}`;
+export const createUserApiRoute = (id: number | string) =>
   `${API_PREFIX}${createUsersRoute(id)}`;
 
 export const createUsersCharactersApiRoute = (id: number | string) =>
-  `${createUsersApiRoute(id)}/${CHARACTERS_PATH}`;
+  `${createUserApiRoute(id)}/${CHARACTERS_PATH}`;
 // END - PROFILE ROUTES - END //
 
 // START - RULEBOOK ROUTES - START
