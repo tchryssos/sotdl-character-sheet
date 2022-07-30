@@ -15,6 +15,7 @@ model user {
   authId         String      @unique
   role           String
   characters     character[]
+  email          String?     @unique
 }
 
 model rulebook {

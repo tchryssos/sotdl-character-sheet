@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 
 import { SETTINGS_ROUTE } from '~/constants/routing/client';
 import { createUsersRoute } from '~/constants/routing/shared';
-import { User } from '~/typings/user';
+import { StrictSessionUser } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';
 import { IconButton } from '../buttons/IconButton';
@@ -23,7 +23,7 @@ const DropdownAuthLink = styled(AuthLink)`
 `;
 
 const createMenuItems = (
-  user: User | undefined,
+  user: StrictSessionUser | undefined,
   isLoading: boolean
 ): DropdowmMenuProps['menuItems'] => {
   let items: DropdowmMenuProps['menuItems'] = [
@@ -87,7 +87,10 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   const { isLoading, user } = useUser();
 
   const menuItems = useMemo(
-    () => [...dropdownMenuItems, ...createMenuItems(user, isLoading)],
+    () => [
+      ...dropdownMenuItems,
+      ...createMenuItems(user as StrictSessionUser, isLoading),
+    ],
     [dropdownMenuItems, user, isLoading]
   );
 

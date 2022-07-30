@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { User } from '~/typings/user';
+import { StrictUser } from '~/typings/user';
 
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
@@ -15,9 +15,9 @@ const RulebookSection = styled(FormSection)`
 `;
 
 interface UserSelectProps {
-  users: User[];
-  setActiveUser: (u: User) => void;
-  activeUser: User | null;
+  users: StrictUser[];
+  setActiveUser: (u: StrictUser) => void;
+  activeUser: StrictUser | null;
   isLoading: boolean;
 }
 
@@ -47,7 +47,7 @@ const UserSelect: React.FC<UserSelectProps> = ({
       disabled={isLoading}
       label="User"
       options={users.map((u) => ({
-        label: u.authProviderData.nickname,
+        label: u.email!,
         value: String(u.id),
       }))}
       onChange={onChange}
@@ -55,12 +55,12 @@ const UserSelect: React.FC<UserSelectProps> = ({
   );
 };
 
-type UserRole = Pick<User, 'role'>;
+type UserRole = Pick<StrictUser, 'role'>;
 
 export const Roles: React.FC = () => {
   const isLessThanSm = useBreakpointsLessThan('sm');
-  const [users, setUsers] = useState<User[]>([]);
-  const [activeUser, setActiveUser] = useState<User | null>(null);
+  const [users, setUsers] = useState<StrictUser[]>([]);
+  const [activeUser, setActiveUser] = useState<StrictUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = () => {
