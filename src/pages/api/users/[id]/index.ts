@@ -1,5 +1,5 @@
 import { user } from '@prisma/client';
-import { NextApiHandler, NextApiRequest } from 'next';
+import { NextApiHandler } from 'next';
 
 import { prisma } from '~/logic/utils/prisma';
 

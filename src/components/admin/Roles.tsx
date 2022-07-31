@@ -3,8 +3,9 @@ import debounce from 'lodash.debounce';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { USERS_API_ROUTE } from '~/constants/routing/api';
+import { createUserApiRoute, USERS_API_ROUTE } from '~/constants/routing/api';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { PatchUserData } from '~/pages/api/users/[id]';
 import { StrictUser } from '~/typings/user';
 
 import { LoadingButton } from '../buttons/LoadingButton';
@@ -79,20 +80,37 @@ export const Roles: React.FC = () => {
   const [activeUser, setActiveUser] = useState<StrictUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const getUsers = async (search?: string) => {
+  const getUsers = async (search: string) => {
     setIsLoading(true);
+    let returnData: StrictUser[] = [];
     const res = await fetch(
       `${USERS_API_ROUTE}${search ? `?search=${search}` : ''}`,
       { method: 'GET' }
     );
-    const data: StrictUser[] = await res.json();
-    setUsers(data);
+    if (res.status >= 200 && res.status <= 300) {
+      returnData = await res.json();
+      setUsers(returnData);
+    }
     setIsLoading(false);
-    return data;
+    return returnData;
   };
 
-  const onSubmit = () => {
-    const test = '';
+  const onSubmit = async (values: UserRole) => {
+    if (activeUser) {
+      setIsLoading(true);
+      const resp = await fetch(createUserApiRoute(activeUser.id), {
+        method: 'PATCH',
+        body: JSON.stringify({
+          email: activeUser.email,
+          role: values.role,
+        } as PatchUserData),
+      });
+      if (resp.status >= 200 && resp.status <= 300) {
+        const updatedUser: StrictUser = await resp.json();
+        setActiveUser(updatedUser);
+      }
+      setIsLoading(false);
+    }
   };
 
   return (

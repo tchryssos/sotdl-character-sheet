@@ -14,8 +14,11 @@ import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
 import { TextAreaInput } from '../form/TextAreaInput';
 import { TextInput } from '../form/TextInput';
+import { Body } from '../typography/Body';
 
 type NewRulebook = Omit<rulebook, 'id' | 'createdOn' | 'lastModifiedOn'>;
+
+const emptyRbs: rulebook[] = [];
 
 const defaultRulebook: NewRulebook = {
   fullName: '',
@@ -78,11 +81,12 @@ const RulebookSection = styled(FormSection)`
 export const Rulebooks: React.FC = () => {
   const isLessThanSm = useBreakpointsLessThan('sm');
 
-  const [rulebooks, setRulebooks] = useState<rulebook[]>([]);
+  const [rulebooks, setRulebooks] = useState<rulebook[]>(emptyRbs);
   const [activeRulebook, setActiveRulebook] = useState<rulebook | NewRulebook>(
     defaultRulebook
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const getRulebooks = async () => {
     setIsLoading(true);
@@ -90,9 +94,14 @@ export const Rulebooks: React.FC = () => {
       method: 'GET',
     });
 
-    const respData = await resp.json();
-
-    setRulebooks(respData);
+    if (resp.status >= 200 && resp.status <= 300) {
+      const respData = await resp.json();
+      setRulebooks(respData);
+      setHasError(false);
+    } else {
+      setRulebooks(emptyRbs);
+      setHasError(true);
+    }
     setIsLoading(false);
   };
 
@@ -123,7 +132,11 @@ export const Rulebooks: React.FC = () => {
     await getRulebooks();
   };
 
-  return (
+  return hasError ? (
+    <FormSection isCollapsable={false} title="Edit Rulebooks">
+      <Body>Something went wrong fetching rulebooks. Please try again.</Body>
+    </FormSection>
+  ) : (
     <Form<NewRulebook>
       defaultValues={defaultRulebook}
       noStyles

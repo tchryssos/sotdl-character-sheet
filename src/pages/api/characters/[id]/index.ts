@@ -1,5 +1,5 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
 import { prisma } from '~/logic/utils/prisma';
 import { CharacterSaveData } from '~/typings/characters';
@@ -44,7 +44,7 @@ const patchCharacter = withApiAuthRequired(
   }
 );
 
-const handleRequest = async (req: NextApiRequest, res: NextApiResponse) => {
+const handleRequest: NextApiHandler = async (req, res) => {
   const { method } = req;
 
   if (method === 'PATCH') {
