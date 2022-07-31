@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
 
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
-
 import { ChevRight } from '../icons/ChevRight';
 import { IconButton } from './IconButton';
 

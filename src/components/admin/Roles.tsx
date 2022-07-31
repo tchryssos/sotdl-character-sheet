@@ -11,9 +11,7 @@ import { LoadingButton } from '../buttons/LoadingButton';
 import { Autocomplete } from '../form/Autocomplete';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
-import { Label } from '../form/Label';
 import { SelectInput } from '../form/SelectInput';
-import { LoadingSpinner } from '../LoadingSpinner';
 
 const RolesSection = styled(FormSection)`
   width: 100%;
@@ -21,16 +19,12 @@ const RolesSection = styled(FormSection)`
   overflow: visible;
 `;
 
-const UsersSpinner = styled(LoadingSpinner)`
-  max-height: ${({ theme }) => theme.spacing[48]};
-`;
-
 interface UserSelectProps {
   users: StrictUser[] | null;
-  setActiveUser: (u: StrictUser) => void;
+  setActiveUser: (u: StrictUser | null) => void;
   activeUser: StrictUser | null;
   isLoading: boolean;
-  getUsers: (search: string) => void;
+  getUsers: (search: string) => Promise<StrictUser[]>;
 }
 
 const UserSelect: React.FC<UserSelectProps> = ({
@@ -55,8 +49,14 @@ const UserSelect: React.FC<UserSelectProps> = ({
   //   }
   // };
 
-  const onValChange = debounce((val?: string) => {
-    getUsers(val || '');
+  const onValChange = debounce(async (val?: string) => {
+    const newUsers = await getUsers(val || '');
+    const match = newUsers.find((u) => u.email === val);
+    if (match) {
+      setActiveUser(match);
+    } else if (activeUser) {
+      setActiveUser(null);
+    }
   }, 333);
 
   return (
@@ -92,9 +92,10 @@ export const Roles: React.FC = () => {
       `${USERS_API_ROUTE}${search ? `?search=${search}` : ''}`,
       { method: 'GET' }
     );
-    const data = await res.json();
+    const data: StrictUser[] = await res.json();
     setUsers(data);
     setIsLoading(false);
+    return data;
   };
 
   const onSubmit = () => {

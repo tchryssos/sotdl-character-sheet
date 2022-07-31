@@ -46,6 +46,23 @@ const ComboBox = styled.div`
 
 const Search = styled(StyledInput)`
   appearance: none;
+  // https://stackoverflow.com/questions/57011736/how-to-get-rid-of-the-x-on-the-search-bar
+  ::-webkit-search-decoration,
+  ::-webkit-search-cancel-button,
+  ::-webkit-search-results-button,
+  ::-webkit-search-results-decoration {
+    display: none;
+  }
+  ::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  ::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
 `;
 
 const OptionsList = styled.ul<{ isVisible: boolean }>(
@@ -113,7 +130,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
         <ComboBox {...getComboboxProps()}>
           <Search {...getInputProps()} type="search" />
           <SearchIconWrapper center gap={8}>
-            {true && (
+            {isLoading && (
               <Loading
                 title={`Loading ${label}`}
                 titleId="autocomplete-loading"

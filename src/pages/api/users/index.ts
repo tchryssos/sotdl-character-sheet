@@ -11,13 +11,16 @@ const AllUsers: NextApiHandler = async (req, res) => {
       ? {
           where: {
             email: {
-              search: typeof search === 'string' ? search : search.join(','),
+              contains: typeof search === 'string' ? search : search.join(','),
             },
           },
         }
       : undefined;
 
-    const users = await prisma.user.findMany(searchQuery);
+    const users = await prisma.user.findMany({
+      ...searchQuery,
+      take: 10,
+    });
 
     res.status(200).json(users);
   } catch (e) {
