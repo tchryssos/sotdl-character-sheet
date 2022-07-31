@@ -1,9 +1,13 @@
+import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { user } from '@prisma/client';
 import { NextApiHandler } from 'next';
 
+import { NOT_AUTHORIZED_MESSAGE } from '~/constants/errors';
+import { getSessionUser } from '~/logic/api/getSessionUser';
+import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 
-const getUser: NextApiHandler = async (req, res) => {
+const getUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
     const {
       query: { id },
@@ -16,14 +20,20 @@ const getUser: NextApiHandler = async (req, res) => {
     });
     res.status(200).json(profile);
   } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    returnErrorResponse(res, e as Error);
   }
-};
+});
 
 export type PatchUserData = Pick<user, 'email' | 'role'>;
 
-const patchUser: NextApiHandler = async (req, res) => {
+const patchUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
+    const requestUser = await getSessionUser(req, res);
+
+    if (!requestUser) {
+      throw new Error(NOT_AUTHORIZED_MESSAGE);
+    }
+
     const { id } = req.query;
     const body: PatchUserData = await JSON.parse(req.body);
 
@@ -33,16 +43,18 @@ const patchUser: NextApiHandler = async (req, res) => {
       },
       data: {
         email: body.email,
-        role: body.role,
         lastModifiedOn: new Date(),
+        ...(requestUser.role === 'admin' && {
+          role: body.role,
+        }),
       },
     });
 
     res.status(200).json(updateUser);
   } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    returnErrorResponse(res, e as Error);
   }
-};
+});
 
 const handleRequest: NextApiHandler = async (req, res) => {
   const { method } = req;

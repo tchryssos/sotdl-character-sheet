@@ -1,9 +1,14 @@
+import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiHandler } from 'next';
 
+import { rejectNonAdmin } from '~/logic/api/rejectNonAdmin';
+import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 
-const AllUsers: NextApiHandler = async (req, res) => {
+const AllUsers: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
+    await rejectNonAdmin(req, res);
+
     const { query } = req;
     const { search } = query;
 
@@ -24,8 +29,8 @@ const AllUsers: NextApiHandler = async (req, res) => {
 
     res.status(200).json(users);
   } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    returnErrorResponse(res, e as Error);
   }
-};
+});
 
 export default AllUsers;

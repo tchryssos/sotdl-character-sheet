@@ -8,6 +8,9 @@ export const loginCallback = async (
   _res: NextApiResponse,
   session: Session
 ) => {
+  // Very similar to getSessionUser
+  // but made to be used with the specific auth0 logic
+  // around logging in
   const { user } = session;
   let dbUser = await prisma.user.findUnique({
     where: {

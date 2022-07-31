@@ -1,5 +1,6 @@
 import { NextApiHandler } from 'next';
 
+import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 
 const GetAllRulebooks: NextApiHandler = async (_, res) => {
@@ -7,7 +8,7 @@ const GetAllRulebooks: NextApiHandler = async (_, res) => {
     const rulebooks = await prisma.rulebook.findMany();
     res.status(200).json(rulebooks);
   } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    returnErrorResponse(res, e as Error);
   }
 };
 

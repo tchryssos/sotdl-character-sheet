@@ -1,5 +1,8 @@
+import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiHandler } from 'next';
 
+import { rejectNonAdmin } from '~/logic/api/rejectNonAdmin';
+import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 import { RulebookSaveData } from '~/typings/rulebooks';
 
@@ -15,12 +18,14 @@ const getRulebook: NextApiHandler = async (req, res) => {
 
     res.status(200).json(rulebook);
   } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    returnErrorResponse(res, e as Error);
   }
 };
 
-const createRulebook: NextApiHandler = async (req, res) => {
+const createRulebook: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
+    await rejectNonAdmin(req, res);
+
     const body: RulebookSaveData = await JSON.parse(req.body);
 
     const now = new Date();
@@ -37,12 +42,14 @@ const createRulebook: NextApiHandler = async (req, res) => {
 
     res.status(200).json(newRulebook);
   } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    returnErrorResponse(res, e as Error);
   }
-};
+});
 
-const updateRulebook: NextApiHandler = async (req, res) => {
+const updateRulebook: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
+    await rejectNonAdmin(req, res);
+
     const { id } = req.query;
     const body: RulebookSaveData = await JSON.parse(req.body);
 
@@ -60,9 +67,9 @@ const updateRulebook: NextApiHandler = async (req, res) => {
 
     res.status(200).json(rulebook);
   } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+    returnErrorResponse(res, e as Error);
   }
-};
+});
 
 const handleRequest: NextApiHandler = async (req, res) => {
   const { method } = req;

@@ -1,37 +1,46 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { getSessionUser } from '~/logic/api/getSessionUser';
+import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 import { CharacterSaveData } from '~/typings/characters';
 
-const createCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const body: CharacterSaveData = await JSON.parse(req.body);
+const createCharacter = withApiAuthRequired(
+  async (req: NextApiRequest, res: NextApiResponse) => {
+    try {
+      const user = await getSessionUser(req, res);
 
-    const now = new Date();
+      if (!user) {
+        throw new Error('No user found');
+      }
 
-    const newCharacter = await prisma.character.create({
-      data: {
-        player: {
-          connect: {
-            id: body.playerId,
+      const body: CharacterSaveData = await JSON.parse(req.body);
+      const now = new Date();
+
+      const newCharacter = await prisma.character.create({
+        data: {
+          player: {
+            connect: {
+              id: user.id,
+            },
           },
-        },
-        rulebook: {
-          connect: {
-            name: body.rulebookName,
+          rulebook: {
+            connect: {
+              name: body.rulebookName,
+            },
           },
+          createdOn: now,
+          lastModifiedOn: now,
+          name: body.name,
+          characterData: body.characterData || {},
         },
-        createdOn: now,
-        lastModifiedOn: now,
-        name: body.name,
-        characterData: body.characterData || {},
-      },
-    });
-    res.status(200).json(newCharacter);
-  } catch (e) {
-    res.status(500).json({ error: (e as Error).message });
+      });
+      res.status(200).json(newCharacter);
+    } catch (e) {
+      returnErrorResponse(res, e as Error);
+    }
   }
-};
+);
 
 export default withApiAuthRequired(createCharacter);
