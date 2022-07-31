@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { rulebook } from '@prisma/client';
@@ -9,10 +10,12 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
+import { Body } from '~/components/typography/Body';
 import { Title } from '~/components/typography/Title';
 import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
+import { RULEBOOK_QUERY_PARAM } from '~/constants/search';
 import { NavContext } from '~/logic/contexts/navContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
@@ -87,9 +90,13 @@ const SelectRulebook: React.FC<SelectRulebookProps> = ({ rulebooks }) => (
   <RulebookList>
     {rulebooks.map((rb) => (
       <li key={rb.id}>
-        <RulebookLink href={createCharacterRoute(NEW_ID, rb.name)}>
+        <RulebookLink
+          href={`${createCharacterRoute(NEW_ID)}?${RULEBOOK_QUERY_PARAM}=${
+            rb.name
+          }`}
+        >
           <RulebookBox>
-            <RulebookFigure label="whatever">
+            <RulebookFigure label="Rulebook background">
               <RulebookAscii color="accentHeavy" fontSize={pxToRem(16)}>
                 {/* Grab any ascii except the logo */}
                 {sample(Object.values(ASCII_ART).slice(0))}
@@ -142,6 +149,8 @@ const NewCharacterPage: React.FC = () => {
           title="Loading rulebooks"
           titleId="new-char-rulebook-loading"
         />
+      ) : hasError ? (
+        <Body>Error fetching rulebooks, try again later</Body>
       ) : (
         <SelectRulebook rulebooks={rulebooks} />
       )}

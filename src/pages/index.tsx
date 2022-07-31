@@ -14,10 +14,11 @@ import { HomeNav } from '~/components/nav/HomeNav';
 import { Pane } from '~/components/Pane';
 import { Title } from '~/components/typography/Title';
 import {
+  CREATE_ID,
   createCharacterRoute,
   createUsersRoute,
-  NEW_ID,
 } from '~/constants/routing/shared';
+import { StrictSessionUser } from '~/typings/user';
 
 const HomeWrapper = styled(FlexBox)`
   width: 100%;
@@ -61,7 +62,9 @@ const Home: React.FC = () => {
               {!error && (
                 <>
                   {user ? (
-                    <Link href={createUsersRoute(user.id)}>
+                    <Link
+                      href={createUsersRoute((user as StrictSessionUser).id)}
+                    >
                       <TextButton buttonLike label="My Characters" />
                     </Link>
                   ) : (
@@ -72,7 +75,7 @@ const Home: React.FC = () => {
                   <Divider label="or" />
                 </>
               )}
-              <Link href={createCharacterRoute(NEW_ID)}>
+              <Link href={createCharacterRoute(CREATE_ID)}>
                 <TextButton buttonLike label="Create a Character" />
               </Link>
             </ButtonWrapper>
