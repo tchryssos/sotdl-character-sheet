@@ -1,6 +1,6 @@
 {
   "name": "rpg-sheet-dot-games",
-  "version": "0.1.4",
+  "version": "0.2",
   "private": false,
   "author": "<troychryssos@gmail.com>",
   "description": "An online TTRPG character sheet compendium",
@@ -20,9 +20,9 @@
     "prisma:migrate": "yarn prisma migrate deploy"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^1.6.1",
-    "@emotion/react": "^11.4.0",
-    "@emotion/styled": "^11.3.0",
+    "@auth0/nextjs-auth0": "^1.9.1",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
     "@prisma/client": "^4.1.0",
     "clipboard-copy": "^4.0.1",
     "downshift": "^6.1.7",
