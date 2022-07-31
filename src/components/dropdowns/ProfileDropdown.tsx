@@ -2,7 +2,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 import { useMemo } from 'react';
 
-import { SETTINGS_ROUTE } from '~/constants/routing/client';
+import { ADMIN_PANEL_ROUTE, SETTINGS_ROUTE } from '~/constants/routing/client';
 import { createUsersRoute } from '~/constants/routing/shared';
 import { StrictSessionUser } from '~/typings/user';
 
@@ -42,6 +42,15 @@ const createMenuItems = (
           href: createUsersRoute(user.id),
           text: 'My characters',
         },
+        ...(user.role === 'admin'
+          ? ([
+              {
+                type: 'link',
+                href: ADMIN_PANEL_ROUTE,
+                text: 'Admin panel',
+              },
+            ] as DropdowmMenuProps['menuItems'])
+          : ([] as DropdowmMenuProps['menuItems'])),
         ...items,
         {
           type: 'special',
