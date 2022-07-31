@@ -2,8 +2,7 @@ import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { user } from '@prisma/client';
 import { NextApiHandler } from 'next';
 
-import { NOT_AUTHORIZED_MESSAGE } from '~/constants/errors';
-import { getSessionUser } from '~/logic/api/getSessionUser';
+import { rejectNonSelf } from '~/logic/api/rejectNonSelf';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 
@@ -28,13 +27,10 @@ export type PatchUserData = Pick<user, 'email' | 'role'>;
 
 const patchUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
-    const requestUser = await getSessionUser(req, res);
-
-    if (!requestUser) {
-      throw new Error(NOT_AUTHORIZED_MESSAGE);
-    }
-
     const { id } = req.query;
+
+    const requestUser = rejectNonSelf(req, res, id as string);
+
     const body: PatchUserData = await JSON.parse(req.body);
 
     const updateUser = await prisma.user.update({

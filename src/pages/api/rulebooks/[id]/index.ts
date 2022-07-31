@@ -24,7 +24,7 @@ const getRulebook: NextApiHandler = async (req, res) => {
 
 const createRulebook: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
-    await rejectNonAdmin(req, res);
+    rejectNonAdmin(req, res);
 
     const body: RulebookSaveData = await JSON.parse(req.body);
 
@@ -48,7 +48,7 @@ const createRulebook: NextApiHandler = withApiAuthRequired(async (req, res) => {
 
 const updateRulebook: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
-    await rejectNonAdmin(req, res);
+    rejectNonAdmin(req, res);
 
     const { id } = req.query;
     const body: RulebookSaveData = await JSON.parse(req.body);

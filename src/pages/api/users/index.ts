@@ -7,7 +7,7 @@ import { prisma } from '~/logic/utils/prisma';
 
 const AllUsers: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
-    await rejectNonAdmin(req, res);
+    rejectNonAdmin(req, res);
 
     const { query } = req;
     const { search } = query;
