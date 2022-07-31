@@ -42,13 +42,6 @@ const UserSelect: React.FC<UserSelectProps> = ({
     }
   }, [reset, activeUser]);
 
-  // const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  //   const u = users.find((us) => us.id === parseInt(e.target.value, 10));
-  //   if (u) {
-  //     setActiveUser(u);
-  //   }
-  // };
-
   const onValChange = debounce(async (val?: string) => {
     const newUsers = await getUsers(val || '');
     const match = newUsers.find((u) => u.email === val);
