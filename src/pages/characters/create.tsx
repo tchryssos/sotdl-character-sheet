@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { AsciiFigure, AsciiText } from '~/components/Ascii/Ascii';
 import { FlexBox } from '~/components/box/FlexBox';
+import { FormSection } from '~/components/form/FormSection';
 import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
@@ -18,6 +19,10 @@ import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { RULEBOOK_QUERY_PARAM } from '~/constants/search';
 import { NavContext } from '~/logic/contexts/navContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+
+const RulebookSection = styled(FormSection)`
+  height: fit-content;
+`;
 
 const RulebookList = styled.ul`
   display: flex;
@@ -87,27 +92,29 @@ interface SelectRulebookProps {
 }
 
 const SelectRulebook: React.FC<SelectRulebookProps> = ({ rulebooks }) => (
-  <RulebookList>
-    {rulebooks.map((rb) => (
-      <li key={rb.id}>
-        <RulebookLink
-          href={`${createCharacterRoute(NEW_ID)}?${RULEBOOK_QUERY_PARAM}=${
-            rb.name
-          }`}
-        >
-          <RulebookBox>
-            <RulebookFigure label="Rulebook background">
-              <RulebookAscii color="accentHeavy" fontSize={pxToRem(16)}>
-                {/* Grab any ascii except the logo */}
-                {sample(Object.values(ASCII_ART).slice(0))}
-              </RulebookAscii>
-            </RulebookFigure>
-            <RulebookTitle>{rb.fullName}</RulebookTitle>
-          </RulebookBox>
-        </RulebookLink>
-      </li>
-    ))}
-  </RulebookList>
+  <RulebookSection columns={1} isCollapsable={false} title="Select a rulebook">
+    <RulebookList>
+      {rulebooks.map((rb) => (
+        <li key={rb.id}>
+          <RulebookLink
+            href={`${createCharacterRoute(NEW_ID)}?${RULEBOOK_QUERY_PARAM}=${
+              rb.name
+            }`}
+          >
+            <RulebookBox>
+              <RulebookFigure label="Rulebook background">
+                <RulebookAscii color="accentHeavy" fontSize={pxToRem(16)}>
+                  {/* Grab any ascii except the logo */}
+                  {sample(Object.values(ASCII_ART).slice(0))}
+                </RulebookAscii>
+              </RulebookFigure>
+              <RulebookTitle>{rb.fullName}</RulebookTitle>
+            </RulebookBox>
+          </RulebookLink>
+        </li>
+      ))}
+    </RulebookList>
+  </RulebookSection>
 );
 
 const emptyRbs: rulebook[] = [];
