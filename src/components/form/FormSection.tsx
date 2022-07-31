@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
 import { VisibilityContext } from '~/logic/contexts/visibilityContext';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
@@ -87,6 +88,10 @@ const VisibilityButton = styled(IconButton)`
   bottom: 0;
 `;
 
+const CollapseToggle = styled(CollapseButton)`
+  bottom: -${pxToRem(6)};
+`;
+
 export const FormSection: React.FC<FormSectionProps> = ({
   title,
   children,
@@ -155,7 +160,8 @@ export const FormSection: React.FC<FormSectionProps> = ({
         <FlexBox alignItems="flex-end" ml={borderless ? 0 : 4}>
           <TitleBox>
             {isCollapsable && (
-              <CollapseButton
+              <CollapseToggle
+                absolute
                 isOpen={isOpen}
                 title={title}
                 onChangeExpanded={onChangeExpanded}

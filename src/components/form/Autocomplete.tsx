@@ -2,10 +2,11 @@
 import styled from '@emotion/styled';
 import { useCombobox } from 'downshift';
 
+import { FlexBox } from '../box/FlexBox';
 import { CollapseButton } from '../buttons/CollapseButton';
 import { Check } from '../icons/Check';
+import { LoadingSpinner } from '../LoadingSpinner';
 import { Body } from '../typography/Body';
-import { SubBody } from '../typography/SubBody';
 import { StyledInput } from './Input';
 import { Label } from './Label';
 import { SelectOption } from './typings';
@@ -15,20 +16,27 @@ interface AutocompleteProps {
   items: SelectOption[];
   label: string;
   className?: string;
+  isLoading?: boolean;
 }
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
-const OpenButton = styled(CollapseButton)`
+const SearchIconWrapper = styled(FlexBox)`
+  position: absolute;
+  width: fit-content;
   top: 0;
   /*
     A deeply nested bg hover color messes with the border of the input
     so we just shift the button 1px over so the two borders don't overlap
   */
   right: 1px;
-  left: unset;
+  height: 100%;
+`;
+
+const Loading = styled(LoadingSpinner)`
+  height: ${({ theme }) => theme.fontSize.body};
 `;
 
 const ComboBox = styled.div`
@@ -37,23 +45,28 @@ const ComboBox = styled.div`
 `;
 
 const Search = styled(StyledInput)`
-  -webkit-appearance: none;
+  appearance: none;
 `;
 
-const OptionsList = styled.ul<{ isOpen: boolean }>(({ theme, isOpen }) => ({
-  position: 'absolute',
-  backgroundColor: theme.colors.background,
-  border: isOpen
-    ? `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`
-    : 'none',
-  width: '100%',
-}));
+const OptionsList = styled.ul<{ isVisible: boolean }>(
+  ({ theme, isVisible }) => ({
+    position: 'absolute',
+    backgroundColor: theme.colors.background,
+    borderTop: `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`,
+    width: '100%',
+    paddingBottom: theme.spacing[8],
+    transform: isVisible ? '' : 'translateY(99999px)',
+  })
+);
 
 const Option = styled.li<{ isHighlighted: boolean; isSelected: boolean }>(
   ({ theme, isHighlighted, isSelected }) => ({
+    cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing[4],
+    padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
+    border: `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`,
+    borderTop: 'none',
     // eslint-disable-next-line no-nested-ternary
     backgroundColor: isHighlighted
       ? theme.colors.accentHeavy
@@ -74,6 +87,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   items,
   label,
   className,
+  isLoading,
 }) => {
   const {
     isOpen,
@@ -98,13 +112,23 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
       <Label className={className} label={label} labelProps={getLabelProps()}>
         <ComboBox {...getComboboxProps()}>
           <Search {...getInputProps()} type="search" />
-          <OpenButton
-            buttonProps={getToggleButtonProps()}
-            isOpen={isOpen}
-            title={`Toggle ${label} autocomplete`}
-          />
+          <SearchIconWrapper center gap={8}>
+            {true && (
+              <Loading
+                title={`Loading ${label}`}
+                titleId="autocomplete-loading"
+              />
+            )}
+            {Boolean(items.length) && (
+              <CollapseButton
+                buttonProps={getToggleButtonProps()}
+                isOpen={isOpen}
+                title={`Toggle ${label} autocomplete`}
+              />
+            )}
+          </SearchIconWrapper>
         </ComboBox>
-        <OptionsList {...getMenuProps()} isOpen={isOpen}>
+        <OptionsList {...getMenuProps()} isVisible={isOpen && items.length}>
           {isOpen &&
             items.map((item, index) => (
               <Option

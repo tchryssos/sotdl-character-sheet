@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import debounce from 'lodash.debounce';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -25,10 +26,11 @@ const UsersSpinner = styled(LoadingSpinner)`
 `;
 
 interface UserSelectProps {
-  users: StrictUser[];
+  users: StrictUser[] | null;
   setActiveUser: (u: StrictUser) => void;
   activeUser: StrictUser | null;
   isLoading: boolean;
+  getUsers: (search: string) => void;
 }
 
 const UserSelect: React.FC<UserSelectProps> = ({
@@ -36,6 +38,7 @@ const UserSelect: React.FC<UserSelectProps> = ({
   setActiveUser,
   activeUser,
   isLoading,
+  getUsers,
 }) => {
   const { reset } = useFormContext();
 
@@ -45,39 +48,32 @@ const UserSelect: React.FC<UserSelectProps> = ({
     }
   }, [reset, activeUser]);
 
-  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const u = users.find((us) => us.id === parseInt(e.target.value, 10));
-    if (u) {
-      setActiveUser(u);
-    }
-  };
+  // const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const u = users.find((us) => us.id === parseInt(e.target.value, 10));
+  //   if (u) {
+  //     setActiveUser(u);
+  //   }
+  // };
 
-  if (!users.length && isLoading) {
-    return (
-      <Label label="User">
-        <UsersSpinner title="Loading users" titleId="loading-users" />
-      </Label>
-    );
-  }
+  const onValChange = debounce((val?: string) => {
+    getUsers(val || '');
+  }, 333);
 
   return (
-    // <SelectInput
-    //   disabled={isLoading}
-    //   label="User"
-    //   options={users.map((u) => ({
-    //     label: u.email,
-    //     value: String(u.id),
-    //   }))}
-    //   placeholder="Select a User"
-    //   onChange={onChange}
-    // />
     <Autocomplete
-      items={users.map((u) => ({
-        label: u.email,
-        value: String(u.id),
-      }))}
+      isLoading={isLoading}
+      items={
+        users === null
+          ? []
+          : [
+              ...users.map((u) => ({
+                label: u.email,
+                value: String(u.id),
+              })),
+            ]
+      }
       label="Find User"
-      onValueChange={(value) => console.log(value)}
+      onValueChange={onValChange}
     />
   );
 };
@@ -86,21 +82,20 @@ type UserRole = Pick<StrictUser, 'role'>;
 
 export const Roles: React.FC = () => {
   const isLessThanSm = useBreakpointsLessThan('sm');
-  const [users, setUsers] = useState<StrictUser[]>([]);
+  const [users, setUsers] = useState<StrictUser[] | null>(null);
   const [activeUser, setActiveUser] = useState<StrictUser | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const getUsers = async () => {
-      setIsLoading(true);
-      const res = await fetch(USERS_API_ROUTE, { method: 'GET' });
-      const data = await res.json();
-      setUsers(data);
-      setIsLoading(false);
-    };
-
-    getUsers();
-  }, []);
+  const getUsers = async (search?: string) => {
+    setIsLoading(true);
+    const res = await fetch(
+      `${USERS_API_ROUTE}${search ? `?search=${search}` : ''}`,
+      { method: 'GET' }
+    );
+    const data = await res.json();
+    setUsers(data);
+    setIsLoading(false);
+  };
 
   const onSubmit = () => {
     const test = '';
@@ -115,6 +110,7 @@ export const Roles: React.FC = () => {
       <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User Roles">
         <UserSelect
           activeUser={activeUser}
+          getUsers={getUsers}
           isLoading={isLoading}
           setActiveUser={setActiveUser}
           users={users}

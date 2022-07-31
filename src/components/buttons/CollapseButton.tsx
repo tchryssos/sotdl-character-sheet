@@ -20,15 +20,18 @@ type CollapseButtonProps = {
   isOpen: boolean;
   title: string;
   className?: string;
+  absolute?: boolean;
 } & (ControlledButtonProps | ThirdPartyButtonProps);
 
-const Button = styled(IconButton)<{ isOpen?: boolean }>(({ isOpen }) => ({
-  position: 'absolute',
-  left: 0,
-  bottom: 0,
-  transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
-    isOpen ? '-' : ''
-  }${pxToRem(6)})`,
+const Icon = styled(ChevRight)<{ isOpen?: boolean }>(({ isOpen }) => ({
+  transform: `rotate(${isOpen ? '-' : ''}90deg)`,
+  transformOrigin: 'center',
+}));
+
+const Button = styled(IconButton)<{ absolute?: boolean }>(({ absolute }) => ({
+  position: absolute ? 'absolute' : 'relative',
+  left: absolute ? 0 : '',
+  bottom: absolute ? 0 : '',
 }));
 
 export const CollapseButton: React.FC<CollapseButtonProps> = ({
@@ -37,14 +40,16 @@ export const CollapseButton: React.FC<CollapseButtonProps> = ({
   title,
   buttonProps,
   className,
+  absolute,
 }) => (
   <Button
-    isOpen={isOpen}
     onClick={onChangeExpanded}
     {...buttonProps}
+    absolute={absolute}
     className={className}
   >
-    <ChevRight
+    <Icon
+      isOpen={isOpen}
       title="Collapsable arrow"
       titleId={`collapseable-arrow-icon-${title}`}
     />
