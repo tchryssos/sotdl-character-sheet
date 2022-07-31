@@ -1,15 +1,20 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { rulebook } from '@prisma/client';
+import sample from 'lodash.sample';
 import { useContext, useEffect, useState } from 'react';
 
+import { AsciiFigure, AsciiText } from '~/components/Ascii/Ascii';
 import { FlexBox } from '~/components/box/FlexBox';
 import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { Title } from '~/components/typography/Title';
+import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { NavContext } from '~/logic/contexts/navContext';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 const RulebookList = styled.ul`
   display: flex;
@@ -17,8 +22,47 @@ const RulebookList = styled.ul`
   gap: ${({ theme }) => theme.spacing[16]};
 `;
 
+const AsciiSlide = keyframes`
+from {
+  transform: rotate(0deg) translate(0, 0) scale(1, 1);
+}
+to {
+  transform: rotate(2deg) translate(-100%, -100%) scale(2, 2)
+}
+`;
+
+const RulebookAscii = styled(AsciiText)``;
+
+const RulebookTitle = styled(Title)`
+  z-index: 2;
+`;
+
+const RulebookFigure = styled(AsciiFigure)`
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  filter: blur(2px);
+`;
+
+const RulebookLink = styled(Link)`
+  width: 100%;
+  :hover {
+    ${RulebookFigure} {
+      visibility: visible;
+    }
+    ${RulebookAscii} {
+      animation: ${AsciiSlide} 60s linear infinite;
+    }
+  }
+`;
+
 const RulebookBox = styled(FlexBox)(({ theme }) => ({
   border: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
+  position: 'relative',
   padding: theme.spacing[24],
   [theme.breakpoints.md]: {
     padding: theme.spacing[40],
@@ -43,11 +87,17 @@ const SelectRulebook: React.FC<SelectRulebookProps> = ({ rulebooks }) => (
   <RulebookList>
     {rulebooks.map((rb) => (
       <li key={rb.id}>
-        <Link href={createCharacterRoute(NEW_ID, rb.name)}>
+        <RulebookLink href={createCharacterRoute(NEW_ID, rb.name)}>
           <RulebookBox>
-            <Title>{rb.fullName}</Title>
+            <RulebookFigure label="whatever">
+              <RulebookAscii color="accentHeavy" fontSize={pxToRem(16)}>
+                {/* Grab any ascii except the logo */}
+                {sample(Object.values(ASCII_ART).slice(0))}
+              </RulebookAscii>
+            </RulebookFigure>
+            <RulebookTitle>{rb.fullName}</RulebookTitle>
           </RulebookBox>
-        </Link>
+        </RulebookLink>
       </li>
     ))}
   </RulebookList>

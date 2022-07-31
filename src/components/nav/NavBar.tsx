@@ -4,12 +4,12 @@ import { HOME_ROUTE } from '~/constants/routing/client';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { Spacing } from '~/typings/theme';
 
+import { LogoAscii } from '../Ascii/LogoAscii';
 // import { MutableRefObject, useContext, useState } from 'react';
 import { FlexBox } from '../box/FlexBox';
 import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { Link } from '../Link';
-import { LogoAscii } from '../LogoAscii';
 import { Body } from '../typography/Body';
 
 const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
