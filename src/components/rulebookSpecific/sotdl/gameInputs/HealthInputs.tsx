@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { NumberInput } from '../../form/NumberInput';
+import { NumberInput } from '../../../form/NumberInput';
 
 export const HealthInputs = () => {
   const { watch, setValue } = useFormContext();

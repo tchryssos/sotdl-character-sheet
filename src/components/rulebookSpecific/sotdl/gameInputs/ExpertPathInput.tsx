@@ -2,16 +2,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { TextInput } from '../../form/TextInput';
+import { TextInput } from '../../../form/TextInput';
 
-export const MasterPathInput = () => {
+export const ExpertPathInput = () => {
   const { watch } = useFormContext();
-
   const level: number = watch<keyof SotdlCharacterData>('level', 0);
-
-  const isMaster = level >= 7;
+  const isExpert = level >= 3;
 
   return (
-    <TextInput<SotdlCharacterData> disabled={!isMaster} name="master_path" />
+    <TextInput<SotdlCharacterData> disabled={!isExpert} name="expert_path" />
   );
 };

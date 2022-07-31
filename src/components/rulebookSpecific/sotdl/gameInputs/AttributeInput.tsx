@@ -1,7 +1,7 @@
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { BonusInput } from '../../form/BonusInput';
-import { NumberInputProps } from '../../form/typings';
+import { BonusInput } from '../../../form/BonusInput';
+import { NumberInputProps } from '../../../form/typings';
 
 type AttributeInputProps<T> = Omit<NumberInputProps<T>, 'type' | 'name'> & {
   name: keyof Pick<

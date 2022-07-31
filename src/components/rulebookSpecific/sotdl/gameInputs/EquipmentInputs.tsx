@@ -11,10 +11,10 @@ import {
   SotdlEquipment,
 } from '~/typings/sotdl/characterData';
 
-import { AddAnotherMultiField } from '../../form/AddAnotherMultiField';
-import { FormSection } from '../../form/FormSection';
-import { TextAreaInput } from '../../form/TextAreaInput';
-import { TextInput } from '../../form/TextInput';
+import { AddAnotherMultiField } from '../../../form/AddAnotherMultiField';
+import { FormSection } from '../../../form/FormSection';
+import { TextAreaInput } from '../../../form/TextAreaInput';
+import { TextInput } from '../../../form/TextInput';
 
 const itemTemplateColumns = '4fr 1fr 6fr';
 const itemSmallTemplateColumns = '2fr 2fr';

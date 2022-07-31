@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { NumberInput } from '../../form/NumberInput';
+import { NumberInput } from '../../../form/NumberInput';
 
 export const EvilInputs: React.FC = () => {
   const { watch } = useFormContext();

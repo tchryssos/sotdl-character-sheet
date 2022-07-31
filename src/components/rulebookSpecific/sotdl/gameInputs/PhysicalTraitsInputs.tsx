@@ -1,8 +1,8 @@
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { BonusInput } from '../../form/BonusInput';
-import { FormSection } from '../../form/FormSection';
-import { NumberInput } from '../../form/NumberInput';
+import { BonusInput } from '../../../form/BonusInput';
+import { FormSection } from '../../../form/FormSection';
+import { NumberInput } from '../../../form/NumberInput';
 
 const calcPerceptionBonus = (per: number) => per - 10;
 

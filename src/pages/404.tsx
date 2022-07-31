@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useContext, useEffect } from 'react';
 
-import { LogoAscii } from '~/components/Ascii/LogoAscii';
+import { LogoAscii } from '~/components/ascii/LogoAscii';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Link } from '~/components/Link';
 import { Layout } from '~/components/meta/Layout';

@@ -5,7 +5,7 @@ import { rulebook } from '@prisma/client';
 import sample from 'lodash.sample';
 import { useContext, useEffect, useState } from 'react';
 
-import { AsciiFigure, AsciiText } from '~/components/Ascii/Ascii';
+import { AsciiFigure, AsciiText } from '~/components/ascii/Ascii';
 import { FlexBox } from '~/components/box/FlexBox';
 import { FormSection } from '~/components/form/FormSection';
 import { Link } from '~/components/Link';

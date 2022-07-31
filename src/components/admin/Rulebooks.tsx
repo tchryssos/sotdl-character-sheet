@@ -3,9 +3,9 @@ import { rulebook } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { NEW_ID } from '~/constants/routing/shared';
 import { fetchRulebook } from '~/logic/api/client/fetchRulebook';
+import { getAllRulebooks } from '~/logic/api/client/getAllRulebooks';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { LoadingButton } from '../buttons/LoadingButton';
@@ -90,13 +90,10 @@ export const Rulebooks: React.FC = () => {
 
   const getRulebooks = async () => {
     setIsLoading(true);
-    const resp = await fetch(ALL_RULEBOOKS_API_PATH, {
-      method: 'GET',
-    });
+    const fetchedRbs = await getAllRulebooks();
 
-    if (resp.status >= 200 && resp.status <= 300) {
-      const respData = await resp.json();
-      setRulebooks(respData);
+    if (fetchedRbs) {
+      setRulebooks(fetchedRbs);
       setHasError(false);
     } else {
       setRulebooks(emptyRbs);

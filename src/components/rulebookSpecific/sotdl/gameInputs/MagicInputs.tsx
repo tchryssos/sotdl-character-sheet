@@ -15,9 +15,9 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import { SotdlCharacterData, SotdlSpell } from '~/typings/sotdl/characterData';
 
-import { FormSection } from '../../form/FormSection';
-import { NumberInput } from '../../form/NumberInput';
-import { TextAreaInput } from '../../form/TextAreaInput';
+import { FormSection } from '../../../form/FormSection';
+import { NumberInput } from '../../../form/NumberInput';
+import { TextAreaInput } from '../../../form/TextAreaInput';
 
 const SpellSlash = styled.span(({ theme }) => ({
   color: theme.colors.text,

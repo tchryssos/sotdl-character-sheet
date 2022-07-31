@@ -1,5 +1,6 @@
 import { character } from '@prisma/client';
 import { ErrorResponse } from './api';
+import { RulebookType } from './rulebooks';
 import { SotdlCharacterData } from './sotdl/characterData';
 
 export type CharacterSaveData = Omit<
@@ -11,6 +12,10 @@ export type CharacterSaveData = Omit<
 
 export type CharacterData = SotdlCharacterData;
 
-export type StrictCharacter = Omit<character, 'characterData'> & {
+export type StrictCharacter = Omit<
+  character,
+  'characterData' | 'rulebookName'
+> & {
   characterData: CharacterData;
+  rulebookName: RulebookType;
 };

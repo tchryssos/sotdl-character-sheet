@@ -14,15 +14,15 @@ import { useCopyCode } from '~/logic/hooks/useCopyCode';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { IconButton } from '../buttons/IconButton';
-import { CharacterCodeForm } from '../CharacterCodeForm';
-import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
-import { ClipboardCopy } from '../icons/ClipboardCopy';
-import { ClipboardCopyFail } from '../icons/ClipboardCopyFail';
-import { ClipboardCopySuccess } from '../icons/ClipboardCopySuccess';
-import { Pencil } from '../icons/Pencil';
-import { Save } from '../icons/Save';
-import { LoadingStatus } from '../icons/StatusIcon';
+import { IconButton } from '../../buttons/IconButton';
+import { CharacterCodeForm } from '../../CharacterCodeForm';
+import { DropdowmMenuProps } from '../../dropdowns/DropdownMenu';
+import { ClipboardCopy } from '../../icons/ClipboardCopy';
+import { ClipboardCopyFail } from '../../icons/ClipboardCopyFail';
+import { ClipboardCopySuccess } from '../../icons/ClipboardCopySuccess';
+import { Pencil } from '../../icons/Pencil';
+import { Save } from '../../icons/Save';
+import { LoadingStatus } from '../../icons/StatusIcon';
 
 interface FormNavProps {
   isMyCharacter: boolean;

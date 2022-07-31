@@ -10,12 +10,12 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlArmor, SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { AddAnotherMultiField } from '../../form/AddAnotherMultiField';
-import { FormSection } from '../../form/FormSection';
-import { Label } from '../../form/Label';
-import { NumberInput } from '../../form/NumberInput';
-import { TextAreaInput } from '../../form/TextAreaInput';
-import { TextInput } from '../../form/TextInput';
+import { AddAnotherMultiField } from '../../../form/AddAnotherMultiField';
+import { FormSection } from '../../../form/FormSection';
+import { Label } from '../../../form/Label';
+import { NumberInput } from '../../../form/NumberInput';
+import { TextAreaInput } from '../../../form/TextAreaInput';
+import { TextInput } from '../../../form/TextInput';
 
 // Something about setValue is overwriting defaultArmor
 // if it is set as a constant, so I am setting it to a fn

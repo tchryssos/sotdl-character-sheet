@@ -1,7 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
-import { LogoAscii } from '~/components/Ascii/LogoAscii';
+import { LogoAscii } from '~/components/ascii/LogoAscii';
 import { AuthLink } from '~/components/AuthLink';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';

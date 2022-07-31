@@ -1,8 +1,8 @@
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { FormSection } from '../../form/FormSection';
-import { TextAreaInput } from '../../form/TextAreaInput';
+import { FormSection } from '../../../form/FormSection';
+import { TextAreaInput } from '../../../form/TextAreaInput';
 
 export const DescriptionInputs: React.FC = () => {
   const isLessThanXs = useBreakpointsLessThan('xs');
