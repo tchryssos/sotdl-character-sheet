@@ -3,6 +3,7 @@ import {
   createCharacterRoute,
   createRulebookRoute,
   createUsersRoute,
+  NEW_ID,
   RULEBOOKS_PATH,
   USERS_PATH,
 } from './shared';
@@ -10,7 +11,7 @@ import {
 const API_PREFIX = '/api';
 
 // START - CHARACTER ROUTES - START //
-export const CREATE_CHARACTER_ROUTE = `${API_PREFIX}/${CHARACTERS_PATH}/new/create`;
+export const CREATE_CHARACTER_API_ROUTE = `${API_PREFIX}/${CHARACTERS_PATH}/${NEW_ID}/create`;
 
 export const createCharacterApiRoute = (id: number | string) =>
   `${API_PREFIX}${createCharacterRoute(id)}`;

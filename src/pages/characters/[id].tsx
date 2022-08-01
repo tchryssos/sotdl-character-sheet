@@ -4,8 +4,11 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Layout } from '~/components/meta/Layout';
 import { CharacterForm } from '~/components/rulebookSpecific/sotdl/CharacterForm';
-import { CREATE_CHARACTER_ROUTE } from '~/constants/routing/api';
-import { NEW_ID } from '~/constants/routing/shared';
+import {
+  CREATE_ID,
+  createCharacterRoute,
+  NEW_ID,
+} from '~/constants/routing/shared';
 import { fetchCharacter } from '~/logic/api/client/fetchCharacter';
 import { getAllRulebooks } from '~/logic/api/client/getAllRulebooks';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
@@ -31,7 +34,7 @@ const CharacterSheetPage: React.FC = () => {
       // or the rulebook your query param is invalid...
       if (!rulebooks || !rulebooks.find((rb) => rb.name === queryRulebook)) {
         // ... return to create character page to try again
-        push(CREATE_CHARACTER_ROUTE);
+        push(createCharacterRoute(CREATE_ID));
       } else {
         // ... otherwise, set the rulebook to the one in the query
         setRulebook(queryRulebook as RulebookType);
@@ -42,7 +45,7 @@ const CharacterSheetPage: React.FC = () => {
       // ... but if we can't fetch the character for some reason ...
       if (!isSuccessfulCharacterResponse(character)) {
         // ... go back to the create character page and try again
-        push(CREATE_CHARACTER_ROUTE);
+        push(createCharacterRoute(CREATE_ID));
       } else {
         // ...otherwise use the rulebook of the current character
         setRulebook(character.rulebookName);
