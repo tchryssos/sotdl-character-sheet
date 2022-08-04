@@ -25,7 +25,7 @@ import { LoadingIntermediary } from '../../form/LoadingIntermediary';
 import { FormNav } from './FormNav';
 import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
-export const CharacterForm: React.FC = () => {
+export const CharacterSheet: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isMyCharacter, setIsMyCharacter] = useState(true);

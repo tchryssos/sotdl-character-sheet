@@ -3,7 +3,8 @@ import { useRouter } from 'next/dist/client/router';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Layout } from '~/components/meta/Layout';
-import { CharacterForm } from '~/components/rulebookSpecific/sotdl/CharacterForm';
+import { CharacterSheet as SotdlCharacterSheet } from '~/components/rulebookSpecific/sotdl/CharacterSheet';
+import { CharacterSheet as SwnCharacterSheet } from '~/components/rulebookSpecific/swn/CharacterSheet';
 import {
   CREATE_ID,
   createCharacterRoute,
@@ -59,7 +60,7 @@ const CharacterSheetPage: React.FC = () => {
 
   return (
     <Layout meta="character sheet" title="character sheet">
-      <CharacterForm />
+      {rulebook === 'sotdl' ? <SotdlCharacterSheet /> : <SwnCharacterSheet />}
     </Layout>
   );
 };
