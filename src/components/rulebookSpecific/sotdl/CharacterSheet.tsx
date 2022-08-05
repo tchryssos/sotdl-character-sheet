@@ -20,34 +20,27 @@ import { DEFAULT_VALUES } from '~/constants/sotdl/form';
 import { ATTRIBUTES } from '~/constants/sotdl/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
+import { useSheetState } from '~/logic/hooks/useSheetState';
 
 import { LoadingIntermediary } from '../../form/LoadingIntermediary';
 import { FormNav } from './FormNav';
 import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
 export const CharacterSheet: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isMyCharacter, setIsMyCharacter] = useState(true);
-  // Edit ref for hotKey handler
-  const isEditRef = useRef(isEditMode);
+  const {
+    isLoading,
+    isEditMode,
+    setIsEditMode,
+    setIsLoading,
+    isMyCharacter,
+    setIsMyCharacter,
+  } = useSheetState();
+
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isLessThanXs = useBreakpointsLessThan('xs');
 
-  useEffect(() => {
-    const formHotKeys = (e: KeyboardEvent) => {
-      if (e.key === 'e' && e.ctrlKey) {
-        setIsEditMode(!isEditRef.current);
-      }
-    };
-
-    globalThis.addEventListener('keyup', formHotKeys);
-    return () => globalThis.removeEventListener('keyup', formHotKeys);
-  }, []);
-
-  useEffect(() => {
-    isEditRef.current = isEditMode;
-  }, [isEditMode]);
+  useSheetHotkeys(isEditMode, setIsEditMode);
 
   return (
     <EditContext.Provider value={{ isEditMode, setIsEditMode }}>

@@ -1,6 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/dist/client/router';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
@@ -10,16 +10,11 @@ import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { useCopyCode } from '~/logic/hooks/useCopyCode';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { StrictSessionUser } from '~/typings/user';
 
 import { IconButton } from '../../buttons/IconButton';
-import { CharacterCodeForm } from '../../CharacterCodeForm';
-import { DropdowmMenuProps } from '../../dropdowns/DropdownMenu';
-import { ClipboardCopy } from '../../icons/ClipboardCopy';
-import { ClipboardCopyFail } from '../../icons/ClipboardCopyFail';
-import { ClipboardCopySuccess } from '../../icons/ClipboardCopySuccess';
 import { Pencil } from '../../icons/Pencil';
 import { Save } from '../../icons/Save';
 import { LoadingStatus } from '../../icons/StatusIcon';
@@ -27,60 +22,6 @@ import { LoadingStatus } from '../../icons/StatusIcon';
 interface FormNavProps {
   isMyCharacter: boolean;
 }
-
-interface CopyIconProps {
-  copySuccess?: boolean;
-}
-
-const CopyIcon: React.FC<CopyIconProps> = ({ copySuccess }) => {
-  if (copySuccess) {
-    return (
-      <ClipboardCopySuccess
-        color="success"
-        title="Copy success"
-        titleId="copy-success-icon"
-      />
-    );
-  }
-  if (copySuccess === false) {
-    return (
-      <ClipboardCopyFail
-        color="danger"
-        title="Copy failed"
-        titleId="copy-failed-icon"
-      />
-    );
-  }
-  return <ClipboardCopy title="Copy" titleId="copy-icon" />;
-};
-
-const CopyButton: React.FC = () => {
-  const [copySuccess, setCopySuccess] = useState<boolean | undefined>();
-  const { getValues, formState, reset } = useFormContext();
-  const { isDirty } = formState;
-
-  const copyCode = useCopyCode(setCopySuccess);
-
-  useEffect(() => {
-    if (isDirty) {
-      setCopySuccess(undefined);
-    }
-  }, [isDirty]);
-
-  useEffect(() => {
-    if (copySuccess && reset && getValues) {
-      const valueObj = getValues();
-      reset(valueObj, { keepValues: true });
-    }
-  }, [copySuccess, reset, getValues]);
-
-  return (
-    <IconButton type="submit" onClick={copyCode}>
-      <CopyIcon copySuccess={copySuccess} />
-    </IconButton>
-  );
-};
-
 interface SaveButtonProps {
   playerId: number;
 }
@@ -138,10 +79,8 @@ const NavButtons: React.FC<Pick<FormNavProps, 'isMyCharacter'>> = ({
 
   return (
     <>
-      {user && isMyCharacter ? (
-        <SaveButton playerId={user.id} />
-      ) : (
-        <CopyButton />
+      {user && isMyCharacter && (
+        <SaveButton playerId={(user as StrictSessionUser).id} />
       )}
       <IconButton onClick={() => setIsEditMode(!isEditMode)}>
         <Pencil
@@ -155,10 +94,6 @@ const NavButtons: React.FC<Pick<FormNavProps, 'isMyCharacter'>> = ({
 };
 
 export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
-  const { user } = useUser();
-
-  const copyCode = useCopyCode();
-
   const { watch } = useFormContext();
   const name: string | undefined = watch<keyof SotdlCharacterData>('name');
   const ancestry: string | undefined =
@@ -172,15 +107,7 @@ export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
 
   const isXxs = useBreakpointsLessThan('xs');
 
-  const {
-    iconPortalNode,
-    isNavExpanded,
-    setNavTitle,
-    expandedPortalNode,
-    setNavExpanded,
-    setDropdownItems,
-    setDocTitle,
-  } = useContext(NavContext);
+  const { iconPortalNode, setNavTitle, setDocTitle } = useContext(NavContext);
 
   useEffect(() => {
     const titleClass = masterPath || expertPath || novicePath || '';
@@ -202,39 +129,6 @@ export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
     isXxs,
   ]);
 
-  // START - NAV MENU ITEMS - START
-  const menuItems = useMemo(() => {
-    let items: DropdowmMenuProps['menuItems'] = [
-      {
-        type: 'button',
-        text: isNavExpanded ? 'Close code form' : 'Upload with code',
-        onClick: () => setNavExpanded(!isNavExpanded),
-      },
-    ];
-
-    if (user?.id) {
-      items = [
-        {
-          type: 'button',
-          text: 'Copy character code',
-          onClick: copyCode,
-        },
-        ...items,
-      ];
-    }
-
-    items = [{ type: 'label', text: 'Form' }, ...items];
-
-    return items;
-  }, [copyCode, isNavExpanded, setNavExpanded, user?.id]);
-
-  useEffect(() => {
-    if (setDropdownItems) {
-      setDropdownItems(menuItems);
-    }
-  }, [menuItems, setDropdownItems]);
-  // END - NAV MENU ITEMS - END
-
   return (
     <>
       {iconPortalNode &&
@@ -242,9 +136,6 @@ export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
           <NavButtons isMyCharacter={isMyCharacter} />,
           iconPortalNode
         )}
-      {isNavExpanded &&
-        expandedPortalNode &&
-        createPortal(<CharacterCodeForm />, expandedPortalNode)}
     </>
   );
 };
