@@ -12,8 +12,24 @@ import {
 } from '~/constants/routing/shared';
 import { fetchCharacter } from '~/logic/api/client/fetchCharacter';
 import { getAllRulebooks } from '~/logic/api/client/getAllRulebooks';
+import { getRulebookAndIdFromLocation } from '~/logic/utils/url';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { RulebookType } from '~/typings/rulebooks';
+
+interface DisplaySheetProps {
+  rulebook: RulebookType | null;
+}
+
+const DisplaySheet: React.FC<DisplaySheetProps> = ({ rulebook }) => {
+  switch (rulebook) {
+    case 'sotdl':
+      return <SotdlCharacterSheet />;
+    case 'swn':
+      return <SwnCharacterSheet />;
+    default:
+      return null;
+  }
+};
 
 const CharacterSheetPage: React.FC = () => {
   const [rulebook, setRulebook] = useState<RulebookType | null>(null);
@@ -21,6 +37,12 @@ const CharacterSheetPage: React.FC = () => {
     query: { id, rulebook: queryRulebook },
     push,
   } = useRouter();
+  const { id: pathId, rulebook: pathRulebook } = getRulebookAndIdFromLocation();
+
+  // On refresh, useRouter may be a render too slow
+  // so we cross-reference the url bar
+  const activeRulebook = queryRulebook || pathRulebook;
+  const activeId = id || pathId;
 
   const figureOutRulebook = useCallback(async () => {
     /**
@@ -29,20 +51,20 @@ const CharacterSheetPage: React.FC = () => {
      */
 
     // If you're making a new character via a properly formatted link...
-    if (id === NEW_ID && queryRulebook) {
+    if (activeId === NEW_ID && activeRulebook) {
       const rulebooks = await getAllRulebooks();
       // ... but you can't get rulebooks for some reason,
       // or the rulebook your query param is invalid...
-      if (!rulebooks || !rulebooks.find((rb) => rb.name === queryRulebook)) {
+      if (!rulebooks || !rulebooks.find((rb) => rb.name === activeRulebook)) {
         // ... return to create character page to try again
         push(createCharacterRoute(CREATE_ID));
       } else {
         // ... otherwise, set the rulebook to the one in the query
-        setRulebook(queryRulebook as RulebookType);
+        setRulebook(activeRulebook as RulebookType);
       }
       // Otherwise, you're (hopefully) editing an existing character...
     } else {
-      const character = await fetchCharacter(id as string);
+      const character = await fetchCharacter(activeId as string);
       // ... but if we can't fetch the character for some reason ...
       if (!isSuccessfulCharacterResponse(character)) {
         // ... go back to the create character page and try again
@@ -52,7 +74,7 @@ const CharacterSheetPage: React.FC = () => {
         setRulebook(character.rulebookName);
       }
     }
-  }, [queryRulebook, id, push]);
+  }, [activeRulebook, activeId, push]);
 
   useEffect(() => {
     figureOutRulebook();
@@ -60,7 +82,7 @@ const CharacterSheetPage: React.FC = () => {
 
   return (
     <Layout meta="character sheet" title="character sheet">
-      {rulebook === 'sotdl' ? <SotdlCharacterSheet /> : <SwnCharacterSheet />}
+      <DisplaySheet rulebook={rulebook} />
     </Layout>
   );
 };

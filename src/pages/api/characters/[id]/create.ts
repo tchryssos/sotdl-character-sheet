@@ -9,7 +9,7 @@ import { CharacterSaveData } from '~/typings/characters';
 const createCharacter = withApiAuthRequired(
   async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-      const user = await getSessionUser(req, res);
+      const user = getSessionUser(req, res);
 
       if (!user) {
         throw new Error('No user found');
