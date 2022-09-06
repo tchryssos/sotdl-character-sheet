@@ -9,7 +9,7 @@ import { CharacterSaveData, StrictCharacter } from '~/typings/characters';
 export const saveCharacter = async (
   data: CharacterSaveData
 ): Promise<ApiResponse<StrictCharacter>> => {
-  const { name, characterData, playerId, id } = data;
+  const { name, characterData, playerId, id, rulebookName } = data;
   const isCreateCharacter = id === NEW_ID;
 
   const resp = await fetch(
@@ -25,6 +25,7 @@ export const saveCharacter = async (
         name,
         characterData,
         playerId,
+        rulebookName,
       }),
     }
   );
