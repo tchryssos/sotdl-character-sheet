@@ -5,6 +5,7 @@
   "description": "An online TTRPG character sheet compendium",
   "license": "MIT",
   "homepage": "https://rpgsheet.games/",
+  "version": "2.0.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
