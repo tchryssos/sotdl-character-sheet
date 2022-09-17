@@ -12,7 +12,7 @@ import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { Link } from '../Link';
 import { Body } from '../typography/Body';
 
-const Toolbar = styled(FlexBox)<{ isExpanded: boolean }>(({ theme }) => ({
+const Toolbar = styled(FlexBox)(({ theme }) => ({
   position: 'fixed',
   backgroundColor: theme.colors.background,
   top: 0,
@@ -66,30 +66,22 @@ const Portal = styled.div<{ flexGap: Spacing }>`
   gap: ${({ theme, flexGap }) => theme.spacing[flexGap]};
 `;
 
-const ExpandedPortal = styled(Portal)`
-  width: 100%;
-`;
-
 interface NavBarProps {
   title: string;
-  isExpanded: boolean;
   setIconPortalNode: (node: HTMLDivElement) => void;
-  setExpandedPortalNode: (node: HTMLDivElement) => void;
   dropdownMenuItems: DropdowmMenuProps['menuItems'];
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
   title,
-  isExpanded,
   setIconPortalNode,
-  setExpandedPortalNode,
   dropdownMenuItems,
 }) => {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
 
   return (
-    <Toolbar center flex={1} isExpanded={isExpanded}>
+    <Toolbar center flex={1}>
       <InnerToolbar alignItems="flex-end" column flex={1}>
         <TopRow alignItems="center" justifyContent="space-between">
           <LogoTitleBox alignItems="center" gap={flexGap}>
@@ -103,7 +95,6 @@ export const NavBar: React.FC<NavBarProps> = ({
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>
         </TopRow>
-        <ExpandedPortal flexGap={flexGap} ref={setExpandedPortalNode} />
       </InnerToolbar>
     </Toolbar>
   );

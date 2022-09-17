@@ -33,6 +33,10 @@ const CharacterLink = styled(Link)`
     `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`};
 `;
 
+const Caps = styled.span`
+  text-transform: uppercase;
+`;
+
 const ProfilePage = () => {
   const {
     query: { id },
@@ -79,19 +83,21 @@ const ProfilePage = () => {
                 characters.map((c) => {
                   const { level, ancestry } = c.characterData;
                   return (
-                    <CharacterLink href={createCharacterRoute(c.id)} key={c.id}>
+                    <CharacterLink
+                      href={createCharacterRoute(c.id, c.rulebookName)}
+                      key={c.id}
+                    >
                       <FlexBox column>
                         <FlexBox>
                           <Body>{c.name}</Body>
                           <Body>{c.characterData.type}</Body>
                         </FlexBox>
-                        {level !== undefined && (
-                          <SubBody>
-                            {level !== undefined ? `Level ${level}` : ''}
-                            {level && ancestry ? ' ' : ''}
-                            {`${ancestry ? `${ancestry}` : ''}`}
-                          </SubBody>
-                        )}
+                        <SubBody>
+                          <Caps>{c.rulebookName}</Caps>
+                          {level !== undefined || ancestry ? ' - ' : ''}
+                          {level !== undefined ? `Level ${level} ` : ''}
+                          {`${ancestry ? `${ancestry}` : ''}`}
+                        </SubBody>
                       </FlexBox>
                     </CharacterLink>
                   );

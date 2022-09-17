@@ -28,11 +28,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
   const [docTitle, setDocTitle] = useState(title);
   const [navTitle, setNavTitle] = useState('');
   const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
-  const [expandedPortalNode, setExpandedPortalNode] =
-    useState<HTMLDivElement>();
   const [dropdownItems, setDropdownItems] =
     useState<DropdowmMenuProps['menuItems']>(emptyArr);
-  const [navExpanded, setNavExpanded] = useState(false);
   const isAtLeastXs = useBreakpointsAtLeast('xs');
 
   useEffect(() => {
@@ -45,20 +42,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
     }
   }, []);
 
-  const setExpandedPortalNodeCallback = useCallback((node: HTMLDivElement) => {
-    if (node !== null) {
-      setExpandedPortalNode(node);
-    }
-  }, []);
-
   return (
     <NavContext.Provider
       value={{
         setNavTitle,
-        setNavExpanded,
         iconPortalNode,
-        expandedPortalNode,
-        isNavExpanded: navExpanded,
         setDropdownItems,
         setDocTitle,
       }}
@@ -66,8 +54,6 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
       <Head meta={meta} title={docTitle} />
       <NavBar
         dropdownMenuItems={dropdownItems}
-        isExpanded={navExpanded}
-        setExpandedPortalNode={setExpandedPortalNodeCallback}
         setIconPortalNode={setIconPortalNodeCallback}
         title={navTitle}
       />
