@@ -10,8 +10,8 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { GridBox, GridBoxProps } from '../box/GridBox';
+import { CollapseButton } from '../buttons/CollapseButton';
 import { IconButton } from '../buttons/IconButton';
-import { ChevRight } from '../icons/ChevRight';
 import { Invisible } from '../icons/Invisible';
 import { Visible } from '../icons/Visible';
 import { Body } from '../typography/Body';
@@ -73,17 +73,6 @@ const Container = styled(GridBox)<{ isOpen?: boolean; borderless?: boolean }>`
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
 `;
 
-const CollapseButton = styled(IconButton)<{ isOpen?: boolean }>(
-  ({ isOpen }) => ({
-    position: 'absolute',
-    left: 0,
-    bottom: 0,
-    transform: `rotate(${isOpen ? '-' : ''}90deg) translateX(${
-      isOpen ? '-' : ''
-    }${pxToRem(6)})`,
-  })
-);
-
 const Collapsed = styled.div`
   ${({ theme }) => createCollapsibleStyles(theme)};
   border-top-width: 0;
@@ -97,6 +86,10 @@ const VisibilityButton = styled(IconButton)`
   position: absolute;
   right: 0;
   bottom: 0;
+`;
+
+const CollapseToggle = styled(CollapseButton)`
+  bottom: -${pxToRem(6)};
 `;
 
 export const FormSection: React.FC<FormSectionProps> = ({
@@ -167,12 +160,12 @@ export const FormSection: React.FC<FormSectionProps> = ({
         <FlexBox alignItems="flex-end" ml={borderless ? 0 : 4}>
           <TitleBox>
             {isCollapsable && (
-              <CollapseButton isOpen={isOpen} onClick={onChangeExpanded}>
-                <ChevRight
-                  title="Collapsable arrow"
-                  titleId={`collapseable-arrow-icon-${title}`}
-                />
-              </CollapseButton>
+              <CollapseToggle
+                absolute
+                isOpen={isOpen}
+                title={title}
+                onChangeExpanded={onChangeExpanded}
+              />
             )}
             <Text isCollapsable={isCollapsable} isEditMode={isEditMode} italic>
               {title}

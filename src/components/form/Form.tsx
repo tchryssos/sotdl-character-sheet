@@ -2,36 +2,43 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { VisibilityContextProvider } from '../providers/VisibilityContextProvider';
 
-interface FormProps {
-  onSubmit: () => void;
+type FormProps<T> = {
+  onSubmit: (values: T) => void;
   submitLabel?: string;
   children: React.ReactNode;
   className?: string;
   mode?: 'onSubmit' | 'onBlur' | 'onTouched' | 'onChange';
-  defaultValues: Record<string, unknown>;
-}
+  defaultValues: Partial<T>;
+  noStyles?: boolean;
+};
 
 const FormWrapper = styled(FlexBox)`
   width: 100%;
 `;
 
-const StyledForm = styled.form`
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: ${({ theme }) => theme.spacing[32]};
-`;
+const StyledForm = styled.form<Pick<FormProps<any>, 'noStyles'>>(
+  ({ noStyles, theme }) => ({
+    width: '100%',
+    display: noStyles ? '' : 'grid',
+    gridTemplateColumns: noStyles ? '' : '1fr',
+    rowGap: noStyles ? '' : theme.spacing['32'],
+  })
+);
 
-export const Form: React.FC<FormProps> = ({
+export const FormBox = StyledForm.withComponent(Box);
+
+export function Form<T extends Record<string, unknown>>({
   onSubmit,
   children,
   className,
   mode = 'onSubmit',
   defaultValues,
-}) => {
+  noStyles,
+}: FormProps<T>) {
   const formMethods = useForm({
     defaultValues: defaultValues as Record<string, any>,
     mode,
@@ -42,7 +49,10 @@ export const Form: React.FC<FormProps> = ({
       <FormWrapper center>
         <StyledForm
           className={className}
-          onSubmit={formMethods.handleSubmit(onSubmit)}
+          noStyles={noStyles}
+          onSubmit={formMethods.handleSubmit(
+            onSubmit as (v: { [k: string]: any }) => void
+          )}
         >
           {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <FormProvider {...formMethods}>{children}</FormProvider>
@@ -50,4 +60,4 @@ export const Form: React.FC<FormProps> = ({
       </FormWrapper>
     </VisibilityContextProvider>
   );
-};
+}

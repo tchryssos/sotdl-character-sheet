@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { useContext, useEffect } from 'react';
 
+import { LogoAscii } from '~/components/ascii/LogoAscii';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Link } from '~/components/Link';
-import { LogoAscii } from '~/components/LogoAscii';
 import { Layout } from '~/components/meta/Layout';
 import { Pane } from '~/components/Pane';
 import { Title } from '~/components/typography/Title';
-import { HOME_ROUTE } from '~/constants/routing';
+import { HOME_ROUTE } from '~/constants/routing/client';
 import { NavContext } from '~/logic/contexts/navContext';
 
 const FourOhFourPane = styled(Pane)(({ theme }) => ({

@@ -41,6 +41,7 @@
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
     "import/no-anonymous-default-export": "error",
+    "import/named": "off",
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn",
     "import/no-default-export": "warn",

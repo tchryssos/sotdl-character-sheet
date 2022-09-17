@@ -1,29 +1,50 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
 
 import { SubBody } from '~/components/typography/SubBody';
 
-interface LabelProps {
-  labelFor?: string;
+import { KeyName } from './typings';
+
+type LabelProps<T extends Record<string, unknown>> = {
+  labelFor?: KeyName<T>;
   label?: string;
   className?: string;
   children: React.ReactNode;
-}
+  size?: 'sm' | 'md';
+  labelProps?: Record<string, unknown>;
+};
 
-const StyledLabel = styled.label`
-  width: 100%;
-`;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const StyledLabel = styled.label<{ size: LabelProps<any>['size'] }>(
+  ({ size }) => ({
+    width: size === 'sm' ? 'unset' : '100%',
+    ...(size === 'sm' && {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }),
+  })
+);
 
-export const Label: React.FC<LabelProps> = ({
+export function Label<T extends Record<string, unknown>>({
   labelFor,
   label,
   className,
   children,
-}) =>
-  label ? (
-    <StyledLabel className={className} htmlFor={labelFor}>
+  size = 'md',
+  labelProps,
+}: LabelProps<T>) {
+  return label ? (
+    <StyledLabel
+      className={className}
+      htmlFor={labelFor}
+      size={size}
+      {...labelProps}
+    >
       <SubBody bold>{label}</SubBody>
       {children}
     </StyledLabel>
   ) : (
     <>{children}</>
   );
+}

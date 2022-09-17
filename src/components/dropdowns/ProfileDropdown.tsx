@@ -2,8 +2,9 @@ import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 import { useMemo } from 'react';
 
-import { createProfileRoute, SETTINGS_ROUTE } from '~/constants/routing';
-import { User } from '~/typings/user';
+import { ADMIN_PANEL_ROUTE, SETTINGS_ROUTE } from '~/constants/routing/client';
+import { createUsersRoute } from '~/constants/routing/shared';
+import { StrictSessionUser } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';
 import { IconButton } from '../buttons/IconButton';
@@ -22,7 +23,7 @@ const DropdownAuthLink = styled(AuthLink)`
 `;
 
 const createMenuItems = (
-  user: User | undefined,
+  user: StrictSessionUser | undefined,
   isLoading: boolean
 ): DropdowmMenuProps['menuItems'] => {
   let items: DropdowmMenuProps['menuItems'] = [
@@ -38,9 +39,18 @@ const createMenuItems = (
       items = [
         {
           type: 'link',
-          href: createProfileRoute(user.id),
+          href: createUsersRoute(user.id),
           text: 'My characters',
         },
+        ...(user.role === 'admin'
+          ? ([
+              {
+                type: 'link',
+                href: ADMIN_PANEL_ROUTE,
+                text: 'Admin panel',
+              },
+            ] as DropdowmMenuProps['menuItems'])
+          : ([] as DropdowmMenuProps['menuItems'])),
         ...items,
         {
           type: 'special',
@@ -86,7 +96,10 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   const { isLoading, user } = useUser();
 
   const menuItems = useMemo(
-    () => [...dropdownMenuItems, ...createMenuItems(user, isLoading)],
+    () => [
+      ...dropdownMenuItems,
+      ...createMenuItems(user as StrictSessionUser, isLoading),
+    ],
     [dropdownMenuItems, user, isLoading]
   );
 

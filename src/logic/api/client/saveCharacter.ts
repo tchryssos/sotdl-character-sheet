@@ -1,35 +1,36 @@
-import { character } from '@prisma/client';
-
 import {
-  CREATE_CHARACTER_ROUTE,
+  CREATE_CHARACTER_API_ROUTE,
   createCharacterApiRoute,
-  NEW_CHARACTER_ID,
-} from '~/constants/routing';
+} from '~/constants/routing/api';
+import { NEW_ID } from '~/constants/routing/shared';
 import { ApiResponse } from '~/typings/api';
-import { CharacterSaveData } from '~/typings/characters';
+import { CharacterSaveData, StrictCharacter } from '~/typings/characters';
 
 export const saveCharacter = async (
   data: CharacterSaveData
-): Promise<ApiResponse<character>> => {
-  const { name, characterCode, playerId, id } = data;
-  const isCreateCharacter = id === NEW_CHARACTER_ID;
+): Promise<ApiResponse<StrictCharacter>> => {
+  const { name, characterData, playerId, id, rulebookName } = data;
+  const isCreateCharacter = id === NEW_ID;
 
   const resp = await fetch(
     // technically, query.id could be many strings or undefined
     // but routing logic prevents it from being anything other than a single string
-    isCreateCharacter ? CREATE_CHARACTER_ROUTE : createCharacterApiRoute(id),
+    isCreateCharacter
+      ? CREATE_CHARACTER_API_ROUTE
+      : createCharacterApiRoute(id),
     {
       method: isCreateCharacter ? 'POST' : 'PATCH',
       body: JSON.stringify({
         id,
         name,
-        characterCode,
+        characterData,
         playerId,
+        rulebookName,
       }),
     }
   );
 
-  const respData: ApiResponse<character> = await resp.json();
+  const respData: ApiResponse<StrictCharacter> = await resp.json();
 
   return respData;
 };

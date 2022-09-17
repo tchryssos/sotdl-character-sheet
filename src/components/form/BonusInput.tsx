@@ -7,7 +7,7 @@ import { FlexBox } from '../box/FlexBox';
 import { Body } from '../typography/Body';
 import { NumberInput, NumberInputComponentProps } from './NumberInput';
 
-type BonusInputProps = NumberInputComponentProps & {
+type BonusInputProps<T> = NumberInputComponentProps<T> & {
   name: string;
   bonusCalculationFn: (value: number) => number;
 };
@@ -32,11 +32,11 @@ const Bar = styled.span`
   user-select: none;
 `;
 
-export const BonusInput: React.FC<BonusInputProps> = ({
+export function BonusInput<T extends Record<string, unknown>>({
   name,
   bonusCalculationFn,
   ...rest
-}) => {
+}: BonusInputProps<T>) {
   const { watch } = useFormContext();
   let mainValue: number = watch(name);
   mainValue = parseInt(`${mainValue || 10}`, 10);
@@ -58,4 +58,4 @@ export const BonusInput: React.FC<BonusInputProps> = ({
       </BonusWrapper>
     </AttributeWrapper>
   );
-};
+}

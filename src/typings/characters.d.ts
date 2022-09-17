@@ -1,9 +1,21 @@
 import { character } from '@prisma/client';
 import { ErrorResponse } from './api';
+import { RulebookType } from './rulebooks';
+import { SotdlCharacterData } from './sotdl/characterData';
 
-export type CharacterSaveData = Pick<
+export type CharacterSaveData = Omit<
   character,
-  'characterCode' | 'name' | 'playerId'
+  'createdOn' | 'lastModifiedOn' | 'id'
 > & {
   id: number | 'new';
+};
+
+export type CharacterData = SotdlCharacterData;
+
+export type StrictCharacter = Omit<
+  character,
+  'characterData' | 'rulebookName'
+> & {
+  characterData: CharacterData;
+  rulebookName: RulebookType;
 };

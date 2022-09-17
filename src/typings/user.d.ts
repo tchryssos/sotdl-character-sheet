@@ -1,3 +1,5 @@
+import { user } from '@prisma/client';
+
 interface GoogleUser {
   email: string;
   email_verified: boolean;
@@ -21,11 +23,10 @@ interface Auth0User {
   updated_at: string;
 }
 
-export interface User {
-  authId?: string;
-  createdOn?: string;
-  id: number;
-  lastModifiedOn: string;
-  role?: 'player' | 'admin';
+export type StrictUser = Omit<user, 'role'> & {
+  role: 'player' | 'admin';
+};
+
+export type StrictSessionUser = StrictUser & {
   authProviderData: GoogleUser | Auth0User;
-}
+};

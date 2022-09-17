@@ -7,7 +7,8 @@ import { ThemeContext } from '~/logic/contexts/themeContext';
 import { SelectInput } from '../form/SelectInput';
 import { SelectInputProps } from '../form/typings';
 
-const options: SelectInputProps['options'] = [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const options: SelectInputProps<any>['options'] = [
   {
     label: 'Dark',
     value: 'dark',

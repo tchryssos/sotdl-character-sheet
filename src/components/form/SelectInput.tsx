@@ -3,12 +3,18 @@ import startCase from 'lodash.startcase';
 import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { SelectInputProps, SelectOption } from '~/components/form/typings';
+import {
+  ConnectedSelectProps,
+  SelectInputProps,
+  SelectOption,
+} from '~/components/form/typings';
 import { EditContext } from '~/logic/contexts/editContext';
 
 import { Label } from './Label';
 
-const Selecter = styled.select(({ theme }) => ({
+const placeholderVal = 'placeholder-ignore';
+
+const Selector = styled.select(({ theme }) => ({
   height: theme.spacing[40],
   padding: theme.spacing[4],
   fontSize: theme.fontSize.body,
@@ -27,40 +33,52 @@ interface PlaceholderProps {
 
 const Placeholder: React.FC<PlaceholderProps> = ({ placeholder }) =>
   placeholder ? (
-    <option disabled value="placeholder-ignore">
+    <option disabled value={placeholderVal}>
       {placeholder}
     </option>
   ) : null;
 
-export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
-  label,
-  name,
-  readOnly,
-  className,
-  disabled,
-  validations,
-  options,
-  placeholder,
-  hideLabel,
-  alwaysEditable,
-}) => {
-  const { register, setValue } = useFormContext();
+export function SelectInput<T extends Record<string, unknown>>(
+  props: SelectInputProps<T>
+) {
+  const {
+    label,
+    readOnly,
+    className,
+    disabled,
+    options,
+    placeholder,
+    hideLabel,
+    onChange,
+    validations,
+  } = props;
+
+  const isUnconnected = Boolean(onChange);
+
+  const { alwaysEditable, name } = props as ConnectedSelectProps<T>;
+
+  const { register: formContextRegister, setValue } = useFormContext();
   const { isEditMode } = useContext(EditContext);
-  const nonEditLocked = !isEditMode && !alwaysEditable;
+  const nonEditLocked = !isEditMode && !alwaysEditable && !isUnconnected;
 
   useEffect(() => {
     if (placeholder) {
-      setValue(name, 'placeholder-ignore');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setValue(name, placeholderVal as any);
     }
   }, [setValue, placeholder, name]);
 
+  const register = isUnconnected ? undefined : formContextRegister;
+
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
-      <Selecter
+      <Selector
         className={className}
+        defaultValue={onChange && placeholder ? placeholderVal : undefined}
         disabled={disabled}
+        onChange={onChange}
         // eslint-disable-next-line react/jsx-props-no-spreading
-        {...register(name, validations)}
+        {...register?.(name, validations)}
       >
         <Placeholder placeholder={placeholder} />
         {options.map(
@@ -73,7 +91,7 @@ export const SelectInput: React.FC<Omit<SelectInputProps, 'type'>> = ({
             />
           )
         )}
-      </Selecter>
+      </Selector>
     </Label>
   );
-};
+}

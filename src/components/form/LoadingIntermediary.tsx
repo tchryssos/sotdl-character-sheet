@@ -1,17 +1,13 @@
 import { useUser } from '@auth0/nextjs-auth0';
-import { character } from '@prisma/client';
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { DEFAULT_VALUES } from '~/constants/form';
-import {
-  createCharacterSheetRoute,
-  NEW_CHARACTER_ID,
-} from '~/constants/routing';
+import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
+import { DEFAULT_VALUES } from '~/constants/sotdl/form';
 import { fetchCharacter } from '~/logic/api/client/fetchCharacter';
-import { decodeCharacterObj } from '~/logic/utils/decodeCharacterObj';
 import { ApiResponse } from '~/typings/api';
+import { StrictCharacter } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 
 import { LoadingPageSpinner } from '../LoadingSpinner';
@@ -38,19 +34,19 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
 
   useEffect(() => {
     if (id) {
-      if (id === NEW_CHARACTER_ID) {
+      if (id === NEW_ID) {
         reset(DEFAULT_VALUES);
       } else {
         const onLoad = async () => {
           setIsLoading(true);
-          const resp: ApiResponse<character> = await fetchCharacter(
+          const resp: ApiResponse<StrictCharacter> = await fetchCharacter(
             id as string
           );
           if (isSuccessfulCharacterResponse(resp)) {
             setIsMyCharacter(resp.playerId === user?.id);
-            reset(decodeCharacterObj(resp.characterCode));
+            reset(resp.characterData);
           } else {
-            push(createCharacterSheetRoute('new'));
+            push(createCharacterRoute(NEW_ID));
           }
           setIsLoading(false);
         };
