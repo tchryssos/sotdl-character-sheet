@@ -6,10 +6,10 @@ export const CharacterSheet: React.FC = () => {
   const {
     isEditMode,
     setIsEditMode,
-    isLoading,
-    setIsLoading,
-    isMyCharacter,
-    setIsMyCharacter,
+    // isLoading,
+    // setIsLoading,
+    // isMyCharacter,
+    // setIsMyCharacter,
   } = useSheetState();
   useSheetHotkeys(isEditMode, setIsEditMode);
 
