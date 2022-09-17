@@ -5,7 +5,6 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { Spacing } from '~/typings/theme';
 
 import { LogoAscii } from '../ascii/LogoAscii';
-// import { MutableRefObject, useContext, useState } from 'react';
 import { FlexBox } from '../box/FlexBox';
 import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
