@@ -16,7 +16,7 @@ import { FormSection } from '../../../form/FormSection';
 import { TextAreaInput } from '../../../form/TextAreaInput';
 import { TextInput } from '../../../form/TextInput';
 
-const itemTemplateColumns = '4fr 1fr 6fr';
+const itemTemplateColumns = '4fr 6fr';
 const itemSmallTemplateColumns = '2fr 2fr';
 
 const ItemField: React.FC<SortableAddAnotherChildProps> = ({
@@ -61,7 +61,6 @@ const ItemHeader: React.FC = () => {
       }
     >
       <Body bold>Name</Body>
-      {isAtLeastSm && <Body bold>Value</Body>}
       <Body bold>Notes</Body>
     </GridBox>
   );
