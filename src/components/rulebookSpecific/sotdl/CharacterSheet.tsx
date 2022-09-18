@@ -1,5 +1,4 @@
 import { GridBox } from '~/components/box/GridBox';
-import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
 import { ArmorInput } from '~/components/rulebookSpecific/sotdl/gameInputs/ArmorInput';
 import { AttributeInput } from '~/components/rulebookSpecific/sotdl/gameInputs/AttributeInput';
@@ -16,40 +15,23 @@ import { PhysicalTraitsInputs } from '~/components/rulebookSpecific/sotdl/gameIn
 import { WeaponInput } from '~/components/rulebookSpecific/sotdl/gameInputs/WeaponInput';
 import { DEFAULT_VALUES } from '~/constants/sotdl/form';
 import { ATTRIBUTES } from '~/constants/sotdl/game';
-import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
-import { useSheetState } from '~/logic/hooks/useSheetState';
+import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { LoadingIntermediary } from '../../form/LoadingIntermediary';
+import { BaseCharacterSheet } from '../shared/BaseCharacterSheet';
+import { BasicInfoInputs } from '../shared/gameInputs/BasicInfoInputs';
 import { FormNav } from './FormNav';
-import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
 export const CharacterSheet: React.FC = () => {
-  const {
-    isLoading,
-    isEditMode,
-    setIsEditMode,
-    setIsLoading,
-    isMyCharacter,
-    setIsMyCharacter,
-  } = useSheetState();
-
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isLessThanXs = useBreakpointsLessThan('xs');
 
-  useSheetHotkeys(isEditMode, setIsEditMode);
-
   return (
-    <EditContext.Provider value={{ isEditMode, setIsEditMode }}>
-      <FormComponent defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
-        <LoadingIntermediary
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          setIsMyCharacter={setIsMyCharacter}
-        >
+    <BaseCharacterSheet defaultValues={DEFAULT_VALUES}>
+      {({ isMyCharacter }) => (
+        <>
           <FormNav isMyCharacter={isMyCharacter} />
-          <BasicInfoInputs />
+          <BasicInfoInputs<SotdlCharacterData> />
           <HistoryInputs />
           <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
             {ATTRIBUTES.map((a) => (
@@ -75,8 +57,8 @@ export const CharacterSheet: React.FC = () => {
           <CurrencyInputs />
           <DescriptionInputs />
           <GeneralNotesInputs />
-        </LoadingIntermediary>
-      </FormComponent>
-    </EditContext.Provider>
+        </>
+      )}
+    </BaseCharacterSheet>
   );
 };
