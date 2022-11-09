@@ -4,7 +4,7 @@ import { FormSection } from '../../../form/FormSection';
 import { NumberInput } from '../../../form/NumberInput';
 
 export const CurrencyInputs: React.FC = () => (
-  <FormSection columns={3} isCollapsable title="Currency">
+  <FormSection columns={3} isCollapsible title="Currency">
     <NumberInput<SotdlCharacterData>
       label="Gold"
       min={0}

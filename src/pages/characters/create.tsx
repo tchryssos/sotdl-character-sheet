@@ -17,6 +17,7 @@ import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { RULEBOOK_QUERY_PARAM } from '~/constants/search';
+import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { NavContext } from '~/logic/contexts/navContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
@@ -92,7 +93,7 @@ interface SelectRulebookProps {
 }
 
 const SelectRulebook: React.FC<SelectRulebookProps> = ({ rulebooks }) => (
-  <RulebookSection columns={1} isCollapsable={false} title="Select a rulebook">
+  <RulebookSection columns={1} isCollapsible={false} title="Select a rulebook">
     <RulebookList>
       {rulebooks.map((rb) => (
         <li key={rb.id}>
@@ -159,7 +160,10 @@ const NewCharacterPage: React.FC = () => {
       ) : hasError ? (
         <Body>Error fetching rulebooks, try again later</Body>
       ) : (
-        <SelectRulebook rulebooks={rulebooks} />
+        // TODO: Restrict to only SOTDL, since that's all we support
+        <SelectRulebook
+          rulebooks={rulebooks.filter((r) => r.name === SOTDL_NAME)}
+        />
       )}
     </Layout>
   );

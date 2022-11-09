@@ -28,7 +28,7 @@ const SettingsPage: React.FC = () => {
         <Form defaultValues={defaulValues} onSubmit={() => null}>
           <FormSection
             canToggleVisibility={false}
-            isCollapsable={false}
+            isCollapsible={false}
             title="Personalization"
           >
             <ColorMode colorModeKey={colorModeKey} />

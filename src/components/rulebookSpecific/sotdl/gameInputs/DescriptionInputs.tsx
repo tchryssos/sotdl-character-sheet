@@ -9,7 +9,7 @@ export const DescriptionInputs: React.FC = () => {
   return (
     <FormSection
       columns={isLessThanXs ? 1 : 2}
-      isCollapsable
+      isCollapsible
       title="Description"
     >
       <TextAreaInput<SotdlCharacterData> name="background" />
