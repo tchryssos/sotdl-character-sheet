@@ -162,7 +162,7 @@ export const MagicInputs: React.FC = () => {
   const isLessThanMd = useBreakpointsLessThan('md');
 
   return (
-    <FormSection columns={1} isCollapsable title="Spells">
+    <FormSection columns={1} isCollapsible title="Spells">
       <GridBox gridTemplateColumns={`repeat(${isLessThanMd ? 3 : 4}, 1fr)`}>
         <NumberInput<SotdlCharacterData>
           label="Power"

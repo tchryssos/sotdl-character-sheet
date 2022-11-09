@@ -20,7 +20,7 @@ interface FormSectionProps {
   title: string;
   children: React.ReactNode | React.ReactNode[];
   columns?: GridBoxProps['columns'];
-  isCollapsable?: boolean;
+  isCollapsible?: boolean;
   canToggleVisibility?: boolean;
   className?: string;
   visibilityTitle?: string;
@@ -33,10 +33,10 @@ const TitleBox = styled(FlexBox)`
 `;
 
 const Text = styled(Body)<
-  Pick<FormSectionProps, 'isCollapsable'> & { isEditMode: boolean }
->(({ isEditMode, isCollapsable, theme }) => ({
+  Pick<FormSectionProps, 'isCollapsible'> & { isEditMode: boolean }
+>(({ isEditMode, isCollapsible, theme }) => ({
   whiteSpace: 'nowrap',
-  ...(isCollapsable && {
+  ...(isCollapsible && {
     paddingLeft: theme.spacing[32],
   }),
   ...(isEditMode && {
@@ -96,7 +96,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   title,
   children,
   columns,
-  isCollapsable = true,
+  isCollapsible = true,
   canToggleVisibility = true,
   className,
   visibilityTitle,
@@ -148,18 +148,18 @@ export const FormSection: React.FC<FormSectionProps> = ({
       setIsOpen(initIsExpanded);
     }
   }, [initIsExpanded]);
-  // END - SECTION COLLAPSED STATUST - END
+  // END - SECTION COLLAPSED STATUS - END
 
   if ((!isEditMode && isVisible) || isEditMode) {
     return (
       <Section
-        addMargin={isCollapsable || isEditMode}
+        addMargin={isCollapsible || isEditMode}
         className={className}
         column
       >
         <FlexBox alignItems="flex-end" ml={borderless ? 0 : 4}>
           <TitleBox>
-            {isCollapsable && (
+            {isCollapsible && (
               <CollapseToggle
                 absolute
                 isOpen={isOpen}
@@ -167,7 +167,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
                 onChangeExpanded={onChangeExpanded}
               />
             )}
-            <Text isCollapsable={isCollapsable} isEditMode={isEditMode} italic>
+            <Text isCollapsible={isCollapsible} isEditMode={isEditMode} italic>
               {title}
             </Text>
             {isEditMode && canToggleVisibility && (

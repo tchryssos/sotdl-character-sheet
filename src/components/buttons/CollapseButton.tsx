@@ -48,7 +48,7 @@ export const CollapseButton: React.FC<CollapseButtonProps> = ({
   >
     <Icon
       isOpen={isOpen}
-      title="Collapsable arrow"
+      title="Collapsible arrow"
       titleId={`collapseable-arrow-icon-${title}`}
     />
   </Button>

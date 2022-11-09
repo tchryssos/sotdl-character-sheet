@@ -129,7 +129,7 @@ const HeaderRow: React.FC = () => (
 export const ArmorInput: React.FC = () => {
   const isLessThanSm = useBreakpointsLessThan('sm');
   return (
-    <FormSection columns={1} isCollapsable title="Armor">
+    <FormSection columns={1} isCollapsible title="Armor">
       <AddAnotherMultiField<SotdlCharacterData>
         HeaderRow={isLessThanSm ? undefined : HeaderRow}
         createDefaultValue={createDefaultArmor}

@@ -72,7 +72,7 @@ const createDefaultValue = (): SotdlEquipment => ({
 });
 
 export const EquipmentInputs: React.FC = () => (
-  <FormSection columns={1} isCollapsable title="Equipment">
+  <FormSection columns={1} isCollapsible title="Equipment">
     <AddAnotherMultiField<SotdlCharacterData>
       HeaderRow={ItemHeader}
       createDefaultValue={createDefaultValue}

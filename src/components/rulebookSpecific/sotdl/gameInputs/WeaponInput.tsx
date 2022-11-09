@@ -157,7 +157,7 @@ export const WeaponInput: React.FC = () => {
 
   // const weapons = watch(FIELD_NAMES.weapons.fieldName);
   return (
-    <FormSection columns={1} isCollapsable title="Weapons">
+    <FormSection columns={1} isCollapsible title="Weapons">
       <AddAnotherMultiField<SotdlCharacterData>
         HeaderRow={isLessThanSm ? undefined : WeaponHeader}
         createDefaultValue={createDefaultWeapon}

@@ -130,7 +130,7 @@ export const Rulebooks: React.FC = () => {
   };
 
   return hasError ? (
-    <FormSection isCollapsable={false} title="Edit Rulebooks">
+    <FormSection isCollapsible={false} title="Edit Rulebooks">
       <Body>Something went wrong fetching rulebooks. Please try again.</Body>
     </FormSection>
   ) : (
