@@ -90,7 +90,6 @@ const ProfilePage = () => {
                       <FlexBox column>
                         <FlexBox>
                           <Body>{c.name}</Body>
-                          <Body>{c.characterData.type}</Body>
                         </FlexBox>
                         <SubBody>
                           <Caps>{c.rulebookName}</Caps>
