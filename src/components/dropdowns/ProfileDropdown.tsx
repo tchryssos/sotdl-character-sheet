@@ -10,7 +10,7 @@ import { AuthLink } from '../AuthLink';
 import { IconButton } from '../buttons/IconButton';
 import { Hamburger } from '../icons/Hamburger';
 import { Body } from '../typography/Body';
-import { DropdowmMenuProps, DropdownMenu } from './DropdownMenu';
+import { DropdownMenu, DropdownMenuProps } from './DropdownMenu';
 
 const DropdownAuthLink = styled(AuthLink)`
   width: 100%;
@@ -25,8 +25,8 @@ const DropdownAuthLink = styled(AuthLink)`
 const createMenuItems = (
   user: StrictSessionUser | undefined,
   isLoading: boolean
-): DropdowmMenuProps['menuItems'] => {
-  let items: DropdowmMenuProps['menuItems'] = [
+): DropdownMenuProps['menuItems'] => {
+  let items: DropdownMenuProps['menuItems'] = [
     {
       type: 'link',
       href: SETTINGS_ROUTE,
@@ -49,8 +49,8 @@ const createMenuItems = (
                 href: ADMIN_PANEL_ROUTE,
                 text: 'Admin panel',
               },
-            ] as DropdowmMenuProps['menuItems'])
-          : ([] as DropdowmMenuProps['menuItems'])),
+            ] as DropdownMenuProps['menuItems'])
+          : ([] as DropdownMenuProps['menuItems'])),
         ...items,
         {
           type: 'special',
@@ -87,7 +87,7 @@ const createMenuItems = (
 };
 
 interface ProfileDropdownProps {
-  dropdownMenuItems: DropdowmMenuProps['menuItems'];
+  dropdownMenuItems: DropdownMenuProps['menuItems'];
 }
 
 export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({

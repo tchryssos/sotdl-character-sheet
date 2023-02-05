@@ -5,7 +5,7 @@ import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 
 import { FlexBox } from '../box/FlexBox';
-import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
+import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { NavBar } from '../nav/NavBar';
 import { Head } from './Head';
 
@@ -22,14 +22,14 @@ const PageWrapper = styled(FlexBox)`
   padding-top: ${({ theme }) => theme.spacing[128]};
 `;
 
-const emptyArr: DropdowmMenuProps['menuItems'] = [];
+const emptyArr: DropdownMenuProps['menuItems'] = [];
 
 export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
   const [docTitle, setDocTitle] = useState(title);
   const [navTitle, setNavTitle] = useState('');
   const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
   const [dropdownItems, setDropdownItems] =
-    useState<DropdowmMenuProps['menuItems']>(emptyArr);
+    useState<DropdownMenuProps['menuItems']>(emptyArr);
   const isAtLeastXs = useBreakpointsAtLeast('xs');
 
   useEffect(() => {

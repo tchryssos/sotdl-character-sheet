@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
+import { MoveFile } from '~/components/icons/MoveFile';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
@@ -79,6 +80,11 @@ const NavButtons: React.FC<Pick<FormNavProps, 'isMyCharacter'>> = ({
 
   return (
     <>
+      {user && !isMyCharacter && (
+        <IconButton>
+          <MoveFile color="text" title="Add to my characters" />
+        </IconButton>
+      )}
       {user && isMyCharacter && (
         <SaveButton playerId={(user as StrictSessionUser).id} />
       )}

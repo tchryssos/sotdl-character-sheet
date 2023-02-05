@@ -74,7 +74,7 @@ type MenuItemObj =
       text: string;
     };
 
-export interface DropdowmMenuProps {
+export interface DropdownMenuProps {
   menuItems: MenuItemObj[];
   children: (props: { toggleOpen: MouseEventHandler }) => React.ReactNode;
 }
@@ -101,7 +101,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
   }
 };
 
-export const DropdownMenu: React.FC<DropdowmMenuProps> = ({
+export const DropdownMenu: React.FC<DropdownMenuProps> = ({
   menuItems,
   children,
 }) => {
