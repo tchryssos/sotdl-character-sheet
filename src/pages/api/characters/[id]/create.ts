@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import { FREE_USER_CHARACTER_LIMIT } from '~/constants/users';
 import { getSessionUser } from '~/logic/api/getSessionUser';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
@@ -13,6 +15,30 @@ const createCharacter = withApiAuthRequired(
 
       if (!user) {
         throw new Error('No user found');
+      }
+
+      // Check that newly created character won't exceed free user limit
+      const isFreeUser = !user.isPaid;
+      if (isFreeUser) {
+        const characterCountData = await prisma.user.findUnique({
+          where: {
+            id: user.id,
+          },
+          include: {
+            _count: {
+              select: {
+                characters: true,
+              },
+            },
+          },
+        });
+
+        if (
+          Number(characterCountData?._count.characters) >
+          FREE_USER_CHARACTER_LIMIT
+        ) {
+          throw new Error('Free users are limited to 5 characters');
+        }
       }
 
       const body: CharacterSaveData = await JSON.parse(req.body);

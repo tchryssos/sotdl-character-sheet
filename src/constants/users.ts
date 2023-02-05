@@ -1,0 +1,1 @@
+export const FREE_USER_CHARACTER_LIMIT = 5;
