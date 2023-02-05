@@ -44,7 +44,11 @@ export function ConfirmationDialog({
           severity={severity}
           onClick={confirm.onClick}
         />
-        <TextButton label={cancel.label || 'Cancel'} onClick={cancel.onClick} />
+        <TextButton
+          label={cancel.label || 'Cancel'}
+          severity="secondary"
+          onClick={cancel.onClick}
+        />
       </FlexBox>
     </BaseDialog>
   );

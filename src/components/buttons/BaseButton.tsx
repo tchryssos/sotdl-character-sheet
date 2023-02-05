@@ -21,6 +21,9 @@ const StyledButton = styled.button<StyledProps>(
       case 'success':
         severityColor = 'success';
         break;
+      case 'secondary':
+        severityColor = 'smudge';
+        break;
       case 'normal':
       default:
         break;
@@ -34,7 +37,11 @@ const StyledButton = styled.button<StyledProps>(
         ? 'transparent'
         : theme.colors[severityColor],
       border: transparent
-        ? `${theme.border.borderWidth[1]} solid ${theme.colors.text}`
+        ? `${theme.border.borderWidth[1]} solid ${
+            severity !== 'normal'
+              ? theme.colors[severityColor]
+              : theme.colors.text
+          }`
         : 'none',
       borderRadius: theme.spacing[2],
       // Non-standard padding matches default button padding

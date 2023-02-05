@@ -35,23 +35,25 @@ const Button = styled(BaseButton)<Pick<LoadingButtonProps, 'loading'>>(
   })
 );
 
-export const LoadingButton: React.FC<LoadingButtonProps> = ({
+export function LoadingButton({
   disabled,
   loading,
   label,
   type = 'button',
   onClick,
-}) => (
-  <Button
-    disabled={disabled || loading}
-    loading={loading}
-    type={type}
-    onClick={onClick}
-  >
-    {loading ? (
-      <Spinner title="Loading" titleId="loading-button" />
-    ) : (
-      <Body>{label}</Body>
-    )}
-  </Button>
-);
+}: LoadingButtonProps) {
+  return (
+    <Button
+      disabled={disabled || loading}
+      loading={loading}
+      type={type}
+      onClick={onClick}
+    >
+      {loading ? (
+        <Spinner title="Loading" titleId="loading-button" />
+      ) : (
+        <Body>{label}</Body>
+      )}
+    </Button>
+  );
+}
