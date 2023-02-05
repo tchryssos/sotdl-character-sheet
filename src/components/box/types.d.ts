@@ -35,6 +35,11 @@ export type BoxProps = MarginProps & {
   borderStyle?: 'solid' | 'none' | 'hidden';
   borderWidth?: BorderWidth;
   width?: string;
+  height?: string;
+  maxWidth?: string;
+  minWidth?: string;
+  maxHeight?: string;
+  minHeight?: string;
 };
 
 export type JustifyContent =

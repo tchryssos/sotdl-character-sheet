@@ -1,21 +1,15 @@
-import {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
-
+import { FlexBox } from '../box/FlexBox';
 import { TextButton } from '../buttons/TextButton';
 import { Body } from '../typography/Body';
 import { Title } from '../typography/Title';
 import { BaseDialog, BaseDialogProps } from './BaseDialog';
 
 interface DialogAction {
-  label: string;
+  label?: string;
   onClick: () => void;
 }
 
-interface ConfirmationDialogProps extends BaseDialogProps {
+interface ConfirmationDialogProps extends Omit<BaseDialogProps, 'children'> {
   confirm: DialogAction;
   cancel: DialogAction;
   message: string;
@@ -40,18 +34,15 @@ export function ConfirmationDialog({
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >
-      <DialogTitle id={labeledById}>
-        <Title>{title}</Title>
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id={describedById}>
-          <Body>{message}</Body>
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <TextButton label={confirm.label} onClick={confirm.onClick} />
-        <TextButton label={cancel.label} onClick={cancel.onClick} />
-      </DialogActions>
+      <Title id={labeledById}>{title}</Title>
+      <Body id={describedById}>{message}</Body>
+      <FlexBox gap={16} justifyContent="flex-end">
+        <TextButton
+          label={confirm.label || 'Confirm'}
+          onClick={confirm.onClick}
+        />
+        <TextButton label={cancel.label || 'Cancel'} onClick={cancel.onClick} />
+      </FlexBox>
     </BaseDialog>
   );
 }

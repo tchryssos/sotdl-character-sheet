@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
+import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
 import { MoveFile } from '~/components/icons/MoveFile';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { SOTDL_NAME } from '~/constants/sotdl/game';
@@ -75,13 +76,25 @@ function SaveButton({ playerId }: SaveButtonProps) {
 function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
   const { user } = useUser();
   const { isEditMode, setIsEditMode } = useContext(EditContext);
+  const [isConfirmCloneOpen, setIsConfirmCloneOpen] = useState(false);
 
   return (
     <>
       {user && !isMyCharacter && (
-        <IconButton>
-          <MoveFile color="text" title="Add to my characters" />
-        </IconButton>
+        <>
+          <ConfirmationDialog
+            cancel={{ onClick: () => setIsConfirmCloneOpen(false) }}
+            confirm={{ onClick: () => null, label: 'Clone' }}
+            describedById="clone-character-description"
+            labeledById="clone-character"
+            message="This will create a new character in your account that is a copy of this character."
+            open={isConfirmCloneOpen}
+            title="Clone character?"
+          />
+          <IconButton onClick={() => setIsConfirmCloneOpen(true)}>
+            <MoveFile color="text" title="Clone character" />
+          </IconButton>
+        </>
       )}
       {user && isMyCharacter && (
         <SaveButton playerId={(user as StrictSessionUser).id} />

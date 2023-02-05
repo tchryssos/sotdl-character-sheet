@@ -35,6 +35,8 @@ const Flex = styled(Box)<FlexBoxProps>(
     flexGrow,
     flexShrink,
     gap = 0,
+    maxWidth,
+    minWidth,
     theme,
   }) => ({
     justifyContent,
@@ -44,6 +46,8 @@ const Flex = styled(Box)<FlexBoxProps>(
     flexWrap,
     flexGrow,
     flexShrink,
+    maxWidth,
+    minWidth,
     gap: theme.spacing[gap],
     ...(center && {
       justifyContent: 'center',
@@ -61,7 +65,9 @@ const Flex = styled(Box)<FlexBoxProps>(
   })
 );
 
-export const FlexBox: React.FC<FlexBoxProps> = ({ children, ...rest }) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <Flex {...rest}>{children}</Flex>
-);
+export function FlexBox({ children, ...rest }: FlexBoxProps) {
+  return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <Flex {...rest}>{children}</Flex>
+  );
+}
