@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
@@ -25,7 +27,7 @@ import { LoadingIntermediary } from '../../form/LoadingIntermediary';
 import { FormNav } from './FormNav';
 import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
-export const CharacterSheet: React.FC = () => {
+export function CharacterSheet() {
   const {
     isLoading,
     isEditMode,
@@ -40,8 +42,13 @@ export const CharacterSheet: React.FC = () => {
 
   useSheetHotkeys(isEditMode, setIsEditMode);
 
+  const editProviderVal = useMemo(
+    () => ({ isEditMode, setIsEditMode }),
+    [isEditMode, setIsEditMode]
+  );
+
   return (
-    <EditContext.Provider value={{ isEditMode, setIsEditMode }}>
+    <EditContext.Provider value={editProviderVal}>
       <FormComponent defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
         <LoadingIntermediary
           isLoading={isLoading}
@@ -79,4 +86,4 @@ export const CharacterSheet: React.FC = () => {
       </FormComponent>
     </EditContext.Provider>
   );
-};
+}

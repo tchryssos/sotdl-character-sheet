@@ -19,9 +19,11 @@ const StyledButton = styled(BaseButton)<Pick<TextButtonProps, 'transparent'>>(
   })
 );
 
-export const TextButton: React.FC<TextButtonProps> = ({ label, ...rest }) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <StyledButton {...rest}>
-    <Body>{label}</Body>
-  </StyledButton>
-);
+export function TextButton({ label, ...rest }: TextButtonProps) {
+  return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <StyledButton {...rest}>
+      <Body>{label}</Body>
+    </StyledButton>
+  );
+}
