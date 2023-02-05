@@ -89,6 +89,7 @@ function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
             labeledById="clone-character"
             message="This will create a new character in your account that is a copy of this character."
             open={isConfirmCloneOpen}
+            severity="danger"
             title="Clone character?"
           />
           <IconButton onClick={() => setIsConfirmCloneOpen(true)}>

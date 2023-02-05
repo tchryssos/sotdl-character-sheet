@@ -7,6 +7,7 @@ export interface CoreButtonProps {
   disabled?: boolean;
   transparent?: boolean;
   buttonLike?: boolean;
+  severity?: 'normal' | 'warning' | 'danger' | 'success';
 }
 
 export interface BaseButtonProps extends CoreButtonProps {
