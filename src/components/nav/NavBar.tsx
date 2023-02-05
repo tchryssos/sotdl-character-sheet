@@ -71,11 +71,11 @@ interface NavBarProps {
   dropdownMenuItems: DropdownMenuProps['menuItems'];
 }
 
-export const NavBar: React.FC<NavBarProps> = ({
+export function NavBar({
   title,
   setIconPortalNode,
   dropdownMenuItems,
-}) => {
+}: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
 
@@ -97,4 +97,4 @@ export const NavBar: React.FC<NavBarProps> = ({
       </InnerToolbar>
     </Toolbar>
   );
-};
+}

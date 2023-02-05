@@ -92,7 +92,10 @@ function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
             title="Clone character?"
           />
           <IconButton onClick={() => setIsConfirmCloneOpen(true)}>
-            <MoveFile color="text" title="Clone character" />
+            <MoveFile
+              color={isConfirmCloneOpen ? 'success' : 'text'}
+              title="Clone character"
+            />
           </IconButton>
         </>
       )}

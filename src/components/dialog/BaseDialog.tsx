@@ -2,6 +2,7 @@
 import styled from '@emotion/styled';
 import { FocusTrap } from '@mui/base';
 import ModalUnstyled, { ModalUnstyledProps } from '@mui/base/ModalUnstyled';
+import { useEffect, useRef } from 'react';
 
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
@@ -20,7 +21,7 @@ const Backdrop = styled('div')`
   bottom: 0;
   top: 0;
   left: 0;
-  background-color: ${({ theme }) => theme.colors.shared.darken};
+  background-color: ${({ theme }) => theme.filters.darken};
   -webkit-tap-highlight-color: transparent;
 `;
 
@@ -66,9 +67,9 @@ export function BaseDialog({
         <DialogBox
           backgroundColor="background"
           column
-          gap={32}
+          gap={16}
           maxWidth={maxWidth}
-          p={16}
+          p={32}
           width="100%"
         >
           {children}

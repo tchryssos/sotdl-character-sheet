@@ -24,7 +24,6 @@ interface ColorModeColors {
   accentHeavy: ColorHash;
   accentLight: ColorHash;
   smudge: ColorRgba;
-  shared: SharedColors;
 }
 
 export type ColorMode = 'light' | 'dark';
@@ -42,11 +41,11 @@ const darkModeColors: ColorModeColors = {
   accentHeavy: '#2a3c3e',
   accentLight: '#505253',
   smudge: 'rgba(255,255,255,0.1)',
-  shared: sharedColors,
 };
 
 const darkModeFilters = {
   brightnessMod: 1.2,
+  ...sharedColors,
 };
 
 const lightModeColors: ColorModeColors = {
@@ -57,11 +56,11 @@ const lightModeColors: ColorModeColors = {
   accentHeavy: '#adadad',
   accentLight: '#e8e8e8',
   smudge: 'rgba(0,0,0,0.1)',
-  shared: sharedColors,
 };
 
 const lightModeFilters = {
   brightnessMod: 0.8,
+  ...sharedColors,
 };
 
 const theme = {

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { forwardRef } from 'react';
 
 import { Spacing } from '~/typings/theme';
 
@@ -65,9 +66,14 @@ const Flex = styled(Box)<FlexBoxProps>(
   })
 );
 
-export function FlexBox({ children, ...rest }: FlexBoxProps) {
-  return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <Flex {...rest}>{children}</Flex>
-  );
-}
+export const FlexBox = forwardRef<HTMLDivElement, FlexBoxProps>(
+  // eslint-disable-next-line prefer-arrow-callback
+  function FlexBox({ children, ...rest }, ref) {
+    return (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <Flex {...rest} ref={ref}>
+        {children}
+      </Flex>
+    );
+  }
+);
