@@ -28,13 +28,13 @@ interface UserSelectProps {
   getUsers: (search: string) => Promise<StrictUser[]>;
 }
 
-const UserSelect: React.FC<UserSelectProps> = ({
+function UserSelect({
   users,
   setActiveUser,
   activeUser,
   isLoading,
   getUsers,
-}) => {
+}: UserSelectProps) {
   const { reset } = useFormContext();
 
   useEffect(() => {
@@ -70,11 +70,11 @@ const UserSelect: React.FC<UserSelectProps> = ({
       onValueChange={onValChange}
     />
   );
-};
+}
 
 type UserRole = Pick<StrictUser, 'role'>;
 
-export const Roles: React.FC = () => {
+export function User() {
   const isLessThanSm = useBreakpointsLessThan('sm');
   const [users, setUsers] = useState<StrictUser[] | null>(null);
   const [activeUser, setActiveUser] = useState<StrictUser | null>(null);
@@ -119,7 +119,7 @@ export const Roles: React.FC = () => {
       noStyles
       onSubmit={onSubmit}
     >
-      <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User Roles">
+      <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User">
         <UserSelect
           activeUser={activeUser}
           getUsers={getUsers}
@@ -143,4 +143,4 @@ export const Roles: React.FC = () => {
       </RolesSection>
     </Form>
   );
-};
+}

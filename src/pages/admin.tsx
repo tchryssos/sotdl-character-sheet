@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 
-import { Roles } from '~/components/admin/Roles';
 import { Rulebooks } from '~/components/admin/Rulebooks';
+import { User } from '~/components/admin/User';
 import { FlexBox } from '~/components/box/FlexBox';
 import { Layout } from '~/components/meta/Layout';
 import { NavContext } from '~/logic/contexts/navContext';
@@ -9,7 +9,7 @@ import { useUserIsAdmin } from '~/logic/hooks/useUserIsAdmin';
 
 import FourOhFour from './404';
 
-const AdminNav: React.FC = () => {
+function AdminNav() {
   const { setNavTitle } = useContext(NavContext);
 
   useEffect(() => {
@@ -17,9 +17,9 @@ const AdminNav: React.FC = () => {
   }, [setNavTitle]);
 
   return null;
-};
+}
 
-const AdminPage: React.FC = () => {
+function AdminPage() {
   const userIsAdmin = useUserIsAdmin();
 
   if (typeof userIsAdmin === 'boolean') {
@@ -28,7 +28,7 @@ const AdminPage: React.FC = () => {
         <AdminNav />
         <FlexBox column gap={16} width="100%">
           <Rulebooks />
-          <Roles />
+          <User />
         </FlexBox>
       </Layout>
     ) : (
@@ -37,6 +37,6 @@ const AdminPage: React.FC = () => {
   }
 
   return null;
-};
+}
 
 export default AdminPage;

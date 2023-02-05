@@ -2,7 +2,6 @@
 import styled from '@emotion/styled';
 import { FocusTrap } from '@mui/base';
 import ModalUnstyled, { ModalUnstyledProps } from '@mui/base/ModalUnstyled';
-import { useEffect, useRef } from 'react';
 
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
