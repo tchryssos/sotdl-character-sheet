@@ -1,0 +1,1 @@
+interface ConfirmationDialogProps extends BaseDialogProps {}
