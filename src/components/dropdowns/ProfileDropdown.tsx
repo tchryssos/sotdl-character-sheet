@@ -90,9 +90,7 @@ interface ProfileDropdownProps {
   dropdownMenuItems: DropdownMenuProps['menuItems'];
 }
 
-export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
-  dropdownMenuItems,
-}) => {
+export function ProfileDropdown({ dropdownMenuItems }: ProfileDropdownProps) {
   const { isLoading, user } = useUser();
 
   const menuItems = useMemo(
@@ -112,4 +110,4 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       )}
     </DropdownMenu>
   );
-};
+}

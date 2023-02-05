@@ -74,6 +74,8 @@
     "react/self-closing-comp": "warn",
     "react/no-access-state-in-setstate": "error",
     "react/jsx-one-expression-per-line": "off",
+    "react/function-component-definition": "warn",
+    "react/jsx-no-useless-fragment": "off",
 
     // Typescript
     "@typescript-eslint/explicit-module-boundary-types": "off",

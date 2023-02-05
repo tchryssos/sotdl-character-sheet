@@ -27,7 +27,7 @@ interface SaveButtonProps {
   playerId: number;
 }
 
-const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
+function SaveButton({ playerId }: SaveButtonProps) {
   const [saveStatus, setSaveStatus] = useState<LoadingStatus>('neutral');
   const { query } = useRouter();
   const { watch, getValues } = useFormContext();
@@ -69,12 +69,10 @@ const SaveButton: React.FC<SaveButtonProps> = ({ playerId }) => {
       <Save title="Save character" titleId="save-character" />
     </IconButton>
   );
-};
+}
 // END - Icons and Buttons - End
 
-const NavButtons: React.FC<Pick<FormNavProps, 'isMyCharacter'>> = ({
-  isMyCharacter,
-}) => {
+function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
   const { user } = useUser();
   const { isEditMode, setIsEditMode } = useContext(EditContext);
 
@@ -97,9 +95,9 @@ const NavButtons: React.FC<Pick<FormNavProps, 'isMyCharacter'>> = ({
       </IconButton>
     </>
   );
-};
+}
 
-export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
+export function FormNav({ isMyCharacter }: FormNavProps) {
   const { watch } = useFormContext();
   const name: string | undefined = watch<keyof SotdlCharacterData>('name');
   const ancestry: string | undefined =
@@ -144,4 +142,4 @@ export const FormNav: React.FC<FormNavProps> = ({ isMyCharacter }) => {
         )}
     </>
   );
-};
+}

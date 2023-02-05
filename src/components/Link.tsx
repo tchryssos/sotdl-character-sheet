@@ -20,19 +20,23 @@ const StyledLink = styled.a<StyledProps>`
   }
 `;
 
-export const Link: React.FC<LinkProps> = ({
+export function Link({
   href,
   isInternal = true,
   children,
   className,
-}) => (
-  <NextLink href={href} passHref>
-    <StyledLink
-      className={className}
-      rel="noopener noreferrer"
-      target={isInternal ? '_self' : '_blank'}
-    >
-      {children}
-    </StyledLink>
-  </NextLink>
-);
+  underline,
+}: LinkProps) {
+  return (
+    <NextLink href={href} legacyBehavior passHref>
+      <StyledLink
+        className={className}
+        rel="noopener noreferrer"
+        target={isInternal ? '_self' : '_blank'}
+        underline={underline}
+      >
+        {children}
+      </StyledLink>
+    </NextLink>
+  );
+}
