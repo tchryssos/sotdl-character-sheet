@@ -4,7 +4,11 @@ import { NOT_AUTHORIZED_MESSAGE } from '~/constants/errors';
 
 import { getSessionUser } from './getSessionUser';
 
-export const rejectNonSelf = (
+/**
+ * A function that checks whether the user is either an admin or is modifying something that they own.
+ * @returns The user object if user is authorized, otherwise throws an error.
+ */
+export const rejectNonAdminOrSelf = (
   req: NextApiRequest,
   res: NextApiResponse,
   resourceUserId: string | number

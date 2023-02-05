@@ -2,7 +2,7 @@ import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { user } from '@prisma/client';
 import { NextApiHandler } from 'next';
 
-import { rejectNonSelf } from '~/logic/api/rejectNonSelf';
+import { rejectNonAdminOrSelf } from '~/logic/api/rejectNonAdminOrSelf';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 
@@ -23,13 +23,16 @@ const getUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
   }
 });
 
-export type PatchUserData = Pick<user, 'email' | 'role'>;
+type PatchUserDataSubset = Pick<user, 'email' | 'role' | 'isPaid'>;
+export type PatchUserData = {
+  [K in keyof PatchUserDataSubset]: string;
+};
 
 const patchUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
   try {
     const { id } = req.query;
 
-    const requestUser = rejectNonSelf(req, res, id as string);
+    const requestUser = rejectNonAdminOrSelf(req, res, id as string);
 
     const body: PatchUserData = await JSON.parse(req.body);
 
@@ -42,6 +45,7 @@ const patchUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
         lastModifiedOn: new Date(),
         ...(requestUser.role === 'admin' && {
           role: body.role,
+          isPaid: Boolean(body.isPaid === 'true'),
         }),
       },
     });

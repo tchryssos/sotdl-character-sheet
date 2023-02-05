@@ -72,7 +72,7 @@ function UserSelect({
   );
 }
 
-type UserRole = Pick<StrictUser, 'role'>;
+type UserAdmin = Pick<PatchUserData, 'role' | 'isPaid'>;
 
 export function User() {
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -95,7 +95,7 @@ export function User() {
     return returnData;
   };
 
-  const onSubmit = async (values: UserRole) => {
+  const onSubmit = async (values: UserAdmin) => {
     if (activeUser) {
       setIsLoading(true);
       const resp = await fetch(createUserApiRoute(activeUser.id), {
@@ -103,6 +103,7 @@ export function User() {
         body: JSON.stringify({
           email: activeUser.email,
           role: values.role,
+          isPaid: values.isPaid,
         } as PatchUserData),
       });
       if (resp.status >= 200 && resp.status <= 300) {
@@ -114,8 +115,8 @@ export function User() {
   };
 
   return (
-    <Form<UserRole>
-      defaultValues={{ role: 'player' }}
+    <Form<UserAdmin>
+      defaultValues={{ role: 'player', isPaid: 'false' }}
       noStyles
       onSubmit={onSubmit}
     >
@@ -129,12 +130,21 @@ export function User() {
         />
         {activeUser && (
           <FormBox>
-            <SelectInput<UserRole>
+            <SelectInput<UserAdmin>
               alwaysEditable
               name="role"
               options={[
                 { value: 'player', label: 'Player' },
                 { value: 'admin', label: 'Admin' },
+              ]}
+            />
+            <SelectInput<UserAdmin>
+              alwaysEditable
+              label="Is Paid User?"
+              name="isPaid"
+              options={[
+                { value: 'true', label: 'Paid' },
+                { value: 'false', label: 'Not Paid' },
               ]}
             />
             <LoadingButton label="Submit" loading={isLoading} type="submit" />
