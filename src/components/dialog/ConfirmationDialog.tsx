@@ -1,12 +1,17 @@
+import capitalize from 'lodash.capitalize';
+import { useState } from 'react';
+
 import { FlexBox } from '../box/FlexBox';
 import { TextButton } from '../buttons/TextButton';
+import { BaseButtonProps } from '../buttons/types';
 import { Body } from '../typography/Body';
 import { Title } from '../typography/Title';
 import { BaseDialog, BaseDialogProps } from './BaseDialog';
 
 interface DialogAction {
   label?: string;
-  onClick: () => void;
+  onClick: () => void | Promise<void>;
+  severity?: BaseButtonProps['severity'];
 }
 
 interface ConfirmationDialogProps extends Omit<BaseDialogProps, 'children'> {
@@ -16,7 +21,34 @@ interface ConfirmationDialogProps extends Omit<BaseDialogProps, 'children'> {
   title: string;
   labeledById: string;
   describedById: string;
-  severity?: 'danger' | 'normal';
+}
+
+interface ActionButtonProps {
+  action: DialogAction;
+  type: 'confirm' | 'cancel';
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
+}
+
+function ActionButton({
+  action,
+  type,
+  isLoading,
+  setIsLoading,
+}: ActionButtonProps) {
+  const onClick = async () => {
+    setIsLoading(true);
+    await action.onClick();
+    setIsLoading(false);
+  };
+  return (
+    <TextButton
+      disabled={isLoading}
+      label={action.label || capitalize(type)}
+      severity={type === 'cancel' ? 'secondary' : action.severity}
+      onClick={onClick}
+    />
+  );
 }
 
 export function ConfirmationDialog({
@@ -26,9 +58,9 @@ export function ConfirmationDialog({
   labeledById,
   describedById,
   title,
-  severity = 'normal',
   ...rest
 }: ConfirmationDialogProps) {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <BaseDialog
       aria-describedby={labeledById}
@@ -39,15 +71,17 @@ export function ConfirmationDialog({
       <Title id={labeledById}>{title}</Title>
       <Body id={describedById}>{message}</Body>
       <FlexBox gap={16} justifyContent="flex-end">
-        <TextButton
-          label={confirm.label || 'Confirm'}
-          severity={severity}
-          onClick={confirm.onClick}
+        <ActionButton
+          action={confirm}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          type="confirm"
         />
-        <TextButton
-          label={cancel.label || 'Cancel'}
-          severity="secondary"
-          onClick={cancel.onClick}
+        <ActionButton
+          action={cancel}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          type="cancel"
         />
       </FlexBox>
     </BaseDialog>

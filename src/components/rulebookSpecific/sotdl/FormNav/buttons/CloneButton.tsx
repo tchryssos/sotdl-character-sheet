@@ -33,8 +33,9 @@ export function CloneButton({
       imageUrl: null,
       playerId,
     });
+    setIsConfirmCloneOpen(false);
+
     if (isSuccessfulCharacterResponse(resp)) {
-      setIsConfirmCloneOpen(false);
       push(createCharacterRoute(resp.id));
     }
   };

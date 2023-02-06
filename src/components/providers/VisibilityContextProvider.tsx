@@ -1,7 +1,7 @@
 import camelCase from 'lodash.camelcase';
 import set from 'lodash.set';
 import { useRouter } from 'next/dist/client/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   FieldInfo,
@@ -17,26 +17,30 @@ interface VisibilityContextProviderProps {
 const emptyVis: VisibilityObj = {};
 const visKey = 'sectionVisibility';
 
-export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps> =
-  ({ children }) => {
-    const { asPath } = useRouter();
-    const pageId = camelCase(asPath.split('?')[0]);
+export function VisibilityContextProvider({
+  children,
+}: VisibilityContextProviderProps) {
+  const { asPath } = useRouter();
+  const pageId = camelCase(asPath.split('?')[0]);
 
-    const [visibilityObject, setSectionVisibilityInfoObject] =
-      useState(emptyVis);
+  const [visibilityObject, setSectionVisibilityInfoObject] = useState(emptyVis);
 
-    const sectionVisibityString =
-      globalThis.localStorage?.getItem(visKey) || '{}';
+  const sectionVisibilityString =
+    globalThis.localStorage?.getItem(visKey) || '{}';
 
-    useEffect(() => {
-      setSectionVisibilityInfoObject(JSON.parse(sectionVisibityString));
-    }, [sectionVisibityString]);
+  useEffect(() => {
+    setSectionVisibilityInfoObject(JSON.parse(sectionVisibilityString));
+  }, [sectionVisibilityString]);
 
-    // START - SECTION - START
-    const getSectionVisibilityInfo = (sectionTitle: string) =>
-      visibilityObject[pageId]?.sections?.[camelCase(sectionTitle)];
+  // START - SECTION - START
+  const getSectionVisibilityInfo = useCallback(
+    (sectionTitle: string) =>
+      visibilityObject[pageId]?.sections?.[camelCase(sectionTitle)],
+    [pageId, visibilityObject]
+  );
 
-    const setSectionVisibilityInfo = (
+  const setSectionVisibilityInfo = useCallback(
+    (
       sectionTitle: string,
       visibilityKey: keyof SectionInfo,
       visibilityValue: NonNullable<SectionInfo[keyof SectionInfo]>
@@ -48,11 +52,14 @@ export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps>
       );
       globalThis.localStorage?.setItem(visKey, JSON.stringify(nextObj));
       setSectionVisibilityInfoObject(nextObj);
-    };
-    // END - SECTION - END
+    },
+    [pageId, visibilityObject]
+  );
+  // END - SECTION - END
 
-    // START - FIELDS - START
-    const setFieldVisibilityInfo = (
+  // START - FIELDS - START
+  const setFieldVisibilityInfo = useCallback(
+    (
       fieldName: string,
       fieldKey: keyof FieldInfo,
       value: NonNullable<FieldInfo[keyof FieldInfo]>
@@ -64,23 +71,37 @@ export const VisibilityContextProvider: React.FC<VisibilityContextProviderProps>
       );
       globalThis.localStorage?.setItem(visKey, JSON.stringify(nextObj));
       setSectionVisibilityInfoObject(nextObj);
-    };
+    },
+    [pageId, visibilityObject]
+  );
 
-    const getFieldVisibilityInfo = (fieldName: string) =>
-      visibilityObject[pageId]?.fields?.[camelCase(fieldName)];
-    // END - FIELDS - END
+  const getFieldVisibilityInfo = useCallback(
+    (fieldName: string) =>
+      visibilityObject[pageId]?.fields?.[camelCase(fieldName)],
+    [pageId, visibilityObject]
+  );
+  // END - FIELDS - END
 
-    return (
-      <VisibilityContext.Provider
-        value={{
-          visibility: visibilityObject,
-          getSectionVisibilityInfo,
-          setSectionVisibilityInfo,
-          getFieldVisibilityInfo,
-          setFieldVisibilityInfo,
-        }}
-      >
-        {children}
-      </VisibilityContext.Provider>
-    );
-  };
+  const providerValue = useMemo(
+    () => ({
+      visibility: visibilityObject,
+      getSectionVisibilityInfo,
+      setSectionVisibilityInfo,
+      getFieldVisibilityInfo,
+      setFieldVisibilityInfo,
+    }),
+    [
+      visibilityObject,
+      getSectionVisibilityInfo,
+      setSectionVisibilityInfo,
+      getFieldVisibilityInfo,
+      setFieldVisibilityInfo,
+    ]
+  );
+
+  return (
+    <VisibilityContext.Provider value={providerValue}>
+      {children}
+    </VisibilityContext.Provider>
+  );
+}
