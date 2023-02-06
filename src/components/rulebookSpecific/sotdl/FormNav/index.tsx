@@ -1,11 +1,9 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
-import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
-import { MoveFile } from '~/components/icons/MoveFile';
 import { NEW_ID } from '~/constants/routing/shared';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';

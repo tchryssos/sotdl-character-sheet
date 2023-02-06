@@ -43,7 +43,7 @@ const Logo = styled(LogoAscii)`
   margin-bottom: ${({ theme }) => theme.spacing[16]};
 `;
 
-const Home: React.FC = () => {
+function Home() {
   const { user, error, isLoading } = useUser();
   return (
     <Layout
@@ -84,5 +84,5 @@ const Home: React.FC = () => {
       </HomeWrapper>
     </Layout>
   );
-};
+}
 export default Home;
