@@ -5,12 +5,13 @@ import { NotificationSeverity } from '~/typings/notifications';
 
 export type Notification = {
   id: string;
-  message: string;
+  title: string;
+  message?: string;
   type: NotificationSeverity;
-  timestamp: number;
+  timestamp: Date;
 };
 
-type NotificationsContext = {
+export type NotificationsContext = {
   notifications: Notification[];
   addNotifications: (notifications: Notification[]) => void;
   removeNotifications: (ids: string[]) => void;

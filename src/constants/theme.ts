@@ -19,6 +19,7 @@ interface SharedColors {
 interface ColorModeColors {
   background: ColorHash;
   text: ColorHash;
+  textAccent: ColorHash;
   success: ColorHash;
   danger: ColorHash;
   warning: ColorHash;
@@ -37,6 +38,7 @@ const sharedColors: SharedColors = {
 const darkModeColors: ColorModeColors = {
   background: '#1d1f21',
   text: '#c5c8c6',
+  textAccent: '#969896',
   success: '#6fbd68',
   danger: '#9a4d4d',
   warning: '#e9c47e',
@@ -53,6 +55,7 @@ const darkModeFilters = {
 const lightModeColors: ColorModeColors = {
   background: '#fafafa',
   text: '#17242b',
+  textAccent: '#4d4d4c',
   success: '#00784e',
   danger: '#db0033',
   warning: '#c29e3b',

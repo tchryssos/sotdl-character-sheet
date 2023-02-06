@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
@@ -24,7 +24,7 @@ const PageWrapper = styled(FlexBox)`
 
 const emptyArr: DropdownMenuProps['menuItems'] = [];
 
-export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
+export function Layout({ children, title, meta }: LayoutProps) {
   const [docTitle, setDocTitle] = useState(title);
   const [navTitle, setNavTitle] = useState('');
   const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
@@ -42,15 +42,18 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
     }
   }, []);
 
+  const layoutContextValue = useMemo(
+    () => ({
+      setNavTitle,
+      iconPortalNode,
+      setDropdownItems,
+      setDocTitle,
+    }),
+    [iconPortalNode]
+  );
+
   return (
-    <NavContext.Provider
-      value={{
-        setNavTitle,
-        iconPortalNode,
-        setDropdownItems,
-        setDocTitle,
-      }}
-    >
+    <NavContext.Provider value={layoutContextValue}>
       <Head meta={meta} title={docTitle} />
       <NavBar
         dropdownMenuItems={dropdownItems}
@@ -69,4 +72,4 @@ export const Layout: React.FC<LayoutProps> = ({ children, title, meta }) => {
       </FlexBox>
     </NavContext.Provider>
   );
-};
+}

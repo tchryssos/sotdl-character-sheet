@@ -2,9 +2,10 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import { css, Global, ThemeProvider } from '@emotion/react';
 import styled from '@emotion/styled';
 import type { AppProps } from 'next/app';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
+import { NotificationsContextProvider } from '~/components/providers/NotificationsContextProvider';
 import { ColorMode, Theme, themes } from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
@@ -80,7 +81,7 @@ const GlobalWrapper = styled(FlexBox)`
   overflow: hidden;
 `;
 
-const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
+function Page({ Component, pageProps }: AppProps) {
   const [windowBreakpoints, setWindowBreakpoints] = useState<BreakpointSize[]>([
     'xxs',
   ]);
@@ -107,22 +108,32 @@ const Page: React.FC<AppProps> = ({ Component, pageProps }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const themeContextValue = useMemo(
+    () => ({
+      colorMode,
+      setColorMode,
+    }),
+    [colorMode]
+  );
+
   return (
     <UserProvider>
-      <ThemeContext.Provider value={{ colorMode, setColorMode }}>
+      <ThemeContext.Provider value={themeContextValue}>
         <ThemeProvider theme={theme}>
           <BreakpointsContext.Provider value={windowBreakpoints}>
-            <GlobalWrapper>
-              <Global styles={createGlobalStyles(theme)} />
-              {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-              <Component {...pageProps} />
-            </GlobalWrapper>
+            <NotificationsContextProvider>
+              <GlobalWrapper>
+                <Global styles={createGlobalStyles(theme)} />
+                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                <Component {...pageProps} />
+              </GlobalWrapper>
+            </NotificationsContextProvider>
           </BreakpointsContext.Provider>
         </ThemeProvider>
       </ThemeContext.Provider>
     </UserProvider>
   );
-};
+}
 
 // eslint-disable-next-line import/no-default-export
 export default Page;
