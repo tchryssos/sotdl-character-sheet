@@ -40,8 +40,8 @@ const darkModeColors: ColorModeColors = {
   text: '#c5c8c6',
   textAccent: '#969896',
   success: '#6fbd68',
-  danger: '#9a4d4d',
   warning: '#e9c47e',
+  danger: '#9a4d4d',
   accentHeavy: '#2a3c3e',
   accentLight: '#505253',
   smudge: 'rgba(255,255,255,0.1)',
@@ -57,11 +57,11 @@ const lightModeColors: ColorModeColors = {
   text: '#17242b',
   textAccent: '#4d4d4c',
   success: '#00784e',
-  danger: '#db0033',
   warning: '#c29e3b',
+  danger: '#db0033',
   accentHeavy: '#adadad',
   accentLight: '#e8e8e8',
-  smudge: 'rgba(0,0,0,0.1)',
+  smudge: 'rgba(0,0,0,0.05)',
 };
 
 const lightModeFilters = {

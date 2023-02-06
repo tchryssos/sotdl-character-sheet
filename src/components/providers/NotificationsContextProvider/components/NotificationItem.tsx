@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
@@ -8,6 +10,7 @@ import {
   Notification,
   NotificationsContext,
 } from '~/logic/contexts/notificationsContext';
+import { ThemeContext } from '~/logic/contexts/themeContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { NotificationIcon } from './NotificationIcon';
@@ -21,6 +24,7 @@ export function NotificationItem({
   notification,
   removeNotifications,
 }: NotificationItemProps) {
+  const { colorMode } = useContext(ThemeContext);
   const { id, message, title } = notification;
 
   const removeNotification = () => {
@@ -29,7 +33,7 @@ export function NotificationItem({
 
   return (
     <GridBox
-      backgroundColor="accentHeavy"
+      backgroundColor={colorMode === 'dark' ? 'background' : 'accentLight'}
       borderColor="text"
       borderStyle="solid"
       borderWidth={1}
