@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import sortBy from 'lodash.sortby';
 import { useMemo, useState } from 'react';
 
 import { FREE_USER_CHARACTER_LIMIT_MESSAGE } from '~/constants/errors';
@@ -33,13 +34,28 @@ export function NotificationsContextProvider({
       type: 'error',
       timestamp: new Date(),
     },
+    {
+      id: '2',
+      title: 'No more free character slots',
+      message: FREE_USER_CHARACTER_LIMIT_MESSAGE,
+      type: 'info',
+      timestamp: new Date(),
+    },
+    {
+      id: '3',
+      title: 'No more free character slots',
+      message: FREE_USER_CHARACTER_LIMIT_MESSAGE,
+      type: 'success',
+      timestamp: new Date(),
+    },
   ]);
 
   const addNotifications = (newNotifications: Notification[]) => {
-    setNotifications((prevNotifications) => [
-      ...prevNotifications,
-      ...newNotifications,
-    ]);
+    setNotifications((prevNotifications) =>
+      sortBy([...prevNotifications, ...newNotifications], (notification) =>
+        notification.timestamp.getTime()
+      )
+    );
   };
 
   const removeNotifications = (notificationIds: string[]) => {
@@ -67,7 +83,7 @@ export function NotificationsContextProvider({
   return (
     <NotificationsContext.Provider value={contextValue}>
       {children}
-      <NotificationsList m={16}>
+      <NotificationsList column gap={12} m={16}>
         {notifications.map((notification) => (
           <NotificationItem
             key={notification.id}

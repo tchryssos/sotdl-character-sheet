@@ -29,7 +29,10 @@ export function NotificationItem({
 
   return (
     <GridBox
-      backgroundColor="smudge"
+      backgroundColor="accentHeavy"
+      borderColor="text"
+      borderStyle="solid"
+      borderWidth={1}
       columnGap={16}
       gridTemplateColumns="auto 1fr auto"
       p={16}
