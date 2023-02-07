@@ -3,7 +3,7 @@ import { NextApiResponse } from 'next';
 import {
   FREE_USER_CHARACTER_LIMIT_MESSAGE,
   NOT_AUTHORIZED_MESSAGE,
-} from '~/constants/errors';
+} from '~/constants/notifications/errors';
 
 export const returnErrorResponse = (res: NextApiResponse, e: Error) => {
   switch (e.message) {

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import { IconButton } from '~/components/buttons/IconButton';
 import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
@@ -7,6 +7,8 @@ import { MoveFile } from '~/components/icons/MoveFile';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
+import { NotificationsContext } from '~/logic/contexts/notificationsContext';
+import { createNotification } from '~/logic/utils/notifications';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
@@ -23,6 +25,7 @@ export function CloneButton({
 }: CloneButtonProps) {
   const [isConfirmCloneOpen, setIsConfirmCloneOpen] = useState(false);
   const { push } = useRouter();
+  const { addNotifications } = useContext(NotificationsContext);
 
   const onClone = async () => {
     const resp = await saveCharacter({
@@ -36,6 +39,7 @@ export function CloneButton({
     setIsConfirmCloneOpen(false);
 
     if (isSuccessfulCharacterResponse(resp)) {
+      addNotifications([]);
       push(createCharacterRoute(resp.id));
     }
   };

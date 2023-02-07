@@ -7,18 +7,16 @@ import { Close } from '~/components/icons/Close';
 import { Body } from '~/components/typography/Body';
 import { Caption } from '~/components/typography/Caption';
 import { SubBody } from '~/components/typography/SubBody';
-import {
-  Notification,
-  NotificationsContext,
-} from '~/logic/contexts/notificationsContext';
+import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 import { timeAgo } from '~/logic/utils/dates/timeAgo';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { RpgNotification } from '~/typings/notifications';
 
 import { NotificationIcon } from './NotificationIcon';
 
 interface NotificationItemProps {
-  notification: Notification;
+  notification: RpgNotification;
   removeNotifications: NotificationsContext['removeNotifications'];
 }
 
@@ -27,9 +25,7 @@ export function NotificationItem({
   removeNotifications,
 }: NotificationItemProps) {
   const { colorMode } = useContext(ThemeContext);
-  const { id, message, title, timestamp } = notification;
-
-  console.log(timestamp);
+  const { id, message, title, createdOn } = notification;
 
   const removeNotification = () => {
     removeNotifications([id]);
@@ -50,8 +46,8 @@ export function NotificationItem({
       <FlexBox column gap={4}>
         <Body>{title}</Body>
         {message && <SubBody color="textAccent">{message}</SubBody>}
-        {timestamp && (
-          <Caption color="textAccent">{timeAgo(timestamp)}</Caption>
+        {createdOn && (
+          <Caption color="textAccent">{timeAgo(createdOn)}</Caption>
         )}
       </FlexBox>
       <IconButton onClick={removeNotification}>

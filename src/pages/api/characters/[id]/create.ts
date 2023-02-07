@@ -2,7 +2,7 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { FREE_USER_CHARACTER_LIMIT_MESSAGE } from '~/constants/errors';
+import { FREE_USER_CHARACTER_LIMIT_MESSAGE } from '~/constants/notifications/errors';
 import { FREE_USER_CHARACTER_LIMIT } from '~/constants/users';
 import { getSessionUser } from '~/logic/api/getSessionUser';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';

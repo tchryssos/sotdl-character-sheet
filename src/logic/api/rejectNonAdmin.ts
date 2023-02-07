@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { NOT_AUTHORIZED_MESSAGE } from '~/constants/errors';
+import { NOT_AUTHORIZED_MESSAGE } from '~/constants/notifications/errors';
 
 import { getSessionUser } from './getSessionUser';
 

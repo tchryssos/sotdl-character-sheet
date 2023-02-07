@@ -1,4 +1,4 @@
-import { formatDistance, parseISO } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
 export const timeAgo = (date: Date) =>
-  `${formatDistance(parseISO(String(date)), new Date())} ago`;
+  `${formatDistance(date, new Date())} ago`;

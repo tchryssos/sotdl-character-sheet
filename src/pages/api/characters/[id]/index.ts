@@ -1,7 +1,7 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
-import { NOT_AUTHORIZED_MESSAGE } from '~/constants/errors';
+import { NOT_AUTHORIZED_MESSAGE } from '~/constants/notifications/errors';
 import { getSessionUser } from '~/logic/api/getSessionUser';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
