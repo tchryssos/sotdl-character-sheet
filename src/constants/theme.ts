@@ -104,6 +104,7 @@ const theme = {
     },
   },
   fontSize: {
+    caption: pxToRem(10),
     subBody: pxToRem(14),
     body: pxToRem(18),
     title: pxToRem(36),

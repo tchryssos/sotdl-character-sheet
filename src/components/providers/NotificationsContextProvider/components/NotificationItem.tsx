@@ -5,12 +5,14 @@ import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
 import { Close } from '~/components/icons/Close';
 import { Body } from '~/components/typography/Body';
+import { Caption } from '~/components/typography/Caption';
 import { SubBody } from '~/components/typography/SubBody';
 import {
   Notification,
   NotificationsContext,
 } from '~/logic/contexts/notificationsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
+import { timeAgo } from '~/logic/utils/dates/timeAgo';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { NotificationIcon } from './NotificationIcon';
@@ -25,7 +27,9 @@ export function NotificationItem({
   removeNotifications,
 }: NotificationItemProps) {
   const { colorMode } = useContext(ThemeContext);
-  const { id, message, title } = notification;
+  const { id, message, title, timestamp } = notification;
+
+  console.log(timestamp);
 
   const removeNotification = () => {
     removeNotifications([id]);
@@ -46,6 +50,9 @@ export function NotificationItem({
       <FlexBox column gap={4}>
         <Body>{title}</Body>
         {message && <SubBody color="textAccent">{message}</SubBody>}
+        {timestamp && (
+          <Caption color="textAccent">{timeAgo(timestamp)}</Caption>
+        )}
       </FlexBox>
       <IconButton onClick={removeNotification}>
         <Close title="Remove notification" />
