@@ -20,8 +20,7 @@ const createCharacter = withApiAuthRequired(
 
       // Check that newly created character won't exceed free user limit
       const isFreeUser = !user.isPaid;
-      // TODO: SWITCH THIS BACK TO ISFREEUSER
-      if (!isFreeUser) {
+      if (isFreeUser) {
         const characterCountData = await prisma.user.findUnique({
           where: {
             id: user.id,

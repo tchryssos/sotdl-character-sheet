@@ -51,9 +51,7 @@ export function SaveButton({
         push(createCharacterRoute(resp.id));
       }
     } else {
-      addNotifications([
-        createNotification(ERRORS[ErrorTypes.CharacterSaveFailure]),
-      ]);
+      addNotifications([createNotification(ERRORS[resp.error as ErrorTypes])]);
       setSaveStatus('error');
     }
   };
