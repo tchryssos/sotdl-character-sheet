@@ -41,4 +41,5 @@ model character {
   rulebookName   String
   player         user     @relation(fields: [playerId], references: [id])
   rulebook       rulebook @relation(fields: [rulebookName], references: [name])
+  deleted        Boolean  @default(false)
 }

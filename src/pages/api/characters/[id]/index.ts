@@ -2,6 +2,7 @@ import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
 import { ErrorTypes } from '~/constants/notifications/errors';
+import { SuccessTypes } from '~/constants/notifications/successes';
 import { getSessionUser } from '~/logic/api/getSessionUser';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
@@ -17,7 +18,7 @@ const getCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    if (!character) {
+    if (!character || character.deleted) {
       throw new Error(ErrorTypes.CharacterNotFound);
     }
 
@@ -40,7 +41,7 @@ const patchCharacter = withApiAuthRequired(
         },
       });
 
-      if (!currCharacter) {
+      if (!currCharacter || currCharacter.deleted) {
         throw new Error(ErrorTypes.CharacterNotFound);
       }
 
@@ -71,8 +72,63 @@ const patchCharacter = withApiAuthRequired(
   }
 );
 
+const deleteCharacter = withApiAuthRequired(
+  async (req: NextApiRequest, res: NextApiResponse) => {
+    try {
+      const { id } = req.query;
+
+      const requestUser = getSessionUser(req, res);
+
+      const currCharacter = await prisma.character.findUnique({
+        where: {
+          id: parseInt(id as string, 10),
+        },
+      });
+
+      if (!currCharacter || currCharacter.deleted) {
+        throw new Error(ErrorTypes.CharacterNotFound);
+      }
+
+      if (
+        currCharacter?.playerId !== requestUser?.id &&
+        requestUser?.role !== 'admin'
+      ) {
+        throw new Error(ErrorTypes.NotAuthorizedGeneric);
+      }
+
+      await prisma.character.update({
+        where: {
+          id: parseInt(id as string, 10),
+        },
+        data: {
+          deleted: true,
+          lastModifiedOn: new Date(),
+        },
+      });
+
+      res.status(200).json(SuccessTypes.CharacterDeleted);
+    } catch (e) {
+      returnErrorResponse(res, e as Error);
+    }
+  }
+);
+
 const handleRequest: NextApiHandler = async (req, res) => {
   const { method } = req;
+
+  switch (method) {
+    case 'PATCH':
+      await patchCharacter(req, res);
+      break;
+    case 'GET':
+      await getCharacter(req, res);
+      break;
+    case 'DELETE':
+      await deleteCharacter(req, res);
+      break;
+    default:
+      returnErrorResponse(res, new Error(ErrorTypes.SomethingWentWrong));
+  }
 
   if (method === 'PATCH') {
     await patchCharacter(req, res);

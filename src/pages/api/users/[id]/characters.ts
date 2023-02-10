@@ -12,6 +12,7 @@ const fetchUserCharacters: NextApiHandler = withApiAuthRequired(
       const characters = await prisma.character.findMany({
         where: {
           playerId: parseInt(id as string, 10),
+          deleted: false,
         },
         orderBy: [
           {
