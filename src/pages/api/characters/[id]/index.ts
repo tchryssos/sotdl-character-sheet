@@ -3,7 +3,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
 import { ErrorTypes } from '~/constants/notifications/errors';
 import { SuccessTypes } from '~/constants/notifications/successes';
-import { getSessionUser } from '~/logic/api/getSessionUser';
+import { rejectNonAdminOrSelf } from '~/logic/api/rejectNonAdminOrSelf';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
 import { CharacterSaveData } from '~/typings/characters';
@@ -33,8 +33,6 @@ const patchCharacter = withApiAuthRequired(
     try {
       const { id } = req.query;
 
-      const requestUser = getSessionUser(req, res);
-
       const currCharacter = await prisma.character.findUnique({
         where: {
           id: parseInt(id as string, 10),
@@ -45,12 +43,7 @@ const patchCharacter = withApiAuthRequired(
         throw new Error(ErrorTypes.CharacterNotFound);
       }
 
-      if (
-        currCharacter?.playerId !== requestUser?.id &&
-        requestUser?.role !== 'admin'
-      ) {
-        throw new Error(ErrorTypes.NotAuthorizedGeneric);
-      }
+      rejectNonAdminOrSelf(req, res, currCharacter.playerId);
 
       const body: CharacterSaveData = await JSON.parse(req.body);
 
@@ -77,8 +70,6 @@ const deleteCharacter = withApiAuthRequired(
     try {
       const { id } = req.query;
 
-      const requestUser = getSessionUser(req, res);
-
       const currCharacter = await prisma.character.findUnique({
         where: {
           id: parseInt(id as string, 10),
@@ -89,12 +80,7 @@ const deleteCharacter = withApiAuthRequired(
         throw new Error(ErrorTypes.CharacterNotFound);
       }
 
-      if (
-        currCharacter?.playerId !== requestUser?.id &&
-        requestUser?.role !== 'admin'
-      ) {
-        throw new Error(ErrorTypes.NotAuthorizedGeneric);
-      }
+      rejectNonAdminOrSelf(req, res, currCharacter.playerId);
 
       await prisma.character.update({
         where: {
