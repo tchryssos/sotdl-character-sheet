@@ -63,15 +63,17 @@ export function NotificationsContextProvider({
   return (
     <NotificationsContext.Provider value={contextValue}>
       {children}
-      <NotificationsList column gap={12} p={16}>
-        {notifications.map((notification) => (
-          <NotificationItem
-            key={notification.id}
-            notification={notification}
-            removeNotifications={removeNotifications}
-          />
-        ))}
-      </NotificationsList>
+      {Boolean(notifications.length) && (
+        <NotificationsList column gap={12} p={16}>
+          {notifications.map((notification) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+              removeNotifications={removeNotifications}
+            />
+          ))}
+        </NotificationsList>
+      )}
     </NotificationsContext.Provider>
   );
 }
