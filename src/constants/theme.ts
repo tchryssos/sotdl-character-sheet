@@ -11,21 +11,36 @@ const breakpointValues = {
 
 type ColorHash = `#${string}`;
 type ColorRgba = `rgba(${number},${number},${number},${number})`;
+
+interface SharedColors {
+  darken: ColorRgba;
+  lighten: ColorRgba;
+}
 interface ColorModeColors {
   background: ColorHash;
   text: ColorHash;
+  textAccent: ColorHash;
   success: ColorHash;
   danger: ColorHash;
+  warning: ColorHash;
   accentHeavy: ColorHash;
   accentLight: ColorHash;
   smudge: ColorRgba;
 }
+
 export type ColorMode = 'light' | 'dark';
+
+const sharedColors: SharedColors = {
+  darken: 'rgba(0,0,0,0.5)',
+  lighten: 'rgba(255,255,255,0.5)',
+};
 
 const darkModeColors: ColorModeColors = {
   background: '#1d1f21',
   text: '#c5c8c6',
+  textAccent: '#969896',
   success: '#6fbd68',
+  warning: '#e9c47e',
   danger: '#9a4d4d',
   accentHeavy: '#2a3c3e',
   accentLight: '#505253',
@@ -34,12 +49,15 @@ const darkModeColors: ColorModeColors = {
 
 const darkModeFilters = {
   brightnessMod: 1.2,
+  ...sharedColors,
 };
 
 const lightModeColors: ColorModeColors = {
   background: '#fafafa',
   text: '#17242b',
+  textAccent: '#4d4d4c',
   success: '#00784e',
+  warning: '#c29e3b',
   danger: '#db0033',
   accentHeavy: '#adadad',
   accentLight: '#e8e8e8',
@@ -48,6 +66,7 @@ const lightModeColors: ColorModeColors = {
 
 const lightModeFilters = {
   brightnessMod: 0.8,
+  ...sharedColors,
 };
 
 const theme = {
@@ -85,6 +104,7 @@ const theme = {
     },
   },
   fontSize: {
+    caption: pxToRem(10),
     subBody: pxToRem(14),
     body: pxToRem(18),
     title: pxToRem(36),

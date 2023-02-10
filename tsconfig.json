@@ -13,7 +13,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "lib": ["dom", "es2017"],
+    "lib": [
+      "dom",
+      "es2017"
+    ],
     "module": "esnext",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
@@ -24,9 +27,17 @@
     "strict": true,
     "target": "esnext",
     "paths": {
-      "~/*": ["src/*"]
-    }
+      "~/*": [
+        "src/*"
+      ]
+    },
+    "incremental": true
   },
-  "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

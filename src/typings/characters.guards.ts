@@ -4,4 +4,4 @@ import { ApiResponse } from './api';
 
 export const isSuccessfulCharacterResponse = (
   resp: ApiResponse<character>
-): resp is character => (resp as character).id !== undefined;
+): resp is character => (resp as character)?.id !== undefined;

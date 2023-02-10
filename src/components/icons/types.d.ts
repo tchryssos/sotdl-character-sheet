@@ -4,7 +4,7 @@ export type BaseIconProps = {
   className?: string;
   viewBox?: string;
   title: string;
-  titleId: string;
+  titleId?: string;
   children: React.ReactNode;
 };
 

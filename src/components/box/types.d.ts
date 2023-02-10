@@ -1,4 +1,4 @@
-import React, { MutableRefObject } from 'react';
+import React, { ComponentProps, MutableRefObject } from 'react';
 import { Spacing, Color, BorderWidth } from '~/typings/theme';
 
 export type MarginProps = {
@@ -35,7 +35,12 @@ export type BoxProps = MarginProps & {
   borderStyle?: 'solid' | 'none' | 'hidden';
   borderWidth?: BorderWidth;
   width?: string;
-};
+  height?: string;
+  maxWidth?: string;
+  minWidth?: string;
+  maxHeight?: string;
+  minHeight?: string;
+} & ComponentProps<'div'>;
 
 export type JustifyContent =
   | 'flex-start'

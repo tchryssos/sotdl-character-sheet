@@ -34,6 +34,8 @@
     "semi": "off",
     "indent": "off",
     "comma-dangle": "off",
+    "function-paren-newline": "off",
+    "no-shadow": "off", // ts-rule below
 
     // import
     "import/no-named-as-default": "off",
@@ -74,11 +76,14 @@
     "react/self-closing-comp": "warn",
     "react/no-access-state-in-setstate": "error",
     "react/jsx-one-expression-per-line": "off",
+    "react/function-component-definition": "warn",
+    "react/jsx-no-useless-fragment": "off",
 
     // Typescript
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-shadow": "error"
   },
   "parserOptions": {
     "ecmaFeatures": {

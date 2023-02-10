@@ -1,7 +1,7 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
-import { NOT_AUTHORIZED_MESSAGE } from '~/constants/errors';
+import { ErrorTypes } from '~/constants/notifications/errors';
 import { getSessionUser } from '~/logic/api/getSessionUser';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
@@ -17,6 +17,10 @@ const getCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
+    if (!character) {
+      throw new Error(ErrorTypes.CharacterNotFound);
+    }
+
     res.status(200).json(character);
   } catch (e) {
     returnErrorResponse(res, e as Error);
@@ -28,7 +32,7 @@ const patchCharacter = withApiAuthRequired(
     try {
       const { id } = req.query;
 
-      const requestUser = await getSessionUser(req, res);
+      const requestUser = getSessionUser(req, res);
 
       const currCharacter = await prisma.character.findUnique({
         where: {
@@ -36,11 +40,15 @@ const patchCharacter = withApiAuthRequired(
         },
       });
 
+      if (!currCharacter) {
+        throw new Error(ErrorTypes.CharacterNotFound);
+      }
+
       if (
         currCharacter?.playerId !== requestUser?.id &&
         requestUser?.role !== 'admin'
       ) {
-        throw new Error(NOT_AUTHORIZED_MESSAGE);
+        throw new Error(ErrorTypes.NotAuthorizedGeneric);
       }
 
       const body: CharacterSaveData = await JSON.parse(req.body);

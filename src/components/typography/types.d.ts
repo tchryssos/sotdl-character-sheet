@@ -1,4 +1,4 @@
-import { FontVariant } from '~/typings/theme';
+import { Color, FontVariant } from '~/typings/theme';
 
 export type TypographyProps = {
   className?: string;
@@ -6,4 +6,5 @@ export type TypographyProps = {
   bold?: boolean;
   italic?: boolean;
   variant?: FontVariant;
+  color?: Color;
 };

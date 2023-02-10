@@ -6,7 +6,7 @@ import { Spacing } from '~/typings/theme';
 
 import { LogoAscii } from '../ascii/LogoAscii';
 import { FlexBox } from '../box/FlexBox';
-import { DropdowmMenuProps } from '../dropdowns/DropdownMenu';
+import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { Link } from '../Link';
 import { Body } from '../typography/Body';
@@ -68,14 +68,14 @@ const Portal = styled.div<{ flexGap: Spacing }>`
 interface NavBarProps {
   title: string;
   setIconPortalNode: (node: HTMLDivElement) => void;
-  dropdownMenuItems: DropdowmMenuProps['menuItems'];
+  dropdownMenuItems: DropdownMenuProps['menuItems'];
 }
 
-export const NavBar: React.FC<NavBarProps> = ({
+export function NavBar({
   title,
   setIconPortalNode,
   dropdownMenuItems,
-}) => {
+}: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
 
@@ -97,4 +97,4 @@ export const NavBar: React.FC<NavBarProps> = ({
       </InnerToolbar>
     </Toolbar>
   );
-};
+}

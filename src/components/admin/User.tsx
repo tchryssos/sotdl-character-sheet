@@ -28,13 +28,13 @@ interface UserSelectProps {
   getUsers: (search: string) => Promise<StrictUser[]>;
 }
 
-const UserSelect: React.FC<UserSelectProps> = ({
+function UserSelect({
   users,
   setActiveUser,
   activeUser,
   isLoading,
   getUsers,
-}) => {
+}: UserSelectProps) {
   const { reset } = useFormContext();
 
   useEffect(() => {
@@ -70,11 +70,11 @@ const UserSelect: React.FC<UserSelectProps> = ({
       onValueChange={onValChange}
     />
   );
-};
+}
 
-type UserRole = Pick<StrictUser, 'role'>;
+type UserAdmin = Pick<PatchUserData, 'role' | 'isPaid'>;
 
-export const Roles: React.FC = () => {
+export function User() {
   const isLessThanSm = useBreakpointsLessThan('sm');
   const [users, setUsers] = useState<StrictUser[] | null>(null);
   const [activeUser, setActiveUser] = useState<StrictUser | null>(null);
@@ -95,7 +95,7 @@ export const Roles: React.FC = () => {
     return returnData;
   };
 
-  const onSubmit = async (values: UserRole) => {
+  const onSubmit = async (values: UserAdmin) => {
     if (activeUser) {
       setIsLoading(true);
       const resp = await fetch(createUserApiRoute(activeUser.id), {
@@ -103,6 +103,7 @@ export const Roles: React.FC = () => {
         body: JSON.stringify({
           email: activeUser.email,
           role: values.role,
+          isPaid: values.isPaid,
         } as PatchUserData),
       });
       if (resp.status >= 200 && resp.status <= 300) {
@@ -114,12 +115,12 @@ export const Roles: React.FC = () => {
   };
 
   return (
-    <Form<UserRole>
-      defaultValues={{ role: 'player' }}
+    <Form<UserAdmin>
+      defaultValues={{ role: 'player', isPaid: 'false' }}
       noStyles
       onSubmit={onSubmit}
     >
-      <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User Roles">
+      <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User">
         <UserSelect
           activeUser={activeUser}
           getUsers={getUsers}
@@ -129,12 +130,21 @@ export const Roles: React.FC = () => {
         />
         {activeUser && (
           <FormBox>
-            <SelectInput<UserRole>
+            <SelectInput<UserAdmin>
               alwaysEditable
               name="role"
               options={[
                 { value: 'player', label: 'Player' },
                 { value: 'admin', label: 'Admin' },
+              ]}
+            />
+            <SelectInput<UserAdmin>
+              alwaysEditable
+              label="Is Paid User?"
+              name="isPaid"
+              options={[
+                { value: 'true', label: 'Paid' },
+                { value: 'false', label: 'Not Paid' },
               ]}
             />
             <LoadingButton label="Submit" loading={isLoading} type="submit" />
@@ -143,4 +153,4 @@ export const Roles: React.FC = () => {
       </RolesSection>
     </Form>
   );
-};
+}

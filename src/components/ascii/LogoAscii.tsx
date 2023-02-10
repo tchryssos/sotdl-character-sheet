@@ -8,10 +8,7 @@ interface LogoAsciiProps {
   className?: string;
 }
 
-export const LogoAscii: React.FC<LogoAsciiProps> = ({
-  size = 'md',
-  className,
-}) => {
+export function LogoAscii({ size = 'md', className }: LogoAsciiProps) {
   let fontSize: string;
   switch (size) {
     case 'xs':
@@ -33,4 +30,4 @@ export const LogoAscii: React.FC<LogoAsciiProps> = ({
       text={SCIMITAR}
     />
   );
-};
+}

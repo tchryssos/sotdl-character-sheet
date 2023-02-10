@@ -3,7 +3,7 @@ import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
+import { NEW_ID } from '~/constants/routing/shared';
 import { DEFAULT_VALUES } from '~/constants/sotdl/form';
 import { fetchCharacter } from '~/logic/api/client/fetchCharacter';
 import { ApiResponse } from '~/typings/api';
@@ -19,12 +19,12 @@ interface ResetIntermediaryProps {
   setIsMyCharacter: (isMine: boolean) => void;
 }
 
-export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
+export function LoadingIntermediary({
   setIsLoading,
   isLoading,
   children,
   setIsMyCharacter,
-}) => {
+}: ResetIntermediaryProps) {
   const {
     query: { id },
     push,
@@ -45,8 +45,6 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
           if (isSuccessfulCharacterResponse(resp)) {
             setIsMyCharacter(resp.playerId === user?.id);
             reset(resp.characterData);
-          } else {
-            push(createCharacterRoute(NEW_ID));
           }
           setIsLoading(false);
         };
@@ -60,4 +58,4 @@ export const LoadingIntermediary: React.FC<ResetIntermediaryProps> = ({
     return <LoadingPageSpinner title="Form loading" titleId="form-loading" />;
   }
   return <>{children}</>;
-};
+}
