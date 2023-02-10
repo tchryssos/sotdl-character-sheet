@@ -14,6 +14,7 @@ import { StrictSessionUser } from '~/typings/user';
 import { IconButton } from '../../../buttons/IconButton';
 import { Pencil } from '../../../icons/Pencil';
 import { CloneButton } from './buttons/CloneButton';
+import { DeleteButton } from './buttons/DeleteButton';
 import { SaveButton } from './buttons/SaveButton';
 
 interface FormNavProps {
@@ -40,12 +41,20 @@ function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
         />
       )}
       {user && isMyCharacter && (
-        <SaveButton
-          characterData={characterData}
-          characterId={query.id as string}
-          characterName={characterName}
-          playerId={(user as StrictSessionUser).id}
-        />
+        <>
+          {isEditMode && (
+            <DeleteButton
+              characterId={parseInt(query.id as string, 10)}
+              playerId={(user as StrictSessionUser).id}
+            />
+          )}
+          <SaveButton
+            characterData={characterData}
+            characterId={query.id as string}
+            characterName={characterName}
+            playerId={(user as StrictSessionUser).id}
+          />
+        </>
       )}
       <IconButton onClick={() => setIsEditMode(!isEditMode)}>
         <Pencil

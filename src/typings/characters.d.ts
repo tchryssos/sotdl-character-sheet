@@ -5,7 +5,7 @@ import { SotdlCharacterData } from './sotdl/characterData';
 
 export type CharacterSaveData = Omit<
   character,
-  'createdOn' | 'lastModifiedOn' | 'id'
+  'createdOn' | 'lastModifiedOn' | 'id' | 'deleted'
 > & {
   id: number | 'new';
 };
