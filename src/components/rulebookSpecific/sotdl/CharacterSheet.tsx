@@ -22,20 +22,19 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
+import { StrictCharacter } from '~/typings/characters';
 
 import { LoadingIntermediary } from '../../form/LoadingIntermediary';
 import { FormNav } from './FormNav';
 import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
-export function CharacterSheet() {
-  const {
-    isLoading,
-    isEditMode,
-    setIsEditMode,
-    setIsLoading,
-    isMyCharacter,
-    setIsMyCharacter,
-  } = useSheetState();
+interface SotdlCharacterSheetProps {
+  character: StrictCharacter;
+}
+
+export function CharacterSheet({ character }: SotdlCharacterSheetProps) {
+  const { isEditMode, setIsEditMode, isMyCharacter, setIsMyCharacter } =
+    useSheetState();
 
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isLessThanXs = useBreakpointsLessThan('xs');
@@ -51,8 +50,7 @@ export function CharacterSheet() {
     <EditContext.Provider value={editProviderVal}>
       <FormComponent defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
         <LoadingIntermediary
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
+          character={character}
           setIsMyCharacter={setIsMyCharacter}
         >
           <FormNav isMyCharacter={isMyCharacter} />

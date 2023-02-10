@@ -21,12 +21,16 @@ import { RulebookType } from '~/typings/rulebooks';
 
 interface DisplaySheetProps {
   rulebook: RulebookType | null;
+  character?: StrictCharacter;
 }
 
-function DisplaySheet({ rulebook }: DisplaySheetProps) {
+function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
+  if (!character) {
+    return <NotFound content="Character" />;
+  }
   switch (rulebook) {
     case 'sotdl':
-      return <SotdlCharacterSheet />;
+      return <SotdlCharacterSheet character={character} />;
     case 'swn':
       return <SwnCharacterSheet />;
     default:
@@ -52,25 +56,33 @@ function CharacterSheetPage({ character }: CharacterSheetPageProps) {
   // On refresh, useRouter may be a render too slow
   // so we cross-reference the url bar
   const activeId = id || pathId;
+  const activeRulebook = queryRulebook || pathRulebook;
 
   useEffect(() => {
     if (character) {
       setRulebook(character.rulebookName);
     } else if (activeId === NEW_ID) {
-      push(createCharacterRoute(CREATE_ID));
+      if (activeRulebook) {
+        setRulebook(activeRulebook as RulebookType);
+      } else {
+        push(createCharacterRoute(CREATE_ID));
+      }
     } else {
       addNotifications([
         createNotification(ERRORS[ErrorTypes.CharacterNotFound]),
       ]);
     }
-  }, [character, addNotifications, activeId, push]);
+  }, [character, addNotifications, activeId, push, activeRulebook]);
 
-  useEffect(() => {
-    if (!character) {
-      const urlRulebook = queryRulebook || pathRulebook || null;
-      setRulebook(urlRulebook as RulebookType | null);
-    }
-  }, [character, queryRulebook, pathRulebook]);
+  // useEffect(() => {
+  //   if (!character) {
+  //     if (activeId === NEW_ID) {
+
+  //     }
+  //     // const urlRulebook = queryRulebook || pathRulebook || null;
+  //     // setRulebook(urlRulebook as RulebookType | null);
+  //   }
+  // }, [character, queryRulebook, pathRulebook]);
 
   // const figureOutRulebook = useCallback(async () => {
   //   /**
@@ -116,7 +128,7 @@ function CharacterSheetPage({ character }: CharacterSheetPageProps) {
 
   return (
     <Layout meta="character sheet" title="character sheet">
-      <DisplaySheet rulebook={rulebook} />
+      <DisplaySheet character={character} rulebook={rulebook} />
     </Layout>
   );
 }
