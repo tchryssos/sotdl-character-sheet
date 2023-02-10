@@ -2,11 +2,11 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { Check } from '~/components/icons/Check';
 import { Danger } from '~/components/icons/Danger';
 import { Info } from '~/components/icons/Info';
-import { Notification } from '~/logic/contexts/notificationsContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { RpgNotification } from '~/typings/notifications';
 
 interface NotificationIconProps {
-  type: Notification['type'];
+  type: RpgNotification['type'];
 }
 
 const size = pxToRem(24);
