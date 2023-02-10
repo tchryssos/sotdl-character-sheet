@@ -1,6 +1,7 @@
 import { NotificationBody } from '~/typings/notifications';
 
 export enum ErrorTypes {
+  SomethingWentWrong = 'Something went wrong completing your request',
   NotAuthorizedGeneric = 'Not authorized',
   FreeCharacterLimit = 'Free user character limit',
   CharacterSaveFailure = 'Something went wrong saving your character',
@@ -12,6 +13,11 @@ type ErrorNotificationBody = Omit<NotificationBody, 'type'> & {
 };
 
 export const ERRORS: Record<ErrorTypes, ErrorNotificationBody> = {
+  [ErrorTypes.SomethingWentWrong]: {
+    title: ErrorTypes.SomethingWentWrong,
+    message: 'Try again later',
+    type: 'error',
+  },
   [ErrorTypes.NotAuthorizedGeneric]: {
     title: ErrorTypes.NotAuthorizedGeneric,
     type: 'error',

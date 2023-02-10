@@ -1,19 +1,19 @@
 import { NextApiResponse } from 'next';
 
-import {
-  FREE_USER_CHARACTER_LIMIT_MESSAGE,
-  NOT_AUTHORIZED_MESSAGE,
-} from '~/constants/notifications/errors';
+import { ErrorTypes } from '~/constants/notifications/errors';
 
 export const returnErrorResponse = (res: NextApiResponse, e: Error) => {
   switch (e.message) {
-    case NOT_AUTHORIZED_MESSAGE:
-      res.status(401).json({ error: NOT_AUTHORIZED_MESSAGE });
+    case ErrorTypes.NotAuthorizedGeneric:
+      res.status(401).json({ error: ErrorTypes.NotAuthorizedGeneric });
       break;
-    case FREE_USER_CHARACTER_LIMIT_MESSAGE:
-      res.status(403).json({ error: FREE_USER_CHARACTER_LIMIT_MESSAGE });
+    case ErrorTypes.FreeCharacterLimit:
+      res.status(403).json({ error: ErrorTypes.FreeCharacterLimit });
+      break;
+    case ErrorTypes.CharacterNotFound:
+      res.status(404).json({ error: ErrorTypes.CharacterNotFound });
       break;
     default:
-      res.status(500).json({ error: e.message });
+      res.status(500).json({ error: ErrorTypes.SomethingWentWrong });
   }
 };

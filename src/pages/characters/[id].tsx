@@ -83,6 +83,7 @@ function CharacterSheetPage() {
         setRulebook(character.rulebookName);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRulebook, activeId, push]);
 
   useEffect(() => {

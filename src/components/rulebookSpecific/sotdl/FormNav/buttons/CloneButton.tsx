@@ -46,9 +46,7 @@ export function CloneButton({
       ]);
       push(createCharacterRoute(resp.id));
     } else {
-      addNotifications([
-        createNotification(ERRORS[ErrorTypes.FreeCharacterLimit]),
-      ]);
+      addNotifications([createNotification(ERRORS[resp.error as ErrorTypes])]);
     }
   };
 

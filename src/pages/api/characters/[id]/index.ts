@@ -1,7 +1,7 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
-import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
+import { ErrorTypes } from '~/constants/notifications/errors';
 import { getSessionUser } from '~/logic/api/getSessionUser';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
 import { prisma } from '~/logic/utils/prisma';
@@ -40,11 +40,15 @@ const patchCharacter = withApiAuthRequired(
         },
       });
 
+      if (!currCharacter) {
+        throw new Error(ErrorTypes.CharacterNotFound);
+      }
+
       if (
         currCharacter?.playerId !== requestUser?.id &&
         requestUser?.role !== 'admin'
       ) {
-        throw new Error(ERRORS[ErrorTypes.NotAuthorizedGeneric].title);
+        throw new Error(ErrorTypes.NotAuthorizedGeneric);
       }
 
       const body: CharacterSaveData = await JSON.parse(req.body);

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { NOT_AUTHORIZED_MESSAGE } from '~/constants/notifications/errors';
+import { ErrorTypes } from '~/constants/notifications/errors';
 
 import { getSessionUser } from './getSessionUser';
 
@@ -19,7 +19,7 @@ export const rejectNonAdminOrSelf = (
     !reqUser ||
     (String(reqUser.id) !== String(resourceUserId) && reqUser.role !== 'admin')
   ) {
-    throw new Error(NOT_AUTHORIZED_MESSAGE);
+    throw new Error(ErrorTypes.NotAuthorizedGeneric);
   } else {
     return reqUser;
   }

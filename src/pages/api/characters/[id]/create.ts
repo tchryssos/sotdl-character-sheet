@@ -2,7 +2,7 @@
 import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { FREE_USER_CHARACTER_LIMIT_MESSAGE } from '~/constants/notifications/errors';
+import { ErrorTypes } from '~/constants/notifications/errors';
 import { FREE_USER_CHARACTER_LIMIT } from '~/constants/users';
 import { getSessionUser } from '~/logic/api/getSessionUser';
 import { returnErrorResponse } from '~/logic/api/returnErrorResponse';
@@ -15,7 +15,7 @@ const createCharacter = withApiAuthRequired(
       const user = getSessionUser(req, res);
 
       if (!user) {
-        throw new Error('No user found');
+        throw new Error(ErrorTypes.NotAuthorizedGeneric);
       }
 
       // Check that newly created character won't exceed free user limit
@@ -39,7 +39,7 @@ const createCharacter = withApiAuthRequired(
           Number(characterCountData?._count.characters) >=
           FREE_USER_CHARACTER_LIMIT
         ) {
-          throw new Error(FREE_USER_CHARACTER_LIMIT_MESSAGE);
+          throw new Error(ErrorTypes.FreeCharacterLimit);
         }
       }
 
@@ -65,7 +65,6 @@ const createCharacter = withApiAuthRequired(
         },
       });
       res.status(200).json(newCharacter);
-      res.status(200);
     } catch (e) {
       returnErrorResponse(res, e as Error);
     }
