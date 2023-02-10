@@ -63,7 +63,7 @@ export function NotificationsContextProvider({
   return (
     <NotificationsContext.Provider value={contextValue}>
       {children}
-      {notifications.length && (
+      {Boolean(notifications.length) && (
         <NotificationsList column gap={12} p={16}>
           {notifications.map((notification) => (
             <NotificationItem
