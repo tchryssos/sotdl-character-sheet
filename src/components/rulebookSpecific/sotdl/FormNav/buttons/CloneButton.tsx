@@ -4,8 +4,8 @@ import { useContext, useState } from 'react';
 import { IconButton } from '~/components/buttons/IconButton';
 import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
 import { MoveFile } from '~/components/icons/MoveFile';
-import { ERRORS } from '~/constants/notifications/errors';
-import { SUCCESSES } from '~/constants/notifications/successes';
+import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
+import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
@@ -42,12 +42,12 @@ export function CloneButton({
 
     if (isSuccessfulCharacterResponse(resp)) {
       addNotifications([
-        createNotification(SUCCESSES['Character Cloned Successfully']),
+        createNotification(SUCCESSES[SuccessTypes.CharacterCloned]),
       ]);
       push(createCharacterRoute(resp.id));
     } else {
       addNotifications([
-        createNotification(ERRORS['Free User Character Limit']),
+        createNotification(ERRORS[ErrorTypes.FreeCharacterLimit]),
       ]);
     }
   };

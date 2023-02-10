@@ -1,13 +1,16 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useContext, useState } from 'react';
 
 import { IconButton } from '~/components/buttons/IconButton';
 import { Save } from '~/components/icons/Save';
 import { LoadingStatus } from '~/components/icons/StatusIcon';
+import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
+import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
+import { NotificationsContext } from '~/logic/contexts/notificationsContext';
+import { createNotification } from '~/logic/utils/notifications';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
@@ -25,6 +28,7 @@ export function SaveButton({
   characterId = NEW_ID,
 }: SaveButtonProps) {
   const [saveStatus, setSaveStatus] = useState<LoadingStatus>('neutral');
+  const { addNotifications } = useContext(NotificationsContext);
 
   const { push } = useRouter();
 
@@ -39,11 +43,17 @@ export function SaveButton({
       imageUrl: null,
     });
     if (isSuccessfulCharacterResponse(resp)) {
+      addNotifications([
+        createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
+      ]);
       setSaveStatus('success');
       if (characterId === NEW_ID) {
         push(createCharacterRoute(resp.id));
       }
     } else {
+      addNotifications([
+        createNotification(ERRORS[ErrorTypes.CharacterSaveFailure]),
+      ]);
       setSaveStatus('error');
     }
   };

@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -20,6 +21,10 @@ interface NotificationItemProps {
   removeNotifications: NotificationsContext['removeNotifications'];
 }
 
+const Item = styled(GridBox)`
+  box-shadow: 6px 4px ${({ theme }) => theme.colors.smudge};
+`;
+
 export function NotificationItem({
   notification,
   removeNotifications,
@@ -32,7 +37,7 @@ export function NotificationItem({
   };
 
   return (
-    <GridBox
+    <Item
       backgroundColor={colorMode === 'dark' ? 'background' : 'accentLight'}
       borderColor="text"
       borderStyle="solid"
@@ -53,6 +58,6 @@ export function NotificationItem({
       <IconButton onClick={removeNotification}>
         <Close title="Remove notification" />
       </IconButton>
-    </GridBox>
+    </Item>
   );
 }

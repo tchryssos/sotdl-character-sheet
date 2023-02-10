@@ -1,7 +1,8 @@
 import { NotificationBody } from '~/typings/notifications';
 
 export enum SuccessTypes {
-  CharacterCloned = 'Character Cloned Successfully',
+  CharacterCloned = 'Character cloned successfully',
+  CharacterSaved = 'Character saved successfully',
 }
 
 type SuccessNotificationBody = Omit<NotificationBody, 'type'> & {
@@ -11,6 +12,10 @@ type SuccessNotificationBody = Omit<NotificationBody, 'type'> & {
 export const SUCCESSES: Record<SuccessTypes, SuccessNotificationBody> = {
   [SuccessTypes.CharacterCloned]: {
     title: SuccessTypes.CharacterCloned,
+    type: 'success',
+  },
+  [SuccessTypes.CharacterSaved]: {
+    title: SuccessTypes.CharacterSaved,
     type: 'success',
   },
 };
