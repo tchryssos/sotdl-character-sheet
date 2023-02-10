@@ -15,5 +15,6 @@ export const returnErrorResponse = (res: NextApiResponse, e: Error) => {
       break;
     default:
       res.status(500).json({ error: ErrorTypes.SomethingWentWrong });
+      break;
   }
 };
