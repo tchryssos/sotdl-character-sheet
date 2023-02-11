@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useUser } from '@auth0/nextjs-auth0';
+import { useEffect, useMemo } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
@@ -24,17 +25,22 @@ import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
 import { StrictCharacter } from '~/typings/characters';
 
-import { LoadingIntermediary } from '../../form/LoadingIntermediary';
 import { FormNav } from './FormNav';
 import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
 
 interface SotdlCharacterSheetProps {
-  character: StrictCharacter;
+  character?: StrictCharacter;
 }
 
 export function CharacterSheet({ character }: SotdlCharacterSheetProps) {
   const { isEditMode, setIsEditMode, isMyCharacter, setIsMyCharacter } =
     useSheetState();
+
+  const { user } = useUser();
+
+  useEffect(() => {
+    setIsMyCharacter(character?.playerId === user?.id);
+  }, [character?.playerId, setIsMyCharacter, user?.id]);
 
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isLessThanXs = useBreakpointsLessThan('xs');
@@ -48,39 +54,37 @@ export function CharacterSheet({ character }: SotdlCharacterSheetProps) {
 
   return (
     <EditContext.Provider value={editProviderVal}>
-      <FormComponent defaultValues={DEFAULT_VALUES} onSubmit={() => undefined}>
-        <LoadingIntermediary
-          character={character}
-          setIsMyCharacter={setIsMyCharacter}
-        >
-          <FormNav isMyCharacter={isMyCharacter} />
-          <BasicInfoInputs />
-          <HistoryInputs />
-          <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
-            {ATTRIBUTES.map((a) => (
-              <AttributeInput key={a} name={`attribute_${a}`} />
-            ))}
+      <FormComponent
+        defaultValues={character?.characterData || DEFAULT_VALUES}
+        onSubmit={() => undefined}
+      >
+        <FormNav isMyCharacter={isMyCharacter} />
+        <BasicInfoInputs />
+        <HistoryInputs />
+        <FormSection columns={isLessThanSm ? 2 : 4} title="Attributes">
+          {ATTRIBUTES.map((a) => (
+            <AttributeInput key={a} name={`attribute_${a}`} />
+          ))}
+        </FormSection>
+        <GridBox columns={isLessThanSm ? 1 : 2}>
+          <FormSection title="Defenses">
+            <HealthInputs />
           </FormSection>
-          <GridBox columns={isLessThanSm ? 1 : 2}>
-            <FormSection title="Defenses">
-              <HealthInputs />
+          <GridBox columns={isLessThanXs ? 1 : 2}>
+            <PhysicalTraitsInputs />
+            <FormSection title="Metaphysical Traits">
+              <EvilInputs />
+              <FortuneFateInputs />
             </FormSection>
-            <GridBox columns={isLessThanXs ? 1 : 2}>
-              <PhysicalTraitsInputs />
-              <FormSection title="Metaphysical Traits">
-                <EvilInputs />
-                <FortuneFateInputs />
-              </FormSection>
-            </GridBox>
           </GridBox>
-          <MagicInputs />
-          <ArmorInput />
-          <WeaponInput />
-          <EquipmentInputs />
-          <CurrencyInputs />
-          <DescriptionInputs />
-          <GeneralNotesInputs />
-        </LoadingIntermediary>
+        </GridBox>
+        <MagicInputs />
+        <ArmorInput />
+        <WeaponInput />
+        <EquipmentInputs />
+        <CurrencyInputs />
+        <DescriptionInputs />
+        <GeneralNotesInputs />
       </FormComponent>
     </EditContext.Provider>
   );

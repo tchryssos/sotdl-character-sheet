@@ -17,7 +17,7 @@ import { createNotification } from '~/logic/utils/notifications';
 import { prisma } from '~/logic/utils/prisma';
 import { getRulebookAndIdFromLocation } from '~/logic/utils/url';
 import { StrictCharacter } from '~/typings/characters';
-import { RulebookType } from '~/typings/rulebooks';
+import { RulebookType, StrictRulebook } from '~/typings/rulebooks';
 
 interface DisplaySheetProps {
   rulebook: RulebookType | null;
@@ -40,9 +40,13 @@ function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
 
 interface CharacterSheetPageProps {
   character?: StrictCharacter;
+  availableRulebooks: StrictRulebook[];
 }
 
-function CharacterSheetPage({ character }: CharacterSheetPageProps) {
+function CharacterSheetPage({
+  character,
+  availableRulebooks,
+}: CharacterSheetPageProps) {
   const [rulebook, setRulebook] = useState<RulebookType | null | undefined>(
     undefined
   );
@@ -56,13 +60,16 @@ function CharacterSheetPage({ character }: CharacterSheetPageProps) {
   // On refresh, useRouter may be a render too slow
   // so we cross-reference the url bar
   const activeId = id || pathId;
-  const activeRulebook = queryRulebook || pathRulebook;
+  const activeRulebook = (queryRulebook || pathRulebook) as RulebookType;
 
   useEffect(() => {
     if (character) {
       setRulebook(character.rulebookName);
     } else if (activeId === NEW_ID) {
-      if (activeRulebook) {
+      if (
+        activeRulebook &&
+        availableRulebooks.find((rb) => rb.name === activeRulebook)
+      ) {
         setRulebook(activeRulebook as RulebookType);
       } else {
         push(createCharacterRoute(CREATE_ID));
@@ -72,55 +79,14 @@ function CharacterSheetPage({ character }: CharacterSheetPageProps) {
         createNotification(ERRORS[ErrorTypes.CharacterNotFound]),
       ]);
     }
-  }, [character, addNotifications, activeId, push, activeRulebook]);
-
-  // useEffect(() => {
-  //   if (!character) {
-  //     if (activeId === NEW_ID) {
-
-  //     }
-  //     // const urlRulebook = queryRulebook || pathRulebook || null;
-  //     // setRulebook(urlRulebook as RulebookType | null);
-  //   }
-  // }, [character, queryRulebook, pathRulebook]);
-
-  // const figureOutRulebook = useCallback(async () => {
-  //   /**
-  //    * There are two valid ways to utilize this page:
-  //    * EITHER you're making a new character OR editing an exisitng one
-  //    */
-
-  //   // If you're making a new character via a properly formatted link...
-  //   if (activeId === NEW_ID && activeRulebook) {
-  //     const rulebooks = await getAllRulebooks();
-  //     // ... but you can't get rulebooks for some reason,
-  //     // or the rulebook your query param is invalid...
-  //     if (!rulebooks || !rulebooks.find((rb) => rb.name === activeRulebook)) {
-  //       // ... return to create character page to try again
-  //       push(createCharacterRoute(CREATE_ID));
-  //     } else {
-  //       // ... otherwise, set the rulebook to the one in the query
-  //       setRulebook(activeRulebook as RulebookType);
-  //     }
-  //     // Otherwise, you're (hopefully) editing an existing character...
-  //   } else {
-  //     // ... but if we can't fetch the character for some reason ...
-  //     if (!isSuccessfulCharacterResponse(character)) {
-  //       setRulebook(null);
-  //       addNotifications([
-  //         createNotification(ERRORS[character.error as ErrorTypes]),
-  //       ]);
-  //     } else {
-  //       // ...otherwise use the rulebook of the current character
-  //       setRulebook(character.rulebookName);
-  //     }
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activeRulebook, activeId, push]);
-
-  // useEffect(() => {
-  //   figureOutRulebook();
-  // }, [figureOutRulebook]);
+  }, [
+    character,
+    addNotifications,
+    activeId,
+    push,
+    activeRulebook,
+    availableRulebooks,
+  ]);
 
   if (rulebook === undefined) {
     return null;
@@ -136,6 +102,7 @@ function CharacterSheetPage({ character }: CharacterSheetPageProps) {
 export const getServerSideProps: GetServerSideProps = async (
   context
 ): Promise<{ props: CharacterSheetPageProps }> => {
+  // Character
   const { params } = context;
 
   let character: StrictCharacter | undefined;
@@ -151,9 +118,14 @@ export const getServerSideProps: GetServerSideProps = async (
     }
   }
 
+  // Rulebooks
+  const availableRulebooks =
+    (await prisma.rulebook.findMany()) as StrictRulebook[];
+
   return {
     props: {
       character,
+      availableRulebooks,
     },
   };
 };
