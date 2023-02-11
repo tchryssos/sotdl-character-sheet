@@ -25,7 +25,6 @@
     "@mui/base": "^5.0.0-alpha.116",
     "@prisma/client": "^4.1.0",
     "@types/lodash.sample": "^4.2.7",
-    "add": "^2.0.6",
     "clipboard-copy": "^4.0.1",
     "date-fns": "^2.29.3",
     "downshift": "^6.1.7",
@@ -43,8 +42,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.25.0",
     "superjson": "^1.12.2",
-    "uuid": "^9.0.0",
-    "yarn": "^1.22.19"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
