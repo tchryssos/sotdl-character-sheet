@@ -25,7 +25,7 @@ interface DisplaySheetProps {
 }
 
 function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
-  if (!character) {
+  if (!character && !rulebook) {
     return <NotFound content="Character" />;
   }
   switch (rulebook) {
