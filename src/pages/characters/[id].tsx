@@ -75,17 +75,18 @@ function CharacterSheetPage({
         push(createCharacterRoute(CREATE_ID));
       }
     } else {
+      setRulebook(null);
       addNotifications([
         createNotification(ERRORS[ErrorTypes.CharacterNotFound]),
       ]);
     }
   }, [
     character,
-    addNotifications,
     activeId,
     push,
     activeRulebook,
     availableRulebooks,
+    addNotifications,
   ]);
 
   if (rulebook === undefined) {
