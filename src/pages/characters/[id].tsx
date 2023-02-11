@@ -1,6 +1,6 @@
-// import styled from '@emotion/styled';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/dist/client/router';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { Layout } from '~/components/meta/Layout';
 import { NotFound } from '~/components/NotFound';
@@ -12,22 +12,25 @@ import {
   createCharacterRoute,
   NEW_ID,
 } from '~/constants/routing/shared';
-import { fetchCharacter } from '~/logic/api/client/fetchCharacter';
-import { getAllRulebooks } from '~/logic/api/client/getAllRulebooks';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
+import { prisma } from '~/logic/utils/prisma';
 import { getRulebookAndIdFromLocation } from '~/logic/utils/url';
-import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
-import { RulebookType } from '~/typings/rulebooks';
+import { StrictCharacter } from '~/typings/characters';
+import { RulebookType, StrictRulebook } from '~/typings/rulebooks';
 
 interface DisplaySheetProps {
   rulebook: RulebookType | null;
+  character?: StrictCharacter;
 }
 
-function DisplaySheet({ rulebook }: DisplaySheetProps) {
+function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
+  if (!character) {
+    return <NotFound content="Character" />;
+  }
   switch (rulebook) {
     case 'sotdl':
-      return <SotdlCharacterSheet />;
+      return <SotdlCharacterSheet character={character} />;
     case 'swn':
       return <SwnCharacterSheet />;
     default:
@@ -35,7 +38,15 @@ function DisplaySheet({ rulebook }: DisplaySheetProps) {
   }
 }
 
-function CharacterSheetPage() {
+interface CharacterSheetPageProps {
+  character?: StrictCharacter;
+  availableRulebooks: StrictRulebook[];
+}
+
+function CharacterSheetPage({
+  character,
+  availableRulebooks,
+}: CharacterSheetPageProps) {
   const [rulebook, setRulebook] = useState<RulebookType | null | undefined>(
     undefined
   );
@@ -48,47 +59,35 @@ function CharacterSheetPage() {
 
   // On refresh, useRouter may be a render too slow
   // so we cross-reference the url bar
-  const activeRulebook = queryRulebook || pathRulebook;
   const activeId = id || pathId;
-
-  const figureOutRulebook = useCallback(async () => {
-    /**
-     * There are two valid ways to utilize this page:
-     * EITHER you're making a new character OR editing an exisitng one
-     */
-
-    // If you're making a new character via a properly formatted link...
-    if (activeId === NEW_ID && activeRulebook) {
-      const rulebooks = await getAllRulebooks();
-      // ... but you can't get rulebooks for some reason,
-      // or the rulebook your query param is invalid...
-      if (!rulebooks || !rulebooks.find((rb) => rb.name === activeRulebook)) {
-        // ... return to create character page to try again
-        push(createCharacterRoute(CREATE_ID));
-      } else {
-        // ... otherwise, set the rulebook to the one in the query
-        setRulebook(activeRulebook as RulebookType);
-      }
-      // Otherwise, you're (hopefully) editing an existing character...
-    } else {
-      const character = await fetchCharacter(activeId as string);
-      // ... but if we can't fetch the character for some reason ...
-      if (!isSuccessfulCharacterResponse(character)) {
-        setRulebook(null);
-        addNotifications([
-          createNotification(ERRORS[character.error as ErrorTypes]),
-        ]);
-      } else {
-        // ...otherwise use the rulebook of the current character
-        setRulebook(character.rulebookName);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeRulebook, activeId, push]);
+  const activeRulebook = (queryRulebook || pathRulebook) as RulebookType;
 
   useEffect(() => {
-    figureOutRulebook();
-  }, [figureOutRulebook]);
+    if (character) {
+      setRulebook(character.rulebookName);
+    } else if (activeId === NEW_ID) {
+      if (
+        activeRulebook &&
+        availableRulebooks.find((rb) => rb.name === activeRulebook)
+      ) {
+        setRulebook(activeRulebook as RulebookType);
+      } else {
+        push(createCharacterRoute(CREATE_ID));
+      }
+    } else {
+      setRulebook(null);
+      addNotifications([
+        createNotification(ERRORS[ErrorTypes.CharacterNotFound]),
+      ]);
+    }
+  }, [
+    character,
+    activeId,
+    push,
+    activeRulebook,
+    availableRulebooks,
+    addNotifications,
+  ]);
 
   if (rulebook === undefined) {
     return null;
@@ -96,9 +95,40 @@ function CharacterSheetPage() {
 
   return (
     <Layout meta="character sheet" title="character sheet">
-      <DisplaySheet rulebook={rulebook} />
+      <DisplaySheet character={character} rulebook={rulebook} />
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (
+  context
+): Promise<{ props: CharacterSheetPageProps }> => {
+  // Character
+  const { params } = context;
+
+  let character: StrictCharacter | undefined;
+
+  if (params?.id && params.id !== NEW_ID) {
+    const dbCharacter = await prisma.character.findUnique({
+      where: {
+        id: parseInt(params.id as string, 10),
+      },
+    });
+    if (!dbCharacter?.deleted) {
+      character = dbCharacter as StrictCharacter;
+    }
+  }
+
+  // Rulebooks
+  const availableRulebooks =
+    (await prisma.rulebook.findMany()) as StrictRulebook[];
+
+  return {
+    props: {
+      character,
+      availableRulebooks,
+    },
+  };
+};
 
 export default CharacterSheetPage;

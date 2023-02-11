@@ -37,9 +37,11 @@
     "lodash.startcase": "^4.4.0",
     "lodash.upperfirst": "^4.3.1",
     "next": "^13.1.6",
+    "next-superjson-plugin": "^0.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.25.0",
+    "superjson": "^1.12.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -67,6 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "babel-loader": "^8.2.2",
+    "babel-plugin-superjson-next": "^0.4.5",
     "eslint": "^8.33.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "^13.1.6",

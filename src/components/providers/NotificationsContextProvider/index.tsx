@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import sortBy from 'lodash.sortby';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { RpgNotification } from '~/typings/notifications';
@@ -29,14 +29,17 @@ export function NotificationsContextProvider({
   const [notifications, setNotifications] =
     useState<RpgNotification[]>(emptyNotifications);
 
-  const addNotifications = (newNotifications: RpgNotification[]) => {
-    setNotifications((prevNotifications) =>
-      sortBy(
-        [...prevNotifications, ...newNotifications],
-        (notification) => -notification.createdOn.getTime()
-      )
-    );
-  };
+  const addNotifications = useCallback(
+    (newNotifications: RpgNotification[]) => {
+      setNotifications((prevNotifications) =>
+        sortBy(
+          [...prevNotifications, ...newNotifications],
+          (notification) => -notification.createdOn.getTime()
+        )
+      );
+    },
+    []
+  );
 
   const removeNotifications = (notificationIds: string[]) => {
     setNotifications((prevNotifications) =>
@@ -57,7 +60,7 @@ export function NotificationsContextProvider({
       removeNotifications,
       clearNotifications,
     }),
-    [notifications]
+    [notifications, addNotifications]
   );
 
   return (
