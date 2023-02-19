@@ -20,7 +20,8 @@ const BonusWrapper = styled(FlexBox)`
   position: absolute;
   min-width: 33%;
   height: 100%;
-  right: 0;
+  /* Dodges number up/down buttons on FF and Safari */
+  right: ${({ theme }) => theme.spacing[16]};
   bottom: 0;
   /* Odd padding b/c of input 1px border */
   padding-bottom: ${pxToRem(11)};
