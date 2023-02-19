@@ -21,10 +21,6 @@ export const TextArea = styled.textarea<{ height?: number }>(
     padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
     fontFamily: theme.fontFamily.normal,
     resize: 'vertical',
-    '-webkit-resizer': {
-      height: 40,
-      width: 40,
-    },
   })
 );
 
