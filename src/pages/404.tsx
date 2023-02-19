@@ -21,7 +21,7 @@ const Logo = styled(LogoAscii)`
   margin-bottom: ${({ theme }) => theme.spacing[16]};
 `;
 
-const FourOhFourNav: React.FC = () => {
+function FourOhFourNav() {
   const { setNavTitle } = useContext(NavContext);
 
   useEffect(() => {
@@ -29,19 +29,21 @@ const FourOhFourNav: React.FC = () => {
   }, [setNavTitle]);
 
   return null;
-};
+}
 
-const FourOhFour: React.FC = () => (
-  <Layout meta="404" title="rpg sheet">
-    <FourOhFourNav />
-    <FourOhFourPane>
-      <Logo />
-      <Title mb={16}>404</Title>
-      <Link href={HOME_ROUTE}>
-        <TextButton buttonLike label="Click to return home" />
-      </Link>
-    </FourOhFourPane>
-  </Layout>
-);
+function FourOhFour() {
+  return (
+    <Layout meta="404" title="rpg sheet">
+      <FourOhFourNav />
+      <FourOhFourPane>
+        <Logo />
+        <Title mb={16}>404</Title>
+        <Link href={HOME_ROUTE}>
+          <TextButton buttonLike label="Click to return home" />
+        </Link>
+      </FourOhFourPane>
+    </Layout>
+  );
+}
 
 export default FourOhFour;

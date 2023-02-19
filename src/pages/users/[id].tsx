@@ -37,7 +37,7 @@ const Caps = styled.span`
   text-transform: uppercase;
 `;
 
-const ProfilePage = () => {
+function ProfilePage() {
   const {
     query: { id },
   } = useRouter();
@@ -110,6 +110,6 @@ const ProfilePage = () => {
       )}
     </Layout>
   );
-};
+}
 
 export default ProfilePage;
