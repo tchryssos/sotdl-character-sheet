@@ -1,5 +1,4 @@
 import { SKULL } from '~/constants/ascii';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Ascii } from './Ascii';
 
@@ -9,19 +8,19 @@ interface LogoAsciiProps {
 }
 
 export function NotFoundAscii({ size = 'lg', className }: LogoAsciiProps) {
-  let fontSize: string;
+  let fontSize: number;
   switch (size) {
     case 'xs':
-      fontSize = pxToRem(1);
+      fontSize = 1;
       break;
     case 'sm':
-      fontSize = pxToRem(2);
+      fontSize = 2;
       break;
     case 'lg':
-      fontSize = pxToRem(8);
+      fontSize = 8;
       break;
     default:
-      fontSize = pxToRem(6);
+      fontSize = 6;
       break;
   }
 
