@@ -82,7 +82,7 @@ export interface DropdownMenuProps {
 interface MenuItemProps {
   item: MenuItemObj;
 }
-const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
+function MenuItem({ item }: MenuItemProps) {
   switch (item.type) {
     case 'link':
       return (
@@ -99,12 +99,9 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
     default:
       return <>{item.component}</>;
   }
-};
+}
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-  menuItems,
-  children,
-}) => {
+export function DropdownMenu({ menuItems, children }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen: MouseEventHandler = (e) => {
@@ -136,4 +133,4 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       </DropdownPane>
     </DropdownWrapper>
   );
-};
+}

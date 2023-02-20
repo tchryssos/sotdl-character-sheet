@@ -68,8 +68,9 @@ export function NotificationsContextProvider({
       {children}
       {Boolean(notifications.length) && (
         <NotificationsList column gap={12} p={16}>
-          {notifications.map((notification) => (
+          {notifications.map((notification, i) => (
             <NotificationItem
+              index={i}
               key={notification.id}
               notification={notification}
               removeNotifications={removeNotifications}

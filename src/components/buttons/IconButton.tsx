@@ -65,7 +65,7 @@ const Status = styled(StatusIcon)(({ theme }) => ({
   boxSizing: 'border-box',
 }));
 
-export const IconButton: React.FC<IconButtonProps> = (props) => {
+export function IconButton(props: IconButtonProps) {
   const { children, size = 'sm', ...rest } = props as StandardButtonProps;
   const { isLoading, isSuccessful, hasError, statusColor, statusOf } =
     props as StatusButtonProps;
@@ -84,4 +84,4 @@ export const IconButton: React.FC<IconButtonProps> = (props) => {
       </IconsWrapper>
     </IconSafeButton>
   );
-};
+}

@@ -1,3 +1,4 @@
+import { ButtonUnstyledProps } from '@mui/base';
 import React, { MouseEventHandler } from 'react';
 
 export interface CoreButtonProps {
@@ -10,6 +11,8 @@ export interface CoreButtonProps {
   severity?: 'normal' | 'warning' | 'danger' | 'success' | 'secondary';
 }
 
-export interface BaseButtonProps extends CoreButtonProps {
+export interface BaseButtonProps
+  extends CoreButtonProps,
+    Omit<ButtonUnstyledProps, 'color'> {
   children: React.ReactNode | React.ReactNode[];
 }

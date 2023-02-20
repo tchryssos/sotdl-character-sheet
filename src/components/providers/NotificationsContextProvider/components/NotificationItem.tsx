@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
@@ -19,6 +19,7 @@ import { NotificationIcon } from './NotificationIcon';
 interface NotificationItemProps {
   notification: RpgNotification;
   removeNotifications: NotificationsContext['removeNotifications'];
+  index: number;
 }
 
 const Item = styled(GridBox)`
@@ -28,7 +29,10 @@ const Item = styled(GridBox)`
 export function NotificationItem({
   notification,
   removeNotifications,
+  index,
 }: NotificationItemProps) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const initializedRef = useRef(false);
   const { colorMode } = useContext(ThemeContext);
   const { id, message, title, createdOn } = notification;
 
@@ -36,8 +40,20 @@ export function NotificationItem({
     removeNotifications([id]);
   };
 
+  useEffect(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      buttonRef.current?.focus();
+    }
+  }, []);
+
+  const titleId = `dialog-title-${index}`;
+  const descriptionId = `dialog-description-${index}`;
+
   return (
     <Item
+      aria-describedby={message ? descriptionId : undefined}
+      aria-labelledby={titleId}
       backgroundColor={colorMode === 'dark' ? 'background' : 'accentLight'}
       borderColor="text"
       borderStyle="solid"
@@ -45,17 +61,22 @@ export function NotificationItem({
       columnGap={16}
       gridTemplateColumns="auto 1fr auto"
       p={16}
+      role="dialog"
       width={pxToRem(380)}
     >
       <NotificationIcon type={notification.type} />
       <FlexBox column gap={4}>
-        <Body>{title}</Body>
-        {message && <SubBody color="textAccent">{message}</SubBody>}
+        <Body id={titleId}>{title}</Body>
+        {message && (
+          <SubBody color="textAccent" id={descriptionId}>
+            {message}
+          </SubBody>
+        )}
         {createdOn && (
           <Caption color="textAccent">{timeAgo(createdOn)}</Caption>
         )}
       </FlexBox>
-      <IconButton onClick={removeNotification}>
+      <IconButton ref={buttonRef} onClick={removeNotification}>
         <Close title="Remove notification" />
       </IconButton>
     </Item>
