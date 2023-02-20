@@ -19,7 +19,6 @@ import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { RULEBOOK_QUERY_PARAM } from '~/constants/search';
 import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { NavContext } from '~/logic/contexts/navContext';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 const RulebookSection = styled(FormSection)`
   height: fit-content;
@@ -40,6 +39,8 @@ to {
 }
 `;
 
+// This is styled so that it can be called more easily
+// in the animation below in RulebookLink
 const RulebookAscii = styled(AsciiText)``;
 
 const RulebookTitle = styled(Title)`
@@ -78,7 +79,7 @@ const RulebookBox = styled(FlexBox)(({ theme }) => ({
   },
 }));
 
-const NewCharacterNav: React.FC = () => {
+function NewCharacterNav() {
   const { setNavTitle } = useContext(NavContext);
 
   useEffect(() => {
@@ -86,41 +87,47 @@ const NewCharacterNav: React.FC = () => {
   }, [setNavTitle]);
 
   return null;
-};
+}
 
 interface SelectRulebookProps {
   rulebooks: rulebook[];
 }
 
-const SelectRulebook: React.FC<SelectRulebookProps> = ({ rulebooks }) => (
-  <RulebookSection columns={1} isCollapsible={false} title="Select a rulebook">
-    <RulebookList>
-      {rulebooks.map((rb) => (
-        <li key={rb.id}>
-          <RulebookLink
-            href={`${createCharacterRoute(NEW_ID)}?${RULEBOOK_QUERY_PARAM}=${
-              rb.name
-            }`}
-          >
-            <RulebookBox>
-              <RulebookFigure label="Rulebook background">
-                <RulebookAscii color="accentHeavy" fontSize={pxToRem(16)}>
-                  {/* Grab any ascii except the logo */}
-                  {sample(Object.values(ASCII_ART).slice(0))}
-                </RulebookAscii>
-              </RulebookFigure>
-              <RulebookTitle>{rb.fullName}</RulebookTitle>
-            </RulebookBox>
-          </RulebookLink>
-        </li>
-      ))}
-    </RulebookList>
-  </RulebookSection>
-);
+function SelectRulebook({ rulebooks }: SelectRulebookProps) {
+  return (
+    <RulebookSection
+      columns={1}
+      isCollapsible={false}
+      title="Select a rulebook"
+    >
+      <RulebookList>
+        {rulebooks.map((rb) => (
+          <li key={rb.id}>
+            <RulebookLink
+              href={`${createCharacterRoute(NEW_ID)}?${RULEBOOK_QUERY_PARAM}=${
+                rb.name
+              }`}
+            >
+              <RulebookBox>
+                <RulebookFigure label="Rulebook background">
+                  <RulebookAscii color="accentHeavy" fontSize={16}>
+                    {/* Grab any ascii except the logo */}
+                    {sample(Object.values(ASCII_ART).slice(0))}
+                  </RulebookAscii>
+                </RulebookFigure>
+                <RulebookTitle>{rb.fullName}</RulebookTitle>
+              </RulebookBox>
+            </RulebookLink>
+          </li>
+        ))}
+      </RulebookList>
+    </RulebookSection>
+  );
+}
 
 const emptyRbs: rulebook[] = [];
 
-const NewCharacterPage: React.FC = () => {
+function NewCharacterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [rulebooks, setRulebooks] = useState<rulebook[]>([]);
   const [hasError, setHasError] = useState(false);
@@ -167,6 +174,6 @@ const NewCharacterPage: React.FC = () => {
       )}
     </Layout>
   );
-};
+}
 
 export default NewCharacterPage;

@@ -1,4 +1,7 @@
+import styled from '@emotion/styled';
+
 import { NumberInputProps, Validations } from '~/components/form/typings';
+import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
 import { Input } from './Input';
 
@@ -8,6 +11,19 @@ export type NumberInputComponentProps<T> = Omit<
 > & {
   validations?: Validations<Record<string, unknown>>;
 };
+
+const NumberStyledInput = styled(Input)<{ isEditingLocked: boolean }>(
+  ({ isEditingLocked }) => ({
+    '-moz-appearance': 'number-input',
+    ...(isEditingLocked && {
+      '-moz-appearance': 'textfield',
+      '::-webkit-outer-spin-button, ::-webkit-inner-spin-button': {
+        '-webkit-appearance': 'none',
+        margin: 0,
+      },
+    }),
+  })
+);
 
 export function NumberInput<T extends Record<string, unknown>>({
   label,
@@ -23,12 +39,14 @@ export function NumberInput<T extends Record<string, unknown>>({
   step,
   alwaysEditable,
 }: NumberInputComponentProps<T>) {
+  const isEditingLocked = useIsEditingLocked(Boolean(alwaysEditable));
   return (
-    <Input
+    <NumberStyledInput
       alwaysEditable={alwaysEditable}
       className={className}
       disabled={disabled}
       hideLabel={hideLabel}
+      isEditingLocked={isEditingLocked}
       label={label}
       max={max}
       min={min}

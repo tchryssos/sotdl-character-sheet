@@ -1,31 +1,19 @@
 import { SCIMITAR } from '~/constants/ascii';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { getAsciiFontSize } from '~/logic/utils/ascii';
 
 import { Ascii } from './Ascii';
+import { AsciiSize } from './types';
 
 interface LogoAsciiProps {
-  size?: 'xs' | 'sm' | 'md';
+  size?: AsciiSize;
   className?: string;
 }
 
 export function LogoAscii({ size = 'md', className }: LogoAsciiProps) {
-  let fontSize: string;
-  switch (size) {
-    case 'xs':
-      fontSize = pxToRem(1);
-      break;
-    case 'sm':
-      fontSize = pxToRem(2);
-      break;
-    default:
-      fontSize = pxToRem(6);
-      break;
-  }
-
   return (
     <Ascii
       className={className}
-      fontSize={fontSize}
+      fontSize={getAsciiFontSize(size)}
       label="SCIMITAR"
       text={SCIMITAR}
     />
