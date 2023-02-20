@@ -6,7 +6,7 @@ interface AsciiProps {
   className?: string;
   label: string;
   text: string;
-  fontSize: string;
+  fontSize: number;
   color?: Color;
 }
 
@@ -15,29 +15,34 @@ export const AsciiText = styled.pre<Pick<AsciiProps, 'fontSize' | 'color'>>(
     color: theme.colors[color],
     fontSize,
     userSelect: 'none',
+    textSizeAdjust: 'none',
   })
 );
 
-export const AsciiFigure: React.FC<Pick<AsciiProps, 'className' | 'label'>> = ({
-  children,
-  className,
-  label,
-}) => (
-  <figure aria-label={label} className={className} role="img">
-    {children}
-  </figure>
-);
+interface AsciiFigureProps extends Pick<AsciiProps, 'className' | 'label'> {
+  children: React.ReactNode;
+}
 
-export const Ascii: React.FC<AsciiProps> = ({
+export function AsciiFigure({ children, className, label }: AsciiFigureProps) {
+  return (
+    <figure aria-label={label} className={className} role="img">
+      {children}
+    </figure>
+  );
+}
+
+export function Ascii({
   className,
   label,
   text,
   fontSize,
   color = 'text',
-}) => (
-  <AsciiFigure className={className} label={label}>
-    <AsciiText color={color} fontSize={fontSize}>
-      {text}
-    </AsciiText>
-  </AsciiFigure>
-);
+}: AsciiProps) {
+  return (
+    <AsciiFigure className={className} label={label}>
+      <AsciiText color={color} fontSize={fontSize}>
+        {text}
+      </AsciiText>
+    </AsciiFigure>
+  );
+}
