@@ -36,16 +36,15 @@ export const LoadingSpinner = styled(LoadingQuarter)`
 
 interface LoadingPageProps {
   title: string;
-  titleId: string;
+  titleId?: string;
 }
 
-export const LoadingPageSpinner: React.FC<LoadingPageProps> = ({
-  title,
-  titleId,
-}) => (
-  <LoadingOuter center>
-    <LoadingInner>
-      <LoadingSpinner title={title} titleId={titleId} />
-    </LoadingInner>
-  </LoadingOuter>
-);
+export function LoadingPageSpinner({ title, titleId }: LoadingPageProps) {
+  return (
+    <LoadingOuter center>
+      <LoadingInner>
+        <LoadingSpinner title={title} titleId={titleId || `${title}-id`} />
+      </LoadingInner>
+    </LoadingOuter>
+  );
+}

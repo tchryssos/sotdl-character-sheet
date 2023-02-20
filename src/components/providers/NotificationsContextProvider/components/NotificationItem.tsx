@@ -43,6 +43,7 @@ export function NotificationItem({
   useEffect(() => {
     if (!initializedRef.current) {
       initializedRef.current = true;
+      // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role#required_javascript_features
       buttonRef.current?.focus();
     }
   }, []);

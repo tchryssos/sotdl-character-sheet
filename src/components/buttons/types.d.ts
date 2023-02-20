@@ -11,8 +11,6 @@ export interface CoreButtonProps {
   severity?: 'normal' | 'warning' | 'danger' | 'success' | 'secondary';
 }
 
-export interface BaseButtonProps
-  extends CoreButtonProps,
-    Omit<ButtonUnstyledProps, 'color'> {
+export interface BaseButtonProps extends CoreButtonProps {
   children: React.ReactNode | React.ReactNode[];
 }

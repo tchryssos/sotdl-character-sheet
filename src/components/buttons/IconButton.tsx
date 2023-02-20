@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
+import { forwardRef } from 'react';
 
-import { Color } from '~/typings/theme';
-
-import { StatusIcon, StatusIconProps } from '../icons/StatusIcon';
+import { LoadingSpinner } from '../LoadingSpinner';
 import { BaseButton } from './BaseButton';
 import { BaseButtonProps } from './types';
 
@@ -10,11 +9,9 @@ interface StandardButtonProps extends BaseButtonProps {
   size?: 'sm' | 'md' | 'lg';
 }
 
-interface StatusButtonProps extends StandardButtonProps, StatusIconProps {
-  statusColor?: Color;
-}
-
-export type IconButtonProps = StandardButtonProps | StatusButtonProps;
+export type IconButtonProps = StandardButtonProps & {
+  isLoading?: boolean;
+};
 
 const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
   ({ theme, size }) => {
@@ -54,34 +51,18 @@ const IconsWrapper = styled.div`
   position: relative;
 `;
 
-const Status = styled(StatusIcon)(({ theme }) => ({
-  backgroundColor: theme.colors.background,
-  position: 'absolute',
-  borderRadius: '50%',
-  bottom: 0,
-  right: 0,
-  height: theme.spacing[12],
-  width: theme.spacing[12],
-  boxSizing: 'border-box',
-}));
-
-export function IconButton(props: IconButtonProps) {
-  const { children, size = 'sm', ...rest } = props as StandardButtonProps;
-  const { isLoading, isSuccessful, hasError, statusColor, statusOf } =
-    props as StatusButtonProps;
-  return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <IconSafeButton {...rest} size={size}>
-      <IconsWrapper>
-        {children}
-        <Status
-          color={statusColor}
-          hasError={hasError}
-          isLoading={isLoading}
-          isSuccessful={isSuccessful}
-          statusOf={statusOf}
-        />
-      </IconsWrapper>
-    </IconSafeButton>
-  );
-}
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
+  function IconButton(
+    { children, size = 'sm', isLoading, ...rest },
+    forwardedRef
+  ) {
+    return (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <IconSafeButton {...rest} ref={forwardedRef} size={size}>
+        <IconsWrapper>
+          {isLoading ? <LoadingSpinner title="Loading" /> : children}
+        </IconsWrapper>
+      </IconSafeButton>
+    );
+  }
+);

@@ -3,7 +3,6 @@ import { useContext, useState } from 'react';
 
 import { IconButton } from '~/components/buttons/IconButton';
 import { Save } from '~/components/icons/Save';
-import { LoadingStatus } from '~/components/icons/StatusIcon';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
@@ -27,13 +26,13 @@ export function SaveButton({
   characterName,
   characterId = NEW_ID,
 }: SaveButtonProps) {
-  const [saveStatus, setSaveStatus] = useState<LoadingStatus>('neutral');
+  const [isSaving, setisSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
 
   const { push } = useRouter();
 
   const onSave = async () => {
-    setSaveStatus('loading');
+    setisSaving(true);
     const resp = await saveCharacter({
       id: characterId as number | typeof NEW_ID,
       characterData,
@@ -46,25 +45,17 @@ export function SaveButton({
       addNotifications([
         createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
       ]);
-      setSaveStatus('success');
       if (characterId === NEW_ID) {
         push(createCharacterRoute(resp.id));
       }
     } else {
       addNotifications([createNotification(ERRORS[resp.error as ErrorTypes])]);
-      setSaveStatus('error');
     }
+    setisSaving(false);
   };
 
   return (
-    <IconButton
-      hasError={saveStatus === 'error'}
-      isLoading={saveStatus === 'loading'}
-      isNeutral={saveStatus === 'neutral'}
-      isSuccessful={saveStatus === 'success'}
-      type="submit"
-      onClick={onSave}
-    >
+    <IconButton isLoading={isSaving} type="submit" onClick={onSave}>
       <Save title="Save character" titleId="save-character" />
     </IconButton>
   );
