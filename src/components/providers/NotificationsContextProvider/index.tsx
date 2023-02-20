@@ -14,7 +14,7 @@ const NotificationsList = styled(FlexBox)`
   position: fixed;
   right: 0;
   top: 0;
-  overflow: scroll;
+  overflow: auto;
   max-height: 100vh;
   z-index: 8888;
 `;

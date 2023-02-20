@@ -23,14 +23,19 @@ const BonusWrapper = styled(FlexBox)`
   /* Dodges number up/down buttons on FF and Safari */
   right: ${({ theme }) => theme.spacing[16]};
   bottom: 0;
-  /* Odd padding b/c of input 1px border */
+  /* Odd # because of 1px border on input */
   padding-bottom: ${pxToRem(11)};
 `;
 
-const BonusAligner = styled(FlexBox)``;
+const BonusText = styled(Body)`
+  /* Centers the text and bar at exactly the text height */
+  line-height: 0;
+`;
 
-const Bar = styled.span`
-  user-select: none;
+const Bar = styled.div`
+  width: 2px;
+  height: ${({ theme }) => theme.fontSize.body};
+  background-color: ${({ theme }) => theme.colors.text};
 `;
 
 export function BonusInput<T extends Record<string, unknown>>({
@@ -50,12 +55,12 @@ export function BonusInput<T extends Record<string, unknown>>({
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <NumberInput name={name} {...rest} />
       <BonusWrapper alignItems="flex-end" pr={8}>
-        <BonusAligner center>
-          <Body>
-            <Bar>|</Bar>
+        <FlexBox center gap={8}>
+          <Bar />
+          <BonusText>
             {` ${bonusIsPositive ? '+' : '-'}${String(Math.abs(bonus))}`}
-          </Body>
-        </BonusAligner>
+          </BonusText>
+        </FlexBox>
       </BonusWrapper>
     </AttributeWrapper>
   );
