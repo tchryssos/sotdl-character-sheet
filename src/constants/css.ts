@@ -161,9 +161,3 @@ export const CUSTOM_THEME_CSS_PROPS: {
   borderBottomWidth: 'borderRadius',
   fontSize: 'fontSize',
 };
-
-type CustomCssArgs = {
-  currPropKey: keyof AllowedCssProps;
-  theme: Theme;
-  propValue: string | number;
-};

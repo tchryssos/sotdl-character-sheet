@@ -51,7 +51,7 @@ const Section = styled(FlexBox)<{ addMargin: boolean }>`
 
 const createCollapsibleStyles = (theme: Theme, borderless?: boolean) => css`
   border-color: ${borderless ? 'transparent' : theme.colors.accentHeavy};
-  border-width: ${borderless ? 0 : theme.border.borderWidth[1]};
+  border-width: ${borderless ? 0 : theme.borderWidth[1]};
   border-style: solid;
 `;
 

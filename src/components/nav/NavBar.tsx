@@ -18,7 +18,7 @@ const Toolbar = styled(FlexBox)(({ theme }) => ({
   left: 0,
   width: '100%',
   padding: theme.spacing[16],
-  borderBottom: `${theme.border.borderWidth[1]} solid ${theme.colors.accentHeavy}`,
+  borderBottom: `${theme.borderWidth[1]} solid ${theme.colors.accentHeavy}`,
   [theme.breakpoints.sm]: {
     padding: `${theme.spacing[16]} ${theme.spacing[32]}`,
   },

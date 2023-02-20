@@ -1,79 +1,33 @@
-import styled from '@emotion/styled';
-import { forwardRef } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import { PropsWithChildren } from 'react';
 
-import { Spacing } from '~/typings/theme';
+import { AllowedCommonCssProps, AllowedFlexboxCssProps } from '~/constants/css';
 
 import { Box } from './Box';
-import { AlignItemsBase, BoxProps, JustifyContent } from './types';
 
-export type FlexBoxProps = BoxProps & {
-  center?: boolean;
-  column?: boolean;
-  wrap?: boolean;
-  inline?: boolean;
-  justifyContent?: JustifyContent;
-  alignItems?: AlignItemsBase | 'flex-end' | 'flex-start';
-  flex?: number;
-  flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
-  flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse';
-  flexGrow?: number;
-  flexShrink?: number;
-  gap?: Spacing;
-};
+type FlexBoxProps = Omit<AllowedCommonCssProps, 'display'> &
+  AllowedFlexboxCssProps & {
+    className?: string;
+    center?: boolean;
+  };
 
-const Flex = styled(Box)<FlexBoxProps>(
-  { display: 'flex' },
-  ({
-    center,
-    column,
-    wrap,
-    inline,
-    justifyContent,
-    alignItems,
-    flex,
-    flexDirection,
-    flexWrap,
-    flexGrow,
-    flexShrink,
-    gap = 0,
-    maxWidth,
-    minWidth,
-    theme,
-  }) => ({
-    justifyContent,
-    alignItems,
-    flex,
-    flexDirection,
-    flexWrap,
-    flexGrow,
-    flexShrink,
-    maxWidth,
-    minWidth,
-    gap: theme.spacing[gap],
-    ...(center && {
-      justifyContent: 'center',
-      alignItems: 'center',
-    }),
-    ...(column && {
-      flexDirection: 'column',
-    }),
-    ...(wrap && {
-      flexWrap: 'wrap',
-    }),
-    ...(inline && {
-      display: 'inline-flex',
-    }),
-  })
-);
-
-export const FlexBox = forwardRef<HTMLDivElement, FlexBoxProps>(
-  // eslint-disable-next-line prefer-arrow-callback
-  function FlexBox({ children, ...rest }, ref) {
-    return (
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      <Flex {...rest} ref={ref}>
-        {children}
-      </Flex>
-    );
-  }
-);
+export function FlexBox({
+  children,
+  flexWrap,
+  center,
+  justifyContent,
+  alignItems,
+  ...rest
+}: PropsWithChildren<FlexBoxProps>) {
+  return (
+    <Box
+      alignItems={alignItems || (center ? 'center' : 'flex-start')}
+      display="flex"
+      flexWrap={flexWrap || 'wrap'}
+      justifyContent={justifyContent || (center ? 'center' : 'flex-start')}
+      {...rest}
+    >
+      {children}
+    </Box>
+  );
+}

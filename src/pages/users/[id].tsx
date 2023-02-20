@@ -30,7 +30,7 @@ const CharactersSection = styled(FormSection)`
 const CharacterLink = styled(Link)`
   padding: ${({ theme }) => theme.spacing[4]};
   border: ${({ theme }) =>
-    `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`};
+    `${theme.borderWidth[1]} solid ${theme.colors.accentLight}`};
 `;
 
 const Caps = styled.span`

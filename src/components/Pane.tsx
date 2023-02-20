@@ -11,7 +11,7 @@ interface PaneProps extends Omit<FlexBoxProps, 'ref'> {
 const StyledPane = styled(FlexBox)<Pick<PaneProps, 'shadowed'>>(
   ({ theme, shadowed }) => ({
     borderColor: theme.colors.accentLight,
-    borderWidth: theme.border.borderWidth[1],
+    borderWidth: theme.borderWidth[1],
     borderStyle: 'solid',
     boxShadow: shadowed
       ? `${pxToRem(4)} ${pxToRem(6)} ${theme.colors.accentHeavy}`

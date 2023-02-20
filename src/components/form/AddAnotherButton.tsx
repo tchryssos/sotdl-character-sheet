@@ -7,7 +7,7 @@ import { Label } from './Label';
 
 const StyledButton = styled(TextButton)`
   border: ${({ theme }) =>
-    `${theme.border.borderWidth[1]} dashed ${theme.colors.accentLight}`};
+    `${theme.borderWidth[1]} dashed ${theme.colors.accentLight}`};
   height: ${({ theme }) => theme.spacing[40]};
   width: 100%;
   :hover {

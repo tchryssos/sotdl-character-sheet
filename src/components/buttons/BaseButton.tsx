@@ -39,7 +39,7 @@ const StyledButton = styled(ButtonUnstyled)<StyledProps>(
         ? 'transparent'
         : theme.colors[severityColor],
       border: transparent
-        ? `${theme.border.borderWidth[1]} solid ${
+        ? `${theme.borderWidth[1]} solid ${
             severity !== 'normal'
               ? theme.colors[severityColor]
               : theme.colors.text

@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import * as CSS from 'csstype';
+import { CSSObject } from '@emotion/styled';
 
+// import * as CSS from 'csstype';
 import {
   ALL_ALLOWED_CSS_PROPS,
   AllowedCssProps,
@@ -42,13 +43,15 @@ const handleThemedCssProps = ({
 //   propValue,
 // }: CustomCssArgs) => {};
 
+type CssPropObj = Partial<CSSObject & AllowedCustomCssSpacingProps>;
+
 export const filterCssProps = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   props: Record<string, any>,
   theme: Theme
 ) =>
-  Object.keys(props).reduce((propObj, currPropKey) => {
-    const nextPropObj = { ...propObj } as Record<string, unknown>;
+  Object.keys(props).reduce((propObj: CssPropObj, currPropKey) => {
+    const nextPropObj = { ...propObj } as CssPropObj;
     // If the prop is one of the css props that uses the custom theme...
     const usesCustomTheme = Object.keys(CUSTOM_THEME_CSS_PROPS).includes(
       currPropKey
@@ -63,7 +66,7 @@ export const filterCssProps = (
       nextPropObj[currPropKey] = props[currPropKey];
     }
     return nextPropObj;
-  }, {} as Partial<CSS.Properties & AllowedCustomCssSpacingProps>);
+  }, {} as CssPropObj);
 
 export const makeCssPropStyles = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

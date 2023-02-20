@@ -69,7 +69,7 @@ const OptionsList = styled.ul<{ isVisible: boolean }>(
   ({ theme, isVisible }) => ({
     position: 'absolute',
     backgroundColor: theme.colors.background,
-    borderTop: `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`,
+    borderTop: `${theme.borderWidth[1]} solid ${theme.colors.accentLight}`,
     width: '100%',
     paddingBottom: theme.spacing[8],
     transform: isVisible ? '' : 'translateY(99999px)',
@@ -82,7 +82,7 @@ const Option = styled.li<{ isHighlighted: boolean; isSelected: boolean }>(
     display: 'flex',
     alignItems: 'center',
     padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
-    border: `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`,
+    border: `${theme.borderWidth[1]} solid ${theme.colors.accentLight}`,
     borderTop: 'none',
     // eslint-disable-next-line no-nested-ternary
     backgroundColor: isHighlighted

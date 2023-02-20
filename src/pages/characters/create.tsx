@@ -71,7 +71,7 @@ const RulebookLink = styled(Link)`
 `;
 
 const RulebookBox = styled(FlexBox)(({ theme }) => ({
-  border: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
+  border: `${theme.borderWidth[1]} solid ${theme.colors.text}`,
   position: 'relative',
   padding: theme.spacing[24],
   [theme.breakpoints.md]: {

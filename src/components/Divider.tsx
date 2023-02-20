@@ -12,13 +12,13 @@ type DividerProps = {
 };
 
 const DividerWrapper = styled(FlexBox)`
-  min-height: ${({ theme }) => theme.border.borderWidth[1]};
+  min-height: ${({ theme }) => theme.borderWidth[1]};
   width: 100%;
 `;
 
 const Segment = styled.div<Pick<DividerProps, 'color'>>`
   width: 100%;
-  height: ${({ theme }) => theme.border.borderWidth[1]};
+  height: ${({ theme }) => theme.borderWidth[1]};
   background-color: ${({ theme, color }) => theme.colors[color || 'text']};
 `;
 
