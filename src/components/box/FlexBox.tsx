@@ -19,18 +19,16 @@ export type FlexBoxProps = Omit<AllowedCommonCssProps, 'display'> &
 
 export function FlexBox({
   children,
-  flexWrap,
   center,
-  justifyContent,
-  alignItems,
   ...rest
 }: PropsWithChildren<FlexBoxProps>) {
   return (
     <Box
-      alignItems={alignItems || (center ? 'center' : 'flex-start')}
       display="flex"
-      flexWrap={flexWrap || 'wrap'}
-      justifyContent={justifyContent || (center ? 'center' : 'flex-start')}
+      {...(center && {
+        alignItems: 'center',
+        justifyContent: 'center',
+      })}
       {...rest}
     >
       {children}

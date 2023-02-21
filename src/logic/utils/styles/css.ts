@@ -36,6 +36,8 @@ const handleThemedCssProps = ({
   return propValue;
 };
 
+// TODO: Implement this handler for custom css props that
+// may or may not control multiple other props
 // const handleCustomCssProps = ({
 //   currPropKey,
 //   theme,
