@@ -125,7 +125,7 @@ export function DropdownMenu({ menuItems, children }: DropdownMenuProps) {
       <DropdownPane isHidden={!isOpen} shadowed>
         {menuItems.map((item, i) => (
           // eslint-disable-next-line react/no-array-index-key
-          <ItemWrapper column key={`${item.type}-${i}`}>
+          <ItemWrapper flexDirection="column" key={`${item.type}-${i}`}>
             <MenuItem item={item} />
             {i !== menuItems.length - 1 && <Divider color="accentLight" />}
           </ItemWrapper>

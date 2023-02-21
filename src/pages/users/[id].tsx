@@ -87,7 +87,7 @@ function ProfilePage() {
                       href={createCharacterRoute(c.id, c.rulebookName)}
                       key={c.id}
                     >
-                      <FlexBox column>
+                      <FlexBox flexDirection="column">
                         <FlexBox>
                           <Body>{c.name}</Body>
                         </FlexBox>

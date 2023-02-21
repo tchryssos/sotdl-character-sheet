@@ -54,7 +54,7 @@ export function BonusInput<T extends Record<string, unknown>>({
     <AttributeWrapper>
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <NumberInput name={name} {...rest} />
-      <BonusWrapper alignItems="flex-end" pr={8}>
+      <BonusWrapper alignItems="flex-end" paddingRight={8}>
         <FlexBox center gap={8}>
           <Bar />
           <BonusText>

@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import styled from '@emotion/styled';
+import { HTMLAttributes } from 'react';
 
 import {
   AllowedCommonCssProps,
@@ -10,7 +11,8 @@ import { makeCssPropStyles } from '~/logic/utils/styles/css';
 
 type BoxProps = AllowedCommonCssProps &
   AllowedFlexboxCssProps &
-  AllowedGridBoxCssProps & {
+  AllowedGridBoxCssProps &
+  HTMLAttributes<HTMLDivElement> & {
     className?: string;
   };
 

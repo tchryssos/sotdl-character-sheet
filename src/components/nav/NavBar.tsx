@@ -81,7 +81,7 @@ export function NavBar({
 
   return (
     <Toolbar center flex={1}>
-      <InnerToolbar alignItems="flex-end" column flex={1}>
+      <InnerToolbar alignItems="flex-end" flex={1} flexDirection="column">
         <TopRow alignItems="center" justifyContent="space-between">
           <LogoTitleBox alignItems="center" gap={flexGap}>
             <HomeLink href={HOME_ROUTE}>

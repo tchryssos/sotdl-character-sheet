@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { PropsWithChildren } from 'react';
 
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
@@ -21,21 +22,21 @@ const StyledPane = styled(FlexBox)<Pick<PaneProps, 'shadowed'>>(
 );
 
 export function Pane({
-  px = 24,
-  py = 16,
+  paddingX = 24,
+  paddingY = 16,
   justifyContent = 'center',
   alignItems = 'center',
-  column = true,
+  flexDirection = 'column',
   children,
   ...rest
-}: PaneProps) {
+}: PropsWithChildren<PaneProps>) {
   return (
     <StyledPane
       alignItems={alignItems}
-      column={column}
+      flexDirection={flexDirection}
       justifyContent={justifyContent}
-      px={px}
-      py={py}
+      paddingX={paddingX}
+      paddingY={paddingY}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >

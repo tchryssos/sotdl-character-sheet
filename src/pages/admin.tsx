@@ -26,7 +26,7 @@ function AdminPage() {
     return userIsAdmin ? (
       <Layout meta="rpgsheet dot games admin console" title="Admin Panel">
         <AdminNav />
-        <FlexBox column gap={16} width="100%">
+        <FlexBox flexDirection="column" gap={16} width="100%">
           <Rulebooks />
           <User />
         </FlexBox>

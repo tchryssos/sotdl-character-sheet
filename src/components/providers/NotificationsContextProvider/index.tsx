@@ -67,7 +67,7 @@ export function NotificationsContextProvider({
     <NotificationsContext.Provider value={contextValue}>
       {children}
       {Boolean(notifications.length) && (
-        <NotificationsList column gap={12} p={16}>
+        <NotificationsList flexDirection="column" gap={12} padding={16}>
           {notifications.map((notification, i) => (
             <NotificationItem
               index={i}

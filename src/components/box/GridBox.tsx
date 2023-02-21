@@ -50,15 +50,21 @@
 //   })
 // );
 
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
-import { AllowedCommonCssProps, AllowedGridBoxCssProps } from '~/constants/css';
+import {
+  AllowedCommonCssProps,
+  AllowedCustomCssSpacingProps,
+  AllowedGridBoxCssProps,
+} from '~/constants/css';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { Box } from './Box';
 
-type GridBoxProps = Omit<AllowedCommonCssProps, 'display'> &
-  AllowedGridBoxCssProps & {
+export type GridBoxProps = Omit<AllowedCommonCssProps, 'display'> &
+  AllowedGridBoxCssProps &
+  AllowedCustomCssSpacingProps &
+  HTMLAttributes<HTMLDivElement> & {
     columns?: number;
     className?: string;
   };

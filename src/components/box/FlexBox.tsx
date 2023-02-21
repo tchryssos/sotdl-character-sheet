@@ -1,12 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 
-import { AllowedCommonCssProps, AllowedFlexboxCssProps } from '~/constants/css';
+import {
+  AllowedCommonCssProps,
+  AllowedCustomCssSpacingProps,
+  AllowedFlexboxCssProps,
+} from '~/constants/css';
 
 import { Box } from './Box';
 
-type FlexBoxProps = Omit<AllowedCommonCssProps, 'display'> &
-  AllowedFlexboxCssProps & {
+export type FlexBoxProps = Omit<AllowedCommonCssProps, 'display'> &
+  AllowedFlexboxCssProps &
+  AllowedCustomCssSpacingProps &
+  HTMLAttributes<HTMLDivElement> & {
     className?: string;
     center?: boolean;
   };

@@ -92,7 +92,7 @@ const CollapseToggle = styled(CollapseButton)`
   bottom: -${pxToRem(6)};
 `;
 
-export const FormSection: React.FC<FormSectionProps> = ({
+export function FormSection({
   title,
   children,
   columns,
@@ -102,7 +102,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   visibilityTitle,
   borderless,
   gridTemplateColumns,
-}) => {
+}: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
   const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
@@ -155,9 +155,9 @@ export const FormSection: React.FC<FormSectionProps> = ({
       <Section
         addMargin={isCollapsible || isEditMode}
         className={className}
-        column
+        flexDirection="column"
       >
-        <FlexBox alignItems="flex-end" ml={borderless ? 0 : 4}>
+        <FlexBox alignItems="flex-end" marginLeft={borderless ? 0 : 4}>
           <TitleBox>
             {isCollapsible && (
               <CollapseToggle
@@ -186,16 +186,16 @@ export const FormSection: React.FC<FormSectionProps> = ({
               </VisibilityButton>
             )}
           </TitleBox>
-          {!borderless && <Line ml={8} />}
+          {!borderless && <Line marginLeft={8} />}
         </FlexBox>
         <Container
           borderless={borderless}
           columns={columns}
           gridTemplateColumns={gridTemplateColumns}
           isOpen={isOpen}
-          pt={borderless ? 16 : undefined}
-          px={8}
-          py={borderless ? 0 : 16}
+          paddingTop={borderless ? 16 : undefined}
+          paddingX={8}
+          paddingY={borderless ? 0 : 16}
         >
           {children}
         </Container>
@@ -204,4 +204,4 @@ export const FormSection: React.FC<FormSectionProps> = ({
     );
   }
   return null;
-};
+}

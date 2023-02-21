@@ -61,12 +61,12 @@ export function NotificationItem({
       borderWidth={1}
       columnGap={16}
       gridTemplateColumns="auto 1fr auto"
-      p={16}
+      padding={16}
       role="dialog"
       width={pxToRem(380)}
     >
       <NotificationIcon type={notification.type} />
-      <FlexBox column gap={4}>
+      <FlexBox flexDirection="column" gap={4}>
         <Body id={titleId}>{title}</Body>
         {message && (
           <SubBody color="textAccent" id={descriptionId}>
