@@ -167,7 +167,6 @@ function NewCharacterPage() {
       ) : hasError ? (
         <Body>Error fetching rulebooks, try again later</Body>
       ) : (
-        // TODO: Restrict to only SOTDL, since that's all we support
         <SelectRulebook
           rulebooks={rulebooks.filter((r) => r.name === SOTDL_NAME)}
         />
