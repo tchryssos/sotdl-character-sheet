@@ -4,14 +4,13 @@ import { CSSObject } from '@emotion/styled';
 // import * as CSS from 'csstype';
 import {
   ALL_ALLOWED_CSS_PROPS,
-  AllowedCssProps,
   AllowedCustomCssSpacingProps,
   CUSTOM_THEME_CSS_PROPS,
 } from '~/constants/css';
 import { Theme } from '~/constants/theme';
 
 type CustomCssArgs = {
-  currPropKey: keyof AllowedCssProps;
+  currPropKey: keyof typeof CUSTOM_THEME_CSS_PROPS;
   theme: Theme;
   propValue: string | number;
 };
@@ -58,7 +57,7 @@ export const filterCssProps = (
     );
     if (usesCustomTheme) {
       nextPropObj[currPropKey] = handleThemedCssProps({
-        currPropKey: currPropKey as keyof AllowedCssProps,
+        currPropKey: currPropKey as keyof typeof CUSTOM_THEME_CSS_PROPS,
         theme,
         propValue: props[currPropKey],
       });

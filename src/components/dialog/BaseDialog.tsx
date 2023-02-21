@@ -65,10 +65,10 @@ export function BaseDialog({
       <StyledDialog {...rest} open={open} slots={{ backdrop: Backdrop }}>
         <DialogBox
           backgroundColor="background"
-          column
+          flexDirection="column"
           gap={16}
           maxWidth={maxWidth}
-          p={32}
+          padding={32}
           width="100%"
         >
           {children}

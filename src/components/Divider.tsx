@@ -26,18 +26,16 @@ const Label = styled(Body)`
   padding: 0 ${({ theme }) => theme.spacing[16]};
 `;
 
-export const Divider: React.FC<DividerProps> = ({
-  label,
-  className,
-  color,
-}) => (
-  <DividerWrapper center className={className}>
-    {label && (
-      <>
-        <Segment color={color} />
-        <Label>{label}</Label>
-      </>
-    )}
-    <Segment color={color} />
-  </DividerWrapper>
-);
+export function Divider({ label, className, color }: DividerProps) {
+  return (
+    <DividerWrapper center className={className}>
+      {label && (
+        <>
+          <Segment color={color} />
+          <Label>{label}</Label>
+        </>
+      )}
+      <Segment color={color} />
+    </DividerWrapper>
+  );
+}
