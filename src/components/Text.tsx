@@ -19,6 +19,7 @@ type TextProps = AllowedCommonCssProps &
 
 export const Text = styled('span')<TextProps>(
   ({ as, variant, theme, ...rest }) => ({
+    // TODO: These needs to be ordered so that as is overridden by variant
     fontWeight: theme.fontWeight.regular,
     fontFamily: theme.fontFamily.normal,
     ...(variant === 'body-sm' && {
