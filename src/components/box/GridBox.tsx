@@ -77,6 +77,7 @@ export function GridBox({
   rowGap,
   ...rest
 }: PropsWithChildren<GridBoxProps>) {
+  console.log('DONT FORGET TO APPLY THE BREAKPOINT STYLES');
   return (
     <Box
       columnGap={columnGap || pxToRem(8)}
