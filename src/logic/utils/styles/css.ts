@@ -4,6 +4,7 @@ import { CSSObject } from '@emotion/styled';
 // import * as CSS from 'csstype';
 import {
   ALL_ALLOWED_CSS_PROPS,
+  AllowedCustomCssProps,
   AllowedCustomCssSpacingProps,
   CUSTOM_THEME_CSS_PROPS,
 } from '~/constants/css';
@@ -36,36 +37,88 @@ const handleThemedCssProps = ({
   return propValue;
 };
 
-// TODO: Implement this handler for custom css props that
-// may or may not control multiple other props
-// const handleCustomCssProps = ({
-//   currPropKey,
-//   theme,
-//   propValue,
-// }: CustomCssArgs) => {};
+type CustomCssMapping = {
+  [k in keyof AllowedCustomCssProps]: (
+    theme: Theme,
+    value: string | number
+  ) => CSSObject;
+};
+
+const customCssMapping: CustomCssMapping = {
+  paddingX: (theme, value) => ({
+    paddingLeft: handleThemedCssProps({
+      currPropKey: 'paddingLeft',
+      theme,
+      propValue: value,
+    }),
+    paddingRight: handleThemedCssProps({
+      currPropKey: 'paddingRight',
+      theme,
+      propValue: value,
+    }),
+  }),
+  // add more custom CSS property mappings here
+};
+
+type HandleCustomCssArgs = Omit<CustomCssArgs, 'currPropKey'> & {
+  currPropKey: keyof AllowedCustomCssProps;
+};
+
+const handleCustomCssProps = ({
+  currPropKey,
+  theme,
+  propValue,
+}: HandleCustomCssArgs) => {
+  const mappingFn = customCssMapping[currPropKey];
+  if (mappingFn) {
+    return mappingFn(theme, propValue);
+  }
+  // pass through to filtered props if no mapping function found
+  return propValue;
+};
 
 type CssPropObj = Partial<CSSObject & AllowedCustomCssSpacingProps>;
 
-export const filterCssProps = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  props: Record<string, any>,
-  theme: Theme
-) =>
+export const filterCssProps = (props: Record<string, any>, theme: Theme) =>
   Object.keys(props).reduce((propObj: CssPropObj, currPropKey) => {
+    // Create a copy of the propObj so we don't mutate it
     const nextPropObj = { ...propObj } as CssPropObj;
-    // If the prop is one of the css props that uses the custom theme...
-    const usesCustomTheme = Object.keys(CUSTOM_THEME_CSS_PROPS).includes(
-      currPropKey
-    );
-    if (usesCustomTheme) {
-      nextPropObj[currPropKey] = handleThemedCssProps({
-        currPropKey: currPropKey as keyof typeof CUSTOM_THEME_CSS_PROPS,
+
+    // Check if the current prop is a custom CSS prop
+    // for ex. paddingX, paddingY, etc.
+    const usesCustomCss = Object.keys(customCssMapping).includes(currPropKey);
+
+    if (usesCustomCss) {
+      // If it is, handle it using a helper function
+      nextPropObj[currPropKey] = handleCustomCssProps({
+        currPropKey: currPropKey as keyof AllowedCustomCssProps,
         theme,
         propValue: props[currPropKey],
       });
-    } else if ((ALL_ALLOWED_CSS_PROPS as string[]).includes(currPropKey)) {
-      nextPropObj[currPropKey] = props[currPropKey];
+    } else {
+      // Check if it is a custom theme prop
+      // aka any prop for which we expect to match a defined theme value
+      const usesCustomTheme = Object.keys(CUSTOM_THEME_CSS_PROPS).includes(
+        currPropKey
+      );
+      if (usesCustomTheme) {
+        // If it is, handle it using a helper function
+        nextPropObj[currPropKey] = handleThemedCssProps({
+          currPropKey: currPropKey as keyof typeof CUSTOM_THEME_CSS_PROPS,
+          theme,
+          propValue: props[currPropKey],
+        });
+      } else if (
+        // If it isn't, check if it is a valid CSS prop
+        ALL_ALLOWED_CSS_PROPS.includes(
+          currPropKey as (typeof ALL_ALLOWED_CSS_PROPS)[number]
+        )
+      ) {
+        // If it is, add it to the propObj
+        nextPropObj[currPropKey] = props[currPropKey];
+      }
     }
+    // Return the propObj
     return nextPropObj;
   }, {} as CssPropObj);
 
