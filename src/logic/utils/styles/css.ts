@@ -57,6 +57,42 @@ const customCssMapping: CustomCssMapping = {
       propValue: value,
     }),
   }),
+  marginX: (theme, value) => ({
+    marginLeft: handleThemedCssProps({
+      currPropKey: 'marginLeft',
+      theme,
+      propValue: value,
+    }),
+    marginRight: handleThemedCssProps({
+      currPropKey: 'marginRight',
+      theme,
+      propValue: value,
+    }),
+  }),
+  paddingY: (theme, value) => ({
+    paddingTop: handleThemedCssProps({
+      currPropKey: 'paddingTop',
+      theme,
+      propValue: value,
+    }),
+    paddingBottom: handleThemedCssProps({
+      currPropKey: 'paddingBottom',
+      theme,
+      propValue: value,
+    }),
+  }),
+  marginY: (theme, value) => ({
+    marginTop: handleThemedCssProps({
+      currPropKey: 'marginTop',
+      theme,
+      propValue: value,
+    }),
+    marginBottom: handleThemedCssProps({
+      currPropKey: 'marginBottom',
+      theme,
+      propValue: value,
+    }),
+  }),
   // add more custom CSS property mappings here
 };
 
@@ -68,13 +104,15 @@ const handleCustomCssProps = ({
   currPropKey,
   theme,
   propValue,
-}: HandleCustomCssArgs) => {
+}: HandleCustomCssArgs): CSSObject => {
   const mappingFn = customCssMapping[currPropKey];
   if (mappingFn) {
     return mappingFn(theme, propValue);
   }
   // pass through to filtered props if no mapping function found
-  return propValue;
+  return {
+    [currPropKey]: propValue,
+  };
 };
 
 type CssPropObj = Partial<CSSObject & AllowedCustomCssSpacingProps>;
@@ -82,7 +120,7 @@ type CssPropObj = Partial<CSSObject & AllowedCustomCssSpacingProps>;
 export const filterCssProps = (props: Record<string, any>, theme: Theme) =>
   Object.keys(props).reduce((propObj: CssPropObj, currPropKey) => {
     // Create a copy of the propObj so we don't mutate it
-    const nextPropObj = { ...propObj } as CssPropObj;
+    let nextPropObj = { ...propObj } as CssPropObj;
 
     // Check if the current prop is a custom CSS prop
     // for ex. paddingX, paddingY, etc.
@@ -90,11 +128,12 @@ export const filterCssProps = (props: Record<string, any>, theme: Theme) =>
 
     if (usesCustomCss) {
       // If it is, handle it using a helper function
-      nextPropObj[currPropKey] = handleCustomCssProps({
+      const customProps = handleCustomCssProps({
         currPropKey: currPropKey as keyof AllowedCustomCssProps,
         theme,
         propValue: props[currPropKey],
       });
+      nextPropObj = { ...nextPropObj, ...customProps };
     } else {
       // Check if it is a custom theme prop
       // aka any prop for which we expect to match a defined theme value
