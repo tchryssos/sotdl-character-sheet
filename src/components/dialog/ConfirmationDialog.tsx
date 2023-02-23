@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { FlexBox } from '../box/FlexBox';
 import { TextButton } from '../buttons/TextButton';
 import { BaseButtonProps } from '../buttons/types';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 import { Title } from '../typography/Title';
 import { BaseDialog, BaseDialogProps } from './BaseDialog';
 
@@ -69,7 +69,9 @@ export function ConfirmationDialog({
       {...rest}
     >
       <Title id={labeledById}>{title}</Title>
-      <Body id={describedById}>{message}</Body>
+      <Text as="p" id={describedById}>
+        {message}
+      </Text>
       <FlexBox gap={16} justifyContent="flex-end">
         <ActionButton
           action={confirm}

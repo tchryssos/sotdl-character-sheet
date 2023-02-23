@@ -9,7 +9,7 @@ import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
-import { Body } from '~/components/typography/Body';
+import { Text } from '~/components/Text';
 import { SubBody } from '~/components/typography/SubBody';
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { fetchUserCharacters } from '~/logic/api/client/fetchUserCharacters';
@@ -89,7 +89,9 @@ function ProfilePage() {
                     >
                       <FlexBox flexDirection="column">
                         <FlexBox>
-                          <Body>{c.name}</Body>
+                          <Text as="span" variant="body">
+                            {c.name}
+                          </Text>
                         </FlexBox>
                         <SubBody>
                           <Caps>{c.rulebookName}</Caps>
@@ -102,7 +104,9 @@ function ProfilePage() {
                   );
                 })
               ) : (
-                <Body>No characters for this user.</Body>
+                <Text as="p" variant="body">
+                  No characters for this user.
+                </Text>
               )}
             </CharactersSection>
           </ProfileWrapper>

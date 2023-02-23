@@ -6,7 +6,7 @@ import { TextButton } from '../buttons/TextButton';
 import { Divider } from '../Divider';
 import { Link } from '../Link';
 import { Pane } from '../Pane';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 import { SubBody } from '../typography/SubBody';
 
 const DropdownWrapper = styled.div`
@@ -87,7 +87,7 @@ function MenuItem({ item }: MenuItemProps) {
     case 'link':
       return (
         <DropdownLink href={item.href}>
-          <Body>{item.text}</Body>
+          <Text variant="body">{item.text}</Text>
         </DropdownLink>
       );
     case 'button':

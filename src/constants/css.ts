@@ -62,6 +62,7 @@ export const ALLOWED_COMMON_CSS_KEYS = [
   'textOverflow',
   'top',
   'width',
+  'textDecoration',
 ] as const;
 
 const CUSTOM_CSS_SPACING_KEYS = [
@@ -181,8 +182,9 @@ export type AllowedGridBoxCssProps =
 export type AllowedCustomCssProps =
   AllowedCssPropsWithTheme<RawAllowedCustomCssProps>;
 
-export type AllowedCssProps = AllowedCommonCssProps &
-  AllowedTextCssProps &
-  AllowedFlexboxCssProps &
-  AllowedGridBoxCssProps &
-  AllowedCustomCssProps;
+// We don't need this all allowed types yet but we might
+// export type AllowedCssProps = AllowedCommonCssProps &
+//   AllowedTextCssProps &
+//   AllowedFlexboxCssProps &
+//   AllowedGridBoxCssProps &
+//   AllowedCustomCssProps;

@@ -9,7 +9,7 @@ import { StrictSessionUser } from '~/typings/user';
 import { AuthLink } from '../AuthLink';
 import { IconButton } from '../buttons/IconButton';
 import { Hamburger } from '../icons/Hamburger';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 import { DropdownMenu, DropdownMenuProps } from './DropdownMenu';
 
 const DropdownAuthLink = styled(AuthLink)`
@@ -56,7 +56,7 @@ const createMenuItems = (
           type: 'special',
           component: (
             <DropdownAuthLink type="logout">
-              <Body>Log out</Body>
+              <Text variant="body">Log out</Text>
             </DropdownAuthLink>
           ),
         },
@@ -68,7 +68,7 @@ const createMenuItems = (
           type: 'special',
           component: (
             <DropdownAuthLink type="login">
-              <Body>Authenticate</Body>
+              <Text variant="body">Authenticate</Text>
             </DropdownAuthLink>
           ),
         },

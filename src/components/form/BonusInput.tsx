@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FlexBox } from '../box/FlexBox';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 import { NumberInput, NumberInputComponentProps } from './NumberInput';
 
 type BonusInputProps<T> = NumberInputComponentProps<T> & {
@@ -27,7 +27,7 @@ const BonusWrapper = styled(FlexBox)`
   padding-bottom: ${pxToRem(11)};
 `;
 
-const BonusText = styled(Body)`
+const BonusText = styled(Text)`
   /* Centers the text and bar at exactly the text height */
   line-height: 0;
 `;
@@ -57,7 +57,7 @@ export function BonusInput<T extends Record<string, unknown>>({
       <BonusWrapper alignItems="flex-end" paddingRight={8}>
         <FlexBox center gap={8}>
           <Bar />
-          <BonusText>
+          <BonusText as="span" variant="body">
             {` ${bonusIsPositive ? '+' : '-'}${String(Math.abs(bonus))}`}
           </BonusText>
         </FlexBox>

@@ -5,7 +5,7 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
 import { Close } from '~/components/icons/Close';
-import { Body } from '~/components/typography/Body';
+import { Text } from '~/components/Text';
 import { Caption } from '~/components/typography/Caption';
 import { SubBody } from '~/components/typography/SubBody';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
@@ -67,7 +67,9 @@ export function NotificationItem({
     >
       <NotificationIcon type={notification.type} />
       <FlexBox flexDirection="column" gap={4}>
-        <Body id={titleId}>{title}</Body>
+        <Text as="h3" id={titleId} variant="body">
+          {title}
+        </Text>
         {message && (
           <SubBody color="textAccent" id={descriptionId}>
             {message}

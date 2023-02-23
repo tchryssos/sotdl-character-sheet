@@ -11,7 +11,7 @@ import { FormSection } from '~/components/form/FormSection';
 import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
-import { Body } from '~/components/typography/Body';
+import { Text } from '~/components/Text';
 import { Title } from '~/components/typography/Title';
 import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
@@ -165,7 +165,7 @@ function NewCharacterPage() {
           titleId="new-char-rulebook-loading"
         />
       ) : hasError ? (
-        <Body>Error fetching rulebooks, try again later</Body>
+        <Text as="p">Error fetching rulebooks, try again later</Text>
       ) : (
         <SelectRulebook
           rulebooks={rulebooks.filter((r) => r.name === SOTDL_NAME)}

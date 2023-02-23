@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Color } from '~/typings/theme';
 
 import { FlexBox } from './box/FlexBox';
-import { Body } from './typography/Body';
+import { Text } from './Text';
 
 type DividerProps = {
   label?: string;
@@ -22,7 +22,7 @@ const Segment = styled.div<Pick<DividerProps, 'color'>>`
   background-color: ${({ theme, color }) => theme.colors[color || 'text']};
 `;
 
-const Label = styled(Body)`
+const Label = styled(Text)`
   padding: 0 ${({ theme }) => theme.spacing[16]};
 `;
 
@@ -32,7 +32,9 @@ export function Divider({ label, className, color }: DividerProps) {
       {label && (
         <>
           <Segment color={color} />
-          <Label>{label}</Label>
+          <Label as="p" variant="body">
+            {label}
+          </Label>
         </>
       )}
       <Segment color={color} />

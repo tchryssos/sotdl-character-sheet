@@ -63,10 +63,10 @@ export function Layout({ children, title, meta }: LayoutProps) {
       <FlexBox
         flex={1}
         justifyContent="center"
-        pb={8}
-        px={isAtLeastXs ? 32 : 16}
+        paddingBottom={8}
+        paddingX={isAtLeastXs ? 32 : 16}
       >
-        <PageWrapper alignItems="center" column>
+        <PageWrapper alignItems="center" flexDirection="column">
           {children}
         </PageWrapper>
       </FlexBox>

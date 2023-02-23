@@ -7,7 +7,7 @@ import { filterCssProps } from '~/logic/utils/styles/css';
 type TextProps = AllowedCommonCssProps &
   AllowedTextCssProps & {
     className?: string;
-    as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+    as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label';
     variant?:
       | 'body-sm'
       | 'body'
@@ -40,6 +40,7 @@ const getFontSize = (theme: Theme, variantOrAs: VariantOrAs) => {
     h6: theme.fontSize[20],
     p: theme.fontSize[16],
     span: theme.fontSize[16],
+    label: theme.fontSize[16],
   };
 
   const fontSize = fontSizeLookup[variantOrAs];

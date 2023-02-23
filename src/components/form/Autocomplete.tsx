@@ -6,7 +6,7 @@ import { FlexBox } from '../box/FlexBox';
 import { CollapseButton } from '../buttons/CollapseButton';
 import { Check } from '../icons/Check';
 import { LoadingSpinner } from '../LoadingSpinner';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 import { StyledInput } from './Input';
 import { Label } from './Label';
 import { SelectOption } from './typings';
@@ -162,7 +162,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
                     titleId="selected-item-check"
                   />
                 )}
-                <Body>{item.label}</Body>
+                <Text as="p">{item.label}</Text>
               </Option>
             ))}
         </OptionsList>

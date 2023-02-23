@@ -9,7 +9,7 @@ import { FlexBox } from '../box/FlexBox';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { Link } from '../Link';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 
 const Toolbar = styled(FlexBox)(({ theme }) => ({
   position: 'fixed',
@@ -48,7 +48,7 @@ const Logo = styled(LogoAscii)(({ theme }) => ({
   },
 }));
 
-const Title = styled(Body)`
+const Title = styled(Text)`
   -webkit-line-clamp: 2;
   display: -webkit-inline-box;
   -webkit-box-orient: vertical;
@@ -87,7 +87,7 @@ export function NavBar({
             <HomeLink href={HOME_ROUTE}>
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
-            {title && <Title variant="decorative">{title}</Title>}
+            {title && <Title as="h2">{title}</Title>}
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />

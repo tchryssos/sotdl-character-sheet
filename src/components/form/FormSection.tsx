@@ -14,7 +14,7 @@ import { CollapseButton } from '../buttons/CollapseButton';
 import { IconButton } from '../buttons/IconButton';
 import { Invisible } from '../icons/Invisible';
 import { Visible } from '../icons/Visible';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 
 interface FormSectionProps {
   title: string;
@@ -32,7 +32,7 @@ const TitleBox = styled(FlexBox)`
   position: relative;
 `;
 
-const Text = styled(Body)<
+const FormTitle = styled(Text)<
   Pick<FormSectionProps, 'isCollapsible'> & { isEditMode: boolean }
 >(({ isEditMode, isCollapsible, theme }) => ({
   whiteSpace: 'nowrap',
@@ -167,9 +167,13 @@ export function FormSection({
                 onChangeExpanded={onChangeExpanded}
               />
             )}
-            <Text isCollapsible={isCollapsible} isEditMode={isEditMode} italic>
+            <FormTitle
+              fontStyle="italic"
+              isCollapsible={isCollapsible}
+              isEditMode={isEditMode}
+            >
               {title}
-            </Text>
+            </FormTitle>
             {isEditMode && canToggleVisibility && (
               <VisibilityButton onClick={onChangeVisibility}>
                 {isVisible ? (

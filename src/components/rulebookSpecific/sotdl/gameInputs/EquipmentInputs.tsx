@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
-import { Body } from '~/components/typography/Body';
+import { Text } from '~/components/Text';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 import { SortableAddAnotherChildProps } from '~/typings/form';
@@ -60,8 +60,12 @@ const ItemHeader: React.FC = () => {
         isAtLeastSm ? itemTemplateColumns : itemSmallTemplateColumns
       }
     >
-      <Body bold>Name</Body>
-      <Body bold>Notes</Body>
+      <Text as="label" fontWeight="bold" variant="body">
+        Name
+      </Text>
+      <Text as="label" fontWeight="bold" variant="body">
+        Notes
+      </Text>
     </GridBox>
   );
 };

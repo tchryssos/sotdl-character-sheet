@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 import { BaseButton } from './BaseButton';
 import { CoreButtonProps } from './types';
 
@@ -23,7 +23,9 @@ export function TextButton({ label, ...rest }: TextButtonProps) {
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
     <StyledButton {...rest}>
-      <Body>{label}</Body>
+      <Text as="span" variant="body">
+        {label}
+      </Text>
     </StyledButton>
   );
 }
