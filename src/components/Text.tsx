@@ -1,3 +1,4 @@
+import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { AllowedCommonCssProps, AllowedTextCssProps } from '~/constants/css';
@@ -17,35 +18,44 @@ type TextProps = AllowedCommonCssProps &
       | 'title-xl';
   };
 
+type VariantOrAs = NonNullable<TextProps['variant'] | TextProps['as']>;
+
+const getFontSize = (theme: Theme, variantOrAs: VariantOrAs) => {
+  const fontSizeLookup: Record<VariantOrAs, string> = {
+    // Variants
+    'body-sm': theme.fontSize[14],
+    body: theme.fontSize[16],
+    'body-lg': theme.fontSize[18],
+    'title-sm': theme.fontSize[20],
+    title: theme.fontSize[24],
+    'title-lg': theme.fontSize[32],
+    'title-xl': theme.fontSize[56],
+
+    // As
+    h1: theme.fontSize[56],
+    h2: theme.fontSize[32],
+    h3: theme.fontSize[24],
+    h4: theme.fontSize[20],
+    h5: theme.fontSize[20],
+    h6: theme.fontSize[20],
+    p: theme.fontSize[16],
+    span: theme.fontSize[16],
+  };
+
+  const fontSize = fontSizeLookup[variantOrAs];
+
+  return fontSize || theme.fontSize[16];
+};
+
 export const Text = styled('span')<TextProps>(
-  ({ as, variant, theme, ...rest }) => ({
-    // TODO: These needs to be ordered so that as is overridden by variant
-    fontWeight: theme.fontWeight.regular,
-    fontFamily: theme.fontFamily.normal,
-    ...(variant === 'body-sm' && {
-      fontSize: theme.fontSize[14],
-    }),
-    ...((variant === 'body' || as === 'p') && {
-      fontSize: theme.fontSize[16],
-    }),
-    ...(variant === 'body-lg' && {
-      fontSize: theme.fontSize[18],
-    }),
-    ...((variant === 'title-sm' ||
-      as === 'h4' ||
-      as === 'h5' ||
-      as === 'h6') && {
-      fontSize: theme.fontSize[20],
-    }),
-    ...((variant === 'title' || as === 'h3') && {
-      fontSize: theme.fontSize[24],
-    }),
-    ...((variant === 'title-lg' || as === 'h2') && {
-      fontSize: theme.fontSize[32],
-    }),
-    ...((variant === 'title-xl' || as === 'h1') && {
-      fontSize: theme.fontSize[56],
-    }),
-    ...filterCssProps(rest, theme),
-  })
+  ({ as, variant, theme, ...rest }) => {
+    const fontSize = getFontSize(theme, variant || as || 'body');
+
+    return {
+      fontWeight: theme.fontWeight.regular,
+      fontFamily: theme.fontFamily.normal,
+      fontSize,
+      ...filterCssProps(rest, theme),
+    };
+  }
 );
