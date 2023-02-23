@@ -37,14 +37,10 @@ const handleThemedCssProps = ({
   return propValue;
 };
 
-type CustomCssMapping = {
-  [k in keyof AllowedCustomCssProps]: (
-    theme: Theme,
-    value: string | number
-  ) => CSSObject;
-};
-
-const customCssMapping: CustomCssMapping = {
+const customCssMapping: Record<
+  keyof AllowedCustomCssProps,
+  (theme: Theme, value: string | number) => CSSObject
+> = {
   paddingX: (theme, value) => ({
     paddingLeft: handleThemedCssProps({
       currPropKey: 'paddingLeft',
@@ -93,7 +89,6 @@ const customCssMapping: CustomCssMapping = {
       propValue: value,
     }),
   }),
-  // add more custom CSS property mappings here
 };
 
 type HandleCustomCssArgs = Omit<CustomCssArgs, 'currPropKey'> & {
@@ -117,6 +112,7 @@ const handleCustomCssProps = ({
 
 type CssPropObj = Partial<CSSObject & AllowedCustomCssSpacingProps>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const filterCssProps = (props: Record<string, any>, theme: Theme) =>
   Object.keys(props).reduce((propObj: CssPropObj, currPropKey) => {
     // Create a copy of the propObj so we don't mutate it
