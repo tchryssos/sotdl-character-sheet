@@ -9,6 +9,7 @@ type TextProps = AllowedCommonCssProps &
     className?: string;
     as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label';
     variant?:
+      | 'body-xs'
       | 'body-sm'
       | 'body'
       | 'body-lg'
@@ -23,6 +24,7 @@ type VariantOrAs = NonNullable<TextProps['variant'] | TextProps['as']>;
 const getFontSize = (theme: Theme, variantOrAs: VariantOrAs) => {
   const fontSizeLookup: Record<VariantOrAs, string> = {
     // Variants
+    'body-xs': theme.fontSize[10],
     'body-sm': theme.fontSize[14],
     body: theme.fontSize[16],
     'body-lg': theme.fontSize[18],

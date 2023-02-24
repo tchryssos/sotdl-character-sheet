@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
 
-import { SubBody } from '~/components/typography/SubBody';
-
+import { Text } from '../Text';
 import { KeyName } from './typings';
 
 type LabelProps<T extends Record<string, unknown>> = {
@@ -41,7 +40,9 @@ export function Label<T extends Record<string, unknown>>({
       size={size}
       {...labelProps}
     >
-      <SubBody bold>{label}</SubBody>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        {label}
+      </Text>
       {children}
     </StyledLabel>
   ) : (

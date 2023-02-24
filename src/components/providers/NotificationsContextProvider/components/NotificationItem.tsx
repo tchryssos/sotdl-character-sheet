@@ -6,8 +6,6 @@ import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
 import { Close } from '~/components/icons/Close';
 import { Text } from '~/components/Text';
-import { Caption } from '~/components/typography/Caption';
-import { SubBody } from '~/components/typography/SubBody';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 import { timeAgo } from '~/logic/utils/dates/timeAgo';
@@ -71,12 +69,14 @@ export function NotificationItem({
           {title}
         </Text>
         {message && (
-          <SubBody color="textAccent" id={descriptionId}>
+          <Text as="p" color="textAccent" id={descriptionId} variant="body-sm">
             {message}
-          </SubBody>
+          </Text>
         )}
         {createdOn && (
-          <Caption color="textAccent">{timeAgo(createdOn)}</Caption>
+          <Text as="p" color="textAccent" variant="body-xs">
+            {timeAgo(createdOn)}
+          </Text>
         )}
       </FlexBox>
       <IconButton ref={buttonRef} onClick={removeNotification}>

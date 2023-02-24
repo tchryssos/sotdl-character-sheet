@@ -5,7 +5,7 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { SubBody } from '~/components/typography/SubBody';
+import { Text } from '~/components/Text';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlArmor, SotdlCharacterData } from '~/typings/sotdl/characterData';
@@ -119,11 +119,19 @@ function HeaderRow() {
   return (
     <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
       <GridBox gridTemplateColumns="1fr 7fr">
-        <SubBody>Active</SubBody>
-        <SubBody bold>Name</SubBody>
+        <Text as="p" variant="body-sm">
+          Active
+        </Text>
+        <Text as="p" fontWeight="bold" variant="body-sm">
+          Name
+        </Text>
       </GridBox>
-      <SubBody bold>Defense</SubBody>
-      <SubBody bold>Notes</SubBody>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Defense
+      </Text>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Notes
+      </Text>
     </GridBox>
   );
 }

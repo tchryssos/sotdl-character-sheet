@@ -10,7 +10,6 @@ import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
 import { Text } from '~/components/Text';
-import { SubBody } from '~/components/typography/SubBody';
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { fetchUserCharacters } from '~/logic/api/client/fetchUserCharacters';
 import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
@@ -93,12 +92,12 @@ function ProfilePage() {
                             {c.name}
                           </Text>
                         </FlexBox>
-                        <SubBody>
+                        <Text as="p" variant="body-sm">
                           <Caps>{c.rulebookName}</Caps>
                           {level !== undefined || ancestry ? ' - ' : ''}
                           {level !== undefined ? `Level ${level} ` : ''}
                           {`${ancestry ? `${ancestry}` : ''}`}
-                        </SubBody>
+                        </Text>
                       </FlexBox>
                     </CharacterLink>
                   );

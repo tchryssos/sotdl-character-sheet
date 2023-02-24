@@ -6,7 +6,7 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { SubBody } from '~/components/typography/SubBody';
+import { Text } from '~/components/Text';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlCharacterData, SotdlWeapon } from '~/typings/sotdl/characterData';
@@ -144,12 +144,22 @@ function WeaponHeader() {
   return (
     <GridBox gridTemplateColumns={weaponTemplateColumns}>
       <GridBox gridTemplateColumns="1fr 7fr">
-        <SubBody>Active</SubBody>
-        <SubBody bold>Name</SubBody>
+        <Text as="p" variant="body-sm">
+          Active
+        </Text>
+        <Text as="p" fontWeight="bold" variant="body-sm">
+          Name
+        </Text>
       </GridBox>
-      <SubBody bold>Hands</SubBody>
-      <SubBody bold>Damage</SubBody>
-      <SubBody bold>Notes</SubBody>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Hands
+      </Text>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Damage
+      </Text>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Notes
+      </Text>
     </GridBox>
   );
 }

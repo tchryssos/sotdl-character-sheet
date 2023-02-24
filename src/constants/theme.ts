@@ -111,6 +111,7 @@ const theme = {
     subBody: pxToRem(14),
     body: pxToRem(18),
     title: pxToRem(36),
+    10: pxToRem(10),
     14: pxToRem(14),
     16: pxToRem(16),
     18: pxToRem(18),

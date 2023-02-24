@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useContext, useEffect } from 'react';
 
 import { LogoAscii } from '~/components/ascii/LogoAscii';
+import { NotFoundAscii } from '~/components/ascii/NotFoundAscii';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Link } from '~/components/Link';
 import { Layout } from '~/components/meta/Layout';
@@ -25,7 +26,7 @@ function FourOhFourNav() {
   const { setNavTitle } = useContext(NavContext);
 
   useEffect(() => {
-    setNavTitle('404');
+    setNavTitle('rpg sheet');
   }, [setNavTitle]);
 
   return null;
@@ -36,7 +37,7 @@ function FourOhFour() {
     <Layout meta="404" title="rpg sheet">
       <FourOhFourNav />
       <FourOhFourPane>
-        <Logo />
+        <NotFoundAscii />
         <Title mb={16}>404</Title>
         <Link href={HOME_ROUTE}>
           <TextButton buttonLike label="Click to return home" />
