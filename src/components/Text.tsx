@@ -24,13 +24,13 @@ type VariantOrAs = NonNullable<TextProps['variant'] | TextProps['as']>;
 const getFontSize = (theme: Theme, variantOrAs: VariantOrAs) => {
   const fontSizeLookup: Record<VariantOrAs, string> = {
     // Variants
-    'body-xs': theme.fontSize[10],
-    'body-sm': theme.fontSize[14],
-    body: theme.fontSize[16],
-    'body-lg': theme.fontSize[18],
-    'title-sm': theme.fontSize[20],
-    title: theme.fontSize[24],
-    'title-lg': theme.fontSize[32],
+    'body-xs': theme.fontSize[14],
+    'body-sm': theme.fontSize[16],
+    body: theme.fontSize[18],
+    'body-lg': theme.fontSize[20],
+    'title-sm': theme.fontSize[24],
+    title: theme.fontSize[32],
+    'title-lg': theme.fontSize[40],
     'title-xl': theme.fontSize[56],
 
     // As

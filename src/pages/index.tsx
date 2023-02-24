@@ -54,7 +54,7 @@ function Home() {
       <HomeWrapper alignItems="flex-start" justifyContent="center">
         <HomePane>
           <Logo />
-          <Text as="h1" marginBottom={16}>
+          <Text as="h1" marginBottom={16} variant="title-lg">
             rpg sheet dot&nbsp;games
           </Text>
           {isLoading ? (
