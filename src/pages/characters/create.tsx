@@ -12,7 +12,6 @@ import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { Text } from '~/components/Text';
-import { Title } from '~/components/typography/Title';
 import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
@@ -43,7 +42,7 @@ to {
 // in the animation below in RulebookLink
 const RulebookAscii = styled(AsciiText)``;
 
-const RulebookTitle = styled(Title)`
+const RulebookTitle = styled(Text)`
   z-index: 2;
 `;
 
@@ -115,7 +114,9 @@ function SelectRulebook({ rulebooks }: SelectRulebookProps) {
                     {sample(Object.values(ASCII_ART).slice(0))}
                   </RulebookAscii>
                 </RulebookFigure>
-                <RulebookTitle>{rb.fullName}</RulebookTitle>
+                <RulebookTitle as="h2" variant="title-xl">
+                  {rb.fullName}
+                </RulebookTitle>
               </RulebookBox>
             </RulebookLink>
           </li>

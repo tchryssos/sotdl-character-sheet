@@ -5,7 +5,6 @@ import { FlexBox } from '../box/FlexBox';
 import { TextButton } from '../buttons/TextButton';
 import { BaseButtonProps } from '../buttons/types';
 import { Text } from '../Text';
-import { Title } from '../typography/Title';
 import { BaseDialog, BaseDialogProps } from './BaseDialog';
 
 interface DialogAction {
@@ -68,7 +67,9 @@ export function ConfirmationDialog({
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >
-      <Title id={labeledById}>{title}</Title>
+      <Text as="h2" id={labeledById} variant="title-xl">
+        {title}
+      </Text>
       <Text as="p" id={describedById}>
         {message}
       </Text>
