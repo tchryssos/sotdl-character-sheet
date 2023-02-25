@@ -13,9 +13,5 @@ export function CharacterSheet() {
   } = useSheetState();
   useSheetHotkeys(isEditMode, setIsEditMode);
 
-  return (
-    <Text as="h2" variant="title-xl">
-      SWN
-    </Text>
-  );
+  return <Text as="h2">SWN</Text>;
 }

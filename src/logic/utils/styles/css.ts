@@ -1,7 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { CSSObject } from '@emotion/styled';
 
-// import * as CSS from 'csstype';
 import {
   ALL_ALLOWED_CSS_PROPS,
   AllowedCustomCssProps,

@@ -114,9 +114,7 @@ function SelectRulebook({ rulebooks }: SelectRulebookProps) {
                     {sample(Object.values(ASCII_ART).slice(0))}
                   </RulebookAscii>
                 </RulebookFigure>
-                <RulebookTitle as="h2" variant="title-xl">
-                  {rb.fullName}
-                </RulebookTitle>
+                <RulebookTitle as="h2">{rb.fullName}</RulebookTitle>
               </RulebookBox>
             </RulebookLink>
           </li>
