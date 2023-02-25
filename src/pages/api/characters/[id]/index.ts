@@ -12,6 +12,12 @@ const getCharacter = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { id } = req.query;
 
+    const parsedID = parseInt(id as string, 10);
+
+    if (Number.isNaN(parsedID)) {
+      throw new Error(ErrorTypes.CharacterNotFound);
+    }
+
     const character = await prisma.character.findUnique({
       where: {
         id: parseInt(id as string, 10),
