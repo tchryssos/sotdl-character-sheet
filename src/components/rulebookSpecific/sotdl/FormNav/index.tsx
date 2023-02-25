@@ -4,10 +4,10 @@ import { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
-import { NEW_ID } from '~/constants/routing/shared';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { useIsNewCharacter } from '~/logic/hooks/useIsNewCharacter';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 import { StrictSessionUser } from '~/typings/user';
 
@@ -27,33 +27,36 @@ function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
   const { isEditMode, setIsEditMode } = useContext(EditContext);
   const { watch, getValues } = useFormContext();
   const { query } = useRouter();
+  const isNew = useIsNewCharacter();
 
   const characterName: string = watch<keyof SotdlCharacterData>('name');
   const characterData = getValues() as SotdlCharacterData;
 
   return (
     <>
-      {user && !isMyCharacter && query.id !== NEW_ID && (
-        <CloneButton
-          characterData={characterData}
-          characterName={characterName}
-          playerId={(user as StrictSessionUser).id}
-        />
-      )}
-      {user && isMyCharacter && (
+      {user && (
         <>
-          {isEditMode && (
+          {!isMyCharacter && !isNew && (
+            <CloneButton
+              characterData={characterData}
+              characterName={characterName}
+              playerId={(user as StrictSessionUser).id}
+            />
+          )}
+          {isMyCharacter && isEditMode && (
             <DeleteButton
               characterId={parseInt(query.id as string, 10)}
               playerId={(user as StrictSessionUser).id}
             />
           )}
-          <SaveButton
-            characterData={characterData}
-            characterId={query.id as string}
-            characterName={characterName}
-            playerId={(user as StrictSessionUser).id}
-          />
+          {(isMyCharacter || isNew) && (
+            <SaveButton
+              characterData={characterData}
+              characterId={query.id as string}
+              characterName={characterName}
+              playerId={(user as StrictSessionUser).id}
+            />
+          )}
         </>
       )}
       <IconButton onClick={() => setIsEditMode(!isEditMode)}>
