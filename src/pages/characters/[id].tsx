@@ -109,13 +109,17 @@ export const getServerSideProps: GetServerSideProps = async (
   let character: StrictCharacter | undefined;
 
   if (params?.id && params.id !== NEW_ID) {
-    const dbCharacter = await prisma.character.findUnique({
-      where: {
-        id: parseInt(params.id as string, 10),
-      },
-    });
-    if (!dbCharacter?.deleted) {
-      character = dbCharacter as StrictCharacter;
+    const parsedId = parseInt(params.id as string, 10);
+
+    if (!Number.isNaN(parsedId)) {
+      const dbCharacter = await prisma.character.findUnique({
+        where: {
+          id: parseInt(params.id as string, 10),
+        },
+      });
+      if (!dbCharacter?.deleted) {
+        character = dbCharacter as StrictCharacter;
+      }
     }
   }
 
