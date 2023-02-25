@@ -159,6 +159,7 @@ export const CUSTOM_THEME_CSS_PROPS = {
   borderWidth: 'borderWidth',
   borderBottomWidth: 'borderRadius',
   fontSize: 'fontSize',
+  // ts-prune-ignore-next
 } satisfies {
   [k in keyof RawAllowedCssProps]: keyof Theme;
 };
