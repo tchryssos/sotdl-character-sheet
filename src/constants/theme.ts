@@ -97,17 +97,30 @@ const theme = {
     96: pxToRem(96),
     128: pxToRem(128),
   },
-  border: {
-    borderWidth: {
-      1: pxToRem(1),
-      3: pxToRem(3),
-    },
+  borderWidth: {
+    1: pxToRem(1),
+    3: pxToRem(3),
+  },
+  borderRadius: {
+    2: pxToRem(2),
+    4: pxToRem(4),
+    round: '50%',
   },
   fontSize: {
     caption: pxToRem(10),
     subBody: pxToRem(14),
     body: pxToRem(18),
     title: pxToRem(36),
+    10: pxToRem(10),
+    14: pxToRem(14),
+    16: pxToRem(16),
+    18: pxToRem(18),
+    20: pxToRem(20),
+    24: pxToRem(24),
+    32: pxToRem(32),
+    40: pxToRem(40),
+    56: pxToRem(56),
+    64: pxToRem(64),
   },
   fontFamily: {
     normal: '"Inconsolata", sans-serif',
@@ -117,8 +130,10 @@ const theme = {
     normal: 1.2,
   },
   fontWeight: {
+    light: 200,
     regular: 400,
     bold: 700,
+    black: 800,
   },
 };
 

@@ -12,7 +12,7 @@ import { LoadingSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { HomeNav } from '~/components/nav/HomeNav';
 import { Pane } from '~/components/Pane';
-import { Title } from '~/components/typography/Title';
+import { Text } from '~/components/Text';
 import {
   CREATE_ID,
   createCharacterRoute,
@@ -54,7 +54,9 @@ function Home() {
       <HomeWrapper alignItems="flex-start" justifyContent="center">
         <HomePane>
           <Logo />
-          <Title mb={16}>rpg sheet dot&nbsp;games</Title>
+          <Text as="h1" marginBottom={16} variant="title-lg">
+            rpg sheet dot&nbsp;games
+          </Text>
           {isLoading ? (
             <AuthLoading title="Auth loading" titleId="auth-loading" />
           ) : (

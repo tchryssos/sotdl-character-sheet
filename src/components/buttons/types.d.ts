@@ -1,5 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 
+// TODO: We probably want to allow Buttons to receive all css props too
 export interface CoreButtonProps {
   onClick?: MouseEventHandler;
   type?: 'button' | 'submit';

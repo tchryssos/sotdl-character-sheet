@@ -1,5 +1,8 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
+import { InputUnstyled } from '@mui/base';
 import startCase from 'lodash.startcase';
+import { ChangeEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Label } from '~/components/form/Label';
@@ -41,28 +44,30 @@ export function Input<T extends Record<string, unknown>>(props: InputProps<T>) {
   const registeredInput = register(name, validations);
   const isEditingLocked = useIsEditingLocked(Boolean(alwaysEditable));
 
+  const modInputProps = {
+    className,
+    disabled: disabled || (type === 'checkbox' && isEditingLocked),
+    max,
+    min,
+    name: registeredInput.name,
+    noOutline,
+    readOnly: readOnly || noOutline || isEditingLocked,
+    ref: registeredInput.ref,
+    step,
+    type,
+    onBlur: registeredInput.onBlur,
+    onChange: (e: ChangeEvent) => {
+      if (customOnChange) {
+        customOnChange(e);
+      } else {
+        registeredInput.onChange(e);
+      }
+    },
+  };
+
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
-      <StyledInput
-        className={className}
-        disabled={disabled || (type === 'checkbox' && isEditingLocked)}
-        max={max}
-        min={min}
-        name={registeredInput.name}
-        noOutline={noOutline}
-        readOnly={readOnly || noOutline || isEditingLocked}
-        ref={registeredInput.ref}
-        step={step}
-        type={type}
-        onBlur={registeredInput.onBlur}
-        onChange={(e) => {
-          if (customOnChange) {
-            customOnChange(e);
-          } else {
-            registeredInput.onChange(e);
-          }
-        }}
-      />
+      <InputUnstyled slots={{ input: StyledInput }} {...modInputProps} />
     </Label>
   );
 }

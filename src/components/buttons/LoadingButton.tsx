@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { LoadingSpinner } from '../LoadingSpinner';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 import { BaseButton } from './BaseButton';
 
 type LoadingButtonBaseProps = {
@@ -52,7 +52,9 @@ export function LoadingButton({
       {loading ? (
         <Spinner title="Loading" titleId="loading-button" />
       ) : (
-        <Body>{label}</Body>
+        <Text as="span" variant="body">
+          {label}
+        </Text>
       )}
     </Button>
   );

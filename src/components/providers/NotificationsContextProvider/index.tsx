@@ -14,7 +14,7 @@ const NotificationsList = styled(FlexBox)`
   position: fixed;
   right: 0;
   top: 0;
-  overflow: scroll;
+  overflow: auto;
   max-height: 100vh;
   z-index: 8888;
 `;
@@ -67,9 +67,10 @@ export function NotificationsContextProvider({
     <NotificationsContext.Provider value={contextValue}>
       {children}
       {Boolean(notifications.length) && (
-        <NotificationsList column gap={12} p={16}>
-          {notifications.map((notification) => (
+        <NotificationsList flexDirection="column" gap={12} padding={16}>
+          {notifications.map((notification, i) => (
             <NotificationItem
+              index={i}
               key={notification.id}
               notification={notification}
               removeNotifications={removeNotifications}

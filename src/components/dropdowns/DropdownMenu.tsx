@@ -6,8 +6,7 @@ import { TextButton } from '../buttons/TextButton';
 import { Divider } from '../Divider';
 import { Link } from '../Link';
 import { Pane } from '../Pane';
-import { Body } from '../typography/Body';
-import { SubBody } from '../typography/SubBody';
+import { Text } from '../Text';
 
 const DropdownWrapper = styled.div`
   position: relative;
@@ -48,7 +47,7 @@ const DropdownButton = styled(TextButton)`
   padding: ${({ theme }) => `${theme.spacing[4]} ${theme.spacing[8]}`};
 `;
 
-const DropdownLabel = styled(SubBody)`
+const DropdownLabel = styled(Text)`
   text-align: center;
   padding: ${({ theme }) => `${theme.spacing[12]} ${theme.spacing[8]}`};
   user-select: none;
@@ -82,12 +81,12 @@ export interface DropdownMenuProps {
 interface MenuItemProps {
   item: MenuItemObj;
 }
-const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
+function MenuItem({ item }: MenuItemProps) {
   switch (item.type) {
     case 'link':
       return (
         <DropdownLink href={item.href}>
-          <Body>{item.text}</Body>
+          <Text variant="body">{item.text}</Text>
         </DropdownLink>
       );
     case 'button':
@@ -95,16 +94,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ item }) => {
         <DropdownButton label={item.text} transparent onClick={item.onClick} />
       );
     case 'label':
-      return <DropdownLabel>-- {item.text} --</DropdownLabel>;
+      return <DropdownLabel variant="body-sm">-- {item.text} --</DropdownLabel>;
     default:
       return <>{item.component}</>;
   }
-};
+}
 
-export const DropdownMenu: React.FC<DropdownMenuProps> = ({
-  menuItems,
-  children,
-}) => {
+export function DropdownMenu({ menuItems, children }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen: MouseEventHandler = (e) => {
@@ -128,7 +124,7 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       <DropdownPane isHidden={!isOpen} shadowed>
         {menuItems.map((item, i) => (
           // eslint-disable-next-line react/no-array-index-key
-          <ItemWrapper column key={`${item.type}-${i}`}>
+          <ItemWrapper flexDirection="column" key={`${item.type}-${i}`}>
             <MenuItem item={item} />
             {i !== menuItems.length - 1 && <Divider color="accentLight" />}
           </ItemWrapper>
@@ -136,4 +132,4 @@ export const DropdownMenu: React.FC<DropdownMenuProps> = ({
       </DropdownPane>
     </DropdownWrapper>
   );
-};
+}

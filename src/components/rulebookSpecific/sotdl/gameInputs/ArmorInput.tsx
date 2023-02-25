@@ -5,7 +5,7 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { SubBody } from '~/components/typography/SubBody';
+import { Text } from '~/components/Text';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlArmor, SotdlCharacterData } from '~/typings/sotdl/characterData';
@@ -33,7 +33,7 @@ interface ArmorFieldProps {
   onDelete: (index: number) => void;
 }
 
-const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
+function ArmorField({ index, onDelete }: ArmorFieldProps) {
   const { setValue, watch } = useFormContext();
   const { isEditMode } = useContext(EditContext);
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -62,8 +62,8 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
             name="active_armor_index"
           />
         </Label>
-        <FlexBox column mx={8}>
-          <GridBox gridTemplateColumns="6fr 2fr" mb={8}>
+        <FlexBox flexDirection="column" marginX={8}>
+          <GridBox gridTemplateColumns="6fr 2fr" marginBottom={8}>
             <TextInput<SotdlCharacterData>
               label="Name"
               name={`armors.${index}.armor_name`}
@@ -113,20 +113,30 @@ const ArmorField: React.FC<ArmorFieldProps> = ({ index, onDelete }) => {
       </GridBox>
     </GridBox>
   );
-};
+}
 
-const HeaderRow: React.FC = () => (
-  <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
-    <GridBox gridTemplateColumns="1fr 7fr">
-      <SubBody>Active</SubBody>
-      <SubBody bold>Name</SubBody>
+function HeaderRow() {
+  return (
+    <GridBox columns={3} gridTemplateColumns={armorTemplateColums}>
+      <GridBox gridTemplateColumns="1fr 7fr">
+        <Text as="p" variant="body-sm">
+          Active
+        </Text>
+        <Text as="p" fontWeight="bold" variant="body-sm">
+          Name
+        </Text>
+      </GridBox>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Defense
+      </Text>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Notes
+      </Text>
     </GridBox>
-    <SubBody bold>Defense</SubBody>
-    <SubBody bold>Notes</SubBody>
-  </GridBox>
-);
+  );
+}
 
-export const ArmorInput: React.FC = () => {
+export function ArmorInput() {
   const isLessThanSm = useBreakpointsLessThan('sm');
   return (
     <FormSection columns={1} isCollapsible title="Armor">
@@ -141,4 +151,4 @@ export const ArmorInput: React.FC = () => {
       </AddAnotherMultiField>
     </FormSection>
   );
-};
+}

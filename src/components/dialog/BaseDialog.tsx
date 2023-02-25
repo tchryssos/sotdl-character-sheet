@@ -39,7 +39,7 @@ const StyledDialog = styled(ModalUnstyled)<BaseDialogProps>({
 const DialogBox = styled(FlexBox)(({ theme }) => ({
   borderColor: theme.colors.accentLight,
   borderStyle: 'solid',
-  borderWidth: theme.border.borderWidth[1],
+  borderWidth: theme.borderWidth[1],
 }));
 
 export function BaseDialog({
@@ -65,10 +65,10 @@ export function BaseDialog({
       <StyledDialog {...rest} open={open} slots={{ backdrop: Backdrop }}>
         <DialogBox
           backgroundColor="background"
-          column
+          flexDirection="column"
           gap={16}
           maxWidth={maxWidth}
-          p={32}
+          padding={32}
           width="100%"
         >
           {children}

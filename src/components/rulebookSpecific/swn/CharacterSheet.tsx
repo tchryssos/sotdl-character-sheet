@@ -1,8 +1,8 @@
-import { Title } from '~/components/typography/Title';
+import { Text } from '~/components/Text';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
 
-export const CharacterSheet: React.FC = () => {
+export function CharacterSheet() {
   const {
     isEditMode,
     setIsEditMode,
@@ -13,5 +13,5 @@ export const CharacterSheet: React.FC = () => {
   } = useSheetState();
   useSheetHotkeys(isEditMode, setIsEditMode);
 
-  return <Title>SWN</Title>;
-};
+  return <Text as="h2">SWN</Text>;
+}

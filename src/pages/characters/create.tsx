@@ -11,8 +11,7 @@ import { FormSection } from '~/components/form/FormSection';
 import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
-import { Body } from '~/components/typography/Body';
-import { Title } from '~/components/typography/Title';
+import { Text } from '~/components/Text';
 import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
@@ -43,7 +42,7 @@ to {
 // in the animation below in RulebookLink
 const RulebookAscii = styled(AsciiText)``;
 
-const RulebookTitle = styled(Title)`
+const RulebookTitle = styled(Text)`
   z-index: 2;
 `;
 
@@ -71,7 +70,7 @@ const RulebookLink = styled(Link)`
 `;
 
 const RulebookBox = styled(FlexBox)(({ theme }) => ({
-  border: `${theme.border.borderWidth[1]} solid ${theme.colors.text}`,
+  border: `${theme.borderWidth[1]} solid ${theme.colors.text}`,
   position: 'relative',
   padding: theme.spacing[24],
   [theme.breakpoints.md]: {
@@ -115,7 +114,7 @@ function SelectRulebook({ rulebooks }: SelectRulebookProps) {
                     {sample(Object.values(ASCII_ART).slice(0))}
                   </RulebookAscii>
                 </RulebookFigure>
-                <RulebookTitle>{rb.fullName}</RulebookTitle>
+                <RulebookTitle as="h2">{rb.fullName}</RulebookTitle>
               </RulebookBox>
             </RulebookLink>
           </li>
@@ -165,9 +164,8 @@ function NewCharacterPage() {
           titleId="new-char-rulebook-loading"
         />
       ) : hasError ? (
-        <Body>Error fetching rulebooks, try again later</Body>
+        <Text as="p">Error fetching rulebooks, try again later</Text>
       ) : (
-        // TODO: Restrict to only SOTDL, since that's all we support
         <SelectRulebook
           rulebooks={rulebooks.filter((r) => r.name === SOTDL_NAME)}
         />

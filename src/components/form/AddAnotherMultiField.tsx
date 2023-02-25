@@ -7,7 +7,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { KeyOfListField, ListFieldRecord } from '~/typings/util';
 
 import { Box } from '../box/Box';
-import { SubBody } from '../typography/SubBody';
+import { Text } from '../Text';
 import { AddAnotherButton } from './AddAnotherButton';
 
 type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
@@ -97,9 +97,9 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
         </ChildContainer>
       ))}
       {!controlledFields.length && (
-        <SubBody italic>
+        <Text as="p" fontStyle="italic" variant="body-sm">
           Empty (use edit mode to add some {parentFieldName})
-        </SubBody>
+        </Text>
       )}
     </>
   );

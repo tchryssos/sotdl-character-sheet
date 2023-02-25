@@ -6,7 +6,7 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { SubBody } from '~/components/typography/SubBody';
+import { Text } from '~/components/Text';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlCharacterData, SotdlWeapon } from '~/typings/sotdl/characterData';
@@ -50,7 +50,7 @@ const createWeaponFieldName = (
   index: number
 ): `weapons.${number}.${keyof SotdlWeapon}` => `weapons.${index}.${name}`;
 
-const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
+function WeaponField({ index, onDelete }: WeaponFieldProps) {
   const { setValue, watch } = useFormContext();
   const { isEditMode } = useContext(EditContext);
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -79,8 +79,8 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
             name="active_weapon_index"
           />
         </SmWeaponActiveLabel>
-        <FlexBox column mx={8}>
-          <GridBox gridTemplateColumns="6fr 2fr" mb={8}>
+        <FlexBox flexDirection="column" marginX={8}>
+          <GridBox gridTemplateColumns="6fr 2fr" marginBottom={8}>
             <TextInput<SotdlCharacterData>
               label="Name"
               name={createWeaponFieldName('weapon_name', index)}
@@ -138,21 +138,33 @@ const WeaponField: React.FC<WeaponFieldProps> = ({ index, onDelete }) => {
       </GridBox>
     </GridBox>
   );
-};
+}
 
-const WeaponHeader: React.FC = () => (
-  <GridBox gridTemplateColumns={weaponTemplateColumns}>
-    <GridBox gridTemplateColumns="1fr 7fr">
-      <SubBody>Active</SubBody>
-      <SubBody bold>Name</SubBody>
+function WeaponHeader() {
+  return (
+    <GridBox gridTemplateColumns={weaponTemplateColumns}>
+      <GridBox gridTemplateColumns="1fr 7fr">
+        <Text as="p" variant="body-sm">
+          Active
+        </Text>
+        <Text as="p" fontWeight="bold" variant="body-sm">
+          Name
+        </Text>
+      </GridBox>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Hands
+      </Text>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Damage
+      </Text>
+      <Text as="p" fontWeight="bold" variant="body-sm">
+        Notes
+      </Text>
     </GridBox>
-    <SubBody bold>Hands</SubBody>
-    <SubBody bold>Damage</SubBody>
-    <SubBody bold>Notes</SubBody>
-  </GridBox>
-);
+  );
+}
 
-export const WeaponInput: React.FC = () => {
+export function WeaponInput() {
   const isLessThanSm = useBreakpointsLessThan('sm');
 
   // const weapons = watch(FIELD_NAMES.weapons.fieldName);
@@ -169,4 +181,4 @@ export const WeaponInput: React.FC = () => {
       </AddAnotherMultiField>
     </FormSection>
   );
-};
+}

@@ -9,8 +9,7 @@ import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
-import { Body } from '~/components/typography/Body';
-import { SubBody } from '~/components/typography/SubBody';
+import { Text } from '~/components/Text';
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { fetchUserCharacters } from '~/logic/api/client/fetchUserCharacters';
 import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
@@ -30,7 +29,7 @@ const CharactersSection = styled(FormSection)`
 const CharacterLink = styled(Link)`
   padding: ${({ theme }) => theme.spacing[4]};
   border: ${({ theme }) =>
-    `${theme.border.borderWidth[1]} solid ${theme.colors.accentLight}`};
+    `${theme.borderWidth[1]} solid ${theme.colors.accentLight}`};
 `;
 
 const Caps = styled.span`
@@ -87,22 +86,26 @@ function ProfilePage() {
                       href={createCharacterRoute(c.id, c.rulebookName)}
                       key={c.id}
                     >
-                      <FlexBox column>
+                      <FlexBox flexDirection="column">
                         <FlexBox>
-                          <Body>{c.name}</Body>
+                          <Text as="span" variant="body">
+                            {c.name}
+                          </Text>
                         </FlexBox>
-                        <SubBody>
+                        <Text as="p" variant="body-sm">
                           <Caps>{c.rulebookName}</Caps>
                           {level !== undefined || ancestry ? ' - ' : ''}
                           {level !== undefined ? `Level ${level} ` : ''}
                           {`${ancestry ? `${ancestry}` : ''}`}
-                        </SubBody>
+                        </Text>
                       </FlexBox>
                     </CharacterLink>
                   );
                 })
               ) : (
-                <Body>No characters for this user.</Body>
+                <Text as="p" variant="body">
+                  No characters for this user.
+                </Text>
               )}
             </CharactersSection>
           </ProfileWrapper>

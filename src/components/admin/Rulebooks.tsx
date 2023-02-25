@@ -14,7 +14,7 @@ import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
 import { TextAreaInput } from '../form/TextAreaInput';
 import { TextInput } from '../form/TextInput';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 
 type NewRulebook = Omit<rulebook, 'id' | 'createdOn' | 'lastModifiedOn'>;
 
@@ -131,7 +131,9 @@ export const Rulebooks: React.FC = () => {
 
   return hasError ? (
     <FormSection isCollapsible={false} title="Edit Rulebooks">
-      <Body>Something went wrong fetching rulebooks. Please try again.</Body>
+      <Text as="p" variant="body">
+        Something went wrong fetching rulebooks. Please try again.
+      </Text>
     </FormSection>
   ) : (
     <Form<NewRulebook>

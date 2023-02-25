@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
 import { Close } from '~/components/icons/Close';
-import { Body } from '~/components/typography/Body';
-import { Caption } from '~/components/typography/Caption';
-import { SubBody } from '~/components/typography/SubBody';
+import { Text } from '~/components/Text';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 import { timeAgo } from '~/logic/utils/dates/timeAgo';
@@ -19,6 +17,7 @@ import { NotificationIcon } from './NotificationIcon';
 interface NotificationItemProps {
   notification: RpgNotification;
   removeNotifications: NotificationsContext['removeNotifications'];
+  index: number;
 }
 
 const Item = styled(GridBox)`
@@ -28,7 +27,10 @@ const Item = styled(GridBox)`
 export function NotificationItem({
   notification,
   removeNotifications,
+  index,
 }: NotificationItemProps) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const initializedRef = useRef(false);
   const { colorMode } = useContext(ThemeContext);
   const { id, message, title, createdOn } = notification;
 
@@ -36,26 +38,48 @@ export function NotificationItem({
     removeNotifications([id]);
   };
 
+  useEffect(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      // https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/dialog_role#required_javascript_features
+      buttonRef.current?.focus();
+    }
+  }, []);
+
+  const titleId = `dialog-title-${index}`;
+  const descriptionId = `dialog-description-${index}`;
+
   return (
     <Item
+      aria-describedby={message ? descriptionId : undefined}
+      aria-labelledby={titleId}
       backgroundColor={colorMode === 'dark' ? 'background' : 'accentLight'}
       borderColor="text"
       borderStyle="solid"
       borderWidth={1}
       columnGap={16}
       gridTemplateColumns="auto 1fr auto"
-      p={16}
+      padding={16}
+      role="dialog"
       width={pxToRem(380)}
     >
       <NotificationIcon type={notification.type} />
-      <FlexBox column gap={4}>
-        <Body>{title}</Body>
-        {message && <SubBody color="textAccent">{message}</SubBody>}
+      <FlexBox flexDirection="column" gap={4}>
+        <Text as="h3" id={titleId} variant="body">
+          {title}
+        </Text>
+        {message && (
+          <Text as="p" color="textAccent" id={descriptionId} variant="body-sm">
+            {message}
+          </Text>
+        )}
         {createdOn && (
-          <Caption color="textAccent">{timeAgo(createdOn)}</Caption>
+          <Text as="p" color="textAccent" variant="body-xs">
+            {timeAgo(createdOn)}
+          </Text>
         )}
       </FlexBox>
-      <IconButton onClick={removeNotification}>
+      <IconButton ref={buttonRef} onClick={removeNotification}>
         <Close title="Remove notification" />
       </IconButton>
     </Item>

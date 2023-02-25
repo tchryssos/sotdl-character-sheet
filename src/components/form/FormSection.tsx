@@ -14,7 +14,7 @@ import { CollapseButton } from '../buttons/CollapseButton';
 import { IconButton } from '../buttons/IconButton';
 import { Invisible } from '../icons/Invisible';
 import { Visible } from '../icons/Visible';
-import { Body } from '../typography/Body';
+import { Text } from '../Text';
 
 interface FormSectionProps {
   title: string;
@@ -32,7 +32,7 @@ const TitleBox = styled(FlexBox)`
   position: relative;
 `;
 
-const Text = styled(Body)<
+const FormTitle = styled(Text)<
   Pick<FormSectionProps, 'isCollapsible'> & { isEditMode: boolean }
 >(({ isEditMode, isCollapsible, theme }) => ({
   whiteSpace: 'nowrap',
@@ -51,7 +51,7 @@ const Section = styled(FlexBox)<{ addMargin: boolean }>`
 
 const createCollapsibleStyles = (theme: Theme, borderless?: boolean) => css`
   border-color: ${borderless ? 'transparent' : theme.colors.accentHeavy};
-  border-width: ${borderless ? 0 : theme.border.borderWidth[1]};
+  border-width: ${borderless ? 0 : theme.borderWidth[1]};
   border-style: solid;
 `;
 
@@ -92,7 +92,7 @@ const CollapseToggle = styled(CollapseButton)`
   bottom: -${pxToRem(6)};
 `;
 
-export const FormSection: React.FC<FormSectionProps> = ({
+export function FormSection({
   title,
   children,
   columns,
@@ -102,7 +102,7 @@ export const FormSection: React.FC<FormSectionProps> = ({
   visibilityTitle,
   borderless,
   gridTemplateColumns,
-}) => {
+}: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
   const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
@@ -155,9 +155,9 @@ export const FormSection: React.FC<FormSectionProps> = ({
       <Section
         addMargin={isCollapsible || isEditMode}
         className={className}
-        column
+        flexDirection="column"
       >
-        <FlexBox alignItems="flex-end" ml={borderless ? 0 : 4}>
+        <FlexBox alignItems="flex-end" marginLeft={borderless ? 0 : 4}>
           <TitleBox>
             {isCollapsible && (
               <CollapseToggle
@@ -167,9 +167,13 @@ export const FormSection: React.FC<FormSectionProps> = ({
                 onChangeExpanded={onChangeExpanded}
               />
             )}
-            <Text isCollapsible={isCollapsible} isEditMode={isEditMode} italic>
+            <FormTitle
+              fontStyle="italic"
+              isCollapsible={isCollapsible}
+              isEditMode={isEditMode}
+            >
               {title}
-            </Text>
+            </FormTitle>
             {isEditMode && canToggleVisibility && (
               <VisibilityButton onClick={onChangeVisibility}>
                 {isVisible ? (
@@ -186,16 +190,16 @@ export const FormSection: React.FC<FormSectionProps> = ({
               </VisibilityButton>
             )}
           </TitleBox>
-          {!borderless && <Line ml={8} />}
+          {!borderless && <Line marginLeft={8} />}
         </FlexBox>
         <Container
           borderless={borderless}
           columns={columns}
           gridTemplateColumns={gridTemplateColumns}
           isOpen={isOpen}
-          pt={borderless ? 16 : undefined}
-          px={8}
-          py={borderless ? 0 : 16}
+          paddingTop={borderless ? 16 : undefined}
+          paddingX={8}
+          paddingY={borderless ? 0 : 16}
         >
           {children}
         </Container>
@@ -204,4 +208,4 @@ export const FormSection: React.FC<FormSectionProps> = ({
     );
   }
   return null;
-};
+}

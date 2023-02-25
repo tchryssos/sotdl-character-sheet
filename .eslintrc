@@ -30,12 +30,12 @@
     "no-confusing-arrow": "off",
     "implicit-arrow-linebreak": "off",
     "operator-linebreak": "off",
-    "prefer-arrow-callback": "warn",
     "semi": "off",
     "indent": "off",
     "comma-dangle": "off",
     "function-paren-newline": "off",
     "no-shadow": "off", // ts-rule below
+    "prefer-arrow-callback": ["warn", { "allowNamedFunctions": true }],
 
     // import
     "import/no-named-as-default": "off",
