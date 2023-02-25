@@ -67,7 +67,7 @@ export function ConfirmationDialog({
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >
-      <Text as="h2" id={labeledById} variant="title-xl">
+      <Text as="h2" id={labeledById}>
         {title}
       </Text>
       <Text as="p" id={describedById}>
