@@ -22,27 +22,34 @@ type TextProps = AllowedCommonCssProps &
 type VariantOrAs = NonNullable<TextProps['variant'] | TextProps['as']>;
 
 const getFontSize = (theme: Theme, variantOrAs: VariantOrAs) => {
+  const bodySize = theme.fontSize[18];
+  const bodyLgSize = theme.fontSize[20];
+  const titleSmSize = theme.fontSize[24];
+  const titleSize = theme.fontSize[32];
+  // const titleLgSize = theme.fontSize[40];
+  const titleXlSize = theme.fontSize[56];
+
   const fontSizeLookup: Record<VariantOrAs, string> = {
     // Variants
     'body-xs': theme.fontSize[14],
     'body-sm': theme.fontSize[16],
-    body: theme.fontSize[18],
-    'body-lg': theme.fontSize[20],
-    'title-sm': theme.fontSize[24],
-    title: theme.fontSize[32],
+    body: bodySize,
+    'body-lg': bodyLgSize,
+    'title-sm': titleSmSize,
+    title: titleSize,
     'title-lg': theme.fontSize[40],
-    'title-xl': theme.fontSize[56],
+    'title-xl': titleXlSize,
 
     // As
-    h1: theme.fontSize[56],
-    h2: theme.fontSize[32],
-    h3: theme.fontSize[24],
-    h4: theme.fontSize[20],
-    h5: theme.fontSize[20],
-    h6: theme.fontSize[20],
-    p: theme.fontSize[16],
-    span: theme.fontSize[16],
-    label: theme.fontSize[16],
+    h1: titleXlSize,
+    h2: titleSize,
+    h3: titleSmSize,
+    h4: bodyLgSize,
+    h5: bodyLgSize,
+    h6: bodyLgSize,
+    p: bodySize,
+    span: bodySize,
+    label: bodySize,
   };
 
   const fontSize = fontSizeLookup[variantOrAs];
