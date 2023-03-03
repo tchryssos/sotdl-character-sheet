@@ -45,7 +45,8 @@ const createGlobalStyles = (theme: Theme) => css`
   select,
   textarea,
   ul,
-  li {
+  li,
+  a {
     box-sizing: border-box;
   }
   ul {
@@ -72,6 +73,12 @@ const createGlobalStyles = (theme: Theme) => css`
   ul,
   li {
     ${marPadZero};
+  }
+  li {
+    list-style: none;
+  }
+  ul {
+    list-style: none;
   }
 `;
 

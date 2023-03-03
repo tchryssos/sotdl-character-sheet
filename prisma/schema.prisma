@@ -18,6 +18,7 @@ model user {
   characters     character[]
   email          String      @unique
   isPaid         Boolean     @default(false)
+  displayName    String      @default("")
 }
 
 model rulebook {
