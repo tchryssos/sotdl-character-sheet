@@ -23,20 +23,27 @@ interface ColorModeProps {
   colorModeKey: string;
 }
 
-export const ColorMode: React.FC<ColorModeProps> = ({ colorModeKey }) => {
+export function ColorMode({ colorModeKey }: ColorModeProps) {
   const { watch, setValue } = useFormContext();
   const { setColorMode } = useContext(ThemeContext);
 
   const colorMode = watch(colorModeKey);
 
   useEffect(() => {
-    const savedColorMode = globalThis.localStorage.getItem(
+    // First, check if the user already has a local storage color mode set
+    let savedColorMode = globalThis.localStorage.getItem(
       colorModeKey
     ) as ColorModeType | null;
-    if (savedColorMode) {
-      setColorMode(savedColorMode);
-      setValue(colorModeKey, savedColorMode);
+    // If not, check if the user is reporting a system preference
+    if (!savedColorMode) {
+      if (globalThis.matchMedia('(prefers-color-scheme: dark)').matches) {
+        savedColorMode = 'dark';
+      } else {
+        savedColorMode = 'light';
+      }
     }
+    setColorMode(savedColorMode);
+    setValue(colorModeKey, savedColorMode);
   }, [setColorMode, setValue, colorModeKey]);
 
   useEffect(() => {
@@ -52,4 +59,4 @@ export const ColorMode: React.FC<ColorModeProps> = ({ colorModeKey }) => {
       options={options}
     />
   );
-};
+}

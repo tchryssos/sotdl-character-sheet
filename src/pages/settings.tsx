@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useContext } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
@@ -9,23 +8,19 @@ import { SettingsNav } from '~/components/nav/SettingsNav';
 import { ColorMode } from '~/components/settings/ColorMode';
 import { ThemeContext } from '~/logic/contexts/themeContext';
 
-const SettingsWrapper = styled(GridBox)`
-  width: 100%;
-`;
-
 export const colorModeKey = 'colorMode';
 
-const SettingsPage: React.FC = () => {
+function SettingsPage() {
   const { colorMode } = useContext(ThemeContext);
-  const defaulValues = {
+  const defaultValues = {
     [colorModeKey]: colorMode,
   };
 
   return (
     <Layout meta="rpg sheet settings page" title="Settings">
       <SettingsNav />
-      <SettingsWrapper columns={1}>
-        <Form defaultValues={defaulValues} onSubmit={() => null}>
+      <GridBox columns={1} width="100%">
+        <Form defaultValues={defaultValues} onSubmit={() => null}>
           <FormSection
             canToggleVisibility={false}
             isCollapsible={false}
@@ -34,9 +29,9 @@ const SettingsPage: React.FC = () => {
             <ColorMode colorModeKey={colorModeKey} />
           </FormSection>
         </Form>
-      </SettingsWrapper>
+      </GridBox>
     </Layout>
   );
-};
+}
 
 export default SettingsPage;
