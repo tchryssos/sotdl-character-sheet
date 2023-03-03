@@ -8,7 +8,7 @@ import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
 import { CharactersSection } from '~/components/profile/CharactersSection';
 import { Text } from '~/components/Text';
-import { SHORT_DATE_FORMAT } from '~/constants/dates';
+import { US_SHORT_DATE_FORMAT } from '~/constants/dates';
 import { prisma } from '~/logic/utils/prisma';
 import { StrictCharacter } from '~/typings/characters';
 import { StrictUser } from '~/typings/user';
@@ -42,7 +42,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
               Doggy Man
             </Text>
             <Text as="p" variant="body-xs">
-              Joined {format(userMeta.createdOn, SHORT_DATE_FORMAT)}
+              Joined {format(userMeta.createdOn, US_SHORT_DATE_FORMAT)}
             </Text>
           </FlexBox>
         </FlexBox>
