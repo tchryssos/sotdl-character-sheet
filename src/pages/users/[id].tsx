@@ -16,12 +16,6 @@ import { StrictUser } from '~/typings/user';
 
 import FourOhFour from '../404';
 
-const DummyImage = styled.div`
-  height: 100px;
-  width: 100px;
-  background-color: ${({ theme }) => theme.colors.accentHeavy};
-`;
-
 interface ProfilePageProps {
   userMeta?: Pick<StrictUser, 'createdOn' | 'isPaid'>;
   userCharacters: StrictCharacter[];
@@ -37,7 +31,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
       <ProfileNav />
       <GridBox columns={1} gap={16} width="100%">
         <FlexBox alignItems="center" gap={16}>
-          <RpgIcon coords={[10, 4]} size={16} />
+          <RpgIcon coords={[1, 10]} size={100} />
           <FlexBox flexDirection="column" gap={8}>
             <Text as="h1" variant="title">
               Doggy Man

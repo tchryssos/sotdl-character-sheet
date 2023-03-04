@@ -7,40 +7,44 @@ interface RpgIconProps {
 }
 
 const sheetSize = 512;
-const iconsRowCols = 21;
-const iconBlockSize = 8;
+const iconSize = 16;
+const iconBlockSize = iconSize / 2;
 
 const getIconOffset = (index: number, mod: number) => {
   const initialOffset = iconBlockSize;
-  const iconSize = iconBlockSize * 2;
 
-  return initialOffset + index * (iconSize + iconBlockSize);
+  return (initialOffset + index * (iconSize + iconBlockSize)) * mod;
 };
 
-const IconImage = styled(Image)<Pick<RpgIconProps, 'coords'>>(({ coords }) => ({
+interface IconImageProps extends Pick<RpgIconProps, 'coords'> {
+  sizeMod: number;
+}
+
+const IconImage = styled(Image)<IconImageProps>(({ coords, sizeMod }) => ({
   aspectRatio: '1/1',
   transform: `translate(-${getIconOffset(
     coords[0],
-    iconsRowCols
-  )}px, -${getIconOffset(coords[1], iconsRowCols)}px)`,
+    sizeMod
+  )}px, -${getIconOffset(coords[1], sizeMod)}px)`,
 }));
 
 const IconWrapper = styled.span<Pick<RpgIconProps, 'size'>>(({ size }) => ({
   height: size,
   width: size,
   overflow: 'hidden',
-  border: '1px solid red',
 }));
 
 export function RpgIcon({ coords, size }: RpgIconProps) {
+  const sizeMod = size / iconSize;
   return (
     <IconWrapper size={size}>
       <IconImage
         alt="test"
         coords={coords}
-        height={sheetSize}
+        height={sheetSize * sizeMod}
+        sizeMod={sizeMod}
         src="/icon-sheet.png"
-        width={sheetSize}
+        width={sheetSize * sizeMod}
       />
     </IconWrapper>
   );
