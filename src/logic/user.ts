@@ -1,5 +1,4 @@
-import { padStart, random } from 'lodash';
-
+import { RpgIcons } from '~/constants/icons';
 import { StrictSessionUser } from '~/typings/user';
 
 export const getNameFromUser = (user?: StrictSessionUser) => {
@@ -23,7 +22,7 @@ export const getIconIdxFromUrl = (imageUrl?: string) => {
       return iconIdx as `${number}`;
     }
   }
-  return padStart(String(random(0, 440)), 3, '0') as `${number}`;
+  return RpgIcons.DefaultGuy;
 };
 
 export const getIconFromUser = (user?: StrictSessionUser) => {

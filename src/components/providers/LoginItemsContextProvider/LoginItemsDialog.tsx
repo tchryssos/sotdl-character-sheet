@@ -20,7 +20,7 @@ export function LoginItemsDialog({ loginItems }: LoginItemsDialogProps) {
     <BaseDialog
       aria-describedby={labeledById}
       aria-labelledby={describedById}
-      open
+      open={false}
       size="full"
     >
       <Text as="h2" id={labeledById}>
