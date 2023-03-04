@@ -6,6 +6,7 @@ import { LoginItem } from '~/typings/loginItems';
 import { StrictSessionUser } from '~/typings/user';
 
 import { determineLoginItems } from './determineLoginItems';
+import { LoginItemsDialog } from './LoginItemsDialog';
 
 interface LoginItemsContextProviderProps {
   children: React.ReactNode;
@@ -34,6 +35,7 @@ export function LoginItemsContextProvider({
 
   return (
     <LoginItemsContext.Provider value={value}>
+      <LoginItemsDialog loginItems={loginItems} />
       {children}
     </LoginItemsContext.Provider>
   );

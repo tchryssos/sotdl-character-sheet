@@ -8,7 +8,7 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { FlexBox } from '../box/FlexBox';
 
 export interface BaseDialogProps extends Omit<ModalUnstyledProps, 'children'> {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'full';
   children: React.ReactNode;
 }
 
@@ -55,6 +55,9 @@ export function BaseDialog({
       break;
     case 'lg':
       maxWidth = pxToRem(600);
+      break;
+    case 'full':
+      maxWidth = `calc(100% - ${pxToRem(32)})`;
       break;
     case 'md':
     default:
