@@ -31,8 +31,21 @@ interface ProfilePageProps {
 const iconSize = 64;
 const premiumSize = 16;
 
+// For now, all image urls are one of the pre-defined icon images
+// so we just look for the 3 digit icon image code in the url
+// and use that for our RpgIcon component
+const getIconIdx = (imageUrl?: string) => {
+  if (imageUrl) {
+    const iconIdx = imageUrl.match(/\d{3}/)?.[0];
+    if (iconIdx) {
+      return iconIdx;
+    }
+  }
+  return padStart(String(random(0, 440)), 3, '0');
+};
+
 function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
-  const [iconIdx] = useState(padStart(String(random(0, 440)), 3, '0'));
+  const [iconIdx] = useState(getIconIdx(userMeta?.imageUrl));
 
   if (!userMeta) {
     return <FourOhFour />;
@@ -49,7 +62,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
 
           <FlexBox flexDirection="column" gap={4}>
             <Text as="h1" variant="title">
-              {userMeta.displayName || 'Doggy Boy'}
+              {userMeta.displayName || 'Anonymous'}
             </Text>
             {userMeta.isPaid && (
               <FlexBox alignItems="center" gap={4}>
