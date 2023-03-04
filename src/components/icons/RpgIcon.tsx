@@ -26,6 +26,7 @@ const IconImage = styled(Image)<IconImageProps>(({ coords, sizeMod }) => ({
     coords[0],
     sizeMod
   )}px, -${getIconOffset(coords[1], sizeMod)}px)`,
+  imageRendering: 'pixelated',
 }));
 
 const IconWrapper = styled.span<Pick<RpgIconProps, 'size'>>(({ size }) => ({

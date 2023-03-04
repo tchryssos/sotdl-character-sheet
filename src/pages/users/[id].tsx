@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
 
@@ -31,7 +30,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
       <ProfileNav />
       <GridBox columns={1} gap={16} width="100%">
         <FlexBox alignItems="center" gap={16}>
-          <RpgIcon coords={[1, 10]} size={100} />
+          <RpgIcon coords={[0, 2]} size={100} />
           <FlexBox flexDirection="column" gap={8}>
             <Text as="h1" variant="title">
               Doggy Man
