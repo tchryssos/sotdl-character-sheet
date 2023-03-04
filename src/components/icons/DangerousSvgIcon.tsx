@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
+import DOMPurify from 'dompurify';
 import { SVGProps, useEffect, useState } from 'react';
 
 async function fetchAndParseSVG(url: string): Promise<string> {
@@ -7,7 +8,10 @@ async function fetchAndParseSVG(url: string): Promise<string> {
   const svgText = await response.text();
 
   const parser = new DOMParser();
-  const doc = parser.parseFromString(svgText, 'image/svg+xml');
+  const doc = parser.parseFromString(
+    DOMPurify.sanitize(svgText),
+    'image/svg+xml'
+  );
   const svgElement = doc.querySelector('svg');
 
   if (!svgElement) {
@@ -19,7 +23,7 @@ async function fetchAndParseSVG(url: string): Promise<string> {
 
 const FilledSvg = styled.svg`
   shape-rendering: crispEdges;
-  rect {
+  * {
     fill: ${({ theme }) => theme.colors.text};
   }
 `;
@@ -37,7 +41,7 @@ export function DangerousSvgIcon({ url, ...rest }: DangerousSvgIconProps) {
         const svgContent = await fetchAndParseSVG(url);
         setParsedSvg(svgContent);
       } catch (error) {
-        console.error('Error fetching and parsing SVG:', error);
+        setParsedSvg(null);
       }
     }
 

@@ -1,11 +1,9 @@
 import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
 
 import { Box } from '~/components/box/Box';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { DangerousSvgIcon } from '~/components/icons/DangerousSvgIcon';
 import { RpgIcon } from '~/components/icons/RpgIcon';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
@@ -24,6 +22,8 @@ interface ProfilePageProps {
   userCharacters: StrictCharacter[];
 }
 
+const iconSize = 64;
+
 function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
   if (!userMeta) {
     return <FourOhFour />;
@@ -34,7 +34,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
       <ProfileNav />
       <GridBox columns={1} gap={16} width="100%">
         <FlexBox alignItems="center" gap={16}>
-          <Box height={pxToRem(100)} width={pxToRem(100)}>
+          <Box height={pxToRem(iconSize)} width={pxToRem(iconSize)}>
             <RpgIcon iconIndex="000" />
           </Box>
 
