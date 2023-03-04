@@ -24,11 +24,11 @@ export function LoginItemsDialog({ loginItems }: LoginItemsDialogProps) {
       size="full"
     >
       <Text as="h2" id={labeledById}>
-        LOGIN ITEMS
+        {loginItems.length === 1 ? 'one more thing' : 'a few more things'}
       </Text>
       <Text as="p">
-        Something something something please do these login items now that you
-        an thank you
+        rpgsheet requires additional data to consider your account
+        &quot;complete&quot;. Please complete the following to proceed.
       </Text>
       {loginItems.map((item) => (
         <LoginFormItem item={item} key={item.id} />
