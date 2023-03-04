@@ -1,3 +1,3 @@
 export enum LoginItemTypes {
-  SetDisplayName = 'setDisplayName',
+  DisplayName = 'displayName',
 }

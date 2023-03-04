@@ -9,7 +9,17 @@ export const determineLoginItems = (user: StrictSessionUser): LoginItem[] => {
   const loginItems: LoginItem[] = [];
 
   if (!displayName) {
-    loginItems.push(createLoginItem(LoginItemTypes.SetDisplayName));
+    loginItems.push(
+      createLoginItem(LoginItemTypes.DisplayName, {
+        title: 'Set display name',
+        description:
+          'Set a display name for your account. This will be visible to other users. It does not need to be unique.',
+        defaultValues: {
+          [LoginItemTypes.DisplayName]: '',
+        },
+        required: false,
+      })
+    );
   }
 
   return loginItems;

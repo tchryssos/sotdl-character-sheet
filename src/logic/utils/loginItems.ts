@@ -5,11 +5,11 @@ import { LoginItem } from '~/typings/loginItems';
 
 export const createLoginItem = (
   type: LoginItemTypes,
-  required?: boolean
+  itemBody: Omit<LoginItem, 'id' | 'createdOn' | 'completed' | 'type'>
 ): LoginItem => ({
   id: uuid4(),
   createdOn: new Date(),
   completed: false,
-  required: Boolean(required),
   type,
+  ...itemBody,
 });

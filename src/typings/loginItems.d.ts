@@ -6,4 +6,9 @@ export interface LoginItem {
   required: boolean;
   completed: boolean;
   createdOn: Date;
+  title: string;
+  description: string;
+  defaultValues: {
+    [key: string]: string | boolean | number;
+  };
 }

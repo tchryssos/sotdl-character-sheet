@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FocusTrap } from '@mui/base';
 import ModalUnstyled, { ModalUnstyledProps } from '@mui/base/ModalUnstyled';
@@ -49,6 +50,8 @@ export function BaseDialog({
   ...rest
 }: BaseDialogProps) {
   let maxWidth = pxToRem(500);
+  const theme = useTheme();
+
   switch (size) {
     case 'sm':
       maxWidth = pxToRem(400);
@@ -57,7 +60,7 @@ export function BaseDialog({
       maxWidth = pxToRem(600);
       break;
     case 'full':
-      maxWidth = `calc(100% - ${pxToRem(32)})`;
+      maxWidth = pxToRem(theme.breakpointValues.lg);
       break;
     case 'md':
     default:
@@ -70,6 +73,7 @@ export function BaseDialog({
           backgroundColor="background"
           flexDirection="column"
           gap={16}
+          margin={16}
           maxWidth={maxWidth}
           padding={32}
           width="100%"

@@ -2,6 +2,8 @@ import { BaseDialog } from '~/components/dialog/BaseDialog';
 import { Text } from '~/components/Text';
 import { LoginItem } from '~/typings/loginItems';
 
+import { LoginFormItem } from './LoginFormItem';
+
 interface LoginItemsDialogProps {
   loginItems: LoginItem[];
 }
@@ -28,6 +30,9 @@ export function LoginItemsDialog({ loginItems }: LoginItemsDialogProps) {
         Something something something please do these login items now that you
         an thank you
       </Text>
+      {loginItems.map((item) => (
+        <LoginFormItem item={item} key={item.id} />
+      ))}
     </BaseDialog>
   );
 }
