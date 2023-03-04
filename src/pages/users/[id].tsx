@@ -12,6 +12,7 @@ import { ProfileNav } from '~/components/nav/ProfileNav';
 import { CharactersSection } from '~/components/profile/CharactersSection';
 import { Text } from '~/components/Text';
 import { US_SHORT_DATE_FORMAT } from '~/constants/dates';
+import { RpgIcons } from '~/constants/icons';
 import { prisma } from '~/logic/utils/prisma';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
@@ -20,11 +21,15 @@ import { StrictUser } from '~/typings/user';
 import FourOhFour from '../404';
 
 interface ProfilePageProps {
-  userMeta?: Pick<StrictUser, 'createdOn' | 'isPaid'>;
+  userMeta?: Pick<
+    StrictUser,
+    'createdOn' | 'isPaid' | 'imageUrl' | 'displayName'
+  >;
   userCharacters: StrictCharacter[];
 }
 
 const iconSize = 64;
+const premiumSize = 16;
 
 function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
   const [iconIdx] = useState(padStart(String(random(0, 440)), 3, '0'));
@@ -42,10 +47,20 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
             <RpgIcon iconIndex={String(iconIdx) as `${number}`} />
           </Box>
 
-          <FlexBox flexDirection="column" gap={8}>
+          <FlexBox flexDirection="column" gap={4}>
             <Text as="h1" variant="title">
-              Doggy Man
+              {userMeta.displayName || 'Doggy Boy'}
             </Text>
+            {userMeta.isPaid && (
+              <FlexBox alignItems="center" gap={4}>
+                <Box height={pxToRem(premiumSize)} width={pxToRem(premiumSize)}>
+                  <RpgIcon iconIndex={RpgIcons.Diamond} />
+                </Box>
+                <Text as="p" variant="body-xs">
+                  Premium
+                </Text>
+              </FlexBox>
+            )}
             <Text as="p" variant="body-xs">
               Joined {format(userMeta.createdOn, US_SHORT_DATE_FORMAT)}
             </Text>
@@ -98,6 +113,8 @@ export const getServerSideProps: GetServerSideProps = async (
         ? {
             createdOn: user.createdOn,
             isPaid: user.isPaid,
+            imageUrl: user.imageUrl,
+            displayName: user.displayName,
           }
         : undefined,
       userCharacters,
