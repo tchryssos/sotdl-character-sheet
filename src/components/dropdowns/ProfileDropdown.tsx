@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { ADMIN_PANEL_ROUTE, SETTINGS_ROUTE } from '~/constants/routing/client';
 import { createUsersRoute } from '~/constants/routing/shared';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { getNameFromUser } from '~/logic/hooks/useGetUserName';
+import { getNameFromUser } from '~/logic/user';
 import { StrictSessionUser } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';

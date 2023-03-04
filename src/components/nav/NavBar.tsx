@@ -1,14 +1,19 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
 import { HOME_ROUTE } from '~/constants/routing/client';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { useGetUserName } from '~/logic/hooks/useGetUserName';
+import { getIconFromUser, getNameFromUser } from '~/logic/user';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Spacing } from '~/typings/theme';
+import { StrictSessionUser } from '~/typings/user';
 
 import { LogoAscii } from '../ascii/LogoAscii';
+import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
+import { RpgIcon } from '../icons/RpgIcon';
 import { Link } from '../Link';
 import { Text } from '../Text';
 
@@ -77,8 +82,8 @@ export function NavBar({
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
-
-  const userName = useGetUserName();
+  const { user } = useUser();
+  const userName = getNameFromUser(user as StrictSessionUser);
 
   return (
     <Toolbar center flex={1}>
@@ -97,7 +102,14 @@ export function NavBar({
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
             {userName && !hasPortalContent && !isXxs && (
-              <Text as="p">{userName}</Text>
+              <FlexBox alignItems="center" gap={8}>
+                <Box height={pxToRem(18)} width={pxToRem(18)}>
+                  <RpgIcon
+                    iconIndex={getIconFromUser(user as StrictSessionUser)}
+                  />
+                </Box>
+                <Text as="p">{userName}</Text>
+              </FlexBox>
             )}
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>

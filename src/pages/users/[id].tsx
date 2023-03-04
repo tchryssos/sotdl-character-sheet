@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { padStart, random } from 'lodash';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
@@ -13,6 +12,7 @@ import { CharactersSection } from '~/components/profile/CharactersSection';
 import { Text } from '~/components/Text';
 import { US_SHORT_DATE_FORMAT } from '~/constants/dates';
 import { RpgIcons } from '~/constants/icons';
+import { getIconIdxFromUrl } from '~/logic/user';
 import { prisma } from '~/logic/utils/prisma';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
@@ -31,21 +31,8 @@ interface ProfilePageProps {
 const iconSize = 64;
 const premiumSize = 16;
 
-// For now, all image urls are one of the pre-defined icon images
-// so we just look for the 3 digit icon image code in the url
-// and use that for our RpgIcon component
-const getIconIdx = (imageUrl?: string) => {
-  if (imageUrl) {
-    const iconIdx = imageUrl.match(/\d{3}/)?.[0];
-    if (iconIdx) {
-      return iconIdx;
-    }
-  }
-  return padStart(String(random(0, 440)), 3, '0');
-};
-
 function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
-  const [iconIdx] = useState(getIconIdx(userMeta?.imageUrl));
+  const [iconIdx] = useState(getIconIdxFromUrl(userMeta?.imageUrl));
 
   if (!userMeta) {
     return <FourOhFour />;

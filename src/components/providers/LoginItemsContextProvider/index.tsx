@@ -1,5 +1,5 @@
 import { useUser } from '@auth0/nextjs-auth0';
-import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { LoginItemsContext } from '~/logic/contexts/loginItemsContext';
 import { LoginItem } from '~/typings/loginItems';
