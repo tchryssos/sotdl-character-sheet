@@ -1,8 +1,11 @@
 import { format } from 'date-fns';
 import { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
+import { Box } from '~/components/box/Box';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { DangerousSvgIcon } from '~/components/icons/DangerousSvgIcon';
 import { RpgIcon } from '~/components/icons/RpgIcon';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
@@ -10,6 +13,7 @@ import { CharactersSection } from '~/components/profile/CharactersSection';
 import { Text } from '~/components/Text';
 import { US_SHORT_DATE_FORMAT } from '~/constants/dates';
 import { prisma } from '~/logic/utils/prisma';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { StrictUser } from '~/typings/user';
 
@@ -30,7 +34,10 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
       <ProfileNav />
       <GridBox columns={1} gap={16} width="100%">
         <FlexBox alignItems="center" gap={16}>
-          <RpgIcon coords={[0, 2]} size={100} />
+          <Box height={pxToRem(100)} width={pxToRem(100)}>
+            <RpgIcon iconIndex="000" />
+          </Box>
+
           <FlexBox flexDirection="column" gap={8}>
             <Text as="h1" variant="title">
               Doggy Man

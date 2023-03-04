@@ -1,52 +1,18 @@
-import styled from '@emotion/styled';
-import Image from 'next/image';
+import { DangerousSvgIcon } from './DangerousSvgIcon';
 
 interface RpgIconProps {
-  coords: [number, number];
-  size: number;
+  iconIndex: `${number}${number}${number}`;
+  className?: string;
 }
 
-const sheetSize = 512;
-const iconSize = 16;
-const iconBlockSize = iconSize / 2;
-
-const getIconOffset = (index: number, mod: number) => {
-  const initialOffset = iconBlockSize;
-
-  return (initialOffset + index * (iconSize + iconBlockSize)) * mod;
-};
-
-interface IconImageProps extends Pick<RpgIconProps, 'coords'> {
-  sizeMod: number;
-}
-
-const IconImage = styled(Image)<IconImageProps>(({ coords, sizeMod }) => ({
-  aspectRatio: '1/1',
-  transform: `translate(-${getIconOffset(
-    coords[0],
-    sizeMod
-  )}px, -${getIconOffset(coords[1], sizeMod)}px)`,
-  imageRendering: 'pixelated',
-}));
-
-const IconWrapper = styled.span<Pick<RpgIconProps, 'size'>>(({ size }) => ({
-  height: size,
-  width: size,
-  overflow: 'hidden',
-}));
-
-export function RpgIcon({ coords, size }: RpgIconProps) {
-  const sizeMod = size / iconSize;
+export function RpgIcon({ iconIndex, className }: RpgIconProps) {
   return (
-    <IconWrapper size={size}>
-      <IconImage
-        alt="test"
-        coords={coords}
-        height={sheetSize * sizeMod}
-        sizeMod={sizeMod}
-        src="/icon-sheet.png"
-        width={sheetSize * sizeMod}
-      />
-    </IconWrapper>
+    <DangerousSvgIcon
+      className={className}
+      role="img"
+      url={`/icons/rpg-icon${iconIndex}.svg`}
+      viewBox="0 0 16 16"
+      xmlns="http://www.w3.org/2000/svg"
+    />
   );
 }
