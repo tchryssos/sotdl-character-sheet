@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 

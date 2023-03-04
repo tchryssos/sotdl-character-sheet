@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
+import { padStart, random } from 'lodash';
 import { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
 import { Box } from '~/components/box/Box';
 import { FlexBox } from '~/components/box/FlexBox';
@@ -25,6 +27,8 @@ interface ProfilePageProps {
 const iconSize = 64;
 
 function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
+  const [iconIdx] = useState(padStart(String(random(0, 440)), 3, '0'));
+
   if (!userMeta) {
     return <FourOhFour />;
   }
@@ -35,7 +39,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
       <GridBox columns={1} gap={16} width="100%">
         <FlexBox alignItems="center" gap={16}>
           <Box height={pxToRem(iconSize)} width={pxToRem(iconSize)}>
-            <RpgIcon iconIndex="000" />
+            <RpgIcon iconIndex={String(iconIdx) as `${number}`} />
           </Box>
 
           <FlexBox flexDirection="column" gap={8}>

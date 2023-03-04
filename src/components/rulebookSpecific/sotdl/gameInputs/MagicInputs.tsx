@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import capitalize from 'lodash.capitalize';
+import { capitalize } from 'lodash';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 

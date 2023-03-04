@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { TextareaAutosize } from '@mui/base';
-import startCase from 'lodash.startcase';
+import { startCase } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 
 import { TextInputProps } from '~/components/form/typings';

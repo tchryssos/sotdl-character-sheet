@@ -19,6 +19,7 @@ model user {
   email          String      @unique
   isPaid         Boolean     @default(false)
   displayName    String      @default("")
+  imageUrl       String      @default("")
 }
 
 model rulebook {

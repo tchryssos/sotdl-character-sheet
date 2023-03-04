@@ -1,4 +1,4 @@
-import capitalize from 'lodash.capitalize';
+import { capitalize } from 'lodash';
 import { useState } from 'react';
 
 import { FlexBox } from '../box/FlexBox';

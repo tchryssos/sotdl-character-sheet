@@ -1,7 +1,7 @@
 import { DangerousSvgIcon } from './DangerousSvgIcon';
 
 interface RpgIconProps {
-  iconIndex: `${number}${number}${number}`;
+  iconIndex: `${number}`;
   className?: string;
 }
 

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import sortBy from 'lodash.sortby';
+import { sortBy } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 

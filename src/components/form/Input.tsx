@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
 import { InputUnstyled } from '@mui/base';
-import startCase from 'lodash.startcase';
+import { startCase } from 'lodash';
 import { ChangeEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 

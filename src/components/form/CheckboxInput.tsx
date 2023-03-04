@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import startCase from 'lodash.startcase';
+import { startCase } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 
 import { CheckboxInputProps } from '~/components/form/typings';

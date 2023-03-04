@@ -1,5 +1,4 @@
-import camelCase from 'lodash.camelcase';
-import set from 'lodash.set';
+import { camelCase, set } from 'lodash';
 import { useRouter } from 'next/dist/client/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import sortBy from 'lodash.sortby';
+import { sortBy } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
 
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';

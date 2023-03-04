@@ -2,7 +2,7 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { rulebook } from '@prisma/client';
-import sample from 'lodash.sample';
+import { sample } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 
 import { AsciiFigure, AsciiText } from '~/components/ascii/Ascii';
