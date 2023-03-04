@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { HOME_ROUTE } from '~/constants/routing/client';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { useGetUserName } from '~/logic/hooks/useGetUserName';
 import { Spacing } from '~/typings/theme';
 
 import { LogoAscii } from '../ascii/LogoAscii';
@@ -53,10 +54,6 @@ const Title = styled(Text)`
   display: -webkit-inline-box;
   -webkit-box-orient: vertical;
   word-break: break-word;
-  font-size: ${({ theme }) => theme.fontSize.subBody};
-  ${({ theme }) => theme.breakpoints.xs} {
-    font-size: ${({ theme }) => theme.fontSize.body};
-  }
 `;
 
 const Portal = styled.div<{ flexGap: Spacing }>`
@@ -69,15 +66,19 @@ interface NavBarProps {
   title: string;
   setIconPortalNode: (node: HTMLDivElement) => void;
   dropdownMenuItems: DropdownMenuProps['menuItems'];
+  hasPortalContent: boolean;
 }
 
 export function NavBar({
   title,
   setIconPortalNode,
   dropdownMenuItems,
+  hasPortalContent,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
+
+  const userName = useGetUserName();
 
   return (
     <Toolbar center flex={1}>
@@ -87,10 +88,17 @@ export function NavBar({
             <HomeLink href={HOME_ROUTE}>
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
-            {title && <Title as="h2">{title}</Title>}
+            {title && (
+              <Title as="h2" variant={isXxs ? 'body-sm' : 'body'}>
+                {title}
+              </Title>
+            )}
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
+            {userName && !hasPortalContent && !isXxs && (
+              <Text as="p">{userName}</Text>
+            )}
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>
         </TopRow>

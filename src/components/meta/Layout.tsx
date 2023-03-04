@@ -57,6 +57,7 @@ export function Layout({ children, title, meta }: LayoutProps) {
       <Head meta={meta} title={docTitle} />
       <NavBar
         dropdownMenuItems={dropdownItems}
+        hasPortalContent={Boolean(iconPortalNode?.innerHTML)}
         setIconPortalNode={setIconPortalNodeCallback}
         title={navTitle}
       />
