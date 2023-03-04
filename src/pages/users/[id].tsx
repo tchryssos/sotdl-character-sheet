@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { RpgIcon } from '~/components/icons/RpgIcon';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
 import { CharactersSection } from '~/components/profile/CharactersSection';
@@ -36,7 +37,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
       <ProfileNav />
       <GridBox columns={1} gap={16} width="100%">
         <FlexBox alignItems="center" gap={16}>
-          <DummyImage />
+          <RpgIcon coords={[10, 4]} size={16} />
           <FlexBox flexDirection="column" gap={8}>
             <Text as="h1" variant="title">
               Doggy Man
