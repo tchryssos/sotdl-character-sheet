@@ -51,7 +51,7 @@ export const determineLoginItems = (user: StrictSessionUser): LoginItem[] => {
               // TS doesn't like the irrelevant mismatch between these types
               // so we override
               isPaid: String(submitUser.isPaid),
-              imageUrl: values[LoginItemTypes.DisplayName],
+              imageUrl: values[LoginItemTypes.ImageUrl],
             } as PatchUserData),
           }),
       })

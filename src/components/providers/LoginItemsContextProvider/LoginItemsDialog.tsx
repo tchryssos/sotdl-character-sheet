@@ -46,6 +46,12 @@ export function LoginItemsDialog({ loginItems }: LoginItemsDialogProps) {
           setActiveIdx={setActiveItemIdx}
         />
       ))}
+      {activeItemIdx + 1 === loginItems.length && (
+        <Text as="p" variant="body-xs">
+          You&apos;ll need to log out and log back in to see the changes to your
+          profile
+        </Text>
+      )}
     </BaseDialog>
   );
 }

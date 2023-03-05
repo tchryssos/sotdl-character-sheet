@@ -1,8 +1,9 @@
+/* eslint-disable react/no-array-index-key */
+import styled from '@emotion/styled';
 import { padStart, random, times } from 'lodash';
 import { useEffect, useState } from 'react';
-import { useForm, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
-import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
 import { TextButton } from '~/components/buttons/TextButton';
@@ -14,11 +15,19 @@ interface ImageUrlProps {
   item: LoginItem;
 }
 
+const IconSelectButton = styled(IconButton)<{ isActive: boolean }>(
+  ({ theme, isActive }) => ({
+    border: `${theme.borderWidth[1]} solid ${
+      isActive ? theme.colors.text : 'transparent'
+    }`,
+  })
+);
+
 const getIconIndxs = () =>
   times(12, () => padStart(String(random(0, 440)), 3, '0') as `${number}`);
 
 export function ImageUrl({ item }: ImageUrlProps) {
-  const { register, setValue } = useFormContext();
+  const { register, setValue, watch } = useFormContext();
   const [iconIdxs, setIconIdxs] = useState<`${number}`[]>(getIconIndxs());
 
   const atLeastXs = useBreakpointsAtLeast('xs');
@@ -29,22 +38,29 @@ export function ImageUrl({ item }: ImageUrlProps) {
     }
   }, [item.type, register]);
 
+  const selected = watch(item.type) as `${number}`;
+
   return (
     <>
       <GridBox columns={atLeastXs ? 6 : 3} justifyContent="center">
-        {iconIdxs.map((idx) => (
-          <IconButton
-            key={idx}
+        {iconIdxs.map((idx, i) => (
+          <IconSelectButton
+            isActive={selected === `/icons/rpg-icon${idx}.png`}
+            key={`${idx}-${i}`}
             size="lg"
             onClick={() => {
               setValue(item.type, `/icons/rpg-icon${idx}.png`);
             }}
           >
             <RpgIcon iconIndex={idx} />
-          </IconButton>
+          </IconSelectButton>
         ))}
       </GridBox>
-      <TextButton label="Shuffle" onClick={() => setIconIdxs(getIconIndxs())} />
+      <TextButton
+        label="Shuffle"
+        severity="secondary"
+        onClick={() => setIconIdxs(getIconIndxs())}
+      />
     </>
   );
 }
