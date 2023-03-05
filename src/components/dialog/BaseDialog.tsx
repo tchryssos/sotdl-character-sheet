@@ -5,12 +5,14 @@ import { FocusTrap } from '@mui/base';
 import ModalUnstyled, { ModalUnstyledProps } from '@mui/base/ModalUnstyled';
 
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { Spacing } from '~/typings/theme';
 
 import { FlexBox } from '../box/FlexBox';
 
 export interface BaseDialogProps extends Omit<ModalUnstyledProps, 'children'> {
   size?: 'sm' | 'md' | 'lg' | 'full';
   children: React.ReactNode;
+  gap?: Spacing;
 }
 
 // https://mui.com/base/react-modal/#basics
@@ -47,17 +49,18 @@ export function BaseDialog({
   children,
   size = 'md',
   open,
+  gap = 16,
   ...rest
 }: BaseDialogProps) {
-  let maxWidth = pxToRem(500);
   const theme = useTheme();
+  let maxWidth = pxToRem(theme.breakpointValues.sm);
 
   switch (size) {
     case 'sm':
-      maxWidth = pxToRem(400);
+      maxWidth = pxToRem(theme.breakpointValues.xs);
       break;
     case 'lg':
-      maxWidth = pxToRem(600);
+      maxWidth = pxToRem(theme.breakpointValues.md);
       break;
     case 'full':
       maxWidth = pxToRem(theme.breakpointValues.lg);
@@ -72,7 +75,7 @@ export function BaseDialog({
         <DialogBox
           backgroundColor="background"
           flexDirection="column"
-          gap={16}
+          gap={gap}
           margin={16}
           maxWidth={maxWidth}
           padding={32}

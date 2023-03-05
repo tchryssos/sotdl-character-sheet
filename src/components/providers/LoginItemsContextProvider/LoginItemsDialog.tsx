@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { BaseDialog } from '~/components/dialog/BaseDialog';
 import { Text } from '~/components/Text';
 import { LoginItem } from '~/typings/loginItems';
@@ -8,10 +10,12 @@ interface LoginItemsDialogProps {
   loginItems: LoginItem[];
 }
 
-const labeledById = 'login-dialog-title';
 const describedById = 'login-dialog-description';
+const labeledById = 'login-dialog-title';
 
 export function LoginItemsDialog({ loginItems }: LoginItemsDialogProps) {
+  const [activeItemIdx, setActiveItemIdx] = useState(0);
+
   if (!loginItems.length || loginItems.every((item) => item.completed)) {
     return null;
   }
@@ -20,18 +24,27 @@ export function LoginItemsDialog({ loginItems }: LoginItemsDialogProps) {
     <BaseDialog
       aria-describedby={labeledById}
       aria-labelledby={describedById}
-      open={false}
-      size="full"
+      gap={8}
+      open
+      size="md"
     >
-      <Text as="h2" id={labeledById}>
-        {loginItems.length === 1 ? 'one more thing' : 'a few more things'}
+      <Text as="h2" id={describedById} variant="title-sm">
+        Complete your profile
       </Text>
-      <Text as="p">
-        rpgsheet requires additional data to consider your account
-        &quot;complete&quot;. Please complete the following to proceed.
-      </Text>
-      {loginItems.map((item) => (
-        <LoginFormItem item={item} key={item.id} />
+      {loginItems.length !== 1 && (
+        <Text as="p" variant="body">
+          Step {activeItemIdx + 1} of {loginItems.length}:{' '}
+          {loginItems[activeItemIdx].title}
+        </Text>
+      )}
+      {loginItems.map((item, i) => (
+        <LoginFormItem
+          activeIdx={activeItemIdx}
+          idx={i}
+          item={item}
+          key={item.id}
+          setActiveIdx={setActiveItemIdx}
+        />
       ))}
     </BaseDialog>
   );

@@ -18,7 +18,7 @@ model user {
   characters     character[]
   email          String      @unique
   isPaid         Boolean     @default(false)
-  displayName    String      @default("")
+  displayName    String      @default("") @db.VarChar(25)
   imageUrl       String      @default("")
 }
 

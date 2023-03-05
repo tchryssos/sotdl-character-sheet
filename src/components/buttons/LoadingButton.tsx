@@ -20,7 +20,10 @@ type ButtonProps = {
   onClick: () => void;
 };
 
-type LoadingButtonProps = LoadingButtonBaseProps & (SubmitProps | ButtonProps);
+type LoadingButtonProps = LoadingButtonBaseProps &
+  (SubmitProps | ButtonProps) & {
+    className?: string;
+  };
 
 const Spinner = styled(LoadingSpinner)`
   max-height: ${({ theme }) => theme.fontSize.body};
@@ -41,9 +44,11 @@ export function LoadingButton({
   label,
   type = 'button',
   onClick,
+  className,
 }: LoadingButtonProps) {
   return (
     <Button
+      className={className}
       disabled={disabled || loading}
       loading={loading}
       type={type}
