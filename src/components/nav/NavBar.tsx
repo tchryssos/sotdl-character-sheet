@@ -2,6 +2,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
 import { HOME_ROUTE } from '~/constants/routing/client';
+import { createUsersRoute } from '~/constants/routing/shared';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { getIconFromUser, getNameFromUser } from '~/logic/user';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
@@ -102,14 +103,19 @@ export function NavBar({
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
             {userName && !hasPortalContent && !isXxs && (
-              <FlexBox alignItems="center" gap={8}>
-                <Box height={pxToRem(18)} width={pxToRem(18)}>
-                  <RpgIcon
-                    iconIndex={getIconFromUser(user as StrictSessionUser)}
-                  />
-                </Box>
-                <Text as="p">{userName}</Text>
-              </FlexBox>
+              <Link
+                href={createUsersRoute((user as StrictSessionUser).id)}
+                isInternal
+              >
+                <FlexBox alignItems="center" gap={8}>
+                  <Box height={pxToRem(18)} width={pxToRem(18)}>
+                    <RpgIcon
+                      iconIndex={getIconFromUser(user as StrictSessionUser)}
+                    />
+                  </Box>
+                  <Text as="p">{userName}</Text>
+                </FlexBox>
+              </Link>
             )}
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>
