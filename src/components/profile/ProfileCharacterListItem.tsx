@@ -9,6 +9,7 @@ import { Text } from '../Text';
 
 const CharacterLink = styled(Link)`
   width: 100%;
+  height: 100%;
   padding: ${({ theme }) => theme.spacing[4]};
   border: ${({ theme }) =>
     `${theme.borderWidth[1]} solid ${theme.colors.accentLight}`};

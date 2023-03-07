@@ -9,6 +9,7 @@ import { ProfileCharacterListItem } from './ProfileCharacterListItem';
 
 const ListItem = styled.li`
   width: 100%;
+  height: 100%;
 `;
 
 const Section = styled(FormSection)`

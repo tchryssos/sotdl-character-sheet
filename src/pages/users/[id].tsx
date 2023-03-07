@@ -78,10 +78,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
               textOverflow="ellipsis"
               variant="title"
             >
-              {/* {userMeta.displayName || 'Anonymous'} */}
-              {userMeta.displayName}
-              {userMeta.displayName}
-              {userMeta.displayName}
+              {userMeta.displayName || 'Anonymous'}
             </Text>
             <FlexBox flexDirection={isXss ? 'row' : 'column'} gap={4}>
               {userMeta.isPaid && (
