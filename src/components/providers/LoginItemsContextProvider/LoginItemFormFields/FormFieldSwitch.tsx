@@ -1,7 +1,7 @@
 import { LoginItemTypes } from '~/constants/loginItems';
 import { LoginItem } from '~/typings/loginItems';
 
-import { DisplayNameFields } from './displayName';
+import { DisplayNameFields } from './DisplayName';
 import { ImageUrl } from './ImageUrl';
 
 interface FormFieldSwitchProps {
