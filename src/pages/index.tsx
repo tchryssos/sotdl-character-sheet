@@ -61,6 +61,10 @@ function Home() {
             <AuthLoading title="Auth loading" titleId="auth-loading" />
           ) : (
             <ButtonWrapper columns={1} rowGap={8}>
+              <Link href={createCharacterRoute(CREATE_ID)}>
+                <TextButton buttonLike label="Create a Character" />
+              </Link>
+              <Divider label="or" />
               {!error && (
                 <>
                   {user ? (
@@ -74,12 +78,8 @@ function Home() {
                       <TextButton buttonLike label="Authenticate" />
                     </AuthLink>
                   )}
-                  <Divider label="or" />
                 </>
               )}
-              <Link href={createCharacterRoute(CREATE_ID)}>
-                <TextButton buttonLike label="Create a Character" />
-              </Link>
             </ButtonWrapper>
           )}
         </HomePane>

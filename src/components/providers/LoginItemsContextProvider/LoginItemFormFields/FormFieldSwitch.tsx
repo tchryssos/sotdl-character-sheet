@@ -1,8 +1,8 @@
+import { IconImageUrlInput } from '~/components/form/IconImageUrlInput';
 import { LoginItemTypes } from '~/constants/loginItems';
 import { LoginItem } from '~/typings/loginItems';
 
 import { DisplayNameFields } from './DisplayName';
-import { ImageUrl } from './ImageUrl';
 
 interface FormFieldSwitchProps {
   item: LoginItem;
@@ -13,7 +13,7 @@ export function FormFieldSwitch({ item }: FormFieldSwitchProps) {
     case LoginItemTypes.DisplayName:
       return <DisplayNameFields item={item} />;
     case LoginItemTypes.ImageUrl:
-      return <ImageUrl item={item} />;
+      return <IconImageUrlInput name={item.type} />;
     default:
       console.error('NO FIELDS FOR THIS ITEM TYPE. RPG DEV GO FIX THIS');
       return null;

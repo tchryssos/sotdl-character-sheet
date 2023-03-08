@@ -12,6 +12,7 @@ import { StrictSessionUser } from '~/typings/user';
 import { LogoAscii } from '../ascii/LogoAscii';
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
+import { GridBox } from '../box/GridBox';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { RpgIcon } from '../icons/RpgIcon';
@@ -68,18 +69,20 @@ const Portal = styled.div<{ flexGap: Spacing }>`
   gap: ${({ theme, flexGap }) => theme.spacing[flexGap]};
 `;
 
+const UserName = styled(Text)`
+  white-space: nowrap;
+`;
+
 interface NavBarProps {
   title: string;
   setIconPortalNode: (node: HTMLDivElement) => void;
   dropdownMenuItems: DropdownMenuProps['menuItems'];
-  hasPortalContent: boolean;
 }
 
 export function NavBar({
   title,
   setIconPortalNode,
   dropdownMenuItems,
-  hasPortalContent,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
@@ -102,19 +105,24 @@ export function NavBar({
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            {userName && !hasPortalContent && !isXxs && (
+            {userName && !isXxs && (
               <Link
                 href={createUsersRoute((user as StrictSessionUser).id)}
                 isInternal
               >
-                <FlexBox alignItems="center" gap={8}>
+                <GridBox
+                  alignItems="center"
+                  gap={8}
+                  gridTemplateColumns="auto 1fr"
+                  maxWidth={pxToRem(200)}
+                >
                   <Box height={pxToRem(18)} width={pxToRem(18)}>
                     <RpgIcon
                       iconIndex={getIconFromUser(user as StrictSessionUser)}
                     />
                   </Box>
-                  <Text as="p">{userName}</Text>
-                </FlexBox>
+                  <UserName as="p">{userName}</UserName>
+                </GridBox>
               </Link>
             )}
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />

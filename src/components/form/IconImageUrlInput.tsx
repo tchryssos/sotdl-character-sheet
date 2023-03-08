@@ -9,11 +9,7 @@ import { IconButton } from '~/components/buttons/IconButton';
 import { TextButton } from '~/components/buttons/TextButton';
 import { RpgIcon } from '~/components/icons/RpgIcon';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
-import { LoginItem } from '~/typings/loginItems';
-
-interface ImageUrlProps {
-  item: LoginItem;
-}
+import { getIconIdxFromUrl } from '~/logic/user';
 
 const IconSelectButton = styled(IconButton)<{ isActive: boolean }>(
   ({ theme, isActive }) => ({
@@ -23,33 +19,47 @@ const IconSelectButton = styled(IconButton)<{ isActive: boolean }>(
   })
 );
 
-const getIconIndxs = () =>
-  times(12, () => padStart(String(random(0, 440)), 3, '0') as `${number}`);
+const getIconIndxs = (current?: `${number}`) => [
+  ...(current ? [current] : []),
+  ...times(
+    current ? 11 : 12,
+    () => padStart(String(random(0, 440)), 3, '0') as `${number}`
+  ),
+];
 
-export function ImageUrl({ item }: ImageUrlProps) {
+interface ImageUrlInputProps {
+  name: string;
+}
+
+export function IconImageUrlInput({ name }: ImageUrlInputProps) {
   const { register, setValue, watch } = useFormContext();
-  const [iconIdxs, setIconIdxs] = useState<`${number}`[]>(getIconIndxs());
+
+  const selected = watch(name) as `${number}`;
+  const [iconIdxs, setIconIdxs] = useState<`${number}`[]>(
+    getIconIndxs(getIconIdxFromUrl(selected))
+  );
 
   const atLeastXs = useBreakpointsAtLeast('xs');
 
   useEffect(() => {
-    if (register && item.type) {
-      register(item.type);
+    if (register && name) {
+      register(name);
     }
-  }, [item.type, register]);
-
-  const selected = watch(item.type) as `${number}`;
+  }, [name, register]);
 
   return (
     <>
       <GridBox columns={atLeastXs ? 6 : 3} justifyContent="center">
         {iconIdxs.map((idx, i) => (
           <IconSelectButton
-            isActive={selected === `/icons/rpg-icon${idx}.png`}
+            isActive={
+              `/icons/rpg-icon${getIconIdxFromUrl(selected)}.svg` ===
+              `/icons/rpg-icon${idx}.svg`
+            }
             key={`${idx}-${i}`}
             size="lg"
             onClick={() => {
-              setValue(item.type, `/icons/rpg-icon${idx}.png`);
+              setValue(name, `/icons/rpg-icon${idx}.svg`);
             }}
           >
             <RpgIcon iconIndex={idx} />
@@ -59,7 +69,7 @@ export function ImageUrl({ item }: ImageUrlProps) {
       <TextButton
         label="Shuffle"
         severity="secondary"
-        onClick={() => setIconIdxs(getIconIndxs())}
+        onClick={() => setIconIdxs(getIconIndxs(getIconIdxFromUrl(selected)))}
       />
     </>
   );
