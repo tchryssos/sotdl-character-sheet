@@ -5,11 +5,20 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
-import { IconButton } from '~/components/buttons/IconButton';
-import { TextButton } from '~/components/buttons/TextButton';
+import { getIconButtonSize, IconButton } from '~/components/buttons/IconButton';
 import { RpgIcon } from '~/components/icons/RpgIcon';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 import { getIconIdxFromUrl } from '~/logic/user';
+
+import { BaseButton } from '../buttons/BaseButton';
+import { Refresh } from '../icons/Refresh';
+import { Text } from '../Text';
+
+const iconListId = 'icon-list';
+
+const IconSelectLi = styled.li`
+  width: 'fit-content';
+`;
 
 const IconSelectButton = styled(IconButton)<{ isActive: boolean }>(
   ({ theme, isActive }) => ({
@@ -18,6 +27,11 @@ const IconSelectButton = styled(IconButton)<{ isActive: boolean }>(
     }`,
   })
 );
+
+const ShuffleButton = styled(BaseButton)`
+  height: 100%;
+  width: ${({ theme }) => getIconButtonSize('lg', theme)};
+`;
 
 const getIconIndxs = (current?: `${number}`) => [
   ...(current ? [current] : []),
@@ -49,28 +63,39 @@ export function IconImageUrlInput({ name }: ImageUrlInputProps) {
 
   return (
     <>
-      <GridBox columns={atLeastXs ? 6 : 3} justifyContent="center">
-        {iconIdxs.map((idx, i) => (
-          <IconSelectButton
-            isActive={
-              `/icons/rpg-icon${getIconIdxFromUrl(selected)}.svg` ===
-              `/icons/rpg-icon${idx}.svg`
-            }
-            key={`${idx}-${i}`}
-            size="lg"
-            onClick={() => {
-              setValue(name, `/icons/rpg-icon${idx}.svg`);
-            }}
-          >
-            <RpgIcon iconIndex={idx} />
-          </IconSelectButton>
-        ))}
+      <Text as="label" fontWeight="bold" id={iconListId} variant="body-sm">
+        User Icon
+      </Text>
+      <GridBox gridTemplateColumns="1fr auto">
+        <ul aria-labelledby={iconListId}>
+          <GridBox columns={atLeastXs ? 6 : 3} justifyContent="center">
+            {iconIdxs.map((idx, i) => (
+              <IconSelectLi key={`${idx}-${i}`}>
+                <IconSelectButton
+                  isActive={
+                    // I messed up some of the initial icons and saved them with .png
+                    // so we just need to extract the number from the url
+                    // rather than do an === with selected
+                    `/icons/rpg-icon${getIconIdxFromUrl(selected)}.svg` ===
+                    `/icons/rpg-icon${idx}.svg`
+                  }
+                  size="lg"
+                  onClick={() => {
+                    setValue(name, `/icons/rpg-icon${idx}.svg`);
+                  }}
+                >
+                  <RpgIcon iconIndex={idx} />
+                </IconSelectButton>
+              </IconSelectLi>
+            ))}
+          </GridBox>
+        </ul>
+        <ShuffleButton
+          onClick={() => setIconIdxs(getIconIndxs(getIconIdxFromUrl(selected)))}
+        >
+          <Refresh title="Shuffle Icons" />
+        </ShuffleButton>
       </GridBox>
-      <TextButton
-        label="Shuffle"
-        severity="secondary"
-        onClick={() => setIconIdxs(getIconIndxs(getIconIdxFromUrl(selected)))}
-      />
     </>
   );
 }
