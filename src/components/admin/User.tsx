@@ -5,16 +5,20 @@ import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { createUserApiRoute, USERS_API_ROUTE } from '~/constants/routing/api';
+import { createUsersRoute } from '~/constants/routing/shared';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { PatchUserData } from '~/pages/api/users/[id]';
 import { StrictUser } from '~/typings/user';
 
+import { FlexBox } from '../box/FlexBox';
 import { LoadingButton } from '../buttons/LoadingButton';
 import { Autocomplete } from '../form/Autocomplete';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
 import { TextInput } from '../form/TextInput';
+import { Link } from '../Link';
+import { Text } from '../Text';
 
 const RolesSection = styled(FormSection)`
   width: 100%;
@@ -74,6 +78,41 @@ function UserSelect({
   );
 }
 
+interface UserDataProps {
+  activeUser: StrictUser | null;
+}
+
+const UserLink = styled(Link)`
+  width: fit-content;
+`;
+
+function UserData({ activeUser }: UserDataProps) {
+  if (!activeUser) {
+    return null;
+  }
+
+  return (
+    <FlexBox flexDirection="column" gap={8}>
+      <FlexBox flexDirection="column">
+        {Object.keys(activeUser).map((k) => {
+          if ((k as keyof StrictUser) === 'authId') {
+            return null;
+          }
+          return (
+            <Text as="p" key={k}>
+              <Text color="textAccent">{k}:</Text>{' '}
+              {String(activeUser[k as keyof StrictUser])}
+            </Text>
+          );
+        })}
+      </FlexBox>
+      <UserLink href={createUsersRoute(activeUser.id)} underline>
+        <Text>Link to Profile</Text>
+      </UserLink>
+    </FlexBox>
+  );
+}
+
 type UserAdmin = Omit<PatchUserData, 'email'>;
 
 export function User() {
@@ -124,13 +163,16 @@ export function User() {
       onSubmit={onSubmit}
     >
       <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User">
-        <UserSelect
-          activeUser={activeUser}
-          getUsers={getUsers}
-          isLoading={isLoading}
-          setActiveUser={setActiveUser}
-          users={users}
-        />
+        <FlexBox flexDirection="column" gap={8}>
+          <UserSelect
+            activeUser={activeUser}
+            getUsers={getUsers}
+            isLoading={isLoading}
+            setActiveUser={setActiveUser}
+            users={users}
+          />
+          <UserData activeUser={activeUser} />
+        </FlexBox>
         {activeUser && (
           <FormBox>
             <TextInput<UserAdmin> alwaysEditable name="displayName" />
