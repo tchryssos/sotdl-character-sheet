@@ -121,7 +121,9 @@ export function NavBar({
                       iconIndex={getIconFromUser(user as StrictSessionUser)}
                     />
                   </Box>
-                  <UserName as="p">{userName}</UserName>
+                  <UserName as="p" overflow="hidden" textOverflow="ellipsis">
+                    {userName}
+                  </UserName>
                 </GridBox>
               </Link>
             )}

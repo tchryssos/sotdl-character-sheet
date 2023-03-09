@@ -91,6 +91,7 @@ export function IconImageUrlInput({ name }: ImageUrlInputProps) {
           </GridBox>
         </ul>
         <ShuffleButton
+          severity="secondary"
           onClick={() => setIconIdxs(getIconIndxs(getIconIdxFromUrl(selected)))}
         >
           <Refresh title="Shuffle Icons" />

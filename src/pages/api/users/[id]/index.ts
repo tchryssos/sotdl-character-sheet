@@ -44,7 +44,7 @@ const patchUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
         id: parseInt(id as string, 10),
       },
       data: {
-        // email: body.email,
+        email: body.email,
         lastModifiedOn: new Date(),
         imageUrl: body.imageUrl,
         displayName: body.displayName,

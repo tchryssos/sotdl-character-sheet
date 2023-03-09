@@ -62,8 +62,6 @@ export const Text = styled('span')<TextProps>(
     const fontSize = getFontSize(theme, variant || as || 'body');
 
     return {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
       fontWeight: theme.fontWeight.regular,
       fontFamily: theme.fontFamily.normal,
       fontSize,
