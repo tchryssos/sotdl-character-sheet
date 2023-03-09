@@ -29,13 +29,7 @@ const createMenuItems = (
   isLoading: boolean,
   isXxs: boolean
 ): DropdownMenuProps['menuItems'] => {
-  let items: DropdownMenuProps['menuItems'] = [
-    {
-      type: 'link',
-      href: SETTINGS_ROUTE,
-      text: 'Settings',
-    },
-  ];
+  let items: DropdownMenuProps['menuItems'] = [];
 
   if (!isLoading) {
     if (user?.id) {
@@ -55,6 +49,11 @@ const createMenuItems = (
             ] as DropdownMenuProps['menuItems'])
           : ([] as DropdownMenuProps['menuItems'])),
         ...items,
+        {
+          type: 'link',
+          href: SETTINGS_ROUTE,
+          text: 'Settings',
+        },
         {
           type: 'special',
           component: (
