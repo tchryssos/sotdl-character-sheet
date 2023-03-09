@@ -13,15 +13,7 @@ export type LoginItem = {
   title: string;
   description: string;
   defaultValues: LoginItemValues;
-} & (
-  | {
-      onSubmit: (values: LoginItemValues) => Promise<Response>;
-      createOnSubmit?: never;
-    }
-  | {
-      onSubmit?: never;
-      createOnSubmit: (
-        user: StrictSessionUser
-      ) => (values: LoginItemValues) => Promise<Response>;
-    }
-);
+  createOnSubmit: (
+    user: StrictSessionUser
+  ) => (values: LoginItemValues) => Promise<Response>;
+};

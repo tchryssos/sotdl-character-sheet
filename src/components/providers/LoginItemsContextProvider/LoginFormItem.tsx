@@ -70,12 +70,8 @@ export function LoginFormItem({
 
   const onSubmit = async (values: LoginItemValues) => {
     setIsLoading(true);
-    let resp: Response;
-    if (item.onSubmit === undefined) {
-      resp = await item.createOnSubmit(user as StrictSessionUser)(values);
-    } else {
-      resp = await item.onSubmit(values);
-    }
+    const resp = await item.createOnSubmit(user as StrictSessionUser)(values);
+
     if (resp.ok) {
       const newItems = [...loginItems];
       const index = newItems.findIndex((i) => i.id === item.id);

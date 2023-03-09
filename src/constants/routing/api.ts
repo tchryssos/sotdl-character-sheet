@@ -21,9 +21,6 @@ export const createCharacterApiRoute = (id: number | string) =>
 export const USERS_API_ROUTE = `${API_PREFIX}/${USERS_PATH}`;
 export const createUserApiRoute = (id: number | string) =>
   `${API_PREFIX}${createUsersRoute(id)}`;
-
-export const createUsersCharactersApiRoute = (id: number | string) =>
-  `${createUserApiRoute(id)}/${CHARACTERS_PATH}`;
 // END - PROFILE ROUTES - END //
 
 // START - RULEBOOK ROUTES - START
