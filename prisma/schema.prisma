@@ -18,6 +18,8 @@ model user {
   characters     character[]
   email          String      @unique
   isPaid         Boolean     @default(false)
+  displayName    String      @default("") @db.VarChar(25)
+  imageUrl       String      @default("")
 }
 
 model rulebook {

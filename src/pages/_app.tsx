@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app';
 import { useEffect, useMemo, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
+import { LoginItemsContextProvider } from '~/components/providers/LoginItemsContextProvider';
 import { NotificationsContextProvider } from '~/components/providers/NotificationsContextProvider';
 import { ColorMode, Theme, themes } from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
@@ -45,7 +46,8 @@ const createGlobalStyles = (theme: Theme) => css`
   select,
   textarea,
   ul,
-  li {
+  li,
+  a {
     box-sizing: border-box;
   }
   ul {
@@ -72,6 +74,12 @@ const createGlobalStyles = (theme: Theme) => css`
   ul,
   li {
     ${marPadZero};
+  }
+  li {
+    list-style: none;
+  }
+  ul {
+    list-style: none;
   }
 `;
 
@@ -122,11 +130,13 @@ function Page({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <BreakpointsContext.Provider value={windowBreakpoints}>
             <NotificationsContextProvider>
-              <GlobalWrapper>
-                <Global styles={createGlobalStyles(theme)} />
-                {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-                <Component {...pageProps} />
-              </GlobalWrapper>
+              <LoginItemsContextProvider>
+                <GlobalWrapper>
+                  <Global styles={createGlobalStyles(theme)} />
+                  {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+                  <Component {...pageProps} />
+                </GlobalWrapper>
+              </LoginItemsContextProvider>
             </NotificationsContextProvider>
           </BreakpointsContext.Provider>
         </ThemeProvider>

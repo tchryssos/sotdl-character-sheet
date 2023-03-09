@@ -26,6 +26,7 @@ interface FormSectionProps {
   visibilityTitle?: string;
   borderless?: boolean;
   gridTemplateColumns?: GridBoxProps['gridTemplateColumns'];
+  defaultExpanded?: boolean;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -102,6 +103,7 @@ export function FormSection({
   visibilityTitle,
   borderless,
   gridTemplateColumns,
+  defaultExpanded = true,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -131,7 +133,7 @@ export function FormSection({
   // END - SECTION VISIBILITY - END
 
   // START - SECTION EXPANDED STATUS - START
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(defaultExpanded);
 
   const onChangeExpanded = () => {
     const nextOpenState = !isOpen;

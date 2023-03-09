@@ -1,13 +1,21 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 
 import { HOME_ROUTE } from '~/constants/routing/client';
+import { createUsersRoute } from '~/constants/routing/shared';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { getIconFromUser, getNameFromUser } from '~/logic/user';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Spacing } from '~/typings/theme';
+import { StrictSessionUser } from '~/typings/user';
 
 import { LogoAscii } from '../ascii/LogoAscii';
+import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
+import { GridBox } from '../box/GridBox';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
+import { RpgIcon } from '../icons/RpgIcon';
 import { Link } from '../Link';
 import { Text } from '../Text';
 
@@ -53,16 +61,16 @@ const Title = styled(Text)`
   display: -webkit-inline-box;
   -webkit-box-orient: vertical;
   word-break: break-word;
-  font-size: ${({ theme }) => theme.fontSize.subBody};
-  ${({ theme }) => theme.breakpoints.xs} {
-    font-size: ${({ theme }) => theme.fontSize.body};
-  }
 `;
 
 const Portal = styled.div<{ flexGap: Spacing }>`
   display: flex;
   align-items: center;
   gap: ${({ theme, flexGap }) => theme.spacing[flexGap]};
+`;
+
+const UserName = styled(Text)`
+  white-space: nowrap;
 `;
 
 interface NavBarProps {
@@ -78,6 +86,8 @@ export function NavBar({
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
+  const { user } = useUser();
+  const userName = getNameFromUser(user as StrictSessionUser);
 
   return (
     <Toolbar center flex={1}>
@@ -87,10 +97,36 @@ export function NavBar({
             <HomeLink href={HOME_ROUTE}>
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
-            {title && <Title as="h2">{title}</Title>}
+            {title && (
+              <Title as="h2" variant={isXxs ? 'body-sm' : 'body'}>
+                {title}
+              </Title>
+            )}
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
+            {userName && !isXxs && (
+              <Link
+                href={createUsersRoute((user as StrictSessionUser).id)}
+                isInternal
+              >
+                <GridBox
+                  alignItems="center"
+                  gap={8}
+                  gridTemplateColumns="auto 1fr"
+                  maxWidth={pxToRem(200)}
+                >
+                  <Box height={pxToRem(18)} width={pxToRem(18)}>
+                    <RpgIcon
+                      iconIndex={getIconFromUser(user as StrictSessionUser)}
+                    />
+                  </Box>
+                  <UserName as="p" overflow="hidden" textOverflow="ellipsis">
+                    {userName}
+                  </UserName>
+                </GridBox>
+              </Link>
+            )}
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>
         </TopRow>

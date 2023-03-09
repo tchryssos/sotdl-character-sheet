@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import upperFirst from 'lodash.upperfirst';
+import { upperFirst } from 'lodash';
 
 import { NotFoundAscii } from './ascii/NotFoundAscii';
 import { Pane } from './Pane';

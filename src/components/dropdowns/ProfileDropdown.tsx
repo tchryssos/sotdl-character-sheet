@@ -4,6 +4,8 @@ import { useMemo } from 'react';
 
 import { ADMIN_PANEL_ROUTE, SETTINGS_ROUTE } from '~/constants/routing/client';
 import { createUsersRoute } from '~/constants/routing/shared';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { getNameFromUser } from '~/logic/user';
 import { StrictSessionUser } from '~/typings/user';
 
 import { AuthLink } from '../AuthLink';
@@ -24,15 +26,10 @@ const DropdownAuthLink = styled(AuthLink)`
 
 const createMenuItems = (
   user: StrictSessionUser | undefined,
-  isLoading: boolean
+  isLoading: boolean,
+  isXxs: boolean
 ): DropdownMenuProps['menuItems'] => {
-  let items: DropdownMenuProps['menuItems'] = [
-    {
-      type: 'link',
-      href: SETTINGS_ROUTE,
-      text: 'Settings',
-    },
-  ];
+  let items: DropdownMenuProps['menuItems'] = [];
 
   if (!isLoading) {
     if (user?.id) {
@@ -52,6 +49,11 @@ const createMenuItems = (
             ] as DropdownMenuProps['menuItems'])
           : ([] as DropdownMenuProps['menuItems'])),
         ...items,
+        {
+          type: 'link',
+          href: SETTINGS_ROUTE,
+          text: 'Settings',
+        },
         {
           type: 'special',
           component: (
@@ -76,12 +78,11 @@ const createMenuItems = (
     }
   }
 
-  const name =
-    user?.authProviderData.nickname ||
-    user?.authProviderData.name ||
-    user?.authProviderData.email;
+  const name = getNameFromUser(user);
 
-  items = [{ type: 'label', text: name || 'Profile' }, ...items];
+  if (isXxs && name) {
+    items = [{ type: 'label', text: name }, ...items];
+  }
 
   return items;
 };
@@ -92,13 +93,14 @@ interface ProfileDropdownProps {
 
 export function ProfileDropdown({ dropdownMenuItems }: ProfileDropdownProps) {
   const { isLoading, user } = useUser();
+  const isXxs = useBreakpointsLessThan('xs');
 
   const menuItems = useMemo(
     () => [
       ...dropdownMenuItems,
-      ...createMenuItems(user as StrictSessionUser, isLoading),
+      ...createMenuItems(user as StrictSessionUser, isLoading, isXxs),
     ],
-    [dropdownMenuItems, user, isLoading]
+    [dropdownMenuItems, user, isLoading, isXxs]
   );
 
   return (

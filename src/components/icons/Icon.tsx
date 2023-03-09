@@ -7,13 +7,13 @@ const Svg = styled.svg`
   width: 100%;
 `;
 
-export const Icon: React.FC<BaseIconProps> = ({
+export function Icon({
   viewBox = '0 0 24 24',
   title,
   titleId,
   className,
   children,
-}) => {
+}: BaseIconProps) {
   const id = titleId || `${title}-icon`;
   return (
     <Svg
@@ -27,4 +27,4 @@ export const Icon: React.FC<BaseIconProps> = ({
       {children}
     </Svg>
   );
-};
+}

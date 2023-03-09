@@ -1,3 +1,4 @@
+import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { forwardRef } from 'react';
 
@@ -13,19 +14,25 @@ export type IconButtonProps = StandardButtonProps & {
   isLoading?: boolean;
 };
 
+export const getIconButtonSize = (
+  size: IconButtonProps['size'],
+  theme: Theme
+) => {
+  switch (size) {
+    case 'md':
+      return theme.spacing['40'];
+      break;
+    case 'lg':
+      return theme.spacing['48'];
+      break;
+    default:
+      return theme.spacing['32'];
+  }
+};
+
 const IconSafeButton = styled(BaseButton)<Pick<IconButtonProps, 'size'>>(
   ({ theme, size }) => {
-    let dimension: string;
-    switch (size) {
-      case 'md':
-        dimension = theme.spacing['40'];
-        break;
-      case 'lg':
-        dimension = theme.spacing['48'];
-        break;
-      default:
-        dimension = theme.spacing['32'];
-    }
+    const dimension = getIconButtonSize(size, theme);
     return {
       height: dimension,
       width: dimension,

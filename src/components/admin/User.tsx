@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import debounce from 'lodash.debounce';
+import DOMPurify from 'dompurify';
+import { debounce } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -13,6 +14,7 @@ import { Autocomplete } from '../form/Autocomplete';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
+import { TextInput } from '../form/TextInput';
 
 const RolesSection = styled(FormSection)`
   width: 100%;
@@ -72,7 +74,7 @@ function UserSelect({
   );
 }
 
-type UserAdmin = Pick<PatchUserData, 'role' | 'isPaid'>;
+type UserAdmin = Omit<PatchUserData, 'email'>;
 
 export function User() {
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -101,9 +103,10 @@ export function User() {
       const resp = await fetch(createUserApiRoute(activeUser.id), {
         method: 'PATCH',
         body: JSON.stringify({
-          email: activeUser.email,
           role: values.role,
           isPaid: values.isPaid,
+          displayName: DOMPurify.sanitize(values.displayName),
+          imageUrl: DOMPurify.sanitize(values.imageUrl),
         } as PatchUserData),
       });
       if (resp.status >= 200 && resp.status <= 300) {
@@ -130,6 +133,7 @@ export function User() {
         />
         {activeUser && (
           <FormBox>
+            <TextInput<UserAdmin> alwaysEditable name="displayName" />
             <SelectInput<UserAdmin>
               alwaysEditable
               name="role"
@@ -147,6 +151,7 @@ export function User() {
                 { value: 'false', label: 'Not Paid' },
               ]}
             />
+            <TextInput<UserAdmin> alwaysEditable name="imageUrl" />
             <LoadingButton label="Submit" loading={isLoading} type="submit" />
           </FormBox>
         )}

@@ -19,7 +19,10 @@ const PageWrapper = styled(FlexBox)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
   width: 100%;
   height: 100%;
-  padding-top: ${({ theme }) => theme.spacing[128]};
+  padding-top: ${({ theme }) => theme.spacing[80]};
+  ${({ theme }) => theme.breakpoints.xs} {
+    padding-top: ${({ theme }) => theme.spacing[128]};
+  }
 `;
 
 const emptyArr: DropdownMenuProps['menuItems'] = [];

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import startCase from 'lodash.startcase';
+import { startCase } from 'lodash';
 import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 

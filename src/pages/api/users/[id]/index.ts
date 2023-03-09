@@ -23,7 +23,10 @@ const getUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
   }
 });
 
-type PatchUserDataSubset = Pick<user, 'email' | 'role' | 'isPaid'>;
+type PatchUserDataSubset = Pick<
+  user,
+  'email' | 'role' | 'isPaid' | 'displayName' | 'imageUrl'
+>;
 export type PatchUserData = {
   [K in keyof PatchUserDataSubset]: string;
 };
@@ -43,6 +46,8 @@ const patchUser: NextApiHandler = withApiAuthRequired(async (req, res) => {
       data: {
         email: body.email,
         lastModifiedOn: new Date(),
+        imageUrl: body.imageUrl,
+        displayName: body.displayName,
         ...(requestUser.role === 'admin' && {
           role: body.role,
           isPaid: Boolean(body.isPaid === 'true'),
