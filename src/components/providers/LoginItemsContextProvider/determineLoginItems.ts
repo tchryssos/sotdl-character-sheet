@@ -5,7 +5,7 @@
 import { LoginItem } from '~/typings/loginItems';
 import { StrictSessionUser } from '~/typings/user';
 
-export const determineLoginItems = (user: StrictSessionUser): LoginItem[] => {
+export const determineLoginItems = (): LoginItem[] => {
   // const { displayName, imageUrl } = user;
 
   const loginItems: LoginItem[] = [];
