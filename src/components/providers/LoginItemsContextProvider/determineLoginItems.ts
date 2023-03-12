@@ -1,12 +1,12 @@
-import { LoginItemTypes } from '~/constants/loginItems';
-import { createUserApiRoute } from '~/constants/routing/api';
-import { createLoginItem } from '~/logic/utils/loginItems';
-import { PatchUserData } from '~/pages/api/users/[id]/index';
+// import { LoginItemTypes } from '~/constants/loginItems';
+// import { createUserApiRoute } from '~/constants/routing/api';
+// import { createLoginItem } from '~/logic/utils/loginItems';
+// import { PatchUserData } from '~/pages/api/users/[id]/index';
 import { LoginItem } from '~/typings/loginItems';
 import { StrictSessionUser } from '~/typings/user';
 
 export const determineLoginItems = (user: StrictSessionUser): LoginItem[] => {
-  const { displayName, imageUrl } = user;
+  // const { displayName, imageUrl } = user;
 
   const loginItems: LoginItem[] = [];
 
