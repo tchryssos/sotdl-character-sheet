@@ -3,8 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { LoginItemsContext } from '~/logic/contexts/loginItemsContext';
 import { LoginItem } from '~/typings/loginItems';
-import { StrictSessionUser } from '~/typings/user';
 
+// import { StrictSessionUser } from '~/typings/user';
 import { determineLoginItems } from './determineLoginItems';
 import { LoginItemsDialog } from './LoginItemsDialog';
 
@@ -20,7 +20,7 @@ export function LoginItemsContextProvider({
 
   useEffect(() => {
     if (user) {
-      const userLoginItems = determineLoginItems(user as StrictSessionUser);
+      const userLoginItems = determineLoginItems();
       setLoginItems(userLoginItems);
     }
   }, [user]);
