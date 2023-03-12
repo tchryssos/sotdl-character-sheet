@@ -3,7 +3,7 @@
 // import { createLoginItem } from '~/logic/utils/loginItems';
 // import { PatchUserData } from '~/pages/api/users/[id]/index';
 import { LoginItem } from '~/typings/loginItems';
-import { StrictSessionUser } from '~/typings/user';
+// import { StrictSessionUser } from '~/typings/user';
 
 export const determineLoginItems = (): LoginItem[] => {
   // const { displayName, imageUrl } = user;
