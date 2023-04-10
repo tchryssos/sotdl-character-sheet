@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
-    "@emotion/react": "^11.10.0",
+    "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/base": "^5.0.0-alpha.116",
     "@prisma/client": "^4.11.0",
