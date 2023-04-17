@@ -99,20 +99,19 @@ const SelectedCheck = styled(Check)(({ theme }) => ({
   marginRight: theme.spacing[4],
 }));
 
-export const Autocomplete: React.FC<AutocompleteProps> = ({
+export function Autocomplete({
   onValueChange,
   items,
   label,
   className,
   isLoading,
-}) => {
+}: AutocompleteProps) {
   const {
     isOpen,
     getToggleButtonProps,
     getLabelProps,
     getMenuProps,
     getInputProps,
-    getComboboxProps,
     highlightedIndex,
     getItemProps,
     selectedItem,
@@ -127,7 +126,7 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
   return (
     <Wrapper>
       <Label className={className} label={label} labelProps={getLabelProps()}>
-        <ComboBox {...getComboboxProps()}>
+        <ComboBox>
           <Search {...getInputProps()} type="search" />
           <SearchIconWrapper center gap={8}>
             {isLoading && (
@@ -169,4 +168,4 @@ export const Autocomplete: React.FC<AutocompleteProps> = ({
       </Label>
     </Wrapper>
   );
-};
+}
