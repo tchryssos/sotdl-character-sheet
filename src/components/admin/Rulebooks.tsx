@@ -9,6 +9,7 @@ import { getAllRulebooks } from '~/logic/api/client/getAllRulebooks';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { LoadingButton } from '../buttons/LoadingButton';
+import { CheckboxInput } from '../form/CheckboxInput';
 import { Form, FormBox } from '../form/Form';
 import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
@@ -24,6 +25,7 @@ const defaultRulebook: NewRulebook = {
   fullName: '',
   name: '',
   description: '',
+  isActive: true,
 };
 
 interface RulebookSelectProps {
@@ -33,12 +35,12 @@ interface RulebookSelectProps {
   isLoading: boolean;
 }
 
-const RulebookSelect: React.FC<RulebookSelectProps> = ({
+function RulebookSelect({
   rulebooks,
   setActiveRulebook,
   activeRulebook,
   isLoading,
-}) => {
+}: RulebookSelectProps) {
   const { reset } = useFormContext();
 
   useEffect(() => {
@@ -71,14 +73,14 @@ const RulebookSelect: React.FC<RulebookSelectProps> = ({
       onChange={onChange}
     />
   );
-};
+}
 
 const RulebookSection = styled(FormSection)`
   width: 100%;
   height: unset;
 `;
 
-export const Rulebooks: React.FC = () => {
+export function Rulebooks() {
   const isLessThanSm = useBreakpointsLessThan('sm');
 
   const [rulebooks, setRulebooks] = useState<rulebook[]>(emptyRbs);
@@ -156,9 +158,10 @@ export const Rulebooks: React.FC = () => {
             name="name"
           />
           <TextAreaInput<NewRulebook> alwaysEditable name="description" />
+          <CheckboxInput<NewRulebook> alwaysEditable name="isActive" />
           <LoadingButton label="Submit" loading={isLoading} type="submit" />
         </FormBox>
       </RulebookSection>
     </Form>
   );
-};
+}

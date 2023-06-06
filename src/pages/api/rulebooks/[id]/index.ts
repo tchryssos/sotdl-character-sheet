@@ -62,6 +62,7 @@ const updateRulebook: NextApiHandler = withApiAuthRequired(async (req, res) => {
         fullName: body.fullName,
         description: body.description,
         lastModifiedOn: new Date(),
+        isActive: body.isActive,
       },
     });
 

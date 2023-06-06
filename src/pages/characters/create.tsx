@@ -16,7 +16,6 @@ import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { RULEBOOK_QUERY_PARAM } from '~/constants/search';
-import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { NavContext } from '~/logic/contexts/navContext';
 
 const RulebookSection = styled(FormSection)`
@@ -166,9 +165,7 @@ function NewCharacterPage() {
       ) : hasError ? (
         <Text as="p">Error fetching rulebooks, try again later</Text>
       ) : (
-        <SelectRulebook
-          rulebooks={rulebooks.filter((r) => r.name === SOTDL_NAME)}
-        />
+        <SelectRulebook rulebooks={rulebooks.filter((r) => r.isActive)} />
       )}
     </Layout>
   );

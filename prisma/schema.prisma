@@ -30,6 +30,7 @@ model rulebook {
   name           String      @unique
   description    String?
   characters     character[]
+  isActive       Boolean     @default(true)
 }
 
 model character {
