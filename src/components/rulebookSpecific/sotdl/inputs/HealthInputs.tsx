@@ -6,7 +6,7 @@ import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { NumberInput } from '../../../form/NumberInput';
 
-export const HealthInputs = () => {
+export function HealthInputs() {
   const { watch, setValue } = useFormContext();
 
   const isLessThanMd = useBreakpointsLessThan('md');
@@ -38,4 +38,4 @@ export const HealthInputs = () => {
       <NumberInput<SotdlCharacterData> min={0} name="defense" />
     </>
   );
-};
+}
