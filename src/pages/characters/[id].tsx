@@ -6,6 +6,7 @@ import { Layout } from '~/components/meta/Layout';
 import { NotFound } from '~/components/NotFound';
 import { CharacterSheet as SotdlCharacterSheet } from '~/components/rulebookSpecific/sotdl/CharacterSheet';
 import { CharacterSheet as SwnCharacterSheet } from '~/components/rulebookSpecific/swn/CharacterSheet';
+import { CharacterSheet as WwnCharacterSheet } from '~/components/rulebookSpecific/wwn/CharacterSheet';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import {
   CREATE_ID,
@@ -33,6 +34,8 @@ function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
       return <SotdlCharacterSheet character={character} />;
     case 'swn':
       return <SwnCharacterSheet />;
+    case 'wwn':
+      return <WwnCharacterSheet />;
     default:
       return <NotFound content="Character" />;
   }
