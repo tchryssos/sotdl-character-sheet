@@ -6,18 +6,20 @@ interface DeleteButtonProps extends Pick<IconButtonProps, 'size'> {
   className?: string;
   disabled?: boolean;
 }
-export const DeleteButton: React.FC<DeleteButtonProps> = ({
+export function DeleteButton({
   onDelete,
   className,
   size = 'md',
   disabled,
-}) => (
-  <IconButton
-    className={className}
-    disabled={disabled}
-    size={size}
-    onClick={onDelete}
-  >
-    <Delete title="Delete" titleId="delete-icon" />
-  </IconButton>
-);
+}: DeleteButtonProps) {
+  return (
+    <IconButton
+      className={className}
+      disabled={disabled}
+      size={size}
+      onClick={onDelete}
+    >
+      <Delete title="Delete" titleId="delete-icon" />
+    </IconButton>
+  );
+}

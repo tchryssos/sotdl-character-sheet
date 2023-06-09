@@ -73,6 +73,7 @@ export type WwnCharacterData = {
   level: number;
   ancestry: string;
   goal: string;
+  description: string;
   attribute_strength: number;
   attribute_dexterity: number;
   attribute_constitution: number;

@@ -44,12 +44,12 @@ const createMakeSpellName =
   (spellKey: keyof SotdlSpell): `spells.${number}.${keyof SotdlSpell}` =>
     `spells.${index}.${spellKey}`;
 
-const SpellField: React.FC<SortableAddAnotherChildProps> = ({
+function SpellField({
   sortIndexMap,
   fieldId,
   onDeleteFn,
   postSortIndex,
-}) => {
+}: SortableAddAnotherChildProps) {
   const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -146,7 +146,7 @@ const SpellField: React.FC<SortableAddAnotherChildProps> = ({
       )}
     </FormSection>
   );
-};
+}
 
 const createDefaultSpell = (): SotdlSpell => ({
   spell_name: '',
