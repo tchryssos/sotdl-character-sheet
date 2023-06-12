@@ -30,6 +30,7 @@ interface FormSectionProps {
   gridTemplateColumns?: GridBoxProps['gridTemplateColumns'];
   defaultExpanded?: boolean;
   icon?: RpgIcons;
+  gridTemplateRows?: GridBoxProps['gridTemplateRows'];
 }
 
 const TitleBox = styled(FlexBox)`
@@ -75,6 +76,7 @@ const Container = styled(GridBox)<{ isOpen?: boolean; borderless?: boolean }>`
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'collapse')};
   padding: ${({ isOpen }) => (isOpen ? '' : 0)};
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
+  align-items: start;
 `;
 
 const Collapsed = styled.div`
@@ -108,6 +110,7 @@ export function FormSection({
   gridTemplateColumns,
   defaultExpanded = true,
   icon,
+  gridTemplateRows = 'min-content',
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -214,6 +217,7 @@ export function FormSection({
           borderless={borderless}
           columns={columns}
           gridTemplateColumns={gridTemplateColumns}
+          gridTemplateRows={gridTemplateRows}
           isOpen={isOpen}
           paddingTop={borderless ? 16 : undefined}
           paddingX={8}

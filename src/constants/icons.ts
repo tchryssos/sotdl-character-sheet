@@ -11,4 +11,5 @@ export enum RpgIcons {
   HeartGuy = '058',
   Dice = '429',
   Lightbulb = '166',
+  HeartShield = '318',
 }

@@ -2,10 +2,12 @@ import { max } from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { GridBox } from '~/components/box/GridBox';
 import { FormSection } from '~/components/form/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { RpgIcons } from '~/constants/icons';
-import { WwnCharacterData } from '~/typings/wwn/characterData';
+import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
+import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
 
 const savingThrowCalc = (attr: number, level: number) => 16 - level - attr;
 
@@ -16,7 +18,9 @@ enum SavingThrows {
   LUCK = 'save_luck',
 }
 
-export function SavingThrowInputs() {
+const ARMOR_CLASS = 'armor_class';
+
+function SaveInputs() {
   const { watch, register, setValue } = useFormContext();
 
   const strength: number = watch<keyof WwnCharacterData>('attribute_strength');
@@ -65,11 +69,48 @@ export function SavingThrowInputs() {
   }, [dexterity, intelligence, level, setValue]);
 
   return (
-    <FormSection icon={RpgIcons.Dice} title="Saves">
-      <NumberInput label="Physical" name={SavingThrows.PHYSICAL} readOnly />
-      <NumberInput label="Mental" name={SavingThrows.MENTAL} readOnly />
-      <NumberInput label="Evasion" name={SavingThrows.EVASION} readOnly />
-      <NumberInput label="Luck" name={SavingThrows.LUCK} readOnly />
+    <GridBox>
+      <NumberInput name={SavingThrows.PHYSICAL} readOnly />
+      <NumberInput name={SavingThrows.MENTAL} readOnly />
+      <NumberInput name={SavingThrows.EVASION} readOnly />
+      <NumberInput name={SavingThrows.LUCK} readOnly />
+    </GridBox>
+  );
+}
+
+const calculateArmorAc = (armors: WwnArmor[], dexterity: number) =>
+  armors.reduce((acc, armor) => {
+    if (armor.armor_readied) {
+      return acc + armor.armor_defense;
+    }
+    return acc;
+  }, 10 + calcAttributeBonus(dexterity));
+
+const emptyArmors: WwnArmor[] = [];
+function ArmorClassInput() {
+  const { watch, register, setValue } = useFormContext();
+
+  const armors: WwnArmor[] =
+    watch<keyof WwnCharacterData>('armors') || emptyArmors;
+  const dexterity: number =
+    watch<keyof WwnCharacterData>('attribute_dexterity') || 10;
+
+  useEffect(() => {
+    register(ARMOR_CLASS);
+  }, [register]);
+
+  useEffect(() => {
+    setValue(ARMOR_CLASS, calculateArmorAc(armors, dexterity));
+  }, [armors, dexterity, setValue]);
+
+  return <NumberInput name={ARMOR_CLASS} readOnly />;
+}
+
+export function DefenseInputs() {
+  return (
+    <FormSection columns={1} icon={RpgIcons.HeartShield} title="Defenses">
+      <ArmorClassInput />
+      <SaveInputs />
     </FormSection>
   );
 }

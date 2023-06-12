@@ -1,5 +1,6 @@
 import { startCase } from 'lodash';
 
+import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { BonusInput } from '../../../form/BonusInput';
@@ -17,28 +18,6 @@ type AttributeInputProps<T> = Omit<NumberInputProps<T>, 'type' | 'name'> & {
   >;
 };
 
-const bonusCalc = (attr: number) => {
-  // There is no bonus calc in WWN
-  // The rulebook just gives these ranges
-  if (attr >= 18) {
-    return 2;
-  }
-
-  if (attr >= 14) {
-    return 1;
-  }
-
-  if (attr >= 8) {
-    return 0;
-  }
-
-  if (attr >= 4) {
-    return -1;
-  }
-
-  return -2;
-};
-
 export function AttributeInput<T extends Record<string, unknown>>({
   name,
 }: AttributeInputProps<T>) {
@@ -46,7 +25,7 @@ export function AttributeInput<T extends Record<string, unknown>>({
 
   return (
     <BonusInput
-      bonusCalculationFn={bonusCalc}
+      bonusCalculationFn={calcAttributeBonus}
       label={label}
       max={18}
       min={0}

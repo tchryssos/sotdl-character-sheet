@@ -1,11 +1,9 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useEffect } from 'react';
 
-import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
-import { Text } from '~/components/Text';
 import { RpgIcons } from '~/constants/icons';
 import { DEFAULT_VALUES } from '~/constants/wwn/form';
 import { ATTRIBUTES } from '~/constants/wwn/game';
@@ -20,9 +18,9 @@ import { AttributeInput } from './inputs/AttributeInput';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ClassInputs } from './inputs/ClassInputs';
+import { DefenseInputs } from './inputs/DefenseInputs';
 import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
-import { SavingThrowInputs } from './inputs/SavingThrowInputs';
 
 interface WwnCharacterSheetProps {
   character: StrictCharacter<WwnCharacterData>;
@@ -73,7 +71,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         </FormSection>
         <GridBox columns={isLessThanSm ? 1 : 2}>
           <HealthInputs />
-          <SavingThrowInputs />
+          <DefenseInputs />
         </GridBox>
       </FormComponent>
     </EditContext.Provider>

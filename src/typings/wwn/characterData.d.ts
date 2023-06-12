@@ -59,8 +59,7 @@ export type WwnArmor = {
   armor_encumbrance: number;
   armor_readied: boolean;
   armor_defense: number;
-  armor_class: ArmorWeight;
-  armor_readied: boolean;
+  armor_weight: ArmorWeight;
 };
 
 export type WwnEffort = {
