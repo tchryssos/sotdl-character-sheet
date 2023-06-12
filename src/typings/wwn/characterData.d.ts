@@ -111,6 +111,7 @@ export type WwnCharacterData = {
   magic_traditions: WwnTradition[];
   health_max: number;
   health_current: number;
+  system_strain: number;
   attack_bonus_base: number;
   attack_bonus_melee: number;
   attack_bonus_ranged: number;

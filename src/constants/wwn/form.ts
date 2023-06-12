@@ -66,6 +66,7 @@ export const DEFAULT_VALUES: WwnCharacterData = {
   magic_traditions: [],
   health_max: 1,
   health_current: 1,
+  system_strain: 0,
   attack_bonus_base: 0,
   attack_bonus_melee: 0,
   attack_bonus_ranged: 0,

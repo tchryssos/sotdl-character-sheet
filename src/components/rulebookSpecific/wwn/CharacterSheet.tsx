@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
+import { FormSection } from '~/components/form/FormSection';
 import { Text } from '~/components/Text';
 import { DEFAULT_VALUES } from '~/constants/wwn/form';
+import { ATTRIBUTES } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
@@ -13,9 +15,12 @@ import { useSheetState } from '~/logic/hooks/useSheetState';
 import { StrictCharacter } from '~/typings/characters';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
+import { AttributeInput } from './inputs/AttributeInput';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ClassInputs } from './inputs/ClassInputs';
+import { HealthInputs } from './inputs/HealthInputs';
+import { SavingThrowInputs } from './inputs/SavingThrowInputs';
 
 interface WwnCharacterSheetProps {
   character: StrictCharacter<WwnCharacterData>;
@@ -51,10 +56,18 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         <div>FormNav!</div>
         <GridBox columns={isLessThanSm ? 1 : 2}>
           <BasicInfoInputs />
-
           <BackgroundInputs />
         </GridBox>
         <ClassInputs />
+        <FormSection columns={isLessThanSm ? 2 : 3} title="Attributes">
+          {ATTRIBUTES.map((a) => (
+            <AttributeInput key={a} name={`attribute_${a}`} />
+          ))}
+        </FormSection>
+        <GridBox columns={isLessThanSm ? 1 : 2}>
+          <HealthInputs />
+          <SavingThrowInputs />
+        </GridBox>
       </FormComponent>
     </EditContext.Provider>
   );

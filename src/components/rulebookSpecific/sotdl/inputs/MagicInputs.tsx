@@ -158,7 +158,7 @@ const createDefaultSpell = (): SotdlSpell => ({
   spell_remaining_castings: 1,
 });
 
-export const MagicInputs: React.FC = () => {
+export function MagicInputs() {
   const isLessThanMd = useBreakpointsLessThan('md');
 
   return (
@@ -187,4 +187,4 @@ export const MagicInputs: React.FC = () => {
       </AddAnotherMultiField>
     </FormSection>
   );
-};
+}
