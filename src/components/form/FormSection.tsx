@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useContext, useEffect, useState } from 'react';
 
+import { RpgIcons } from '~/constants/icons';
 import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
 import { VisibilityContext } from '~/logic/contexts/visibilityContext';
@@ -13,6 +14,7 @@ import { GridBox, GridBoxProps } from '../box/GridBox';
 import { CollapseButton } from '../buttons/CollapseButton';
 import { IconButton } from '../buttons/IconButton';
 import { Invisible } from '../icons/Invisible';
+import { RpgIcon } from '../icons/RpgIcon';
 import { Visible } from '../icons/Visible';
 import { Text } from '../Text';
 
@@ -27,6 +29,7 @@ interface FormSectionProps {
   borderless?: boolean;
   gridTemplateColumns?: GridBoxProps['gridTemplateColumns'];
   defaultExpanded?: boolean;
+  icon?: RpgIcons;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -104,6 +107,7 @@ export function FormSection({
   borderless,
   gridTemplateColumns,
   defaultExpanded = true,
+  icon,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -176,6 +180,7 @@ export function FormSection({
             >
               {title}
             </FormTitle>
+
             {isEditMode && canToggleVisibility && (
               <VisibilityButton onClick={onChangeVisibility}>
                 {isVisible ? (
@@ -192,6 +197,17 @@ export function FormSection({
               </VisibilityButton>
             )}
           </TitleBox>
+          {icon && (
+            <Box
+              height="100%"
+              marginLeft={8}
+              maxHeight={pxToRem(20)}
+              maxWidth={pxToRem(20)}
+              width="100%"
+            >
+              <RpgIcon iconIndex={icon} />
+            </Box>
+          )}
           {!borderless && <Line marginLeft={8} />}
         </FlexBox>
         <Container

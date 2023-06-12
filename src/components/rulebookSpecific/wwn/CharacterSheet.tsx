@@ -6,6 +6,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
 import { Text } from '~/components/Text';
+import { RpgIcons } from '~/constants/icons';
 import { DEFAULT_VALUES } from '~/constants/wwn/form';
 import { ATTRIBUTES } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -59,7 +60,11 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
           <BackgroundInputs />
         </GridBox>
         <ClassInputs />
-        <FormSection columns={isLessThanSm ? 2 : 3} title="Attributes">
+        <FormSection
+          columns={isLessThanSm ? 2 : 3}
+          icon={RpgIcons.Barbell}
+          title="Attributes"
+        >
           {ATTRIBUTES.map((a) => (
             <AttributeInput key={a} name={`attribute_${a}`} />
           ))}

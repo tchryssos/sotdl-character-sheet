@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { FormSection } from '~/components/form/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
+import { RpgIcons } from '~/constants/icons';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 const savingThrowCalc = (attr: number, level: number) => 16 - level - attr;
@@ -64,7 +65,7 @@ export function SavingThrowInputs() {
   }, [dexterity, intelligence, level, setValue]);
 
   return (
-    <FormSection title="Saves">
+    <FormSection icon={RpgIcons.Dice} title="Saves">
       <NumberInput label="Physical" name={SavingThrows.PHYSICAL} readOnly />
       <NumberInput label="Mental" name={SavingThrows.MENTAL} readOnly />
       <NumberInput label="Evasion" name={SavingThrows.EVASION} readOnly />

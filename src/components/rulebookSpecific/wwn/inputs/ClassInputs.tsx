@@ -9,6 +9,7 @@ import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { FormSection } from '~/components/form/FormSection';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
+import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
@@ -74,7 +75,7 @@ function ClassChildWrapper({ children }: { children?: React.ReactNode }) {
 
 export function ClassInputs() {
   return (
-    <FormSection columns={1} title="Class">
+    <FormSection columns={1} icon={RpgIcons.FlowerOne} title="Class">
       <FlexBox flexDirection="column" gap={16}>
         <TextInput<WwnCharacterData> label="Class" name="class_name" />
         <AddAnotherMultiField<WwnCharacterData>
