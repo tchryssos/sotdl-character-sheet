@@ -1,3 +1,7 @@
+import styled from '@emotion/styled';
+
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
+
 import { Delete } from '../icons/Delete';
 import { IconButton, IconButtonProps } from './IconButton';
 
@@ -23,3 +27,7 @@ export function DeleteButton({
     </IconButton>
   );
 }
+
+export const AddAnotherMultiDelete = styled(DeleteButton)`
+  margin-top: ${pxToRem(17)};
+`;

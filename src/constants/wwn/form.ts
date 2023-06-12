@@ -61,7 +61,25 @@ export const DEFAULT_VALUES: WwnCharacterData = {
   skill_trade: WWN_SKILL_UNTRAINED,
   skill_work: WWN_SKILL_UNTRAINED,
   remaining_skill_points: 0,
-  foci: [],
+  foci: [
+    {
+      focus_name: 'Diplomatic Grace',
+      focus_description: `
+    Your skill at personal negotiations is enormous and un- canny. Some might even think it supernatural in nature. Level 1: Gain Convince as a bonus skill. You speak all
+the languages common to your region of the world and can learn new ones to a workable level in a week, becoming fluent in a month. Reroll 1s on any skill check dice related to negotiation or diplomacy.
+Level 2: Once per day, silently consecrate a bargain; the target must make a Mental save to break the deal unless their life or something they love as much is imperiled by it. Most NPCs won’t even try to break it. The deal must be for something specific and time-limited, and not an open-ended bargain.`,
+      focus_level: 2,
+    },
+    {
+      focus_name: 'Polymath',
+      focus_description: `
+      You have a passing acquaintance with a vast variety of practical skills and pastimes, and can make a modest at- tempt at almost any exercise of skill or artisanry. Note that the phantom skill levels granted by this Focus don’t stack with normal skill levels or give a skill purchase discount. Only Experts or Partial Experts can take this Focus.
+      Level 1: Gain any one bonus skill. You treat all non-com- bat skills as if they were at least level-0 for purposes of skill checks, even if you lack them entirely.
+      Level 2: You treat all non-combat skills as if they were at least level-1 for purposes of skill checks.
+      `,
+      focus_level: 1,
+    },
+  ],
   magic_efforts: [],
   magic_traditions: [],
   health_max: 1,

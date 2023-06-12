@@ -14,7 +14,7 @@ export type WwnClassAbility = {
 export type WwnFocus = {
   focus_name: string;
   focus_description: string;
-  focus_level: 0 | 1 | 2;
+  focus_level: 1 | 2;
 };
 
 export type WwnSpell = {

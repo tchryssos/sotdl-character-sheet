@@ -1,10 +1,9 @@
-import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { FormSection } from '~/components/form/FormSection';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
@@ -12,7 +11,6 @@ import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { WwnCharacterData, WwnClassAbility } from '~/typings/wwn/characterData';
 
 const createDefaultClassAbility = (): WwnClassAbility => ({
@@ -31,10 +29,6 @@ interface ClassAbilityFieldProps {
   index: number;
   onDelete: (index: number) => void;
 }
-
-const ClassDelete = styled(DeleteButton)`
-  margin-top: ${pxToRem(17)};
-`;
 
 function ClassAbilityField({ index, onDelete }: ClassAbilityFieldProps) {
   const makeAbilityFieldName = createMakeAbilityFieldName(index);
@@ -63,7 +57,7 @@ function ClassAbilityField({ index, onDelete }: ClassAbilityFieldProps) {
           name={makeAbilityFieldName('class_ability_description')}
         />
       </FlexBox>
-      {isEditMode && <ClassDelete onDelete={() => onDelete(index)} />}
+      {isEditMode && <AddAnotherMultiDelete onDelete={() => onDelete(index)} />}
     </FormSection>
   );
 }

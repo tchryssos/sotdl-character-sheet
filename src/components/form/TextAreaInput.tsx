@@ -43,6 +43,8 @@ export function TextAreaInput<T extends Record<string, unknown>>({
         className={className}
         disabled={disabled}
         readOnly={readOnly || nonEditLocked}
+        // MUI sets overflow on inline level, so we need to override it here
+        style={{ overflow: 'auto' }}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(name, validations)}
       />

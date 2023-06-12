@@ -5,13 +5,12 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextInput } from '~/components/form/TextInput';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import { SotdlCharacterData, SotdlSpell } from '~/typings/sotdl/characterData';
 
@@ -23,10 +22,6 @@ const SpellSlash = styled.span(({ theme }) => ({
   color: theme.colors.text,
   fontSize: theme.fontSize.title,
 }));
-
-const SpellDelete = styled(DeleteButton)`
-  margin-top: ${pxToRem(17)};
-`;
 
 const spellTypeOptions = [
   {
@@ -142,7 +137,10 @@ function SpellField({
         />
       </GridBox>
       {isEditMode && (
-        <SpellDelete disabled={index === undefined} onDelete={onDelete} />
+        <AddAnotherMultiDelete
+          disabled={index === undefined}
+          onDelete={onDelete}
+        />
       )}
     </FormSection>
   );

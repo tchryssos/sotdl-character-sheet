@@ -20,6 +20,7 @@ import { AttributeInput } from './inputs/AttributeInput';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ClassInputs } from './inputs/ClassInputs';
+import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
 import { SavingThrowInputs } from './inputs/SavingThrowInputs';
 
@@ -60,6 +61,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
           <BackgroundInputs />
         </GridBox>
         <ClassInputs />
+        <FociInputs />
         <FormSection
           columns={isLessThanSm ? 2 : 3}
           icon={RpgIcons.Barbell}
