@@ -1,6 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useEffect } from 'react';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { Text } from '~/components/Text';
@@ -15,7 +16,6 @@ import { WwnCharacterData } from '~/typings/wwn/characterData';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ClassInputs } from './inputs/ClassInputs';
-import { HistoryInputs } from './inputs/HistoryInputs';
 
 interface WwnCharacterSheetProps {
   character: StrictCharacter<WwnCharacterData>;
@@ -51,9 +51,9 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         <div>FormNav!</div>
         <GridBox columns={isLessThanSm ? 1 : 2}>
           <BasicInfoInputs />
-          <HistoryInputs />
+
+          <BackgroundInputs />
         </GridBox>
-        <BackgroundInputs />
         <ClassInputs />
       </FormComponent>
     </EditContext.Provider>

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { sortBy } from 'lodash';
-import { useContext, useEffect, useState } from 'react';
+import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { EditContext } from '~/logic/contexts/editContext';
@@ -19,15 +19,20 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
     sortIndexMap: Map<string, number>;
   }) => React.ReactNode;
   createDefaultValue: () => Record<string, unknown>;
-  HeaderRow?: React.FC;
+  HeaderRow?: React.ComponentType;
   // @TODO Type this so that it knows which properties are available via
   // parentFieldName
   sortProperties?: KeyOfListField<T>[];
+  ChildWrapper?: React.ComponentType<PropsWithChildren>;
 };
 
 const ChildContainer = styled(Box)`
   max-width: 100%;
 `;
+
+function EmptyChildWrapper({ children }: { children?: React.ReactNode }) {
+  return <>{children}</>;
+}
 
 export function AddAnotherMultiField<T extends Record<string, unknown>>({
   parentFieldName,
@@ -35,6 +40,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   createDefaultValue,
   HeaderRow,
   sortProperties,
+  ChildWrapper = EmptyChildWrapper,
 }: AddAnotherMultiFieldProps<T>) {
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -86,16 +92,18 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
     <>
       {isEditMode && <AddAnotherButton onClick={onCreate} />}
       {Boolean(controlledFields.length) && HeaderRow && <HeaderRow />}
-      {controlledFields.map((field, i) => (
-        <ChildContainer key={field.id}>
-          {children({
-            index: i,
-            onDelete,
-            fieldId: field.id,
-            sortIndexMap,
-          })}
-        </ChildContainer>
-      ))}
+      <ChildWrapper>
+        {controlledFields.map((field, i) => (
+          <ChildContainer key={field.id}>
+            {children({
+              index: i,
+              onDelete,
+              fieldId: field.id,
+              sortIndexMap,
+            })}
+          </ChildContainer>
+        ))}
+      </ChildWrapper>
       {!controlledFields.length && (
         <Text as="p" fontStyle="italic" variant="body-sm">
           Empty (use edit mode to add some {parentFieldName})
