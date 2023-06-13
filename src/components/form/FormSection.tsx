@@ -31,6 +31,7 @@ interface FormSectionProps {
   defaultExpanded?: boolean;
   icon?: RpgIcons;
   gridTemplateRows?: GridBoxProps['gridTemplateRows'];
+  isNested?: boolean;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -55,7 +56,7 @@ const Section = styled(FlexBox)<{ addMargin: boolean }>`
 `;
 
 const createCollapsibleStyles = (theme: Theme, borderless?: boolean) => css`
-  border-color: ${borderless ? 'transparent' : theme.colors.accentHeavy};
+  border-color: ${borderless ? 'transparent' : theme.colors.textAccent};
   border-width: ${borderless ? 0 : theme.borderWidth[1]};
   border-style: solid;
 `;
@@ -111,6 +112,7 @@ export function FormSection({
   defaultExpanded = true,
   icon,
   gridTemplateRows = 'min-content',
+  isNested,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -180,6 +182,7 @@ export function FormSection({
               fontStyle="italic"
               isCollapsible={isCollapsible}
               isEditMode={isEditMode}
+              variant={isNested ? 'body-lg' : 'title-sm'}
             >
               {title}
             </FormTitle>
@@ -204,8 +207,8 @@ export function FormSection({
             <Box
               height="100%"
               marginLeft={8}
-              maxHeight={pxToRem(20)}
-              maxWidth={pxToRem(20)}
+              maxHeight={pxToRem(24)}
+              maxWidth={pxToRem(24)}
               width="100%"
             >
               <RpgIcon iconIndex={icon} />
@@ -219,9 +222,8 @@ export function FormSection({
           gridTemplateColumns={gridTemplateColumns}
           gridTemplateRows={gridTemplateRows}
           isOpen={isOpen}
-          paddingTop={borderless ? 16 : undefined}
-          paddingX={8}
-          paddingY={borderless ? 0 : 16}
+          paddingX={20}
+          paddingY={borderless ? 12 : 20}
         >
           {children}
         </Container>

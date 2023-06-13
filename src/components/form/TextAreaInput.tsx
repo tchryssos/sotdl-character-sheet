@@ -20,6 +20,7 @@ export const TextArea = styled(TextareaAutosize)<{ height?: number }>(
     padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
     fontFamily: theme.fontFamily.normal,
     resize: 'vertical',
+    marginTop: theme.spacing[8],
   })
 );
 

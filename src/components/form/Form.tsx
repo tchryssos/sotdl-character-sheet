@@ -25,7 +25,7 @@ const StyledForm = styled.form<Pick<FormProps<any>, 'noStyles'>>(
     width: '100%',
     display: noStyles ? '' : 'grid',
     gridTemplateColumns: noStyles ? '' : '1fr',
-    rowGap: noStyles ? '' : theme.spacing['20'],
+    rowGap: noStyles ? '' : theme.spacing['48'],
   })
 );
 

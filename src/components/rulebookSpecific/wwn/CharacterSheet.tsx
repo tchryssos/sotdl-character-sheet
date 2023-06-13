@@ -21,6 +21,7 @@ import { ClassInputs } from './inputs/ClassInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
 import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
+import { SkillInputs } from './inputs/SkillInputs';
 
 interface WwnCharacterSheetProps {
   character: StrictCharacter<WwnCharacterData>;
@@ -73,6 +74,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
           <HealthInputs />
           <DefenseInputs />
         </GridBox>
+        <SkillInputs />
       </FormComponent>
     </EditContext.Provider>
   );

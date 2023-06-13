@@ -41,6 +41,7 @@ function FocusItem({ index, onDelete }: FocusItemProps) {
       borderless
       canToggleVisibility={false}
       gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      isNested
       title={sectionTitle}
       visibilityTitle={`focus${index}`}
     >

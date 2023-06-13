@@ -44,6 +44,7 @@ function ClassAbilityField({ index, onDelete }: ClassAbilityFieldProps) {
       borderless
       canToggleVisibility={false}
       gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      isNested
       title={`Class Ability ${index + 1}: ${name}`}
       visibilityTitle={`ability${index}`}
     >
