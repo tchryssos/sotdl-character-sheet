@@ -31,11 +31,11 @@ export function GridBox({
   return (
     <Box
       columnGap={
-        columnGap || isAtLeastSm ? theme.spacing[16] : theme.spacing[8]
+        columnGap || (isAtLeastSm ? theme.spacing[16] : theme.spacing[8])
       }
       display="grid"
       gridTemplateColumns={gridTemplateColumns || `repeat(${columns}, 1fr)`}
-      rowGap={rowGap || isAtLeastSm ? theme.spacing[16] : theme.spacing[8]}
+      rowGap={rowGap || (isAtLeastSm ? theme.spacing[16] : theme.spacing[8])}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >

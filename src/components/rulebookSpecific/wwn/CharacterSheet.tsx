@@ -13,6 +13,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
 import { StrictCharacter } from '~/typings/characters';
+import { Spacing } from '~/typings/theme';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { AttributeInputs } from './inputs/AttributeInputs';
@@ -51,6 +52,11 @@ const tabLabels: TabLabelObject[] = [
   },
 ];
 
+const sharedGapProps = {
+  columnGap: 32 as Spacing,
+  rowGap: 48 as Spacing,
+};
+
 export function CharacterSheet({ character }: WwnCharacterSheetProps) {
   const {
     isEditMode,
@@ -69,6 +75,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
     setIsMyCharacter(character?.playerId === user?.id);
   }, [character?.playerId, setIsMyCharacter, user?.id]);
 
+  const isLessThanMd = useBreakpointsLessThan('md');
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isLessThanXs = useBreakpointsLessThan('xs');
 
@@ -82,24 +89,28 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         <Tabs tabLabels={tabLabels}>
           {/* Description */}
           <TabPanel>
-            <GridBox columns={isLessThanSm ? 1 : 2} gap={48}>
+            <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
               <BasicInfoInputs />
               <BackgroundInputs />
             </GridBox>
           </TabPanel>
           {/* Stats */}
           <TabPanel>
-            <AttributeInputs />
-            <SkillInputs />
+            <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+              <AttributeInputs />
+              <SkillInputs />
+            </GridBox>
           </TabPanel>
           {/* Abilities */}
           <TabPanel>
-            <ClassInputs />
-            <FociInputs />
+            <GridBox columns={1} {...sharedGapProps}>
+              <ClassInputs />
+              <FociInputs />
+            </GridBox>
           </TabPanel>
           {/* Combat */}
           <TabPanel>
-            <GridBox columns={isLessThanSm ? 1 : 2} gap={48}>
+            <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
               <HealthInputs />
               <DefenseInputs />
             </GridBox>
