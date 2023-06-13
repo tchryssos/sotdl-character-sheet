@@ -1,5 +1,9 @@
 import { startCase } from 'lodash';
 
+import { FormSection } from '~/components/form/FormSection';
+import { RpgIcons } from '~/constants/icons';
+import { ATTRIBUTES } from '~/constants/wwn/game';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
@@ -18,7 +22,7 @@ type AttributeInputProps<T> = Omit<NumberInputProps<T>, 'type' | 'name'> & {
   >;
 };
 
-export function AttributeInput<T extends Record<string, unknown>>({
+function AttributeInput<T extends Record<string, unknown>>({
   name,
 }: AttributeInputProps<T>) {
   const label = startCase(name.split('_')[1] || name);
@@ -31,5 +35,20 @@ export function AttributeInput<T extends Record<string, unknown>>({
       min={0}
       name={name}
     />
+  );
+}
+
+export function AttributeInputs() {
+  const isLessThanSm = useBreakpointsLessThan('sm');
+  return (
+    <FormSection
+      columns={isLessThanSm ? 2 : 3}
+      icon={RpgIcons.Barbell}
+      title="Attributes"
+    >
+      {ATTRIBUTES.map((a) => (
+        <AttributeInput key={a} name={`attribute_${a}`} />
+      ))}
+    </FormSection>
   );
 }

@@ -3,10 +3,11 @@ import { useEffect } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
-import { FormSection } from '~/components/form/FormSection';
+import { TabPanel } from '~/components/tabs/TabPanel';
+import { Tabs } from '~/components/tabs/Tabs';
+import { TabLabelObject } from '~/components/tabs/types';
 import { RpgIcons } from '~/constants/icons';
 import { DEFAULT_VALUES } from '~/constants/wwn/form';
-import { ATTRIBUTES } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
@@ -14,7 +15,7 @@ import { useSheetState } from '~/logic/hooks/useSheetState';
 import { StrictCharacter } from '~/typings/characters';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
-import { AttributeInput } from './inputs/AttributeInput';
+import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ClassInputs } from './inputs/ClassInputs';
@@ -26,6 +27,29 @@ import { SkillInputs } from './inputs/SkillInputs';
 interface WwnCharacterSheetProps {
   character: StrictCharacter<WwnCharacterData>;
 }
+
+const tabLabels: TabLabelObject[] = [
+  {
+    label: 'Description',
+    icon: RpgIcons.Scroll,
+  },
+  {
+    label: 'Stats',
+    icon: RpgIcons.Dice,
+  },
+  {
+    label: 'Abilities',
+    icon: RpgIcons.Ripple,
+  },
+  {
+    label: 'Combat',
+    icon: RpgIcons.DualDaggers,
+  },
+  {
+    label: 'Equipment',
+    icon: RpgIcons.Chest,
+  },
+];
 
 export function CharacterSheet({ character }: WwnCharacterSheetProps) {
   const {
@@ -55,26 +79,36 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <div>FormNav!</div>
-        <GridBox columns={isLessThanSm ? 1 : 2}>
-          <BasicInfoInputs />
-          <BackgroundInputs />
-        </GridBox>
-        <ClassInputs />
-        <FociInputs />
-        <FormSection
-          columns={isLessThanSm ? 2 : 3}
-          icon={RpgIcons.Barbell}
-          title="Attributes"
-        >
-          {ATTRIBUTES.map((a) => (
-            <AttributeInput key={a} name={`attribute_${a}`} />
-          ))}
-        </FormSection>
-        <GridBox columns={isLessThanSm ? 1 : 2}>
-          <HealthInputs />
-          <DefenseInputs />
-        </GridBox>
-        <SkillInputs />
+        <Tabs tabLabels={tabLabels}>
+          {/* Description */}
+          <TabPanel>
+            <GridBox columns={isLessThanSm ? 1 : 2} gap={48}>
+              <BasicInfoInputs />
+              <BackgroundInputs />
+            </GridBox>
+          </TabPanel>
+          {/* Stats */}
+          <TabPanel>
+            <AttributeInputs />
+            <SkillInputs />
+          </TabPanel>
+          {/* Abilities */}
+          <TabPanel>
+            <ClassInputs />
+            <FociInputs />
+          </TabPanel>
+          {/* Combat */}
+          <TabPanel>
+            <GridBox columns={isLessThanSm ? 1 : 2} gap={48}>
+              <HealthInputs />
+              <DefenseInputs />
+            </GridBox>
+          </TabPanel>
+          {/* Equipment */}
+          <TabPanel>
+            <div>Equipment</div>
+          </TabPanel>
+        </Tabs>
       </FormComponent>
     </EditContext.Provider>
   );

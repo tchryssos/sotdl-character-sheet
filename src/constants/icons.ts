@@ -13,4 +13,8 @@ export enum RpgIcons {
   Lightbulb = '166',
   HeartShield = '318',
   Card = '430',
+  Scroll = '161',
+  Ripple = '389',
+  DualDaggers = '326',
+  Chest = '258',
 }

@@ -80,14 +80,6 @@ const Container = styled(GridBox)<{ isOpen?: boolean; borderless?: boolean }>`
   align-items: start;
 `;
 
-const Collapsed = styled.div`
-  ${({ theme }) => createCollapsibleStyles(theme)};
-  border-top-width: 0;
-  height: ${({ theme }) => theme.spacing[24]};
-  /* height: 0 on container still leaves a 1px space */
-  transform: translateY(-1px);
-`;
-
 const VisibilityButton = styled(IconButton)`
   transform: translateY(${({ theme }) => theme.spacing[4]});
   position: absolute;
@@ -227,7 +219,6 @@ export function FormSection({
         >
           {children}
         </Container>
-        {!isOpen && !borderless && <Collapsed />}
       </Section>
     );
   }

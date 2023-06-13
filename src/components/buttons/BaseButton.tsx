@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import ButtonUnstyled from '@mui/base/ButtonUnstyled';
+import { Button as ButtonUnstyled } from '@mui/base';
 import { forwardRef } from 'react';
 
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
