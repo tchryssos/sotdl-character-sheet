@@ -1,32 +1,25 @@
-import styled from '@emotion/styled';
 import { startCase } from 'lodash';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { GridBox } from '~/components/box/GridBox';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/FormSection';
-import {
-  NumberInput,
-  NumberInputComponentProps,
-} from '~/components/form/NumberInput';
+import { Label } from '~/components/form/Label';
+import { NumberInput } from '~/components/form/NumberInput';
+import { Text } from '~/components/Text';
 import { RpgIcons } from '~/constants/icons';
 import { WWN_SKILL_UNTRAINED } from '~/constants/wwn/form';
 import { Skill, SKILLS } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
-const StyledSkillInput = styled(NumberInput)<{ untrained: boolean }>(
-  ({ untrained }) => ({
-    ...(untrained && {
-      filter: 'opacity(0)',
-    }),
-  })
-);
-
 interface SkillInputProps {
   skill: Skill;
+  hideUntrained: boolean;
 }
 
-function SkillInput({ skill }: SkillInputProps) {
+function SkillInput({ skill, hideUntrained }: SkillInputProps) {
   const { isEditMode } = useContext(EditContext);
 
   const { watch } = useFormContext<WwnCharacterData>();
@@ -35,22 +28,57 @@ function SkillInput({ skill }: SkillInputProps) {
 
   const showUntrained = watch(fieldName) === WWN_SKILL_UNTRAINED && !isEditMode;
 
-  return (
-    <StyledSkillInput
+  const untrainedId = `untrained-${skill}`;
+
+  if (hideUntrained && showUntrained) {
+    return null;
+  }
+
+  return showUntrained ? (
+    <Label label={startCase(skill)} labelFor={untrainedId}>
+      <Text display="block" id={untrainedId} marginTop={8} variant="body-sm">
+        Untrained
+      </Text>
+    </Label>
+  ) : (
+    <NumberInput
       label={startCase(skill)}
       min={WWN_SKILL_UNTRAINED}
       name={fieldName}
-      untrained={showUntrained}
     />
   );
 }
 
+const untrainedSkillLSKey = 'showUntrainedSkills';
+
 export function SkillInputs() {
+  const [untrainedHidden, setUntrainedHidden] = useState(
+    globalThis?.localStorage?.getItem(untrainedSkillLSKey) === 'true'
+  );
+
+  const onToggleUntrained = () => {
+    const nextValue = !untrainedHidden;
+    setUntrainedHidden(nextValue);
+    globalThis?.localStorage?.setItem(
+      untrainedSkillLSKey,
+      nextValue.toString()
+    );
+  };
   return (
-    <FormSection columns={4} icon={RpgIcons.Card} title="Skills">
-      {SKILLS.map((s) => (
-        <SkillInput key={s} skill={s} />
-      ))}
+    <FormSection columns={1} icon={RpgIcons.Card} title="Skills">
+      <GridBox columns={4}>
+        {SKILLS.map((s) => (
+          <SkillInput hideUntrained={untrainedHidden} key={s} skill={s} />
+        ))}
+      </GridBox>
+      <CheckboxInput
+        alwaysEditable
+        customOnChange={onToggleUntrained}
+        inputLike
+        isChecked={untrainedHidden}
+        name="Hide Untrained"
+        size="sm"
+      />
     </FormSection>
   );
 }
