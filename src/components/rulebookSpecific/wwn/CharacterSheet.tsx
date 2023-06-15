@@ -20,10 +20,12 @@ import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ClassInputs } from './inputs/ClassInputs';
+import { CombatBonusInputs } from './inputs/CombatBonusInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
 import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
 import { SkillInputs } from './inputs/SkillInputs';
+import { WeaponInputs } from './inputs/WeaponInputs';
 
 interface WwnCharacterSheetProps {
   character: StrictCharacter<WwnCharacterData>;
@@ -44,7 +46,7 @@ const tabLabels: TabLabelObject[] = [
   },
   {
     label: 'Combat',
-    icon: RpgIcons.DualDaggers,
+    icon: RpgIcons.StackedSkulls,
   },
   {
     label: 'Equipment',
@@ -94,6 +96,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
               <BackgroundInputs />
             </GridBox>
           </TabPanel>
+
           {/* Stats */}
           <TabPanel>
             <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
@@ -101,6 +104,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
               <SkillInputs />
             </GridBox>
           </TabPanel>
+
           {/* Abilities */}
           <TabPanel>
             <GridBox columns={1} {...sharedGapProps}>
@@ -108,13 +112,17 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
               <FociInputs />
             </GridBox>
           </TabPanel>
+
           {/* Combat */}
           <TabPanel>
             <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
               <HealthInputs />
               <DefenseInputs />
+              <CombatBonusInputs />
+              <WeaponInputs />
             </GridBox>
           </TabPanel>
+
           {/* Equipment */}
           <TabPanel>
             <div>Equipment</div>

@@ -17,4 +17,7 @@ export enum RpgIcons {
   Ripple = '389',
   DualDaggers = '326',
   Chest = '258',
+  MirrorSword = '345',
+  DrawnBow = '344',
+  StackedSkulls = '353',
 }
