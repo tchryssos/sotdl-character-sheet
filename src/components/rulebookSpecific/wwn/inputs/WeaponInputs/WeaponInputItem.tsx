@@ -83,7 +83,7 @@ export function WeaponInputItem({
   const weaponReadied = watch(weaponReadiedFieldName);
 
   const sectionTitle = `${weaponName}, ${weaponDamage}${
-    weaponTraits.length
+    weaponTraits.length && !isLessThanSm
       ? ` (${weaponTraits.map((t) => toUpper(t)).join(', ')})`
       : ''
   }`;

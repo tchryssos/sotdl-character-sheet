@@ -90,7 +90,33 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
   attack_bonus_ranged: 0,
   initiative_bonus: 0,
   equipment: [],
-  weapons: [],
+  weapons: [
+    {
+      weapon_name: 'Hand Axe',
+      weapon_description: `
+    Range: 10/30
+Received from Grendor the Horrible
+Maybe cursed?
+
+    `,
+      weapon_traits: ['t'],
+      weapon_shock: '1/AC15',
+      weapon_attribute: ['strength', 'dexterity'],
+      weapon_encumbrance: 1,
+      weapon_readied: true,
+      weapon_damage: '1d6',
+    },
+    {
+      weapon_name: 'Throwing Blade',
+      weapon_description: 'Range: 30/60',
+      weapon_traits: ['t', 's', 'n', 'll'],
+      weapon_shock: '',
+      weapon_attribute: ['dexterity'],
+      weapon_encumbrance: 1,
+      weapon_readied: false,
+      weapon_damage: '1d4',
+    },
+  ],
   armors: [],
   currency_copper: 0,
   currency_silver: 0,

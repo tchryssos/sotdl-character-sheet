@@ -12,6 +12,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { Spacing } from '~/typings/theme';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
@@ -56,8 +57,8 @@ const tabLabels: TabLabelObject[] = [
 ];
 
 const sharedGapProps = {
-  columnGap: 32 as Spacing,
-  rowGap: 48 as Spacing,
+  columnGap: pxToRem(32),
+  rowGap: pxToRem(48),
 };
 
 export function CharacterSheet({ character }: WwnCharacterSheetProps) {

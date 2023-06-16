@@ -1,20 +1,17 @@
 import styled from '@emotion/styled';
-import { useContext } from 'react';
-import { useFormContext } from 'react-hook-form';
 
-import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { FormSection } from '~/components/form/FormSection';
-import { Text } from '~/components/Text';
 import { RpgIcons } from '~/constants/icons';
-import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
 import { WeaponInputItem } from './WeaponInputItem';
 
 const WeaponInputFormSection = styled(FormSection)`
-  grid-column: 1 / span 2;
+  grid-column: span 1;
+  ${({ theme }) => theme.breakpoints.sm} {
+    grid-column: span 2;
+  }
 `;
 
 const createWeaponFieldName = (
