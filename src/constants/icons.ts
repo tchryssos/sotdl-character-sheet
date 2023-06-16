@@ -22,4 +22,6 @@ export enum RpgIcons {
   StackedSkulls = '353',
   TriangleFlagSm = '150',
   TriangleFlag = '149',
+  Fireball = '354',
+  ArmorHead = '099',
 }

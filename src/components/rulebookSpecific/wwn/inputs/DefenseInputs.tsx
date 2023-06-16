@@ -78,12 +78,19 @@ function SaveInputs() {
   );
 }
 
+// TODO: AC Context
 const calculateArmorAc = (armors: WwnArmor[], dexterity: number) =>
-  armors.reduce((acc, armor) => {
+  armors.reduce((currArmor, armor) => {
     if (armor.armor_readied) {
-      return acc + armor.armor_defense;
+      if (armor.armor_defense > currArmor) {
+        return armor.armor_defense;
+      }
+      if (armor.armor_weight === 'shield') {
+        return currArmor + 1;
+      }
+      return currArmor;
     }
-    return acc;
+    return currArmor;
   }, 10 + calcAttributeBonus(dexterity));
 
 const emptyArmors: WwnArmor[] = [];

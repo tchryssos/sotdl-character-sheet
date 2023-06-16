@@ -12,6 +12,9 @@ const WeaponInputFormSection = styled(FormSection)`
   ${({ theme }) => theme.breakpoints.sm} {
     grid-column: span 2;
   }
+  ${({ theme }) => theme.breakpoints.md} {
+    grid-column: span 3;
+  }
 `;
 
 const createWeaponFieldName = (

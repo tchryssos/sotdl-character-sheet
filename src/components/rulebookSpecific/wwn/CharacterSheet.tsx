@@ -9,7 +9,10 @@ import { TabLabelObject } from '~/components/tabs/types';
 import { RpgIcons } from '~/constants/icons';
 import { DEFAULT_VALUES } from '~/constants/wwn/form';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
@@ -18,6 +21,7 @@ import { Spacing } from '~/typings/theme';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { FormNav } from './FormNav';
+import { ArmorInputs } from './inputs/ArmorInputs';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
@@ -54,6 +58,10 @@ const tabLabels: TabLabelObject[] = [
     label: 'Equipment',
     icon: RpgIcons.Chest,
   },
+  {
+    label: 'Magic',
+    icon: RpgIcons.Fireball,
+  },
 ];
 
 const sharedGapProps = {
@@ -81,6 +89,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
 
   const isLessThanMd = useBreakpointsLessThan('md');
   const isLessThanSm = useBreakpointsLessThan('sm');
+  const isAtLeastMd = useBreakpointsAtLeast('md');
   const isLessThanXs = useBreakpointsLessThan('xs');
 
   return (
@@ -117,17 +126,27 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
 
           {/* Combat */}
           <TabPanel>
-            <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
+            <GridBox
+              // eslint-disable-next-line no-nested-ternary
+              columns={isLessThanSm ? 1 : isAtLeastMd ? 3 : 2}
+              {...sharedGapProps}
+            >
               <HealthInputs />
               <DefenseInputs />
               <CombatBonusInputs />
               <WeaponInputs />
+              <ArmorInputs />
             </GridBox>
           </TabPanel>
 
           {/* Equipment */}
           <TabPanel>
             <div>Equipment</div>
+          </TabPanel>
+
+          {/* Magic */}
+          <TabPanel>
+            <div>magic</div>
           </TabPanel>
         </Tabs>
       </FormComponent>
