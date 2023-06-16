@@ -46,11 +46,11 @@ export type WwnWeapon = {
   weapon_name: string;
   weapon_description: string;
   weapon_traits: WeaponTrait[];
-  weapon_shock: [number, number] | ['', ''];
+  weapon_shock: string;
   weapon_attribute: Attribute[];
-  weapon_range: [number, number] | ['', ''];
   weapon_encumbrance: number;
   weapon_readied: boolean;
+  weapon_damage: string;
 };
 
 export type WwnArmor = {
