@@ -39,10 +39,10 @@ function AttributeInput<T extends Record<string, unknown>>({
 }
 
 export function AttributeInputs() {
-  const isLessThanSm = useBreakpointsLessThan('sm');
+  const isLessThanXs = useBreakpointsLessThan('xs');
   return (
     <FormSection
-      columns={isLessThanSm ? 2 : 3}
+      columns={isLessThanXs ? 2 : 3}
       icon={RpgIcons.Barbell}
       title="Attributes"
     >

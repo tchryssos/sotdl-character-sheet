@@ -7,6 +7,7 @@ import { Theme } from '~/constants/theme';
 import { EditContext } from '~/logic/contexts/editContext';
 import { VisibilityContext } from '~/logic/contexts/visibilityContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { Color } from '~/typings/theme';
 
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
@@ -32,6 +33,7 @@ interface FormSectionProps {
   icon?: RpgIcons;
   gridTemplateRows?: GridBoxProps['gridTemplateRows'];
   isNested?: boolean;
+  titleColor?: Color;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -105,6 +107,7 @@ export function FormSection({
   icon,
   gridTemplateRows = 'min-content',
   isNested,
+  titleColor,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -160,7 +163,11 @@ export function FormSection({
         className={className}
         flexDirection="column"
       >
-        <FlexBox alignItems="flex-end" marginLeft={borderless ? 0 : 4}>
+        <FlexBox
+          alignItems="flex-end"
+          color={titleColor}
+          marginLeft={borderless ? 0 : 4}
+        >
           <TitleBox>
             {isCollapsible && (
               <CollapseToggle

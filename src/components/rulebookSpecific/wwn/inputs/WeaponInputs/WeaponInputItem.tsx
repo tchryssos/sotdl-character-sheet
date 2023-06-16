@@ -95,11 +95,13 @@ export function WeaponInputItem({
       columns={isLessThanSm ? 1 : 2}
       icon={weaponReadied ? RpgIcons.TriangleFlagSm : undefined}
       title={sectionTitle}
+      titleColor={weaponReadied ? 'text' : 'textAccent'}
       visibilityTitle={`weapon${index}`}
     >
       <GridBox columns={1}>
         <GridBox gridTemplateColumns="auto 1fr">
           <CheckboxInput<WwnCharacterData>
+            alwaysEditable
             label="Readied"
             name={weaponReadiedFieldName}
           />
