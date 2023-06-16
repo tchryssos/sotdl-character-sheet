@@ -85,7 +85,7 @@ type BaseSelectMultipleProps =
   | {
       multiple: true;
       maxSelected?: number;
-      MultiDisplayComponent?: React.ComponentType;
+      MultiDisplayComponent?: React.ComponentType<{ name: string }>;
     }
   | {
       multiple?: never;

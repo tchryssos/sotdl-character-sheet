@@ -20,4 +20,6 @@ export enum RpgIcons {
   MirrorSword = '345',
   DrawnBow = '344',
   StackedSkulls = '353',
+  TriangleFlagSm = '150',
+  TriangleFlag = '149',
 }
