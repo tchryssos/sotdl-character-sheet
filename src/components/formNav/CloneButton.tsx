@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { IconButton } from '~/components/buttons/IconButton';
 import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
@@ -14,27 +15,26 @@ import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { RulebookType } from '~/typings/rulebooks';
 
-interface CloneButtonProps<T extends CharacterData> {
+interface CloneButtonProps {
   characterName: string;
-  characterData: T;
   playerId: number;
   rulebookName: RulebookType;
 }
 
-export function CloneButton<T extends CharacterData>({
-  characterData,
+export function CloneButton({
   characterName,
   playerId,
   rulebookName,
-}: CloneButtonProps<T>) {
+}: CloneButtonProps) {
   const [isConfirmCloneOpen, setIsConfirmCloneOpen] = useState(false);
   const { push } = useRouter();
   const { addNotifications } = useContext(NotificationsContext);
+  const { getValues } = useFormContext();
 
   const onClone = async () => {
     const resp = await saveCharacter({
       id: NEW_ID,
-      characterData,
+      characterData: getValues() as CharacterData,
       rulebookName,
       name: characterName,
       imageUrl: null,

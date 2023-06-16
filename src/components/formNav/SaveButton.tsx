@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { IconButton } from '~/components/buttons/IconButton';
 import { Save } from '~/components/icons/Save';
@@ -13,23 +14,22 @@ import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { RulebookType } from '~/typings/rulebooks';
 
-interface SaveButtonProps<T extends CharacterData> {
+interface SaveButtonProps {
   playerId: number;
   characterName: string;
-  characterData: T;
   characterId?: string;
   rulebookName: RulebookType;
 }
 
-export function SaveButton<T extends CharacterData>({
+export function SaveButton({
   playerId,
-  characterData,
   characterName,
   characterId = NEW_ID,
   rulebookName,
-}: SaveButtonProps<T>) {
+}: SaveButtonProps) {
   const [isSaving, setisSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
+  const { getValues } = useFormContext();
 
   const { push } = useRouter();
 
@@ -37,7 +37,7 @@ export function SaveButton<T extends CharacterData>({
     setisSaving(true);
     const resp = await saveCharacter({
       id: characterId as number | typeof NEW_ID,
-      characterData,
+      characterData: getValues() as CharacterData,
       playerId,
       rulebookName,
       name: characterName,

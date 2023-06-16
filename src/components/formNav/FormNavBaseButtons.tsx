@@ -1,0 +1,68 @@
+import { useUser } from '@auth0/nextjs-auth0';
+import { useRouter } from 'next/router';
+import { useContext } from 'react';
+
+import { CloneButton } from '~/components/formNav/CloneButton';
+import { DeleteButton } from '~/components/formNav/DeleteButton';
+import { EditContext } from '~/logic/contexts/editContext';
+import { useIsNewCharacter } from '~/logic/hooks/useIsNewCharacter';
+import { RulebookType } from '~/typings/rulebooks';
+import { StrictSessionUser } from '~/typings/user';
+
+import { IconButton } from '../buttons/IconButton';
+import { Pencil } from '../icons/Pencil';
+import { SaveButton } from './SaveButton';
+
+interface NavButtonsProps {
+  isMyCharacter: boolean;
+  rulebookName: RulebookType;
+  characterName: string;
+}
+
+export function FormNavBaseButtons({
+  isMyCharacter,
+  rulebookName,
+  characterName,
+}: NavButtonsProps) {
+  const { user } = useUser();
+  const { isEditMode, setIsEditMode } = useContext(EditContext);
+  const { query } = useRouter();
+  const isNew = useIsNewCharacter();
+
+  return (
+    <>
+      {user && (
+        <>
+          {!isMyCharacter && !isNew && (
+            <CloneButton
+              characterName={characterName}
+              playerId={(user as StrictSessionUser).id}
+              rulebookName={rulebookName}
+            />
+          )}
+          {isMyCharacter && isEditMode && (
+            <DeleteButton
+              characterId={parseInt(query.id as string, 10)}
+              playerId={(user as StrictSessionUser).id}
+            />
+          )}
+          {(isMyCharacter || isNew) && (
+            <SaveButton
+              characterId={query.id as string}
+              characterName={characterName}
+              playerId={(user as StrictSessionUser).id}
+              rulebookName={rulebookName}
+            />
+          )}
+        </>
+      )}
+      <IconButton onClick={() => setIsEditMode(!isEditMode)}>
+        <Pencil
+          color={isEditMode ? 'success' : 'text'}
+          title="Edit pencil"
+          titleId="edit-pencil-icon"
+        />
+      </IconButton>
+    </>
+  );
+}
