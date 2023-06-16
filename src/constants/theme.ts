@@ -105,6 +105,7 @@ const theme = {
     2: pxToRem(2),
     4: pxToRem(4),
     round: '50%',
+    200: pxToRem(200),
   },
   fontSize: {
     caption: pxToRem(10),

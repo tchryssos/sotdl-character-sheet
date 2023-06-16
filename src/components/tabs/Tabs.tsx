@@ -13,6 +13,7 @@ interface TabsProps {
 const LabelsContainer = styled(TabsList)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing[8],
+  flexWrap: 'wrap',
 }));
 
 export function Tabs({

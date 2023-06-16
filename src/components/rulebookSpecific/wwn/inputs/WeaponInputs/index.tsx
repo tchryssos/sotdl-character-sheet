@@ -17,30 +17,10 @@ const WeaponInputFormSection = styled(FormSection)`
   grid-column: 1 / span 2;
 `;
 
-interface WeaponInputProps {
-  index: number;
-  onDelete: (idx: number) => void;
-}
-
 const createWeaponFieldName = (
   name: keyof WwnWeapon,
   index: number
 ): `weapons.${number}.${keyof WwnWeapon}` => `weapons.${index}.${name}`;
-
-function WeaponInput({ index, onDelete }: WeaponInputProps) {
-  const { setValue, watch } = useFormContext();
-  const { isEditMode } = useContext(EditContext);
-  const isLessThanSm = useBreakpointsLessThan('sm');
-  if (isLessThanSm) {
-    return <div>weapon</div>;
-  }
-  return (
-    <WeaponInputItem
-      createWeaponFieldName={createWeaponFieldName}
-      index={index}
-    />
-  );
-}
 
 const createDefaultWeapon = (): WwnWeapon => ({
   weapon_name: '',
@@ -65,7 +45,12 @@ export function WeaponInputs() {
         parentFieldName="weapons"
       >
         {({ index, onDelete, fieldId }) => (
-          <WeaponInput index={index} key={fieldId} onDelete={onDelete} />
+          <WeaponInputItem
+            createWeaponFieldName={createWeaponFieldName}
+            index={index}
+            key={fieldId}
+            onDelete={onDelete}
+          />
         )}
       </AddAnotherMultiField>
     </WeaponInputFormSection>

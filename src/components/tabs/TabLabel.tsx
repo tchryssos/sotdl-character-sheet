@@ -12,7 +12,7 @@ const Tab = styled(MuiTab)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing[8],
   alignItems: 'center',
-  backgroundColor: theme.colors.accentHeavy,
+  backgroundColor: theme.colors.background,
   color: theme.colors.text,
   borderRadius: 0,
   borderColor: theme.colors.textAccent,
@@ -21,7 +21,7 @@ const Tab = styled(MuiTab)(({ theme }) => ({
   cursor: 'pointer',
   padding: theme.spacing[8],
   [`&.${tabClasses.selected}`]: {
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.accentHeavy,
   },
 }));
 

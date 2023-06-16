@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { startCase } from 'lodash';
+import { startCase, upperFirst } from 'lodash';
 import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -10,6 +10,8 @@ import {
 } from '~/components/form/typings';
 import { EditContext } from '~/logic/contexts/editContext';
 
+import { FlexBox } from '../box/FlexBox';
+import { Pill } from '../Pill';
 import { Text } from '../Text';
 import { Label } from './Label';
 
@@ -55,10 +57,15 @@ function ValueDisplay({ name, multiple }: ValueDisplayProps) {
   const value: string[] = watch(name || 'FAKE_KEY_NOTHING');
 
   if (multiple && value) {
+    if (!value.length) {
+      return <Text variant="body-sm">None</Text>;
+    }
     return (
-      <Text display="block" marginTop={8}>
-        {value.map((v) => startCase(v)).join(', ')}
-      </Text>
+      <FlexBox gap={8} marginTop={8}>
+        {value.map((v) => (
+          <Pill key={v} text={upperFirst(v)} />
+        ))}
+      </FlexBox>
     );
   }
 

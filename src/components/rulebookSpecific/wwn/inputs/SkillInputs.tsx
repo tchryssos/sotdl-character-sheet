@@ -12,6 +12,7 @@ import { RpgIcons } from '~/constants/icons';
 import { WWN_SKILL_UNTRAINED } from '~/constants/wwn/form';
 import { Skill, SKILLS } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 interface SkillInputProps {
@@ -52,6 +53,9 @@ function SkillInput({ skill, hideUntrained }: SkillInputProps) {
 const untrainedSkillLSKey = 'showUntrainedSkills';
 
 export function SkillInputs() {
+  const isLessThanSm = useBreakpointsLessThan('sm');
+  const isXxs = useBreakpointsLessThan('xs');
+
   const [untrainedHidden, setUntrainedHidden] = useState(
     globalThis?.localStorage?.getItem(untrainedSkillLSKey) === 'true'
   );
@@ -64,9 +68,11 @@ export function SkillInputs() {
       nextValue.toString()
     );
   };
+
   return (
     <FormSection columns={1} icon={RpgIcons.Card} title="Skills">
-      <GridBox columns={4}>
+      {/* eslint-disable-next-line no-nested-ternary */}
+      <GridBox columns={isXxs ? 2 : isLessThanSm ? 3 : 4}>
         {SKILLS.map((s) => (
           <SkillInput hideUntrained={untrainedHidden} key={s} skill={s} />
         ))}
