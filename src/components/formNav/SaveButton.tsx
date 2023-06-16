@@ -6,26 +6,28 @@ import { Save } from '~/components/icons/Save';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
-import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
+import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
-import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { RulebookType } from '~/typings/rulebooks';
 
-interface SaveButtonProps {
+interface SaveButtonProps<T extends CharacterData> {
   playerId: number;
   characterName: string;
-  characterData: SotdlCharacterData;
+  characterData: T;
   characterId?: string;
+  rulebookName: RulebookType;
 }
 
-export function SaveButton({
+export function SaveButton<T extends CharacterData>({
   playerId,
   characterData,
   characterName,
   characterId = NEW_ID,
-}: SaveButtonProps) {
+  rulebookName,
+}: SaveButtonProps<T>) {
   const [isSaving, setisSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
 
@@ -37,7 +39,7 @@ export function SaveButton({
       id: characterId as number | typeof NEW_ID,
       characterData,
       playerId,
-      rulebookName: SOTDL_NAME,
+      rulebookName,
       name: characterName,
       imageUrl: null,
     });

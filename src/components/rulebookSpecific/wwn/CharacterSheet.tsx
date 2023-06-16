@@ -16,6 +16,7 @@ import { StrictCharacter } from '~/typings/characters';
 import { Spacing } from '~/typings/theme';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
+import { FormNav } from './FormNav';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
@@ -65,7 +66,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
     setIsEditMode,
     // isLoading,
     // setIsLoading,
-    // isMyCharacter,
+    isMyCharacter,
     setIsMyCharacter,
     editProviderVal,
   } = useSheetState();
@@ -87,7 +88,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
       >
-        <div>FormNav!</div>
+        <FormNav isMyCharacter={isMyCharacter} />
         <Tabs tabLabels={tabLabels}>
           {/* Description */}
           <TabPanel>

@@ -7,24 +7,26 @@ import { MoveFile } from '~/components/icons/MoveFile';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
-import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
+import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
-import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { RulebookType } from '~/typings/rulebooks';
 
-interface CloneButtonProps {
+interface CloneButtonProps<T extends CharacterData> {
   characterName: string;
-  characterData: SotdlCharacterData;
+  characterData: T;
   playerId: number;
+  rulebookName: RulebookType;
 }
 
-export function CloneButton({
+export function CloneButton<T extends CharacterData>({
   characterData,
   characterName,
   playerId,
-}: CloneButtonProps) {
+  rulebookName,
+}: CloneButtonProps<T>) {
   const [isConfirmCloneOpen, setIsConfirmCloneOpen] = useState(false);
   const { push } = useRouter();
   const { addNotifications } = useContext(NotificationsContext);
@@ -33,7 +35,7 @@ export function CloneButton({
     const resp = await saveCharacter({
       id: NEW_ID,
       characterData,
-      rulebookName: SOTDL_NAME,
+      rulebookName,
       name: characterName,
       imageUrl: null,
       playerId,

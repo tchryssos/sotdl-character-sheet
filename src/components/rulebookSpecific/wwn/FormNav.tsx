@@ -4,18 +4,19 @@ import { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
+import { CloneButton } from '~/components/formNav/CloneButton';
+import { DeleteButton } from '~/components/formNav/DeleteButton';
 import { EditContext } from '~/logic/contexts/editContext';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useIsNewCharacter } from '~/logic/hooks/useIsNewCharacter';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 import { StrictSessionUser } from '~/typings/user';
+import { WwnCharacterData } from '~/typings/wwn/characterData';
 
-import { IconButton } from '../../../buttons/IconButton';
-import { Pencil } from '../../../icons/Pencil';
-import { CloneButton } from './buttons/CloneButton';
-import { DeleteButton } from './buttons/DeleteButton';
-import { SaveButton } from './buttons/SaveButton';
+import { IconButton } from '../../buttons/IconButton';
+import { SaveButton } from '../../formNav/SaveButton';
+import { Pencil } from '../../icons/Pencil';
 
 interface FormNavProps {
   isMyCharacter: boolean;
@@ -29,18 +30,19 @@ function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
   const { query } = useRouter();
   const isNew = useIsNewCharacter();
 
-  const characterName: string = watch<keyof SotdlCharacterData>('name');
-  const characterData = getValues() as SotdlCharacterData;
+  const characterName: string = watch<keyof WwnCharacterData>('name');
+  const characterData = getValues() as WwnCharacterData;
 
   return (
     <>
       {user && (
         <>
           {!isMyCharacter && !isNew && (
-            <CloneButton
+            <CloneButton<WwnCharacterData>
               characterData={characterData}
               characterName={characterName}
               playerId={(user as StrictSessionUser).id}
+              rulebookName="wwn"
             />
           )}
           {isMyCharacter && isEditMode && (
@@ -50,11 +52,12 @@ function NavButtons({ isMyCharacter }: Pick<FormNavProps, 'isMyCharacter'>) {
             />
           )}
           {(isMyCharacter || isNew) && (
-            <SaveButton
+            <SaveButton<WwnCharacterData>
               characterData={characterData}
               characterId={query.id as string}
               characterName={characterName}
               playerId={(user as StrictSessionUser).id}
+              rulebookName="wwn"
             />
           )}
         </>
