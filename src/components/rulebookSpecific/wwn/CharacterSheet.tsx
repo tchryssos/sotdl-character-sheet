@@ -20,6 +20,7 @@ import { StrictCharacter } from '~/typings/characters';
 import { Spacing } from '~/typings/theme';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
+import { AcProvider } from './ACProvider';
 import { FormNav } from './FormNav';
 import { ArmorInputs } from './inputs/ArmorInputs';
 import { AttributeInputs } from './inputs/AttributeInputs';
@@ -99,56 +100,58 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <FormNav isMyCharacter={isMyCharacter} />
-        <Tabs tabLabels={tabLabels}>
-          {/* Description */}
-          <TabPanel>
-            <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
-              <BasicInfoInputs />
-              <BackgroundInputs />
-            </GridBox>
-          </TabPanel>
+        <AcProvider>
+          <Tabs tabLabels={tabLabels}>
+            {/* Description */}
+            <TabPanel>
+              <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
+                <BasicInfoInputs />
+                <BackgroundInputs />
+              </GridBox>
+            </TabPanel>
 
-          {/* Stats */}
-          <TabPanel>
-            <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-              <AttributeInputs />
-              <SkillInputs />
-            </GridBox>
-          </TabPanel>
+            {/* Stats */}
+            <TabPanel>
+              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                <AttributeInputs />
+                <SkillInputs />
+              </GridBox>
+            </TabPanel>
 
-          {/* Abilities */}
-          <TabPanel>
-            <GridBox columns={1} {...sharedGapProps}>
-              <ClassInputs />
-              <FociInputs />
-            </GridBox>
-          </TabPanel>
+            {/* Abilities */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <ClassInputs />
+                <FociInputs />
+              </GridBox>
+            </TabPanel>
 
-          {/* Combat */}
-          <TabPanel>
-            <GridBox
-              // eslint-disable-next-line no-nested-ternary
-              columns={isLessThanSm ? 1 : isAtLeastMd ? 3 : 2}
-              {...sharedGapProps}
-            >
-              <HealthInputs />
-              <DefenseInputs />
-              <CombatBonusInputs />
-              <WeaponInputs />
-              <ArmorInputs />
-            </GridBox>
-          </TabPanel>
+            {/* Combat */}
+            <TabPanel>
+              <GridBox
+                // eslint-disable-next-line no-nested-ternary
+                columns={isLessThanSm ? 1 : isAtLeastMd ? 3 : 2}
+                {...sharedGapProps}
+              >
+                <HealthInputs />
+                <DefenseInputs />
+                <CombatBonusInputs />
+                <WeaponInputs />
+                <ArmorInputs />
+              </GridBox>
+            </TabPanel>
 
-          {/* Equipment */}
-          <TabPanel>
-            <div>Equipment</div>
-          </TabPanel>
+            {/* Equipment */}
+            <TabPanel>
+              <div>Equipment</div>
+            </TabPanel>
 
-          {/* Magic */}
-          <TabPanel>
-            <div>magic</div>
-          </TabPanel>
-        </Tabs>
+            {/* Magic */}
+            <TabPanel>
+              <div>magic</div>
+            </TabPanel>
+          </Tabs>
+        </AcProvider>
       </FormComponent>
     </EditContext.Provider>
   );

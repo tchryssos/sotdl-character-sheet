@@ -1,5 +1,5 @@
-import { startCase, toUpper, upperFirst } from 'lodash';
-import { useContext } from 'react';
+import { upperFirst } from 'lodash';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -12,12 +12,12 @@ import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
-import { Pill } from '~/components/Pill';
-import { Text } from '~/components/Text';
-import { ARMOR_WEIGHT, ATTRIBUTES, WEAPON_TRAITS } from '~/constants/wwn/game';
+import { ARMOR_WEIGHT } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
+
+import { AcContext } from '../../ACProvider';
 
 interface ArmorInputItemProps {
   index: number;
@@ -43,6 +43,7 @@ export function ArmorInputItem({
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
   const { isEditMode } = useContext(EditContext);
+  const { calculateAc } = useContext(AcContext);
 
   const armorNameFieldName = createArmorFieldName('armor_name', index);
   const armorName = watch(armorNameFieldName);
@@ -55,6 +56,10 @@ export function ArmorInputItem({
 
   const armorReadiedFieldName = createArmorFieldName('armor_readied', index);
   const armorReadied = watch(armorReadiedFieldName);
+
+  useEffect(() => {
+    calculateAc();
+  }, [armorReadied, armorDefense, calculateAc]);
 
   if (hideUnequipped && !armorReadied) {
     return null;
@@ -104,53 +109,7 @@ export function ArmorInputItem({
           label="Description"
           name={createArmorFieldName('armor_description', index)}
         />
-
-        {/* {isLessThanSm && (
-          <TextAreaInput<WwnCharacterData>
-            label="Description"
-            name={createWeaponFieldName('weapon_description', index)}
-          />
-        )}
-        <GridBox columns={isLessThanSm ? 1 : 2}>
-          <TextInput<WwnCharacterData>
-            label="Damage"
-            name={weaponDamageFieldName}
-          />
-          <TextInput<WwnCharacterData>
-            label="Shock"
-            name={createWeaponFieldName('weapon_shock', index)}
-          />
-        </GridBox>
-        <GridBox columns={isLessThanSm ? 1 : 2}>
-          <SelectInput<WwnCharacterData>
-            label="Attribute(s)"
-            maxSelected={2}
-            multiple
-            name={createWeaponFieldName('weapon_attribute', index)}
-            options={weaponAttributeOptions}
-          />
-          <SelectInput<WwnCharacterData>
-            MultiDisplayComponent={WeaponTraitsDisplay}
-            label="Traits"
-            multiple
-            name={weaponTraitsFieldName}
-            options={weaponTraitsOptions}
-          />
-        </GridBox>
-        <GridBox>
-          <NumberInput<WwnCharacterData>
-            label="Encumbrance"
-            min={0}
-            name={createWeaponFieldName('weapon_encumbrance', index)}
-          />
-        </GridBox> */}
       </GridBox>
-      {/* {!isLessThanSm && (
-        <TextAreaInput<WwnCharacterData>
-          label="Description"
-          name={createWeaponFieldName('weapon_description', index)}
-        />
-      )} */}
       {isEditMode && (
         <FlexBox
           gridColumnEnd={3}

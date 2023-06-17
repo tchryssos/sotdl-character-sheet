@@ -1,13 +1,14 @@
 import { max } from 'lodash';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { FormSection } from '~/components/form/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { RpgIcons } from '~/constants/icons';
-import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
-import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
+import { WwnCharacterData } from '~/typings/wwn/characterData';
+
+import { AcContext } from '../ACProvider';
 
 const savingThrowCalc = (attr: number, level: number) => 16 - level - attr;
 
@@ -78,37 +79,17 @@ function SaveInputs() {
   );
 }
 
-// TODO: AC Context
-const calculateArmorAc = (armors: WwnArmor[], dexterity: number) =>
-  armors.reduce((currArmor, armor) => {
-    if (armor.armor_readied) {
-      if (armor.armor_defense > currArmor) {
-        return armor.armor_defense;
-      }
-      if (armor.armor_weight === 'shield') {
-        return currArmor + 1;
-      }
-      return currArmor;
-    }
-    return currArmor;
-  }, 10 + calcAttributeBonus(dexterity));
-
-const emptyArmors: WwnArmor[] = [];
 function ArmorClassInput() {
-  const { watch, register, setValue } = useFormContext();
-
-  const armors: WwnArmor[] =
-    watch<keyof WwnCharacterData>('armors') || emptyArmors;
-  const dexterity: number =
-    watch<keyof WwnCharacterData>('attribute_dexterity') || 10;
+  const { register, setValue } = useFormContext();
+  const { ac } = useContext(AcContext);
 
   useEffect(() => {
     register(ARMOR_CLASS);
   }, [register]);
 
   useEffect(() => {
-    setValue(ARMOR_CLASS, calculateArmorAc(armors, dexterity));
-  }, [armors, dexterity, setValue]);
+    setValue(ARMOR_CLASS, ac);
+  }, [setValue, ac]);
 
   return <NumberInput name={ARMOR_CLASS} readOnly />;
 }

@@ -1,4 +1,6 @@
 import { startCase } from 'lodash';
+import { useContext, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FormSection } from '~/components/form/FormSection';
 import { RpgIcons } from '~/constants/icons';
@@ -9,6 +11,7 @@ import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { BonusInput } from '../../../form/BonusInput';
 import { NumberInputProps } from '../../../form/typings';
+import { AcContext } from '../ACProvider';
 
 type AttributeInputProps<T> = Omit<NumberInputProps<T>, 'type' | 'name'> & {
   name: keyof Pick<
@@ -40,6 +43,16 @@ function AttributeInput<T extends Record<string, unknown>>({
 
 export function AttributeInputs() {
   const isLessThanXs = useBreakpointsLessThan('xs');
+
+  const { watch } = useFormContext<WwnCharacterData>();
+  const dexterity = watch('attribute_dexterity');
+
+  const { calculateAc } = useContext(AcContext);
+
+  useEffect(() => {
+    calculateAc();
+  }, [dexterity, calculateAc]);
+
   return (
     <FormSection
       columns={isLessThanXs ? 2 : 3}
