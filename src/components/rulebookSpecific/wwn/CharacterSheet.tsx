@@ -1,4 +1,5 @@
 import { useUser } from '@auth0/nextjs-auth0';
+import styled from '@emotion/styled';
 import { useEffect } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
@@ -17,7 +18,6 @@ import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
-import { Spacing } from '~/typings/theme';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { AcProvider } from './ACProvider';
@@ -33,6 +33,10 @@ import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 import { WeaponInputs } from './inputs/WeaponInputs';
+
+const WwnCharacterSheet = styled(FormComponent)`
+  padding-bottom: ${({ theme }) => theme.spacing[48]};
+`;
 
 interface WwnCharacterSheetProps {
   character: StrictCharacter<WwnCharacterData>;
@@ -95,7 +99,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
 
   return (
     <EditContext.Provider value={editProviderVal}>
-      <FormComponent
+      <WwnCharacterSheet
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
       >
@@ -152,7 +156,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
             </TabPanel>
           </Tabs>
         </AcProvider>
-      </FormComponent>
+      </WwnCharacterSheet>
     </EditContext.Provider>
   );
 }

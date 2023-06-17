@@ -1,7 +1,8 @@
-import { useContext } from 'react';
+import { PropsWithChildren, useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
+import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { FormSection } from '~/components/form/FormSection';
@@ -74,15 +75,16 @@ const createDefaultFocus = (): WwnFocus => ({
   focus_level: 1,
 });
 
-export function FociInputs() {
+function FociChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanSm = useBreakpointsLessThan('sm');
+  return <GridBox columns={isLessThanSm ? 1 : 2}>{children}</GridBox>;
+}
+
+export function FociInputs() {
   return (
-    <FormSection
-      columns={isLessThanSm ? 1 : 2}
-      icon={RpgIcons.Lightbulb}
-      title="Foci"
-    >
+    <FormSection columns={1} icon={RpgIcons.Lightbulb} title="Foci">
       <AddAnotherMultiField<WwnCharacterData>
+        ChildWrapper={FociChildWrapper}
         createDefaultValue={createDefaultFocus}
         parentFieldName="foci"
       >

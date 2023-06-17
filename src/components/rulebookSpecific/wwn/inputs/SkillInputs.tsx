@@ -69,10 +69,12 @@ export function SkillInputs() {
     );
   };
 
+  // eslint-disable-next-line no-nested-ternary
+  const skillColumns = isXxs ? 2 : isLessThanSm ? 3 : 4;
+
   return (
     <FormSection columns={1} icon={RpgIcons.Card} title="Skills">
-      {/* eslint-disable-next-line no-nested-ternary */}
-      <GridBox columns={isXxs ? 2 : isLessThanSm ? 3 : 4}>
+      <GridBox columns={skillColumns}>
         {SKILLS.map((s) => (
           <SkillInput hideUntrained={untrainedHidden} key={s} skill={s} />
         ))}
@@ -85,6 +87,9 @@ export function SkillInputs() {
         name="Hide Untrained"
         size="sm"
       />
+      <GridBox columns={skillColumns}>
+        <NumberInput<WwnCharacterData> name="remaining_skill_points" />
+      </GridBox>
     </FormSection>
   );
 }
