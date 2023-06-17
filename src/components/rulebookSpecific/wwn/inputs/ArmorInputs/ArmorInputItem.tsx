@@ -14,15 +14,15 @@ import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { Pill } from '~/components/Pill';
 import { Text } from '~/components/Text';
-import { RpgIcons } from '~/constants/icons';
-import { ATTRIBUTES, WEAPON_TRAITS, WeaponTrait } from '~/constants/wwn/game';
+import { ARMOR_WEIGHT, ATTRIBUTES, WEAPON_TRAITS } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
 
-interface WeaponInputItemProps {
+interface ArmorInputItemProps {
   index: number;
   onDelete: (index: number) => void;
+  hideUnequipped: boolean;
 }
 
 const createArmorFieldName = (
@@ -30,39 +30,16 @@ const createArmorFieldName = (
   index: number
 ): `armors.${number}.${keyof WwnArmor}` => `armors.${index}.${name}`;
 
-const weaponAttributeOptions: SelectOption[] = ATTRIBUTES.map((a) => ({
-  label: startCase(a),
-  value: a,
+const armorWeightOptions: SelectOption[] = ARMOR_WEIGHT.map((w) => ({
+  label: upperFirst(w),
+  value: w,
 }));
 
-const weaponTraitsOptions: SelectOption[] = WEAPON_TRAITS.map((t) => ({
-  label: toUpper(t),
-  value: t,
-}));
-
-interface WeaponTraitsDisplayProps {
-  name: string;
-}
-
-function WeaponTraitsDisplay({ name }: WeaponTraitsDisplayProps) {
-  const { watch } = useFormContext();
-
-  const weaponTraits: string[] = watch(name);
-
-  if (!weaponTraits.length) {
-    return <Text variant="body-sm">None</Text>;
-  }
-
-  return (
-    <FlexBox gap={8} marginTop={8}>
-      {weaponTraits.map((v) => (
-        <Pill key={v} text={toUpper(v)} />
-      ))}
-    </FlexBox>
-  );
-}
-
-export function ArmorInputItem({ index, onDelete }: WeaponInputItemProps) {
+export function ArmorInputItem({
+  index,
+  onDelete,
+  hideUnequipped,
+}: ArmorInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
   const { isEditMode } = useContext(EditContext);
@@ -79,6 +56,10 @@ export function ArmorInputItem({ index, onDelete }: WeaponInputItemProps) {
   const armorReadiedFieldName = createArmorFieldName('armor_readied', index);
   const armorReadied = watch(armorReadiedFieldName);
 
+  if (hideUnequipped && !armorReadied) {
+    return null;
+  }
+
   const sectionTitle = `${armorName}, AC ${armorDefense} (${upperFirst(
     armorWeight as string
   )})`;
@@ -87,8 +68,8 @@ export function ArmorInputItem({ index, onDelete }: WeaponInputItemProps) {
     <FormSection
       borderless
       canToggleVisibility={false}
-      columns={isLessThanSm ? 1 : 2}
-      icon={armorReadied ? RpgIcons.TriangleFlagSm : undefined}
+      columns={1}
+      isNested
       title={sectionTitle}
       titleColor={armorReadied ? 'text' : 'textAccent'}
       visibilityTitle={`armors${index}`}
@@ -102,6 +83,28 @@ export function ArmorInputItem({ index, onDelete }: WeaponInputItemProps) {
           />
           <TextInput<WwnCharacterData> label="Name" name={armorNameFieldName} />
         </GridBox>
+        <GridBox columns={isLessThanSm ? 2 : 3}>
+          <NumberInput<WwnCharacterData>
+            label="Defense"
+            min={0}
+            name={armorDefenseFieldName}
+          />
+          <SelectInput<WwnCharacterData>
+            label="Armor Weight"
+            name={armorWeightFieldName}
+            options={armorWeightOptions}
+          />
+          <NumberInput<WwnCharacterData>
+            label="Encumbrance"
+            min={0}
+            name={createArmorFieldName('armor_encumbrance', index)}
+          />
+        </GridBox>
+        <TextAreaInput<WwnCharacterData>
+          label="Description"
+          name={createArmorFieldName('armor_description', index)}
+        />
+
         {/* {isLessThanSm && (
           <TextAreaInput<WwnCharacterData>
             label="Description"

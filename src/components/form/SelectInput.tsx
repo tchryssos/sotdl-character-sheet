@@ -9,6 +9,7 @@ import {
   SelectOption,
 } from '~/components/form/typings';
 import { EditContext } from '~/logic/contexts/editContext';
+import { Spacing } from '~/typings/theme';
 
 import { FlexBox } from '../box/FlexBox';
 import { Pill } from '../Pill';
@@ -17,15 +18,19 @@ import { Label } from './Label';
 
 const placeholderVal = 'placeholder-ignore';
 
+const multipleHeight: Spacing = 48;
+
 const Selector = styled.select(({ theme, multiple }) => ({
-  height: multiple ? theme.spacing[48] : theme.spacing[40],
+  height: multiple ? theme.spacing[multipleHeight] : theme.spacing[40],
   padding: theme.spacing[4],
   fontSize: theme.fontSize.body,
   width: '100%',
   marginTop: theme.spacing[8],
-  '&:focus, &:hover': {
-    height: multiple ? theme.spacing[96] : theme.spacing[48],
-  },
+  ...(multiple && {
+    '&:focus, &:hover': {
+      height: multiple ? theme.spacing[96] : theme.spacing[multipleHeight],
+    },
+  }),
 }));
 
 function Option({ value, label, disabled }: SelectOption) {

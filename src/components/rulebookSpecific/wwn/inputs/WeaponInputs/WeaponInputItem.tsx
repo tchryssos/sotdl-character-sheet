@@ -98,6 +98,7 @@ export function WeaponInputItem({
       borderless
       canToggleVisibility={false}
       columns={isLessThanSm ? 1 : 2}
+      isNested
       title={sectionTitle}
       titleColor={weaponReadied ? 'text' : 'textAccent'}
       visibilityTitle={`weapon${index}`}

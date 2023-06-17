@@ -1,20 +1,18 @@
 import styled from '@emotion/styled';
+import { useContext, useEffect, useState } from 'react';
 
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
-import { FormSection } from '~/components/form/FormSection';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { RpgIcons } from '~/constants/icons';
+import { EditContext } from '~/logic/contexts/editContext';
 import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
 
+import { AAMFormSection } from '../AAMFormSection';
 import { ArmorInputItem } from './ArmorInputItem';
 
-const ArmorInputFormSection = styled(FormSection)`
-  grid-column: span 1;
-  ${({ theme }) => theme.breakpoints.sm} {
-    grid-column: span 2;
-  }
-  ${({ theme }) => theme.breakpoints.md} {
-    grid-column: span 3;
-  }
+const HideCheckbox = styled(CheckboxInput)`
+  justify-self: end;
+  text-align: end;
 `;
 
 const createDefaultArmor = (): WwnArmor => ({
@@ -27,16 +25,43 @@ const createDefaultArmor = (): WwnArmor => ({
 });
 
 export function ArmorInputs() {
+  const [hideUnequipped, setHideUnequipped] = useState(false);
+  const { isEditMode } = useContext(EditContext);
+
+  const onToggleHide = () => {
+    setHideUnequipped(!hideUnequipped);
+  };
+
+  useEffect(() => {
+    if (isEditMode) {
+      setHideUnequipped(false);
+    }
+  }, [isEditMode]);
   return (
-    <ArmorInputFormSection columns={1} icon={RpgIcons.ArmorHead} title="Armors">
+    <AAMFormSection columns={1} icon={RpgIcons.ArmorHead} title="Armors">
       <AddAnotherMultiField<WwnCharacterData>
         createDefaultValue={createDefaultArmor}
         parentFieldName="armors"
       >
         {({ index, onDelete, fieldId }) => (
-          <ArmorInputItem index={index} key={fieldId} onDelete={onDelete} />
+          <ArmorInputItem
+            hideUnequipped={hideUnequipped}
+            index={index}
+            key={fieldId}
+            onDelete={onDelete}
+          />
         )}
       </AddAnotherMultiField>
-    </ArmorInputFormSection>
+      {!isEditMode && (
+        <HideCheckbox
+          alwaysEditable
+          customOnChange={onToggleHide}
+          inputLike
+          isChecked={hideUnequipped}
+          name="Hide Unequipped"
+          size="sm"
+        />
+      )}
+    </AAMFormSection>
   );
 }

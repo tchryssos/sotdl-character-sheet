@@ -38,12 +38,16 @@ interface FormSectionProps {
 
 const TitleBox = styled(FlexBox)`
   position: relative;
+  overflow: hidden;
+  width: auto;
 `;
 
 const FormTitle = styled(Text)<
   Pick<FormSectionProps, 'isCollapsible'> & { isEditMode: boolean }
 >(({ isEditMode, isCollapsible, theme }) => ({
   whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
   ...(isCollapsible && {
     paddingLeft: theme.spacing[32],
   }),
@@ -80,6 +84,7 @@ const Container = styled(GridBox)<{ isOpen?: boolean; borderless?: boolean }>`
   padding: ${({ isOpen }) => (isOpen ? '' : 0)};
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
   align-items: start;
+  overflow: hidden;
 `;
 
 const VisibilityButton = styled(IconButton)`
@@ -163,9 +168,13 @@ export function FormSection({
         className={className}
         flexDirection="column"
       >
-        <FlexBox
+        <GridBox
           alignItems="flex-end"
           color={titleColor}
+          gap={8}
+          gridTemplateColumns={`auto${icon ? ` ${pxToRem(24)}` : ''}${
+            borderless ? '' : ' 1fr'
+          }`}
           marginLeft={borderless ? 0 : 4}
         >
           <TitleBox>
@@ -181,6 +190,7 @@ export function FormSection({
               fontStyle="italic"
               isCollapsible={isCollapsible}
               isEditMode={isEditMode}
+              paddingRight={2}
               variant={isNested ? 'body-lg' : 'title-sm'}
             >
               {title}
@@ -205,7 +215,6 @@ export function FormSection({
           {icon && (
             <Box
               height="100%"
-              marginLeft={8}
               maxHeight={pxToRem(24)}
               maxWidth={pxToRem(24)}
               width="100%"
@@ -213,8 +222,8 @@ export function FormSection({
               <RpgIcon iconIndex={icon} />
             </Box>
           )}
-          {!borderless && <Line marginLeft={8} />}
-        </FlexBox>
+          {!borderless && <Line />}
+        </GridBox>
         <Container
           borderless={borderless}
           columns={columns}

@@ -28,6 +28,7 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
 
 const ChildContainer = styled(Box)`
   max-width: 100%;
+  overflow: hidden;
 `;
 
 function EmptyChildWrapper({ children }: { children?: React.ReactNode }) {

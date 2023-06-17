@@ -3,22 +3,12 @@ import { useContext, useEffect, useState } from 'react';
 
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { FormSection } from '~/components/form/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
+import { AAMFormSection } from '../AAMFormSection';
 import { WeaponInputItem } from './WeaponInputItem';
-
-const WeaponInputFormSection = styled(FormSection)`
-  grid-column: span 1;
-  ${({ theme }) => theme.breakpoints.sm} {
-    grid-column: span 2;
-  }
-  ${({ theme }) => theme.breakpoints.md} {
-    grid-column: span 3;
-  }
-`;
 
 const HideCheckbox = styled(CheckboxInput)`
   justify-self: end;
@@ -50,11 +40,7 @@ export function WeaponInputs() {
     }
   }, [isEditMode]);
   return (
-    <WeaponInputFormSection
-      columns={1}
-      icon={RpgIcons.DualDaggers}
-      title="Weapons"
-    >
+    <AAMFormSection columns={1} icon={RpgIcons.DualDaggers} title="Weapons">
       <AddAnotherMultiField<WwnCharacterData>
         createDefaultValue={createDefaultWeapon}
         parentFieldName="weapons"
@@ -78,6 +64,6 @@ export function WeaponInputs() {
           size="sm"
         />
       )}
-    </WeaponInputFormSection>
+    </AAMFormSection>
   );
 }
