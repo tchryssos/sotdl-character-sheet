@@ -14,7 +14,6 @@ import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { Pill } from '~/components/Pill';
 import { Text } from '~/components/Text';
-import { RpgIcons } from '~/constants/icons';
 import { ATTRIBUTES, WEAPON_TRAITS, WeaponTrait } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
@@ -22,12 +21,14 @@ import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
 interface WeaponInputItemProps {
   index: number;
-  createWeaponFieldName: (
-    name: keyof WwnWeapon,
-    index: number
-  ) => `weapons.${number}.${keyof WwnWeapon}`;
   onDelete: (index: number) => void;
+  hideUnreadied: boolean;
 }
+
+const createWeaponFieldName = (
+  name: keyof WwnWeapon,
+  index: number
+): `weapons.${number}.${keyof WwnWeapon}` => `weapons.${index}.${name}`;
 
 const weaponAttributeOptions: SelectOption[] = ATTRIBUTES.map((a) => ({
   label: startCase(a),
@@ -53,7 +54,7 @@ function WeaponTraitsDisplay({ name }: WeaponTraitsDisplayProps) {
   }
 
   return (
-    <FlexBox gap={8} marginTop={8}>
+    <FlexBox flexWrap="wrap" gap={8} marginTop={8}>
       {weaponTraits.map((v) => (
         <Pill key={v} text={toUpper(v)} />
       ))}
@@ -63,8 +64,8 @@ function WeaponTraitsDisplay({ name }: WeaponTraitsDisplayProps) {
 
 export function WeaponInputItem({
   index,
-  createWeaponFieldName,
   onDelete,
+  hideUnreadied,
 }: WeaponInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -82,6 +83,10 @@ export function WeaponInputItem({
   const weaponReadiedFieldName = createWeaponFieldName('weapon_readied', index);
   const weaponReadied = watch(weaponReadiedFieldName);
 
+  if (hideUnreadied && !weaponReadied) {
+    return null;
+  }
+
   const sectionTitle = `${weaponName}, ${weaponDamage}${
     weaponTraits.length && !isLessThanSm
       ? ` (${weaponTraits.map((t) => toUpper(t)).join(', ')})`
@@ -93,7 +98,6 @@ export function WeaponInputItem({
       borderless
       canToggleVisibility={false}
       columns={isLessThanSm ? 1 : 2}
-      icon={weaponReadied ? RpgIcons.TriangleFlagSm : undefined}
       title={sectionTitle}
       titleColor={weaponReadied ? 'text' : 'textAccent'}
       visibilityTitle={`weapon${index}`}
