@@ -28,4 +28,5 @@ export enum RpgIcons {
   DescendingBottles = '396',
   Brain = '082',
   Sack = '301',
+  CastingHand = '079',
 }

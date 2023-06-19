@@ -20,7 +20,7 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
-import { AcProvider } from './ACProvider';
+import { AcProvider } from './AcProvider';
 import { EncumbranceProvider } from './EncumbranceProvider';
 import { FormNav } from './FormNav';
 import { ArmorInputs } from './inputs/ArmorInputs';
@@ -35,6 +35,7 @@ import { EncumbranceInput } from './inputs/EncumbranceInput';
 import { EquipmentInputs } from './inputs/EquipmentInputs';
 import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
+import { MagicEffortInputs } from './inputs/MagicEffortInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 import { WeaponInputs } from './inputs/WeaponInputs';
 
@@ -160,7 +161,9 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
 
               {/* Magic */}
               <TabPanel>
-                <div>magic</div>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <MagicEffortInputs />
+                </GridBox>
               </TabPanel>
             </Tabs>
           </AcProvider>

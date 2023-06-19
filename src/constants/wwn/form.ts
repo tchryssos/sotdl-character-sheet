@@ -80,7 +80,23 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
       focus_level: 1,
     },
   ],
-  magic_efforts: [],
+  magic_efforts: [
+    {
+      effort_status: 'ready',
+    },
+    {
+      effort_status: 'day',
+    },
+    {
+      effort_status: 'indefinite',
+    },
+    {
+      effort_status: 'ready',
+    },
+    {
+      effort_status: 'scene',
+    },
+  ],
   magic_traditions: [],
   health_max: 1,
   health_current: 1,

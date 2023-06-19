@@ -18,7 +18,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
 
-import { AcContext } from '../../ACProvider';
+import { AcContext } from '../../AcProvider';
 import { EncumbranceContext } from '../../EncumbranceProvider';
 
 interface ArmorInputItemProps {

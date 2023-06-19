@@ -17,6 +17,7 @@ interface SharedColors {
   lighten: ColorRgba;
 }
 interface ColorModeColors {
+  primary: ColorHash;
   background: ColorHash;
   text: ColorHash;
   textAccent: ColorHash;
@@ -36,6 +37,7 @@ const sharedColors: SharedColors = {
 };
 
 const darkModeColors: ColorModeColors = {
+  primary: '#4392F1',
   background: '#1d1f21',
   text: '#c5c8c6',
   textAccent: '#969896',
@@ -53,6 +55,7 @@ const darkModeFilters = {
 };
 
 const lightModeColors: ColorModeColors = {
+  primary: '#3C91E6',
   background: '#fafafa',
   text: '#17242b',
   textAccent: '#4d4d4c',

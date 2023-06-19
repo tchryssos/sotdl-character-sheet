@@ -7,6 +7,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { KeyOfListField, ListFieldRecord } from '~/typings/util';
 
 import { Box } from '../box/Box';
+import { FlexBox } from '../box/FlexBox';
 import { Text } from '../Text';
 import { AddAnotherButton } from './AddAnotherButton';
 
@@ -24,6 +25,7 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   // parentFieldName
   sortProperties?: KeyOfListField<T>[];
   ChildWrapper?: React.ComponentType<PropsWithChildren>;
+  simpleDelete?: boolean;
 };
 
 const ChildContainer = styled(Box)`
@@ -42,6 +44,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   HeaderRow,
   sortProperties,
   ChildWrapper = EmptyChildWrapper,
+  simpleDelete,
 }: AddAnotherMultiFieldProps<T>) {
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -83,15 +86,22 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
     const removedId = controlledFields[index].id;
     const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
-    const nextValue = [...(parentField || [])];
-    nextValue.splice(valueRemovedIndex, 1);
-
     remove(valueRemovedIndex);
   };
 
   return (
     <>
-      {isEditMode && <AddAnotherButton onClick={onCreate} />}
+      {isEditMode && (
+        <FlexBox gap={16}>
+          <AddAnotherButton onClick={onCreate} />
+          {simpleDelete && (
+            <AddAnotherButton
+              label="-"
+              onClick={() => onDelete(controlledFields.length - 1)}
+            />
+          )}
+        </FlexBox>
+      )}
       {Boolean(controlledFields.length) && HeaderRow && <HeaderRow />}
       <ChildWrapper>
         {controlledFields.map((field, i) => (
