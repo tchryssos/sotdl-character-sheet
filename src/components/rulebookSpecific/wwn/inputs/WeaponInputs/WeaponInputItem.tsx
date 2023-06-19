@@ -17,6 +17,7 @@ import { Text } from '~/components/Text';
 import { ATTRIBUTES, WEAPON_TRAITS, WeaponTrait } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
 interface WeaponInputItemProps {
@@ -58,6 +59,27 @@ function WeaponTraitsDisplay({ name }: WeaponTraitsDisplayProps) {
       {weaponTraits.map((v) => (
         <Pill key={v} text={toUpper(v)} />
       ))}
+    </FlexBox>
+  );
+}
+
+function WeaponAttributeDisplay({ name }: WeaponTraitsDisplayProps) {
+  const { watch } = useFormContext<WwnCharacterData>();
+
+  const weaponAttributes = watch(name as `weapons.${number}.weapon_attribute`);
+
+  return (
+    <FlexBox flexWrap="wrap" gap={8} marginTop={8}>
+      {weaponAttributes.map((a) => {
+        const attributeScore = watch(`attribute_${a}`);
+
+        // "Strength (+2)"
+        const pillText = `${startCase(a)} (${
+          attributeScore >= 0 ? '+' : ''
+        }${calcAttributeBonus(attributeScore)})`;
+
+        return <Pill key={a} text={pillText} />;
+      })}
     </FlexBox>
   );
 }
@@ -134,6 +156,7 @@ export function WeaponInputItem({
         </GridBox>
         <GridBox columns={isLessThanSm ? 1 : 2}>
           <SelectInput<WwnCharacterData>
+            MultiDisplayComponent={WeaponAttributeDisplay}
             label="Attribute(s)"
             maxSelected={2}
             multiple
