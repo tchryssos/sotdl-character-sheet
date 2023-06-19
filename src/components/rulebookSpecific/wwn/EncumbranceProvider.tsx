@@ -33,7 +33,6 @@ export const EncumbranceContext = createContext<EncumbranceContextShape>({
 
 type EncumbranceProviderProps = PropsWithChildren<unknown>;
 
-// for each encumberable ite type (weapons, armor, equipment), write a single reduce function that uses that items readied property (weapon_readied, equipment_readied, etc) to return the total encumbrance of all of the readied and unreadied items. Run all three of these reducers to get a value for each type, then return the sums of those values as an object
 const reduceEncumbrances = (
   armors: WwnArmor[],
   weapons: WwnWeapon[],
@@ -90,10 +89,14 @@ const reduceEncumbrances = (
   };
 };
 
+const encumbranceLocalStorageKey = 'wwn_encumbrance';
+
 export function EncumbranceProvider({ children }: EncumbranceProviderProps) {
   const [readiedEncumbrance, setReadiedEncumbrance] = useState(0);
   const [stowedEncumbrance, setStowedEncumbrance] = useState(0);
-  const [useEncumbrance, setUseEncumbrance] = useState(true);
+  const [useEncumbrance, setUseEncumbrance] = useState(
+    globalThis?.localStorage?.getItem(encumbranceLocalStorageKey) === 'true'
+  );
   const { getValues } = useFormContext<WwnCharacterData>();
 
   const calculateEncumbrances = useCallback(() => {
@@ -106,6 +109,13 @@ export function EncumbranceProvider({ children }: EncumbranceProviderProps) {
     setReadiedEncumbrance(encumbrances.readiedEncumbrance);
     setStowedEncumbrance(encumbrances.stowedEncumbrance);
   }, [getValues]);
+
+  useEffect(() => {
+    globalThis?.localStorage?.setItem(
+      encumbranceLocalStorageKey,
+      useEncumbrance.toString()
+    );
+  }, [useEncumbrance]);
 
   useEffect(() => {
     calculateEncumbrances();
