@@ -6,11 +6,13 @@ import { GridBox } from '~/components/box/GridBox';
 import { FormSection } from '~/components/form/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { RpgIcons } from '~/constants/icons';
+import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { AcContext } from '../ACProvider';
 
-const savingThrowCalc = (attr: number, level: number) => 16 - level - attr;
+const savingThrowCalc = (attr: number, level: number) =>
+  16 - level - calcAttributeBonus(attr);
 
 enum SavingThrows {
   PHYSICAL = 'save_physical',

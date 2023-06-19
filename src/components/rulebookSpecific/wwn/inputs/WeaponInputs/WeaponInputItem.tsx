@@ -69,6 +69,7 @@ export function WeaponInputItem({
 }: WeaponInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
+  const isXxs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
 
   const weaponNameFieldName = createWeaponFieldName('weapon_name', index);
@@ -104,7 +105,7 @@ export function WeaponInputItem({
       visibilityTitle={`weapon${index}`}
     >
       <GridBox columns={1}>
-        <GridBox gridTemplateColumns="auto 1fr">
+        <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
           <CheckboxInput<WwnCharacterData>
             alwaysEditable
             label="Readied"

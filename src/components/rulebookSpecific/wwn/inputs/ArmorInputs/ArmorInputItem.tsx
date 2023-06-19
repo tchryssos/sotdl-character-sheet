@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { upperFirst } from 'lodash';
 import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -42,6 +43,7 @@ export function ArmorInputItem({
 }: ArmorInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
+  const isXxs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
   const { calculateAc } = useContext(AcContext);
 
@@ -80,7 +82,7 @@ export function ArmorInputItem({
       visibilityTitle={`armors${index}`}
     >
       <GridBox columns={1}>
-        <GridBox gridTemplateColumns="auto 1fr">
+        <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
           <CheckboxInput<WwnCharacterData>
             alwaysEditable
             label="Equipped"
@@ -88,7 +90,7 @@ export function ArmorInputItem({
           />
           <TextInput<WwnCharacterData> label="Name" name={armorNameFieldName} />
         </GridBox>
-        <GridBox columns={isLessThanSm ? 2 : 3}>
+        <GridBox columns={isXxs ? 1 : isLessThanSm ? 2 : 3}>
           <NumberInput<WwnCharacterData>
             label="Defense"
             min={0}
