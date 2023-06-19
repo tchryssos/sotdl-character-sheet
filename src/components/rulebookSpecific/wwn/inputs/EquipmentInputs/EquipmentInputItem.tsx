@@ -1,7 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
@@ -12,6 +11,8 @@ import { TextInput } from '~/components/form/TextInput';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnEquipment } from '~/typings/wwn/characterData';
+
+import { EncumbranceContext } from '../../EncumbranceProvider';
 
 interface EquipmentInputItemProps {
   index: number;
@@ -32,6 +33,7 @@ export function EquipmentInputItem({
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
   const { isEditMode } = useContext(EditContext);
+  const { calculateEncumbrances } = useContext(EncumbranceContext);
 
   const equipmentNameFieldName = createEquipmentFieldName(
     'equipment_name',
@@ -44,6 +46,16 @@ export function EquipmentInputItem({
     index
   );
   const equipmentReadied = watch(equipmentReadiedFieldName);
+
+  const equipmentEncumbranceFieldName = createEquipmentFieldName(
+    'equipment_encumbrance',
+    index
+  );
+  const equipmentEncumbrance = watch(equipmentEncumbranceFieldName);
+
+  useEffect(() => {
+    calculateEncumbrances();
+  }, [equipmentEncumbrance, equipmentReadied, calculateEncumbrances]);
 
   if (hideUnreadied && !equipmentReadied) {
     return null;
@@ -77,7 +89,7 @@ export function EquipmentInputItem({
         />
         <NumberInput<WwnCharacterData>
           label="Encumbrance"
-          name={createEquipmentFieldName('equipment_encumbrance', index)}
+          name={equipmentEncumbranceFieldName}
         />
       </GridBox>
       {isEditMode && <DeleteButton onDelete={() => onDelete(index)} />}

@@ -21,6 +21,7 @@ import { StrictCharacter } from '~/typings/characters';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { AcProvider } from './ACProvider';
+import { EncumbranceProvider } from './EncumbranceProvider';
 import { FormNav } from './FormNav';
 import { ArmorInputs } from './inputs/ArmorInputs';
 import { AttributeInputs } from './inputs/AttributeInputs';
@@ -30,6 +31,7 @@ import { ClassInputs } from './inputs/ClassInputs';
 import { CombatBonusInputs } from './inputs/CombatBonusInputs';
 import { CurrencyInputs } from './inputs/CurrencyInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
+import { EncumbranceInput } from './inputs/EncumbranceInput';
 import { EquipmentInputs } from './inputs/EquipmentInputs';
 import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
@@ -105,61 +107,64 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <FormNav isMyCharacter={isMyCharacter} />
-        <AcProvider>
-          <Tabs tabLabels={tabLabels}>
-            {/* Description */}
-            <TabPanel>
-              <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
-                <BasicInfoInputs />
-                <BackgroundInputs />
-              </GridBox>
-            </TabPanel>
+        <EncumbranceProvider>
+          <AcProvider>
+            <Tabs tabLabels={tabLabels}>
+              {/* Description */}
+              <TabPanel>
+                <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
+                  <BasicInfoInputs />
+                  <BackgroundInputs />
+                </GridBox>
+              </TabPanel>
 
-            {/* Stats */}
-            <TabPanel>
-              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                <AttributeInputs />
-                <SkillInputs />
-              </GridBox>
-            </TabPanel>
+              {/* Stats */}
+              <TabPanel>
+                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                  <AttributeInputs />
+                  <SkillInputs />
+                  <EncumbranceInput />
+                </GridBox>
+              </TabPanel>
 
-            {/* Abilities */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <ClassInputs />
-                <FociInputs />
-              </GridBox>
-            </TabPanel>
+              {/* Abilities */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <ClassInputs />
+                  <FociInputs />
+                </GridBox>
+              </TabPanel>
 
-            {/* Combat */}
-            <TabPanel>
-              <GridBox
-                // eslint-disable-next-line no-nested-ternary
-                columns={isLessThanSm ? 1 : isAtLeastMd ? 3 : 2}
-                {...sharedGapProps}
-              >
-                <HealthInputs />
-                <DefenseInputs />
-                <CombatBonusInputs />
-                <WeaponInputs />
-                <ArmorInputs />
-              </GridBox>
-            </TabPanel>
+              {/* Combat */}
+              <TabPanel>
+                <GridBox
+                  // eslint-disable-next-line no-nested-ternary
+                  columns={isLessThanSm ? 1 : isAtLeastMd ? 3 : 2}
+                  {...sharedGapProps}
+                >
+                  <HealthInputs />
+                  <DefenseInputs />
+                  <CombatBonusInputs />
+                  <WeaponInputs />
+                  <ArmorInputs />
+                </GridBox>
+              </TabPanel>
 
-            {/* Equipment */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <EquipmentInputs />
-                <CurrencyInputs />
-              </GridBox>
-            </TabPanel>
+              {/* Equipment */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <EquipmentInputs />
+                  <CurrencyInputs />
+                </GridBox>
+              </TabPanel>
 
-            {/* Magic */}
-            <TabPanel>
-              <div>magic</div>
-            </TabPanel>
-          </Tabs>
-        </AcProvider>
+              {/* Magic */}
+              <TabPanel>
+                <div>magic</div>
+              </TabPanel>
+            </Tabs>
+          </AcProvider>
+        </EncumbranceProvider>
       </WwnCharacterSheet>
     </EditContext.Provider>
   );

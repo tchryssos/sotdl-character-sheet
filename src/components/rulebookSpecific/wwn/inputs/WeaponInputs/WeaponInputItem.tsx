@@ -1,5 +1,6 @@
+import styled from '@emotion/styled';
 import { startCase, toUpper } from 'lodash';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -19,6 +20,13 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
+
+import { EncumbranceContext } from '../../EncumbranceProvider';
+
+const TraitPill = styled(Pill)`
+  min-width: ${({ theme }) => theme.spacing[24]};
+  text-align: center;
+`;
 
 interface WeaponInputItemProps {
   index: number;
@@ -46,9 +54,9 @@ interface WeaponTraitsDisplayProps {
 }
 
 function WeaponTraitsDisplay({ name }: WeaponTraitsDisplayProps) {
-  const { watch } = useFormContext();
+  const { watch } = useFormContext<WwnCharacterData>();
 
-  const weaponTraits: string[] = watch(name);
+  const weaponTraits = watch(name as `weapons.${number}.weapon_traits`);
 
   if (!weaponTraits.length) {
     return <Text variant="body-sm">None</Text>;
@@ -57,7 +65,7 @@ function WeaponTraitsDisplay({ name }: WeaponTraitsDisplayProps) {
   return (
     <FlexBox flexWrap="wrap" gap={8} marginTop={8}>
       {weaponTraits.map((v) => (
-        <Pill key={v} text={toUpper(v)} />
+        <TraitPill key={v} text={toUpper(v)} />
       ))}
     </FlexBox>
   );
@@ -93,6 +101,7 @@ export function WeaponInputItem({
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isXxs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
+  const { calculateEncumbrances } = useContext(EncumbranceContext);
 
   const weaponNameFieldName = createWeaponFieldName('weapon_name', index);
   const weaponName = watch(weaponNameFieldName);
@@ -105,6 +114,16 @@ export function WeaponInputItem({
 
   const weaponReadiedFieldName = createWeaponFieldName('weapon_readied', index);
   const weaponReadied = watch(weaponReadiedFieldName);
+
+  const weaponEncumbranceFieldName = createWeaponFieldName(
+    'weapon_encumbrance',
+    index
+  );
+  const weaponEncumbrance = watch(weaponEncumbranceFieldName);
+
+  useEffect(() => {
+    calculateEncumbrances();
+  }, [weaponEncumbrance, weaponReadied, calculateEncumbrances]);
 
   if (hideUnreadied && !weaponReadied) {
     return null;
@@ -175,7 +194,7 @@ export function WeaponInputItem({
           <NumberInput<WwnCharacterData>
             label="Encumbrance"
             min={0}
-            name={createWeaponFieldName('weapon_encumbrance', index)}
+            name={weaponEncumbranceFieldName}
           />
         </GridBox>
       </GridBox>

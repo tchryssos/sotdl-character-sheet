@@ -19,6 +19,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { AcContext } from '../../ACProvider';
+import { EncumbranceContext } from '../../EncumbranceProvider';
 
 interface ArmorInputItemProps {
   index: number;
@@ -46,6 +47,7 @@ export function ArmorInputItem({
   const isXxs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
   const { calculateAc } = useContext(AcContext);
+  const { calculateEncumbrances } = useContext(EncumbranceContext);
 
   const armorNameFieldName = createArmorFieldName('armor_name', index);
   const armorName = watch(armorNameFieldName);
@@ -59,9 +61,19 @@ export function ArmorInputItem({
   const armorReadiedFieldName = createArmorFieldName('armor_readied', index);
   const armorReadied = watch(armorReadiedFieldName);
 
+  const armorEncumbranceFieldName = createArmorFieldName(
+    'armor_encumbrance',
+    index
+  );
+  const armorEncumbrance = watch(armorEncumbranceFieldName);
+
   useEffect(() => {
     calculateAc();
   }, [armorReadied, armorDefense, calculateAc]);
+
+  useEffect(() => {
+    calculateEncumbrances();
+  }, [armorEncumbrance, calculateEncumbrances, armorReadied]);
 
   if (hideUnequipped && !armorReadied) {
     return null;
@@ -104,7 +116,7 @@ export function ArmorInputItem({
           <NumberInput<WwnCharacterData>
             label="Encumbrance"
             min={0}
-            name={createArmorFieldName('armor_encumbrance', index)}
+            name={armorEncumbranceFieldName}
           />
         </GridBox>
         <TextAreaInput<WwnCharacterData>
