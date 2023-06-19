@@ -56,7 +56,7 @@ export function AttributeInputs() {
   return (
     <FormSection
       columns={isLessThanXs ? 2 : 3}
-      icon={RpgIcons.Barbell}
+      icon={RpgIcons.Brain}
       title="Attributes"
     >
       {ATTRIBUTES.map((a) => (

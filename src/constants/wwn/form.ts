@@ -89,7 +89,32 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
   attack_bonus_melee: 0,
   attack_bonus_ranged: 0,
   initiative_bonus: 0,
-  equipment: [],
+  equipment: [
+    {
+      equipment_name: 'Crowbar',
+      equipment_description: '',
+      equipment_encumbrance: 1,
+      equipment_readied: false,
+    },
+    {
+      equipment_name: 'Rations, one week',
+      equipment_description: '',
+      equipment_encumbrance: 4,
+      equipment_readied: false,
+    },
+    {
+      equipment_name: 'Shovel',
+      equipment_description: '',
+      equipment_encumbrance: 2,
+      equipment_readied: true,
+    },
+    {
+      equipment_name: 'Lantern',
+      equipment_description: '',
+      equipment_encumbrance: 1,
+      equipment_readied: true,
+    },
+  ],
   weapons: [
     {
       weapon_name: 'Hand Axe',

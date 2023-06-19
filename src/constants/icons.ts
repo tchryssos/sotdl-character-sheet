@@ -24,4 +24,7 @@ export enum RpgIcons {
   TriangleFlag = '149',
   Fireball = '354',
   ArmorHead = '099',
+  DollarCoin = '257',
+  DescendingBottles = '396',
+  Brain = '082',
 }

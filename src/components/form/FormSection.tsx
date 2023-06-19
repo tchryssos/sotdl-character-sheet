@@ -12,6 +12,7 @@ import { Color } from '~/typings/theme';
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { GridBox, GridBoxProps } from '../box/GridBox';
+import { BaseButton } from '../buttons/BaseButton';
 import { CollapseButton } from '../buttons/CollapseButton';
 import { IconButton } from '../buttons/IconButton';
 import { Invisible } from '../icons/Invisible';
@@ -96,6 +97,17 @@ const VisibilityButton = styled(IconButton)`
 
 const CollapseToggle = styled(CollapseButton)`
   bottom: -${pxToRem(6)};
+  &:hover {
+    background-color: transparent;
+  }
+`;
+
+const ButtonTitleWrapper = styled(BaseButton)`
+  border: none;
+  height: min-content;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
 `;
 
 export function FormSection({
@@ -168,60 +180,62 @@ export function FormSection({
         className={className}
         flexDirection="column"
       >
-        <GridBox
-          alignItems="flex-end"
-          color={titleColor}
-          gap={8}
-          gridTemplateColumns={`auto${icon ? ` ${pxToRem(24)}` : ''}${
-            borderless ? '' : ' 1fr'
-          }`}
-          marginLeft={borderless ? 0 : 4}
-        >
-          <TitleBox>
-            {isCollapsible && (
-              <CollapseToggle
-                absolute
-                isOpen={isOpen}
-                title={title}
-                onChangeExpanded={onChangeExpanded}
-              />
-            )}
-            <FormTitle
-              fontStyle="italic"
-              isCollapsible={isCollapsible}
-              isEditMode={isEditMode}
-              paddingRight={2}
-              variant={isNested ? 'body-lg' : 'title-sm'}
+        <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
+          <ButtonTitleWrapper transparent onClick={onChangeExpanded}>
+            <GridBox
+              alignItems="flex-end"
+              color={titleColor}
+              gap={8}
+              gridTemplateColumns={`auto${icon ? ` ${pxToRem(24)}` : ''}`}
+              marginLeft={borderless ? 0 : 4}
             >
-              {title}
-            </FormTitle>
-
-            {isEditMode && canToggleVisibility && (
-              <VisibilityButton onClick={onChangeVisibility}>
-                {isVisible ? (
-                  <Visible
-                    title="Form section visibility"
-                    titleId={`${title}-visibility-${isVisible}`}
-                  />
-                ) : (
-                  <Invisible
-                    title="Form section visibility"
-                    titleId={`${title}-visibility-${isVisible}`}
+              <TitleBox>
+                {isCollapsible && (
+                  <CollapseToggle
+                    absolute
+                    buttonProps={{ buttonLike: true }}
+                    isOpen={isOpen}
+                    title={title}
                   />
                 )}
-              </VisibilityButton>
-            )}
-          </TitleBox>
-          {icon && (
-            <Box
-              height="100%"
-              maxHeight={pxToRem(24)}
-              maxWidth={pxToRem(24)}
-              width="100%"
-            >
-              <RpgIcon iconIndex={icon} />
-            </Box>
-          )}
+                <FormTitle
+                  fontStyle="italic"
+                  isCollapsible={isCollapsible}
+                  isEditMode={isEditMode}
+                  paddingRight={2}
+                  variant={isNested ? 'body-lg' : 'title-sm'}
+                >
+                  {title}
+                </FormTitle>
+
+                {isEditMode && canToggleVisibility && (
+                  <VisibilityButton onClick={onChangeVisibility}>
+                    {isVisible ? (
+                      <Visible
+                        title="Form section visibility"
+                        titleId={`${title}-visibility-${isVisible}`}
+                      />
+                    ) : (
+                      <Invisible
+                        title="Form section visibility"
+                        titleId={`${title}-visibility-${isVisible}`}
+                      />
+                    )}
+                  </VisibilityButton>
+                )}
+              </TitleBox>
+              {icon && (
+                <Box
+                  height="100%"
+                  maxHeight={pxToRem(24)}
+                  maxWidth={pxToRem(24)}
+                  width="100%"
+                >
+                  <RpgIcon iconIndex={icon} />
+                </Box>
+              )}
+            </GridBox>
+          </ButtonTitleWrapper>
           {!borderless && <Line />}
         </GridBox>
         <Container

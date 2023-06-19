@@ -32,24 +32,26 @@ const Button = styled(IconButton)<{ absolute?: boolean }>(({ absolute }) => ({
   bottom: absolute ? 0 : '',
 }));
 
-export const CollapseButton: React.FC<CollapseButtonProps> = ({
+export function CollapseButton({
   isOpen,
   onChangeExpanded,
   title,
   buttonProps,
   className,
   absolute,
-}) => (
-  <Button
-    onClick={onChangeExpanded}
-    {...buttonProps}
-    absolute={absolute}
-    className={className}
-  >
-    <Icon
-      isOpen={isOpen}
-      title="Collapsible arrow"
-      titleId={`collapseable-arrow-icon-${title}`}
-    />
-  </Button>
-);
+}: CollapseButtonProps) {
+  return (
+    <Button
+      onClick={onChangeExpanded}
+      {...buttonProps}
+      absolute={absolute}
+      className={className}
+    >
+      <Icon
+        isOpen={isOpen}
+        title="Collapsible arrow"
+        titleId={`collapseable-arrow-icon-${title}`}
+      />
+    </Button>
+  );
+}

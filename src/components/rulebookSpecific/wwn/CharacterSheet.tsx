@@ -28,7 +28,9 @@ import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ClassInputs } from './inputs/ClassInputs';
 import { CombatBonusInputs } from './inputs/CombatBonusInputs';
+import { CurrencyInputs } from './inputs/CurrencyInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
+import { EquipmentInputs } from './inputs/EquipmentInputs';
 import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
 import { SkillInputs } from './inputs/SkillInputs';
@@ -95,7 +97,6 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
   const isLessThanMd = useBreakpointsLessThan('md');
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isAtLeastMd = useBreakpointsAtLeast('md');
-  const isLessThanXs = useBreakpointsLessThan('xs');
 
   return (
     <EditContext.Provider value={editProviderVal}>
@@ -147,7 +148,10 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
 
             {/* Equipment */}
             <TabPanel>
-              <div>Equipment</div>
+              <GridBox columns={1} {...sharedGapProps}>
+                <EquipmentInputs />
+                <CurrencyInputs />
+              </GridBox>
             </TabPanel>
 
             {/* Magic */}
