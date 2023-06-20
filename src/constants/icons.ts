@@ -29,4 +29,5 @@ export enum RpgIcons {
   Brain = '082',
   Sack = '301',
   CastingHand = '079',
+  WandLight = '333',
 }

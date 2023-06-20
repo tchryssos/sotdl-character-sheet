@@ -97,7 +97,18 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
       effort_status: 'scene',
     },
   ],
-  magic_traditions: [],
+  magic_traditions: [
+    {
+      tradition_name: 'High Magic',
+      tradition_spells: [],
+      tradition_arts: [],
+    },
+    {
+      tradition_name: 'Elementalism',
+      tradition_spells: [],
+      tradition_arts: [],
+    },
+  ],
   health_max: 1,
   health_current: 1,
   system_strain: 0,

@@ -8,6 +8,7 @@ import { TabPanel } from '~/components/tabs/TabPanel';
 import { Tabs } from '~/components/tabs/Tabs';
 import { TabLabelObject } from '~/components/tabs/types';
 import { RpgIcons } from '~/constants/icons';
+import { FORM_COLUMN_GAP, FORM_ROW_GAP } from '~/constants/styles';
 import { DEFAULT_VALUES } from '~/constants/wwn/form';
 import { EditContext } from '~/logic/contexts/editContext';
 import {
@@ -36,6 +37,7 @@ import { EquipmentInputs } from './inputs/EquipmentInputs';
 import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
 import { MagicEffortInputs } from './inputs/MagicEffortInputs';
+import { MagicTraditionInputs } from './inputs/MagicTraditionInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 import { WeaponInputs } from './inputs/WeaponInputs';
 
@@ -65,18 +67,18 @@ const tabLabels: TabLabelObject[] = [
     icon: RpgIcons.StackedSkulls,
   },
   {
-    label: 'Equipment',
-    icon: RpgIcons.Chest,
-  },
-  {
     label: 'Magic',
     icon: RpgIcons.Fireball,
+  },
+  {
+    label: 'Equipment',
+    icon: RpgIcons.Chest,
   },
 ];
 
 const sharedGapProps = {
-  columnGap: pxToRem(32),
-  rowGap: pxToRem(48),
+  columnGap: pxToRem(FORM_COLUMN_GAP),
+  rowGap: pxToRem(FORM_ROW_GAP),
 };
 
 export function CharacterSheet({ character }: WwnCharacterSheetProps) {
@@ -151,18 +153,19 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
                 </GridBox>
               </TabPanel>
 
+              {/* Magic */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <MagicEffortInputs />
+                  <MagicTraditionInputs />
+                </GridBox>
+              </TabPanel>
+
               {/* Equipment */}
               <TabPanel>
                 <GridBox columns={1} {...sharedGapProps}>
                   <EquipmentInputs />
                   <CurrencyInputs />
-                </GridBox>
-              </TabPanel>
-
-              {/* Magic */}
-              <TabPanel>
-                <GridBox columns={1} {...sharedGapProps}>
-                  <MagicEffortInputs />
                 </GridBox>
               </TabPanel>
             </Tabs>

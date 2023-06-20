@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { sortBy } from 'lodash';
+import { sortBy, startCase } from 'lodash';
 import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
@@ -117,7 +117,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
       </ChildWrapper>
       {!controlledFields.length && (
         <Text as="p" fontStyle="italic" variant="body-sm">
-          Empty (use edit mode to add some {parentFieldName})
+          Empty (use edit mode to add some {startCase(parentFieldName)})
         </Text>
       )}
     </>

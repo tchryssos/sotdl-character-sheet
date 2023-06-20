@@ -6,9 +6,21 @@ import { WwnCharacterData } from '~/typings/wwn/characterData';
 export function CurrencyInputs() {
   return (
     <FormSection columns={3} icon={RpgIcons.DollarCoin} title="Currency">
-      <NumberInput<WwnCharacterData> label="Copper" name="currency_copper" />
-      <NumberInput<WwnCharacterData> label="Silver" name="currency_silver" />
-      <NumberInput<WwnCharacterData> label="Gold" name="currency_gold" />
+      <NumberInput<WwnCharacterData>
+        alwaysEditable
+        label="Copper"
+        name="currency_copper"
+      />
+      <NumberInput<WwnCharacterData>
+        alwaysEditable
+        label="Silver"
+        name="currency_silver"
+      />
+      <NumberInput<WwnCharacterData>
+        alwaysEditable
+        label="Gold"
+        name="currency_gold"
+      />
     </FormSection>
   );
 }
