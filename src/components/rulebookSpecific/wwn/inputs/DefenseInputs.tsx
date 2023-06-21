@@ -9,7 +9,7 @@ import { RpgIcons } from '~/constants/icons';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
-import { AcContext } from '../ACProvider';
+import { AcContext } from '../AcProvider';
 
 const savingThrowCalc = (attr: number, level: number) =>
   16 - level - calcAttributeBonus(attr);

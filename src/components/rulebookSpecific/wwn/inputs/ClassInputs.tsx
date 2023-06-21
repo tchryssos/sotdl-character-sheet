@@ -43,22 +43,27 @@ function ClassAbilityField({ index, onDelete }: ClassAbilityFieldProps) {
     <FormSection
       borderless
       canToggleVisibility={false}
-      gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      columns={1}
       isNested
       title={`Class Ability ${index + 1}: ${name}`}
       visibilityTitle={`ability${index}`}
     >
-      <FlexBox flex={1} flexDirection="column" gap={16}>
+      <GridBox
+        alignItems="end"
+        gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      >
         <TextInput<WwnCharacterData>
           label="Name"
           name={makeAbilityFieldName('class_ability_name')}
         />
-        <TextAreaInput<WwnCharacterData>
-          label="Ability Description"
-          name={makeAbilityFieldName('class_ability_description')}
-        />
-      </FlexBox>
-      {isEditMode && <AddAnotherMultiDelete onDelete={() => onDelete(index)} />}
+        {isEditMode && (
+          <AddAnotherMultiDelete onDelete={() => onDelete(index)} />
+        )}
+      </GridBox>
+      <TextAreaInput<WwnCharacterData>
+        label="Ability Description"
+        name={makeAbilityFieldName('class_ability_description')}
+      />
     </FormSection>
   );
 }

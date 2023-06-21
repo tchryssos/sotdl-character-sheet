@@ -15,6 +15,7 @@ export function MagicTraditionInputs() {
   return (
     <FlexBox flexDirection="column" gap={FORM_ROW_GAP}>
       <AddAnotherMultiField<WwnCharacterData>
+        addLabel="+ Add a new tradition"
         createDefaultValue={createDefaultTradition}
         parentFieldName="magic_traditions"
       >

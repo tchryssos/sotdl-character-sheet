@@ -65,21 +65,21 @@ function MagicEffortInput({ index }: MagicEffortInputProps) {
       break;
   }
 
+  // "Indefinite" makes the buttons too wide, so we cut it off
+  // at 5 chars, which fits "ready" and "scene"
+  const label = upperFirst(effortValue.slice(0, 5));
+
   return (
-    <FlexBox>
-      <Label>
-        <EffortButton
-          severity={severity}
-          title={`Effort Status: ${upperFirst(effortValue)}`}
-          transparent={severity === 'normal'}
-          onClick={onToggleEffort}
-        >
-          <Text color={color} variant="title-sm">
-            {effortValue === 'ready' ? '' : upperFirst(effortValue[0])}
-          </Text>
-        </EffortButton>
-      </Label>
-    </FlexBox>
+    <EffortButton
+      severity={severity}
+      title={`Effort Status: ${upperFirst(effortValue)}`}
+      transparent={severity === 'normal'}
+      onClick={onToggleEffort}
+    >
+      <Text color={color} variant="body-sm">
+        {label}
+      </Text>
+    </EffortButton>
   );
 }
 

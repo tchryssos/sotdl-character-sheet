@@ -101,12 +101,42 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
     {
       tradition_name: 'High Magic',
       tradition_spells: [],
-      tradition_arts: [],
-    },
-    {
-      tradition_name: 'Elementalism',
-      tradition_spells: [],
-      tradition_arts: [],
+      tradition_arts: [
+        {
+          art_name: 'Arcane Lexicon',
+          art_description: `Commit Effort for the scene. For the
+        rest of the scene, you can read any script that was
+
+        not intentionally obfuscated or encoded by its writ-
+        er. Extremely esoteric or nonhuman scripts may not
+
+        be comprehensible this way; the “plain meaning” of
+        the text might be utterly foreign to human logic.`,
+        },
+        {
+          art_name: 'Ward Allies:',
+          art_description: `Commit Effort for the day as an Instant
+        action to omit up to six allies from the effects of an
+        area-effect spell you cast, allowing them to avoid
+        any damage or other negative effect that would be
+        directly produced by the spell. This does not protect
+        them from indirect consequences, however, such as
+        destroying the building they are standing in.`,
+        },
+        {
+          art_name: 'Wizard’s Grandeur:',
+          art_description: `Commit Effort as an On Turn ac-
+        tion. As long as it remains Committed, you will not
+
+        become dirty, sweaty, stained, or rumpled regard-
+        less of the circumstances. Noxious substances will
+
+        slide off you without staining and you will remain
+        comfortable regardless of your attire in any normal
+        climate. You may sleep comfortably without shelter
+        or bedding as per the privation rules on page 51.`,
+        },
+      ],
     },
   ],
   health_max: 1,

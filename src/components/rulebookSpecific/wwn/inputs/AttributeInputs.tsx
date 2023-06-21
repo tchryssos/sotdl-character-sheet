@@ -11,7 +11,7 @@ import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { BonusInput } from '../../../form/BonusInput';
 import { NumberInputProps } from '../../../form/typings';
-import { AcContext } from '../ACProvider';
+import { AcContext } from '../AcProvider';
 
 type AttributeInputProps<T> = Omit<NumberInputProps<T>, 'type' | 'name'> & {
   name: keyof Pick<

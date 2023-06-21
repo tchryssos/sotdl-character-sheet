@@ -57,5 +57,5 @@ export type WeaponTrait = (typeof WEAPON_TRAITS)[number];
 export const ARMOR_WEIGHT = ['light', 'medium', 'heavy', 'shield'] as const;
 export type ArmorWeight = (typeof ARMOR_WEIGHT)[number];
 
-export const EFFORT_STATUSES = ['ready', 'day', 'scene', 'indefinite'] as const;
+export const EFFORT_STATUSES = ['ready', 'indefinite', 'scene', 'day'] as const;
 export type EffortStatus = (typeof EFFORT_STATUSES)[number];

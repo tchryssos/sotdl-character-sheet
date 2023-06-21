@@ -26,6 +26,8 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   sortProperties?: KeyOfListField<T>[];
   ChildWrapper?: React.ComponentType<PropsWithChildren>;
   simpleDelete?: boolean;
+  addLabel?: string;
+  emptyLabel?: string;
 };
 
 const ChildContainer = styled(Box)`
@@ -45,6 +47,8 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   sortProperties,
   ChildWrapper = EmptyChildWrapper,
   simpleDelete,
+  addLabel,
+  emptyLabel,
 }: AddAnotherMultiFieldProps<T>) {
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -93,7 +97,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
     <>
       {isEditMode && (
         <FlexBox gap={16}>
-          <AddAnotherButton onClick={onCreate} />
+          <AddAnotherButton label={addLabel} onClick={onCreate} />
           {simpleDelete && (
             <AddAnotherButton
               label="-"
@@ -117,7 +121,8 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
       </ChildWrapper>
       {!controlledFields.length && (
         <Text as="p" fontStyle="italic" variant="body-sm">
-          Empty (use edit mode to add some {startCase(parentFieldName)})
+          {emptyLabel ||
+            `Empty (use edit mode to add some ${startCase(parentFieldName)})`}
         </Text>
       )}
     </>

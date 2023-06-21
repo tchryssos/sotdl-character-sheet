@@ -1,7 +1,6 @@
 import { PropsWithChildren, useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
@@ -41,30 +40,33 @@ function FocusItem({ index, onDelete }: FocusItemProps) {
     <FormSection
       borderless
       canToggleVisibility={false}
-      gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      columns={1}
       isNested
       title={sectionTitle}
       visibilityTitle={`focus${index}`}
     >
-      <FlexBox flexDirection="column" gap={16}>
+      <GridBox
+        alignItems="end"
+        gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      >
         <TextInput<WwnCharacterData> label="Name" name={focusNameFieldName} />
-        <TextAreaInput<WwnCharacterData>
-          label="Description"
-          name={makeFocusFieldName('focus_description')}
-        />
-        <NumberInput<WwnCharacterData>
-          label="Level"
-          max={2}
-          min={1}
-          name={focusLevelFieldName}
-        />
-      </FlexBox>
-      {isEditMode && (
-        <AddAnotherMultiDelete
-          disabled={index === undefined}
-          onDelete={() => onDelete(index)}
-        />
-      )}
+        {isEditMode && (
+          <AddAnotherMultiDelete
+            disabled={index === undefined}
+            onDelete={() => onDelete(index)}
+          />
+        )}
+      </GridBox>
+      <TextAreaInput<WwnCharacterData>
+        label="Description"
+        name={makeFocusFieldName('focus_description')}
+      />
+      <NumberInput<WwnCharacterData>
+        label="Level"
+        max={2}
+        min={1}
+        name={focusLevelFieldName}
+      />
     </FormSection>
   );
 }
