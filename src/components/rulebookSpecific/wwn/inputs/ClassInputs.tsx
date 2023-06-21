@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -13,6 +14,12 @@ import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnClassAbility } from '~/typings/wwn/characterData';
+
+const AbilityLabel = styled(Label)`
+  > p {
+    margin-bottom: ${({ theme }) => theme.spacing[8]};
+  }
+`;
 
 const createDefaultClassAbility = (): WwnClassAbility => ({
   class_ability_name: '',
@@ -77,8 +84,8 @@ export function ClassInputs() {
   return (
     <FormSection columns={1} icon={RpgIcons.FlowerOne} title="Class">
       <FlexBox flexDirection="column" gap={16}>
-        <TextInput<WwnCharacterData> label="Class" name="class_name" />
-        <Label label="Class Abilities">
+        <TextInput<WwnCharacterData> label="Name" name="class_name" />
+        <AbilityLabel label="Class Abilities">
           <AddAnotherMultiField<WwnCharacterData>
             ChildWrapper={ClassChildWrapper}
             HeaderRow={undefined}
@@ -89,7 +96,7 @@ export function ClassInputs() {
               <ClassAbilityField {...classAbilityChildProps} />
             )}
           </AddAnotherMultiField>
-        </Label>
+        </AbilityLabel>
       </FlexBox>
     </FormSection>
   );
