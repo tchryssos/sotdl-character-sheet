@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from 'react';
 
 import { RpgIcons } from '~/constants/icons';
 import { Theme } from '~/constants/theme';
-import { EditContext } from '~/logic/contexts/editContext';
 import { VisibilityContext } from '~/logic/contexts/visibilityContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Color } from '~/typings/theme';
@@ -14,10 +13,7 @@ import { FlexBox } from '../box/FlexBox';
 import { GridBox, GridBoxProps } from '../box/GridBox';
 import { BaseButton } from '../buttons/BaseButton';
 import { CollapseButton } from '../buttons/CollapseButton';
-import { IconButton } from '../buttons/IconButton';
-import { Invisible } from '../icons/Invisible';
 import { RpgIcon } from '../icons/RpgIcon';
-import { Visible } from '../icons/Visible';
 import { Text } from '../Text';
 
 interface FormSectionProps {
@@ -25,7 +21,6 @@ interface FormSectionProps {
   children: React.ReactNode | React.ReactNode[];
   columns?: GridBoxProps['columns'];
   isCollapsible?: boolean;
-  canToggleVisibility?: boolean;
   className?: string;
   visibilityTitle?: string;
   borderless?: boolean;
@@ -43,21 +38,18 @@ const TitleBox = styled(FlexBox)`
   width: auto;
 `;
 
-const FormTitle = styled(Text)<
-  Pick<FormSectionProps, 'isCollapsible'> & { isEditMode: boolean }
->(({ isEditMode, isCollapsible, theme }) => ({
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  ...(isCollapsible && {
-    paddingLeft: theme.spacing[32],
-  }),
-  ...(isEditMode && {
-    paddingRight: theme.spacing[32],
-  }),
-}));
+const FormTitle = styled(Text)<Pick<FormSectionProps, 'isCollapsible'>>(
+  ({ isCollapsible, theme }) => ({
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    ...(isCollapsible && {
+      paddingLeft: theme.spacing[32],
+    }),
+  })
+);
 
-const Section = styled(FlexBox)<{ addMargin: boolean }>`
+const Section = styled(FlexBox)`
   overflow: hidden;
   height: 100%;
 `;
@@ -88,13 +80,6 @@ const Container = styled(GridBox)<{ isOpen?: boolean; borderless?: boolean }>`
   overflow: hidden;
 `;
 
-const VisibilityButton = styled(IconButton)`
-  transform: translateY(${({ theme }) => theme.spacing[4]});
-  position: absolute;
-  right: 0;
-  bottom: 0;
-`;
-
 const CollapseToggle = styled(CollapseButton)`
   bottom: -${pxToRem(6)};
   &:hover {
@@ -115,7 +100,6 @@ export function FormSection({
   children,
   columns,
   isCollapsible = true,
-  canToggleVisibility = true,
   className,
   visibilityTitle,
   borderless,
@@ -128,30 +112,8 @@ export function FormSection({
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
-  const { isVisible: initIsVisible, isExpanded: initIsExpanded } =
+  const { isExpanded: initIsExpanded } =
     getSectionVisibilityInfo(visibilityTitle || title) || {};
-
-  const { isEditMode } = useContext(EditContext);
-
-  // START - SECTION VISIBILITY - START
-  const [isVisible, setIsVisible] = useState(true);
-
-  const onChangeVisibility = () => {
-    const nextVisibility = !isVisible;
-    setIsVisible(nextVisibility);
-    setSectionVisibilityInfo(
-      visibilityTitle || title,
-      'isVisible',
-      nextVisibility
-    );
-  };
-
-  useEffect(() => {
-    if (initIsVisible !== undefined) {
-      setIsVisible(initIsVisible);
-    }
-  }, [initIsVisible]);
-  // END - SECTION VISIBILITY - END
 
   // START - SECTION EXPANDED STATUS - START
   const [isOpen, setIsOpen] = useState(defaultExpanded);
@@ -173,84 +135,60 @@ export function FormSection({
   }, [initIsExpanded]);
   // END - SECTION COLLAPSED STATUS - END
 
-  if ((!isEditMode && isVisible) || isEditMode) {
-    return (
-      <Section
-        addMargin={isCollapsible || isEditMode}
-        className={className}
-        flexDirection="column"
-      >
-        <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
-          <ButtonTitleWrapper transparent onClick={onChangeExpanded}>
-            <GridBox
-              alignItems="flex-end"
-              color={titleColor}
-              gap={8}
-              gridTemplateColumns={`auto${icon ? ` ${pxToRem(24)}` : ''}`}
-              marginLeft={borderless ? 0 : 4}
-            >
-              <TitleBox>
-                {isCollapsible && (
-                  <CollapseToggle
-                    absolute
-                    buttonProps={{ buttonLike: true }}
-                    isOpen={isOpen}
-                    title={title}
-                  />
-                )}
-                <FormTitle
-                  fontStyle="italic"
-                  isCollapsible={isCollapsible}
-                  isEditMode={isEditMode}
-                  paddingRight={2}
-                  variant={isNested ? 'body-lg' : 'title-sm'}
-                >
-                  {title}
-                </FormTitle>
-
-                {isEditMode && canToggleVisibility && (
-                  <VisibilityButton onClick={onChangeVisibility}>
-                    {isVisible ? (
-                      <Visible
-                        title="Form section visibility"
-                        titleId={`${title}-visibility-${isVisible}`}
-                      />
-                    ) : (
-                      <Invisible
-                        title="Form section visibility"
-                        titleId={`${title}-visibility-${isVisible}`}
-                      />
-                    )}
-                  </VisibilityButton>
-                )}
-              </TitleBox>
-              {icon && (
-                <Box
-                  height="100%"
-                  maxHeight={pxToRem(24)}
-                  maxWidth={pxToRem(24)}
-                  width="100%"
-                >
-                  <RpgIcon iconIndex={icon} />
-                </Box>
+  return (
+    <Section className={className} flexDirection="column">
+      <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
+        <ButtonTitleWrapper transparent onClick={onChangeExpanded}>
+          <GridBox
+            alignItems="flex-end"
+            color={titleColor}
+            gap={8}
+            gridTemplateColumns={`auto${icon ? ` ${pxToRem(24)}` : ''}`}
+            marginLeft={borderless ? 0 : 4}
+          >
+            <TitleBox>
+              {isCollapsible && (
+                <CollapseToggle
+                  absolute
+                  buttonProps={{ buttonLike: true }}
+                  isOpen={isOpen}
+                  title={title}
+                />
               )}
-            </GridBox>
-          </ButtonTitleWrapper>
-          {!borderless && <Line />}
-        </GridBox>
-        <Container
-          borderless={borderless}
-          columns={columns}
-          gridTemplateColumns={gridTemplateColumns}
-          gridTemplateRows={gridTemplateRows}
-          isOpen={isOpen}
-          paddingX={20}
-          paddingY={borderless ? 12 : 20}
-        >
-          {children}
-        </Container>
-      </Section>
-    );
-  }
-  return null;
+              <FormTitle
+                fontStyle="italic"
+                isCollapsible={isCollapsible}
+                paddingRight={2}
+                variant={isNested ? 'body-lg' : 'title-sm'}
+              >
+                {title}
+              </FormTitle>
+            </TitleBox>
+            {icon && (
+              <Box
+                height="100%"
+                maxHeight={pxToRem(24)}
+                maxWidth={pxToRem(24)}
+                width="100%"
+              >
+                <RpgIcon iconIndex={icon} />
+              </Box>
+            )}
+          </GridBox>
+        </ButtonTitleWrapper>
+        {!borderless && <Line />}
+      </GridBox>
+      <Container
+        borderless={borderless}
+        columns={columns}
+        gridTemplateColumns={gridTemplateColumns}
+        gridTemplateRows={gridTemplateRows}
+        isOpen={isOpen}
+        paddingX={20}
+        paddingY={borderless ? 12 : 20}
+      >
+        {children}
+      </Container>
+    </Section>
+  );
 }
