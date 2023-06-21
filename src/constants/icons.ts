@@ -30,4 +30,5 @@ export enum RpgIcons {
   Sack = '301',
   CastingHand = '079',
   WandLight = '333',
+  Lightning = '377',
 }

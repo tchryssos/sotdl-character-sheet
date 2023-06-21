@@ -89,7 +89,6 @@ function SpellField({
   return (
     <FormSection
       borderless
-      canToggleVisibility={false}
       gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
       title={sectionTitle}
       visibilityTitle={`spell${index}`}

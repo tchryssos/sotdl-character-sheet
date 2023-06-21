@@ -100,7 +100,70 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
   magic_traditions: [
     {
       tradition_name: 'High Magic',
-      tradition_spells: [],
+      tradition_spells: [
+        {
+          spell_name: 'Abdication of Temporal Presence',
+          spell_level: 5,
+          spell_description: `The caster and up to one visible ally per caster level briefly
+        step outside of the conventional flow of time, the rest of
+        the world freezing around them. These subjects can take
+        1d4+1 free rounds of actions, but they cannot physically
+
+        affect the world or move any object they were not carry-
+        ing at the time they cast the spell. Any spells the caster or
+
+        other allies cast can affect only their own group, and not
+        those entities still in the normal flow of time.`,
+          spell_prepared: true,
+        },
+        {
+          spell_name: 'Calculation of the Evoked Servitor',
+          spell_level: 2,
+          spell_description: `This spell conjures up an intelligent familiar for the caster,
+          one with one hit point per caster level, an AC of 14, a
+          ground movement rate of 30’ per action, saving throws
+          the same as the caster, a +0 skill modifier, and no effective
+          attack. The familiar always adopts the same shape for
+          the same caster, though the initial casting can set this to
+          any shape the caster wishes provided it’s no larger than
+
+          a small human. The familiar retains a telepathic connec-
+          tion with its creator and will obey any command it is
+
+          given, including suicidal ones. It can perform any action
+          that a competent human servant could. If the familiar is
+          slain, it fades away, but can be called forth again by the
+          spell. The familiar retains its memories of what happens
+          while it’s summoned, and can develop its own personality
+
+          in time. The familiar remains in existence until dawn fol-
+          lowing the spell’s casting or until dismissed by the caster.`,
+          spell_prepared: false,
+        },
+        {
+          spell_name: 'Damnation of the Sense',
+          spell_level: 1,
+          spell_description: `The caster targets a visible creature within two hundred
+          feet. The target gets a Mental saving throw to resist; on
+
+          a failure, one sense of the caster’s choice is entirely un-
+          der the caster’s control for the rest of the scene, while a
+
+          success leaves them bound only for the next round. Any
+          false impression may be given, or any true one concealed,
+
+          and a creature may be left effectively blinded or deaf-
+          ened. Distracting tactile sensations can force the victim
+
+          to make a Physical saving throw in order to act each
+          round. Blinded creatures can’t make ranged attacks and
+          roll all melee hit rolls twice, taking the worst result. If a
+          creature thinks itself in mortal peril its excitement allows
+          it to make a Mental save to throw off the spell at the end
+          of each round.`,
+          spell_prepared: true,
+        },
+      ],
       tradition_arts: [
         {
           art_name: 'Arcane Lexicon',
@@ -140,6 +203,20 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
           art_effort: 'indefinite',
         },
       ],
+    },
+  ],
+  magic_spell_slots: [
+    {
+      spell_slot_spent: true,
+    },
+    {
+      spell_slot_spent: true,
+    },
+    {
+      spell_slot_spent: false,
+    },
+    {
+      spell_slot_spent: false,
     },
   ],
   health_max: 1,

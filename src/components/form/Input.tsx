@@ -7,13 +7,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { Label } from '~/components/form/Label';
 import { InputProps, NumberInputProps } from '~/components/form/typings';
+import { INPUT_HEIGHT } from '~/constants/styles';
 import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const StyledInput = styled.input<Pick<InputProps<any>, 'noOutline'>>(
   ({ theme, noOutline }) => ({
     width: '100%',
-    height: theme.spacing[40],
+    height: theme.spacing[INPUT_HEIGHT],
     fontSize: theme.fontSize.body,
     padding: theme.spacing[4],
     color: theme.colors.text,

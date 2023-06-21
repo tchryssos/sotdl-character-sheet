@@ -30,6 +30,10 @@ export type WwnMagicArt = {
   art_effort: EffortStatus;
 };
 
+export type WwnSpellSlot = {
+  spell_slot_spent: boolean;
+};
+
 export type WwnTradition = {
   tradition_name: string;
   tradition_spells: WwnSpell[];
@@ -109,6 +113,7 @@ export type WwnCharacterData = {
   foci: WwnFocus[];
   magic_efforts: WwnEffort[];
   magic_traditions: WwnTradition[];
+  magic_spell_slots: WwnSpellSlot[];
   health_max: number;
   health_current: number;
   system_strain: number;

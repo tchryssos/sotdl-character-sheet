@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { AllowedCommonCssProps, AllowedTextCssProps } from '~/constants/css';
 import { filterCssProps } from '~/logic/utils/styles/css';
 
-type TextProps = AllowedCommonCssProps &
+export type TextProps = AllowedCommonCssProps &
   AllowedTextCssProps & {
     className?: string;
     as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label';

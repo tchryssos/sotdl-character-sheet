@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -7,19 +6,13 @@ import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { FormSection } from '~/components/form/FormSection';
-import { Label } from '~/components/form/Label';
+import { LabelText } from '~/components/form/Label';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnClassAbility } from '~/typings/wwn/characterData';
-
-const AbilityLabel = styled(Label)`
-  > p {
-    margin-bottom: ${({ theme }) => theme.spacing[8]};
-  }
-`;
 
 const createDefaultClassAbility = (): WwnClassAbility => ({
   class_ability_name: '',
@@ -85,7 +78,8 @@ export function ClassInputs() {
     <FormSection columns={1} icon={RpgIcons.FlowerOne} title="Class">
       <FlexBox flexDirection="column" gap={16}>
         <TextInput<WwnCharacterData> label="Name" name="class_name" />
-        <AbilityLabel label="Class Abilities">
+        <FlexBox flexDirection="column">
+          <LabelText marginBottom={8}>Class Abilities</LabelText>
           <AddAnotherMultiField<WwnCharacterData>
             ChildWrapper={ClassChildWrapper}
             HeaderRow={undefined}
@@ -96,7 +90,7 @@ export function ClassInputs() {
               <ClassAbilityField {...classAbilityChildProps} />
             )}
           </AddAnotherMultiField>
-        </AbilityLabel>
+        </FlexBox>
       </FlexBox>
     </FormSection>
   );
