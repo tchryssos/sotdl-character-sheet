@@ -115,7 +115,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
             <Tabs tabLabels={tabLabels}>
               {/* Description */}
               <TabPanel>
-                <GridBox columns={isLessThanSm ? 1 : 2} {...sharedGapProps}>
+                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
                   <BasicInfoInputs />
                   <BackgroundInputs />
                 </GridBox>

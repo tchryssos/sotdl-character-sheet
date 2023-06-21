@@ -83,13 +83,7 @@ export function ArtInputItem({
   const { isEditMode } = useContext(EditContext);
 
   return (
-    <FormSection
-      borderless
-      canToggleVisibility={false}
-      columns={1}
-      isNested
-      title={name}
-    >
+    <FormSection borderless columns={1} isNested title={name}>
       <GridBox
         alignItems="end"
         gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}

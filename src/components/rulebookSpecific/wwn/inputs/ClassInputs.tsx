@@ -6,6 +6,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { FormSection } from '~/components/form/FormSection';
+import { Label } from '~/components/form/Label';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
@@ -42,10 +43,9 @@ function ClassAbilityField({ index, onDelete }: ClassAbilityFieldProps) {
   return (
     <FormSection
       borderless
-      canToggleVisibility={false}
       columns={1}
       isNested
-      title={`Class Ability ${index + 1}: ${name}`}
+      title={name}
       visibilityTitle={`ability${index}`}
     >
       <GridBox
@@ -78,16 +78,18 @@ export function ClassInputs() {
     <FormSection columns={1} icon={RpgIcons.FlowerOne} title="Class">
       <FlexBox flexDirection="column" gap={16}>
         <TextInput<WwnCharacterData> label="Class" name="class_name" />
-        <AddAnotherMultiField<WwnCharacterData>
-          ChildWrapper={ClassChildWrapper}
-          HeaderRow={undefined}
-          createDefaultValue={createDefaultClassAbility}
-          parentFieldName="class_abilities"
-        >
-          {(classAbilityChildProps) => (
-            <ClassAbilityField {...classAbilityChildProps} />
-          )}
-        </AddAnotherMultiField>
+        <Label label="Class Abilities">
+          <AddAnotherMultiField<WwnCharacterData>
+            ChildWrapper={ClassChildWrapper}
+            HeaderRow={undefined}
+            createDefaultValue={createDefaultClassAbility}
+            parentFieldName="class_abilities"
+          >
+            {(classAbilityChildProps) => (
+              <ClassAbilityField {...classAbilityChildProps} />
+            )}
+          </AddAnotherMultiField>
+        </Label>
       </FlexBox>
     </FormSection>
   );
