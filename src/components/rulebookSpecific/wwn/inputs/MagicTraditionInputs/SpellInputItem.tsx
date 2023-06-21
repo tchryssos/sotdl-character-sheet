@@ -47,6 +47,7 @@ export function SpellInputItem({
   const index = sortIndexMap.get(fieldId);
 
   const isLessThanSm = useBreakpointsLessThan('sm');
+  const isLessThanXs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
 
   if (index === undefined) {
@@ -66,7 +67,6 @@ export function SpellInputItem({
   const spellSlots = watch(
     'magic_spell_slots' as keyof WwnCharacterData
   ) as WwnSpellSlot[];
-
   const availableSpellSlotIndex = spellSlots?.findIndex(
     (s) => !s.spell_slot_spent
   );
@@ -79,24 +79,26 @@ export function SpellInputItem({
       title={`${name} - Lvl ${level}`}
     >
       <FlexBox flexDirection="column" gap={16}>
-        <GridBox
-          alignItems="end"
-          gridTemplateColumns={`auto 1fr${isEditMode ? ' auto' : ''}`}
-        >
+        <GridBox gridTemplateColumns={isLessThanSm ? '1fr' : 'auto 1fr'}>
           <CheckboxInput
             label="Prepared"
             name={createSpellFieldName('spell_prepared', index, parentIndex)}
           />
-          <TextInput label="Name" name={nameFieldName} />
-          {isEditMode && (
-            <DeleteButton onDelete={() => onDeleteFn(postSortIndex)} />
-          )}
+          <GridBox
+            alignItems="end"
+            gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+          >
+            <TextInput label="Name" name={nameFieldName} />
+            {isEditMode && (
+              <DeleteButton onDelete={() => onDeleteFn(postSortIndex)} />
+            )}
+          </GridBox>
         </GridBox>
         <TextAreaInput
           label="Description"
           name={createSpellFieldName('spell_description', index, parentIndex)}
         />
-        <GridBox alignItems="end">
+        <GridBox alignItems="end" columns={isLessThanXs ? 1 : 2} rowGap={16}>
           <NumberInput label="Spell Level" min={1} name={levelFieldName} />
           <CastButton
             disabled={availableSpellSlotIndex === -1}
