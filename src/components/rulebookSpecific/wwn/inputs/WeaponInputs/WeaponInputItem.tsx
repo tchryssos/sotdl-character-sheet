@@ -175,7 +175,7 @@ export function WeaponInputItem({
         </GridBox>
         <GridBox columns={isLessThanSm ? 1 : 2}>
           <SelectInput<WwnCharacterData>
-            MultiDisplayComponent={WeaponAttributeDisplay}
+            DisplayComponent={WeaponAttributeDisplay}
             label="Attribute(s)"
             maxSelected={2}
             multiple
@@ -183,7 +183,7 @@ export function WeaponInputItem({
             options={weaponAttributeOptions}
           />
           <SelectInput<WwnCharacterData>
-            MultiDisplayComponent={WeaponTraitsDisplay}
+            DisplayComponent={WeaponTraitsDisplay}
             label="Traits"
             multiple
             name={weaponTraitsFieldName}

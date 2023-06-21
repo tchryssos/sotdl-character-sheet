@@ -24,6 +24,7 @@ interface TraditionInputItemProps {
 const createDefaultTraditionArt = (): WwnMagicArt => ({
   art_name: '',
   art_description: '',
+  art_effort: 'ready',
 });
 
 function ArtChildWrapper({ children }: PropsWithChildren<unknown>) {

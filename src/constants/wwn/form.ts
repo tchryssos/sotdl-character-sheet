@@ -112,6 +112,7 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
 
         be comprehensible this way; the “plain meaning” of
         the text might be utterly foreign to human logic.`,
+          art_effort: 'scene',
         },
         {
           art_name: 'Ward Allies:',
@@ -122,6 +123,7 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
         directly produced by the spell. This does not protect
         them from indirect consequences, however, such as
         destroying the building they are standing in.`,
+          art_effort: 'day',
         },
         {
           art_name: 'Wizard’s Grandeur:',
@@ -135,6 +137,7 @@ Level 2: Once per day, silently consecrate a bargain; the target must make a Men
         comfortable regardless of your attire in any normal
         climate. You may sleep comfortably without shelter
         or bedding as per the privation rules on page 51.`,
+          art_effort: 'indefinite',
         },
       ],
     },

@@ -85,12 +85,12 @@ type BaseSelectMultipleProps =
   | {
       multiple: true;
       maxSelected?: number;
-      MultiDisplayComponent?: React.ComponentType<{ name: string }>;
+      DisplayComponent?: React.ComponentType<{ name: string }>;
     }
   | {
       multiple?: never;
       maxSelected?: never;
-      MultiDisplayComponent?: never;
+      DisplayComponent?: never;
     };
 
 type BaseSelectProps = {

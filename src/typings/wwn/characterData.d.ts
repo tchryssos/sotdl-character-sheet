@@ -27,6 +27,7 @@ export type WwnSpell = {
 export type WwnMagicArt = {
   art_name: string;
   art_description: string;
+  art_effort: EffortStatus;
 };
 
 export type WwnTradition = {

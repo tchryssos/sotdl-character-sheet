@@ -92,7 +92,7 @@ export function SelectInput<T extends Record<string, unknown>>(
     validations,
     multiple,
     maxSelected,
-    MultiDisplayComponent = ValueDisplay,
+    DisplayComponent,
   } = props;
 
   const isUnconnected = Boolean(onChange);
@@ -119,9 +119,11 @@ export function SelectInput<T extends Record<string, unknown>>(
     ? watchedValue.length
     : undefined;
 
+  const SelectDisplayComponent = DisplayComponent || ValueDisplay;
+
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
-      {!isEditMode && !alwaysEditable && multiple ? null : (
+      {!isEditMode && !alwaysEditable && Boolean(DisplayComponent) ? null : (
         <Selector
           className={className}
           defaultValue={onChange && placeholder ? placeholderVal : undefined}
@@ -153,7 +155,7 @@ export function SelectInput<T extends Record<string, unknown>>(
           )}
         </Selector>
       )}
-      <MultiDisplayComponent multiple={multiple} name={name} />
+      <SelectDisplayComponent multiple={multiple} name={name} />
     </Label>
   );
 }
