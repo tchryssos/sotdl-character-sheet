@@ -1,15 +1,19 @@
-import { PropsWithChildren } from 'react';
+import styled from '@emotion/styled';
+import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/FormSection';
 import { LabelText } from '~/components/form/Label';
 import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
 import { FORM_ROW_GAP } from '~/constants/styles';
+import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { SortableAddAnotherChildProps } from '~/typings/form';
 import {
   WwnCharacterData,
   WwnMagicArt,
@@ -19,6 +23,10 @@ import {
 
 import { ArtInputItem } from './ArtInputItem';
 import { SpellInputItem } from './SpellInputItem';
+
+const HideSpellsCheckbox = styled(CheckboxInput)`
+  text-align: right;
+`;
 
 interface TraditionInputItemProps {
   index: number;
@@ -37,6 +45,8 @@ const createDefaultSpell = (): WwnSpell => ({
   spell_level: 1,
   spell_prepared: false,
 });
+
+const HIDE_SPELLS_LOCAL_STORAGE_KEY = 'wwn_hide_unprepared_spells';
 
 function ArtChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -58,10 +68,62 @@ export function TraditionInputItem({
   index,
   onDelete,
 }: TraditionInputItemProps) {
-  const { watch } = useFormContext<WwnCharacterData>();
+  const { isEditMode } = useContext(EditContext);
+  const { watch, getValues } = useFormContext<WwnCharacterData>();
 
   const nameFieldName = createTraditionFieldName('tradition_name', index);
   const name = watch(nameFieldName) as string;
+
+  // START - UNPREPARED SPELLS - START
+  const [hideUnprepared, setHideUnprepared] = useState(
+    globalThis?.localStorage.getItem(HIDE_SPELLS_LOCAL_STORAGE_KEY) === 'true'
+  );
+
+  useEffect(() => {
+    if (isEditMode) {
+      setHideUnprepared(false);
+    } else {
+      setHideUnprepared(
+        globalThis?.localStorage.getItem(HIDE_SPELLS_LOCAL_STORAGE_KEY) ===
+          'true'
+      );
+    }
+  }, [isEditMode]);
+
+  const onHideUnpreparedSpells = () => {
+    const nextUnprepared = !hideUnprepared;
+    setHideUnprepared(nextUnprepared);
+    globalThis?.localStorage.setItem(
+      HIDE_SPELLS_LOCAL_STORAGE_KEY,
+      nextUnprepared.toString()
+    );
+  };
+
+  const filterUnpreparedSpells = ({
+    fieldId,
+    sortIndexMap,
+  }: SortableAddAnotherChildProps) => {
+    const trueFieldIndex = sortIndexMap.get(fieldId);
+
+    if (trueFieldIndex === undefined) {
+      return false;
+    }
+
+    if (!isEditMode && hideUnprepared) {
+      const spells = getValues(
+        createTraditionFieldName('tradition_spells', index)
+      ) as WwnSpell[];
+
+      const spell = spells[trueFieldIndex];
+
+      if (!spell.spell_prepared) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+  // END - UNPREPARED SPELLS - END
 
   return (
     <FlexBox flexDirection="column" gap={FORM_ROW_GAP}>
@@ -100,6 +162,7 @@ export function TraditionInputItem({
         <AddAnotherMultiField<WwnTradition>
           ChildWrapper={SpellChildWrapper}
           createDefaultValue={createDefaultSpell}
+          filterFn={filterUnpreparedSpells}
           parentFieldName={
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             createTraditionFieldName('tradition_spells', index) as any
@@ -118,10 +181,22 @@ export function TraditionInputItem({
               parentIndex={index}
               postSortIndex={spellIndex}
               sortIndexMap={sortIndexMap}
-              onDeleteFn={spellOnDelete}
+              onDelete={spellOnDelete}
             />
           )}
         </AddAnotherMultiField>
+        {!isEditMode && (
+          <FlexBox justifyContent="flex-end">
+            <HideSpellsCheckbox
+              alwaysEditable
+              customOnChange={onHideUnpreparedSpells}
+              inputLike
+              isChecked={hideUnprepared}
+              name="Hide Unprepared Spells"
+              size="sm"
+            />
+          </FlexBox>
+        )}
       </FormSection>
     </FlexBox>
   );

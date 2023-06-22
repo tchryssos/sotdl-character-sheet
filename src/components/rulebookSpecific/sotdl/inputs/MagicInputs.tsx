@@ -42,7 +42,7 @@ const createMakeSpellName =
 function SpellField({
   sortIndexMap,
   fieldId,
-  onDeleteFn,
+  onDelete,
   postSortIndex,
 }: SortableAddAnotherChildProps) {
   const { isEditMode } = useContext(EditContext);
@@ -84,7 +84,7 @@ function SpellField({
     isLessThanSm ? '' : ` ${tradition} ${capitalize(type)} ${level}`
   }: ${remainingCastings}/${totalCastings}`;
 
-  const onDelete = () => onDeleteFn(postSortIndex);
+  const onDeleteSpell = () => onDelete(postSortIndex);
 
   return (
     <FormSection
@@ -138,7 +138,7 @@ function SpellField({
       {isEditMode && (
         <AddAnotherMultiDelete
           disabled={index === undefined}
-          onDelete={onDelete}
+          onDelete={onDeleteSpell}
         />
       )}
     </FormSection>
@@ -178,7 +178,7 @@ export function MagicInputs() {
             fieldId={fieldId}
             postSortIndex={index}
             sortIndexMap={sortIndexMap}
-            onDeleteFn={onDelete}
+            onDelete={onDelete}
           />
         )}
       </AddAnotherMultiField>

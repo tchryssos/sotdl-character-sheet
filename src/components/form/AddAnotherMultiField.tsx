@@ -4,6 +4,7 @@ import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { EditContext } from '~/logic/contexts/editContext';
+import { SortableAddAnotherChildProps } from '~/typings/form';
 import { KeyOfListField, ListFieldRecord } from '~/typings/util';
 
 import { Box } from '../box/Box';
@@ -28,6 +29,7 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   simpleDelete?: boolean;
   addLabel?: string;
   emptyLabel?: string;
+  filterFn?: (props: SortableAddAnotherChildProps) => boolean;
 };
 
 const ChildContainer = styled(Box)`
@@ -49,6 +51,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   simpleDelete,
   addLabel,
   emptyLabel,
+  filterFn,
 }: AddAnotherMultiFieldProps<T>) {
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -108,16 +111,23 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
       )}
       {Boolean(controlledFields.length) && HeaderRow && <HeaderRow />}
       <ChildWrapper>
-        {controlledFields.map((field, i) => (
-          <ChildContainer key={field.id}>
-            {children({
-              index: i,
-              onDelete,
-              fieldId: field.id,
-              sortIndexMap,
-            })}
-          </ChildContainer>
-        ))}
+        {/* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap#for_adding_and_removing_items_during_a_map */}
+        {controlledFields.flatMap((field, i) => {
+          const props = {
+            index: i,
+            onDelete,
+            fieldId: field.id,
+            sortIndexMap,
+          };
+
+          if (filterFn?.({ ...props, postSortIndex: i }) === false) {
+            return [];
+          }
+
+          return [
+            <ChildContainer key={field.id}>{children(props)}</ChildContainer>,
+          ];
+        })}
       </ChildWrapper>
       {!controlledFields.length && (
         <Text as="p" fontStyle="italic" variant="body-sm">

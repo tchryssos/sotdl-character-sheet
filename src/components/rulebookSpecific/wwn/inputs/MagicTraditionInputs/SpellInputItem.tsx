@@ -29,7 +29,7 @@ const CastButton = styled(TextButton)`
   height: ${({ theme }) => theme.spacing[INPUT_HEIGHT]};
 `;
 
-const createSpellFieldName = (
+export const createSpellFieldName = (
   fieldName: keyof WwnSpell,
   index: number,
   parentIndex: number
@@ -37,7 +37,7 @@ const createSpellFieldName = (
   `magic_traditions.${parentIndex}.tradition_spells.${index}.${fieldName}`;
 
 export function SpellInputItem({
-  onDeleteFn,
+  onDelete,
   sortIndexMap,
   fieldId,
   postSortIndex,
@@ -90,7 +90,7 @@ export function SpellInputItem({
           >
             <TextInput label="Name" name={nameFieldName} />
             {isEditMode && (
-              <DeleteButton onDelete={() => onDeleteFn(postSortIndex)} />
+              <DeleteButton onDelete={() => onDelete(postSortIndex)} />
             )}
           </GridBox>
         </GridBox>
