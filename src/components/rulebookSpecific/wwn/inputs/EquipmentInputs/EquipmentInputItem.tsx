@@ -17,7 +17,6 @@ import { EncumbranceContext } from '../../EncumbranceProvider';
 interface EquipmentInputItemProps {
   index: number;
   onDelete: (index: number) => void;
-  hideUnreadied: boolean;
 }
 
 const createEquipmentFieldName = (
@@ -28,7 +27,6 @@ const createEquipmentFieldName = (
 export function EquipmentInputItem({
   index,
   onDelete,
-  hideUnreadied,
 }: EquipmentInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -57,14 +55,9 @@ export function EquipmentInputItem({
     calculateEncumbrances();
   }, [equipmentEncumbrance, equipmentReadied, calculateEncumbrances]);
 
-  if (hideUnreadied && !equipmentReadied) {
-    return null;
-  }
-
   return (
     <FormSection
       borderless
-      canToggleVisibility={false}
       columns={1}
       isNested
       title={equipmentName as string}

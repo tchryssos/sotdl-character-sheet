@@ -157,7 +157,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
               {/* Magic */}
               <TabPanel>
                 <GridBox columns={1} {...sharedGapProps}>
-                  <GridBox {...sharedGapProps}>
+                  <GridBox {...sharedGapProps} columns={isLessThanSm ? 1 : 2}>
                     <MagicEffortInputs />
                     <SpellSlotInputs />
                   </GridBox>

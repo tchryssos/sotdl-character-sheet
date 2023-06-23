@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
@@ -8,6 +9,7 @@ import { FormSection } from '~/components/form/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
+import { SortableAddAnotherChildProps } from '~/typings/form';
 import { WwnCharacterData, WwnEquipment } from '~/typings/wwn/characterData';
 
 import { EquipmentInputItem } from './EquipmentInputItem';
@@ -33,7 +35,9 @@ const createDefaultEquipment = (): WwnEquipment => ({
 export function EquipmentInputs() {
   const [hideUnreadied, setHideUnreadied] = useState(false);
   const { isEditMode } = useContext(EditContext);
+  const { getValues } = useFormContext<WwnCharacterData>();
 
+  // START - UNREADIED EQUIPMENT - START
   const onToggleHide = () => {
     setHideUnreadied(!hideUnreadied);
   };
@@ -44,6 +48,30 @@ export function EquipmentInputs() {
     }
   }, [isEditMode]);
 
+  const filterUnreadiedEquipment = ({
+    fieldId,
+    sortIndexMap,
+  }: SortableAddAnotherChildProps) => {
+    const trueFieldIndex = sortIndexMap.get(fieldId);
+
+    if (trueFieldIndex === undefined) {
+      return false;
+    }
+
+    if (!isEditMode && hideUnreadied) {
+      const equipment = getValues('equipment');
+
+      const item = equipment[trueFieldIndex];
+
+      if (!item.equipment_readied) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+  // END - UNREADIED EQUIPMENT - END
+
   return (
     <FormSection
       columns={1}
@@ -53,15 +81,11 @@ export function EquipmentInputs() {
       <AddAnotherMultiField<WwnCharacterData>
         ChildWrapper={EquipmentChildWrapper}
         createDefaultValue={createDefaultEquipment}
+        filterFn={filterUnreadiedEquipment}
         parentFieldName="equipment"
       >
         {({ index, onDelete, fieldId }) => (
-          <EquipmentInputItem
-            hideUnreadied={hideUnreadied}
-            index={index}
-            key={fieldId}
-            onDelete={onDelete}
-          />
+          <EquipmentInputItem index={index} key={fieldId} onDelete={onDelete} />
         )}
       </AddAnotherMultiField>
       {!isEditMode && (
