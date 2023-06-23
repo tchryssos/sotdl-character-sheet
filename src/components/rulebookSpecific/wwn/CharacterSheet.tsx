@@ -38,6 +38,7 @@ import { FociInputs } from './inputs/FociInputs';
 import { HealthInputs } from './inputs/HealthInputs';
 import { MagicEffortInputs } from './inputs/MagicEffortInputs';
 import { MagicTraditionInputs } from './inputs/MagicTraditionInputs';
+import { SpellSlotInputs } from './inputs/MagicTraditionInputs/SpellSlotInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 import { WeaponInputs } from './inputs/WeaponInputs';
 
@@ -156,7 +157,11 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
               {/* Magic */}
               <TabPanel>
                 <GridBox columns={1} {...sharedGapProps}>
-                  <MagicEffortInputs />
+                  <GridBox {...sharedGapProps}>
+                    <MagicEffortInputs />
+                    <SpellSlotInputs />
+                  </GridBox>
+
                   <MagicTraditionInputs />
                 </GridBox>
               </TabPanel>

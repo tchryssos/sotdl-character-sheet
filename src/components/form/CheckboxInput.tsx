@@ -7,6 +7,7 @@ import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
 import { BaseButton } from '../buttons/BaseButton';
 import { Check } from '../icons/Check';
+import { Close } from '../icons/Close';
 import { Input } from './Input';
 import { Label } from './Label';
 
@@ -17,6 +18,7 @@ type CheckboxBaseProps<T> = Omit<
 
 type CheckboxProps<T> = CheckboxBaseProps<T> & {
   size?: 'sm' | 'md';
+  useX?: boolean;
 } & (
     | {
         inputLike?: false;
@@ -64,6 +66,7 @@ export function CheckboxInput<T extends Record<string, unknown>>({
   inputLike,
   isChecked,
   size = 'md',
+  useX,
 }: CheckboxProps<T>) {
   const { watch, setValue } = useFormContext();
   const checked = inputLike ? isChecked : watch(name);
@@ -104,13 +107,20 @@ export function CheckboxInput<T extends Record<string, unknown>>({
           transparent
           onClick={onChange}
         >
-          {checked && (
-            <Check
-              color="text"
-              title={`${name} checked`}
-              titleId={`${name}-checked`}
-            />
-          )}
+          {checked &&
+            (useX ? (
+              <Close
+                color="text"
+                title={`${name} checked`}
+                titleId={`${name}-checked`}
+              />
+            ) : (
+              <Check
+                color="text"
+                title={`${name} checked`}
+                titleId={`${name}-checked`}
+              />
+            ))}
         </CheckButton>
       </Label>
     </Wrapper>
