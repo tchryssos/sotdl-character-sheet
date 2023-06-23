@@ -1,9 +1,13 @@
+import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 
 export const useSheetState = () => {
+  const { query } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isMyCharacter, setIsMyCharacter] = useState(true);
+
+  const queryTab = query.tab as string;
 
   const editProviderVal = useMemo(
     () => ({ isEditMode, setIsEditMode }),
@@ -18,5 +22,6 @@ export const useSheetState = () => {
     isMyCharacter,
     setIsMyCharacter,
     editProviderVal,
+    queryTab,
   };
 };

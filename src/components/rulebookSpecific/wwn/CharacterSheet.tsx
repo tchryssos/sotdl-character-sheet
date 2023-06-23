@@ -1,5 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
@@ -17,6 +18,7 @@ import {
 } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
+import { getTabIndex } from '~/logic/utils/getTabIndex';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
@@ -91,8 +93,10 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
     isMyCharacter,
     setIsMyCharacter,
     editProviderVal,
+    queryTab,
   } = useSheetState();
   useSheetHotkeys(isEditMode, setIsEditMode);
+  const { replace, query } = useRouter();
 
   const { user } = useUser();
 
@@ -113,7 +117,18 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         <FormNav isMyCharacter={isMyCharacter} />
         <EncumbranceProvider>
           <AcProvider>
-            <Tabs tabLabels={tabLabels}>
+            <Tabs
+              defaultTab={getTabIndex(queryTab, tabLabels)}
+              tabLabels={tabLabels}
+              onChange={(index) =>
+                replace({
+                  query: {
+                    ...query,
+                    tab: tabLabels[index].label.toLowerCase(),
+                  },
+                })
+              }
+            >
               {/* Description */}
               <TabPanel>
                 <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
