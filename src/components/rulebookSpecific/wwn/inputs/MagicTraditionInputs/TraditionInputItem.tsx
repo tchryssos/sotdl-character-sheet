@@ -4,6 +4,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/FormSection';
@@ -68,8 +70,10 @@ export function TraditionInputItem({
   index,
   onDelete,
 }: TraditionInputItemProps) {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { isEditMode } = useContext(EditContext);
   const { watch, getValues } = useFormContext<WwnCharacterData>();
+  const isLessThanSm = useBreakpointsLessThan('sm');
 
   const nameFieldName = createTraditionFieldName('tradition_name', index);
   const name = watch(nameFieldName) as string;
@@ -126,78 +130,107 @@ export function TraditionInputItem({
   // END - UNPREPARED SPELLS - END
 
   return (
-    <FlexBox flexDirection="column" gap={FORM_ROW_GAP}>
-      <FormSection
-        columns={1}
-        icon={RpgIcons.WandLight}
-        title={`Tradition - ${name}`}
-      >
-        <TextInput<WwnCharacterData> label="Name" name={nameFieldName} />
-        <FlexBox flexDirection="column">
-          <LabelText marginBottom={8}>Magic Arts</LabelText>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <AddAnotherMultiField<any>
-            ChildWrapper={ArtChildWrapper}
-            createDefaultValue={createDefaultTraditionArt}
-            emptyLabel="Empty (use Edit Mode to add some Arts)"
-            parentFieldName={createTraditionFieldName('tradition_arts', index)}
+    <>
+      <FlexBox flexDirection="column" gap={FORM_ROW_GAP}>
+        <FormSection
+          columns={1}
+          icon={RpgIcons.WandLight}
+          title={`Tradition - ${name}`}
+        >
+          <GridBox
+            alignItems="end"
+            gridTemplateColumns={isLessThanSm ? '1fr' : '1fr auto'}
           >
-            {({ index: artIndex, onDelete: artOnDelete, fieldId }) => (
-              <ArtInputItem
-                index={artIndex}
+            <TextInput<WwnCharacterData> label="Name" name={nameFieldName} />
+            {isEditMode && (
+              <DeleteButton onDelete={() => setShowDeleteModal(true)} />
+            )}
+          </GridBox>
+          <FlexBox flexDirection="column">
+            <LabelText marginBottom={8}>Magic Arts</LabelText>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            <AddAnotherMultiField<any>
+              ChildWrapper={ArtChildWrapper}
+              createDefaultValue={createDefaultTraditionArt}
+              emptyLabel="Empty (use Edit Mode to add some Arts)"
+              parentFieldName={createTraditionFieldName(
+                'tradition_arts',
+                index
+              )}
+            >
+              {({ index: artIndex, onDelete: artOnDelete, fieldId }) => (
+                <ArtInputItem
+                  index={artIndex}
+                  key={fieldId}
+                  parentIndex={index}
+                  onDelete={artOnDelete}
+                />
+              )}
+            </AddAnotherMultiField>
+          </FlexBox>
+        </FormSection>
+        <FormSection
+          columns={1}
+          icon={RpgIcons.Lightning}
+          title={`Spells - ${name}`}
+        >
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <AddAnotherMultiField<WwnTradition>
+            ChildWrapper={SpellChildWrapper}
+            createDefaultValue={createDefaultSpell}
+            filterFn={filterUnpreparedSpells}
+            parentFieldName={
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              createTraditionFieldName('tradition_spells', index) as any
+            }
+            sortProperties={['spell_level', 'spell_name']}
+          >
+            {({
+              index: spellIndex,
+              onDelete: spellOnDelete,
+              fieldId,
+              sortIndexMap,
+            }) => (
+              <SpellInputItem
+                fieldId={fieldId}
                 key={fieldId}
                 parentIndex={index}
-                onDelete={artOnDelete}
+                postSortIndex={spellIndex}
+                sortIndexMap={sortIndexMap}
+                onDelete={spellOnDelete}
               />
             )}
           </AddAnotherMultiField>
-        </FlexBox>
-      </FormSection>
-      <FormSection
-        columns={1}
-        icon={RpgIcons.Lightning}
-        title={`Spells - ${name}`}
-      >
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        <AddAnotherMultiField<WwnTradition>
-          ChildWrapper={SpellChildWrapper}
-          createDefaultValue={createDefaultSpell}
-          filterFn={filterUnpreparedSpells}
-          parentFieldName={
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            createTraditionFieldName('tradition_spells', index) as any
-          }
-          sortProperties={['spell_level', 'spell_name']}
-        >
-          {({
-            index: spellIndex,
-            onDelete: spellOnDelete,
-            fieldId,
-            sortIndexMap,
-          }) => (
-            <SpellInputItem
-              fieldId={fieldId}
-              key={fieldId}
-              parentIndex={index}
-              postSortIndex={spellIndex}
-              sortIndexMap={sortIndexMap}
-              onDelete={spellOnDelete}
-            />
+          {!isEditMode && (
+            <FlexBox justifyContent="flex-end">
+              <HideSpellsCheckbox
+                alwaysEditable
+                customOnChange={onHideUnpreparedSpells}
+                inputLike
+                isChecked={hideUnprepared}
+                name="Hide Unprepared Spells"
+                size="sm"
+              />
+            </FlexBox>
           )}
-        </AddAnotherMultiField>
-        {!isEditMode && (
-          <FlexBox justifyContent="flex-end">
-            <HideSpellsCheckbox
-              alwaysEditable
-              customOnChange={onHideUnpreparedSpells}
-              inputLike
-              isChecked={hideUnprepared}
-              name="Hide Unprepared Spells"
-              size="sm"
-            />
-          </FlexBox>
-        )}
-      </FormSection>
-    </FlexBox>
+        </FormSection>
+      </FlexBox>
+      <ConfirmationDialog
+        cancel={{
+          onClick: () => setShowDeleteModal(false),
+          label: 'Cancel',
+        }}
+        confirm={{
+          onClick: () => onDelete(index),
+          label: 'Delete Tradition',
+          severity: 'danger',
+        }}
+        describedById="delete-tradition-description"
+        labeledById="delete-tradition"
+        message="Deleting it will delete all the associated arts and spells as well."
+        open={showDeleteModal}
+        title="Are you sure you want to delete this Tradition?"
+      />
+    </>
   );
 }

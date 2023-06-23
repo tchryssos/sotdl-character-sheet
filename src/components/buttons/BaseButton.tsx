@@ -8,7 +8,7 @@ import { Color } from '~/typings/theme';
 import { FlexBox } from '../box/FlexBox';
 import { BaseButtonProps } from './types';
 
-type StyledProps = Pick<Required<BaseButtonProps>, 'transparent' | 'severity'>;
+type StyledProps = Pick<BaseButtonProps, 'transparent' | 'severity'>;
 
 const StyledButton = styled(ButtonUnstyled)<StyledProps>(
   ({ theme, transparent, severity }) => {
@@ -93,7 +93,7 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ref={forwardedRef as any}
           severity={severity}
-          transparent={Boolean(transparent)}
+          transparent={Boolean(transparent) || undefined}
         >
           {children}
         </ButtonLike>
@@ -107,7 +107,7 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
         disabled={disabled || (!onClick && type !== 'submit')}
         ref={forwardedRef}
         severity={severity}
-        transparent={Boolean(transparent)}
+        transparent={Boolean(transparent) || undefined}
         // eslint-disable-next-line react/button-has-type
         type={type}
         onClick={onClick}

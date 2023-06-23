@@ -73,7 +73,7 @@ function MagicEffortInput({ index }: MagicEffortInputProps) {
     <EffortButton
       severity={severity}
       title={`Effort Status: ${upperFirst(effortValue)}`}
-      transparent={severity === 'normal'}
+      transparent={severity === 'normal' ? true : undefined}
       onClick={onToggleEffort}
     >
       <Text color={color} variant="body-sm">
