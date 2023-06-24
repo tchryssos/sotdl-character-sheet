@@ -17,12 +17,15 @@ import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
 import { prisma } from '~/logic/utils/prisma';
 import { getRulebookAndIdFromLocation } from '~/logic/utils/url';
-import { StrictCharacter } from '~/typings/characters';
+import { CharacterData, StrictCharacter } from '~/typings/characters';
+import { NotificationBody } from '~/typings/notifications';
 import { RulebookType, StrictRulebook } from '~/typings/rulebooks';
+import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 interface DisplaySheetProps {
   rulebook: RulebookType | null;
-  character?: StrictCharacter;
+  character?: StrictCharacter<CharacterData>;
 }
 
 function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
@@ -31,18 +34,26 @@ function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
   }
   switch (rulebook) {
     case 'sotdl':
-      return <SotdlCharacterSheet character={character} />;
+      return (
+        <SotdlCharacterSheet
+          character={character as StrictCharacter<SotdlCharacterData>}
+        />
+      );
     case 'swn':
       return <SwnCharacterSheet />;
     case 'wwn':
-      return <WwnCharacterSheet />;
+      return (
+        <WwnCharacterSheet
+          character={character as StrictCharacter<WwnCharacterData>}
+        />
+      );
     default:
       return <NotFound content="Character" />;
   }
 }
 
 interface CharacterSheetPageProps {
-  character?: StrictCharacter;
+  character?: StrictCharacter<CharacterData>;
   availableRulebooks: StrictRulebook[];
 }
 
@@ -75,7 +86,8 @@ function CharacterSheetPage({
       ) {
         setRulebook(activeRulebook as RulebookType);
       } else {
-        push(createCharacterRoute(CREATE_ID));
+        setRulebook('wwn');
+        // push(createCharacterRoute(CREATE_ID));
       }
     } else {
       setRulebook(null);
@@ -103,39 +115,53 @@ function CharacterSheetPage({
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (
-  context
-): Promise<{ props: CharacterSheetPageProps }> => {
-  // Character
-  const { params } = context;
+export const getServerSideProps: GetServerSideProps<
+  CharacterSheetPageProps
+> = async (context) => {
+  try {
+    // Character
+    const { params } = context;
 
-  let character: StrictCharacter | undefined;
+    let character: StrictCharacter<CharacterData> | undefined;
 
-  if (params?.id && params.id !== NEW_ID) {
-    const parsedId = parseInt(params.id as string, 10);
+    if (params?.id && params.id !== NEW_ID) {
+      const parsedId = parseInt(params.id as string, 10);
 
-    if (!Number.isNaN(parsedId)) {
-      const dbCharacter = await prisma.character.findUnique({
-        where: {
-          id: parseInt(params.id as string, 10),
-        },
-      });
-      if (!dbCharacter?.deleted) {
-        character = dbCharacter as StrictCharacter;
+      if (!Number.isNaN(parsedId)) {
+        const dbCharacter = await prisma.character.findUnique({
+          where: {
+            id: parseInt(params.id as string, 10),
+          },
+        });
+        if (!dbCharacter?.deleted) {
+          character = dbCharacter as StrictCharacter<CharacterData>;
+        }
       }
     }
+
+    // Rulebooks
+    const availableRulebooks =
+      (await prisma.rulebook.findMany()) as StrictRulebook[];
+
+    return {
+      props: {
+        character,
+        availableRulebooks,
+      },
+    };
+  } catch (e) {
+    const error: NotificationBody = {
+      title: 'Something went wrong loading this character',
+      type: 'error',
+    };
+    return {
+      props: {
+        character: undefined,
+        availableRulebooks: [],
+        error,
+      },
+    };
   }
-
-  // Rulebooks
-  const availableRulebooks =
-    (await prisma.rulebook.findMany()) as StrictRulebook[];
-
-  return {
-    props: {
-      character,
-      availableRulebooks,
-    },
-  };
 };
 
 export default CharacterSheetPage;

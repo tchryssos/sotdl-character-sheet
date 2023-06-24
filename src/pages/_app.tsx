@@ -2,15 +2,18 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import { css, Global, ThemeProvider } from '@emotion/react';
 import styled from '@emotion/styled';
 import type { AppProps } from 'next/app';
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { LoginItemsContextProvider } from '~/components/providers/LoginItemsContextProvider';
 import { NotificationsContextProvider } from '~/components/providers/NotificationsContextProvider';
 import { ColorMode, Theme, themes } from '~/constants/theme';
 import { BreakpointsContext } from '~/logic/contexts/breakpointsContext';
+import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { ThemeContext } from '~/logic/contexts/themeContext';
+import { createNotification } from '~/logic/utils/notifications';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { NotificationBody } from '~/typings/notifications';
 import { BreakpointSize } from '~/typings/theme';
 
 const marPadZero = css`
@@ -89,7 +92,27 @@ const GlobalWrapper = styled(FlexBox)`
   overflow: hidden;
 `;
 
-function Page({ Component, pageProps }: AppProps) {
+interface ErrorIntermediaryProps {
+  error?: NotificationBody;
+}
+
+function ErrorIntermediary({ error }: ErrorIntermediaryProps) {
+  const { addNotifications } = useContext(NotificationsContext);
+
+  useEffect(() => {
+    if (error) {
+      addNotifications([
+        createNotification({
+          ...error,
+          type: 'error',
+        }),
+      ]);
+    }
+  }, [error, addNotifications]);
+  return null;
+}
+
+function Page({ Component, pageProps: { error, ...pageProps } }: AppProps) {
   const [windowBreakpoints, setWindowBreakpoints] = useState<BreakpointSize[]>([
     'xxs',
   ]);
@@ -130,6 +153,7 @@ function Page({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <BreakpointsContext.Provider value={windowBreakpoints}>
             <NotificationsContextProvider>
+              <ErrorIntermediary error={error} />
               <LoginItemsContextProvider>
                 <GlobalWrapper>
                   <Global styles={createGlobalStyles(theme)} />

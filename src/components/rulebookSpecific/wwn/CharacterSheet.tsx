@@ -96,7 +96,7 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
     queryTab,
   } = useSheetState();
   useSheetHotkeys(isEditMode, setIsEditMode);
-  const { replace, query } = useRouter();
+  const router = useRouter();
 
   const { user } = useUser();
 
@@ -118,12 +118,12 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
         <EncumbranceProvider>
           <AcProvider>
             <Tabs
-              defaultTab={getTabIndex(queryTab, tabLabels)}
+              defaultTab={getTabIndex(tabLabels, queryTab)}
               tabLabels={tabLabels}
               onChange={(index) =>
-                replace({
+                router.replace({
                   query: {
-                    ...query,
+                    ...router.query,
                     tab: tabLabels[index].label.toLowerCase(),
                   },
                 })

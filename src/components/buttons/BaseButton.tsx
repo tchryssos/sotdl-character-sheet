@@ -90,8 +90,7 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
            * with this ref to the point where we actually run into a problem, so
            * I'm just ignoring this error.
            */
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ref={forwardedRef as any}
+          ref={forwardedRef as unknown}
           severity={severity}
           transparent={Boolean(transparent) || undefined}
         >
@@ -108,7 +107,6 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
         ref={forwardedRef}
         severity={severity}
         transparent={Boolean(transparent) || undefined}
-        // eslint-disable-next-line react/button-has-type
         type={type}
         onClick={onClick}
       >
