@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { createCharacterRoute } from '~/constants/routing/shared';
-import { StrictCharacter } from '~/typings/characters';
+import { CharacterData, StrictCharacter } from '~/typings/characters';
 
 import { FlexBox } from '../box/FlexBox';
 import { Link } from '../Link';
@@ -20,7 +20,7 @@ const Caps = styled.span`
 `;
 
 interface ProfileCharacterListItemProps {
-  character: StrictCharacter;
+  character: StrictCharacter<CharacterData>;
 }
 
 export function ProfileCharacterListItem({

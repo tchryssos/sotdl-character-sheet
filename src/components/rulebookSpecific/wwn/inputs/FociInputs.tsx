@@ -39,7 +39,6 @@ function FocusItem({ index, onDelete }: FocusItemProps) {
   return (
     <FormSection
       borderless
-      canToggleVisibility={false}
       columns={1}
       isNested
       title={sectionTitle}

@@ -19,18 +19,18 @@ import { TextInput } from '../../../form/TextInput';
 const itemTemplateColumns = '4fr 6fr';
 const itemSmallTemplateColumns = '2fr 2fr';
 
-const ItemField: React.FC<SortableAddAnotherChildProps> = ({
+function ItemField({
   postSortIndex,
-  onDeleteFn,
+  onDelete: _onDelete,
   sortIndexMap,
   fieldId,
-}) => {
+}: SortableAddAnotherChildProps) {
   const { isEditMode } = useContext(EditContext);
   const isAtLeastSm = useBreakpointsAtLeast('sm');
 
   const index = sortIndexMap.get(fieldId);
 
-  const onDelete = () => onDeleteFn(postSortIndex);
+  const onDelete = () => _onDelete(postSortIndex);
 
   return (
     <GridBox
@@ -50,9 +50,9 @@ const ItemField: React.FC<SortableAddAnotherChildProps> = ({
       </GridBox>
     </GridBox>
   );
-};
+}
 
-const ItemHeader: React.FC = () => {
+function ItemHeader() {
   const isAtLeastSm = useBreakpointsAtLeast('sm');
   return (
     <GridBox
@@ -68,29 +68,31 @@ const ItemHeader: React.FC = () => {
       </Text>
     </GridBox>
   );
-};
+}
 
 const createDefaultValue = (): SotdlEquipment => ({
   equipment_name: '',
   equipment_notes: '',
 });
 
-export const EquipmentInputs: React.FC = () => (
-  <FormSection columns={1} isCollapsible title="Equipment">
-    <AddAnotherMultiField<SotdlCharacterData>
-      HeaderRow={ItemHeader}
-      createDefaultValue={createDefaultValue}
-      parentFieldName="equipment"
-      sortProperties={['equipment_name']}
-    >
-      {({ index, onDelete, sortIndexMap, fieldId }) => (
-        <ItemField
-          fieldId={fieldId}
-          postSortIndex={index}
-          sortIndexMap={sortIndexMap}
-          onDeleteFn={onDelete}
-        />
-      )}
-    </AddAnotherMultiField>
-  </FormSection>
-);
+export function EquipmentInputs() {
+  return (
+    <FormSection columns={1} isCollapsible title="Equipment">
+      <AddAnotherMultiField<SotdlCharacterData>
+        HeaderRow={ItemHeader}
+        createDefaultValue={createDefaultValue}
+        parentFieldName="equipment"
+        sortProperties={['equipment_name']}
+      >
+        {({ index, onDelete, sortIndexMap, fieldId }) => (
+          <ItemField
+            fieldId={fieldId}
+            postSortIndex={index}
+            sortIndexMap={sortIndexMap}
+            onDelete={onDelete}
+          />
+        )}
+      </AddAnotherMultiField>
+    </FormSection>
+  );
+}

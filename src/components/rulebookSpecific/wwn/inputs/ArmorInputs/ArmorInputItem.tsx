@@ -86,7 +86,6 @@ export function ArmorInputItem({
   return (
     <FormSection
       borderless
-      canToggleVisibility={false}
       columns={1}
       isNested
       title={sectionTitle}

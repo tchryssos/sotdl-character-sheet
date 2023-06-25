@@ -6,10 +6,7 @@ import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
-import {
-  useBreakpointsAtLeast,
-  useBreakpointsIsExactly,
-} from '~/logic/hooks/useBreakpoints';
+import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
 import { AAMFormSection } from '../AAMFormSection';
