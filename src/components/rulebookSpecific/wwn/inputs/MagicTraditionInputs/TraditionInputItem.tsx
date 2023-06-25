@@ -137,10 +137,7 @@ export function TraditionInputItem({
           icon={RpgIcons.WandLight}
           title={`Tradition - ${name}`}
         >
-          <GridBox
-            alignItems="end"
-            gridTemplateColumns={isLessThanSm ? '1fr' : '1fr auto'}
-          >
+          <GridBox alignItems="end" gridTemplateColumns="1fr auto">
             <TextInput<WwnCharacterData> label="Name" name={nameFieldName} />
             {isEditMode && (
               <DeleteButton onDelete={() => setShowDeleteModal(true)} />

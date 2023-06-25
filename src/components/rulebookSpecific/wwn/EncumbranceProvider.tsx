@@ -42,9 +42,15 @@ const reduceEncumbrances = (
     (currEnc, armor) => {
       const nextEnc = { ...currEnc };
       if (armor.armor_readied) {
-        nextEnc.readiedEncumbrance += armor.armor_encumbrance;
+        nextEnc.readiedEncumbrance += parseInt(
+          String(armor.armor_encumbrance),
+          10
+        );
       } else {
-        nextEnc.stowedEncumbrance += armor.armor_encumbrance;
+        nextEnc.stowedEncumbrance += parseInt(
+          String(armor.armor_encumbrance),
+          10
+        );
       }
       return nextEnc;
     },
@@ -55,9 +61,15 @@ const reduceEncumbrances = (
     (currEnc, weapon) => {
       const nextEnc = { ...currEnc };
       if (weapon.weapon_readied) {
-        nextEnc.readiedEncumbrance += weapon.weapon_encumbrance;
+        nextEnc.readiedEncumbrance += parseInt(
+          String(weapon.weapon_encumbrance),
+          10
+        );
       } else {
-        nextEnc.stowedEncumbrance += weapon.weapon_encumbrance;
+        nextEnc.stowedEncumbrance += parseInt(
+          String(weapon.weapon_encumbrance),
+          10
+        );
       }
       return nextEnc;
     },
@@ -68,9 +80,15 @@ const reduceEncumbrances = (
     (currEnc, equipItem) => {
       const nextEnc = { ...currEnc };
       if (equipItem.equipment_readied) {
-        nextEnc.readiedEncumbrance += equipItem.equipment_encumbrance;
+        nextEnc.readiedEncumbrance += parseInt(
+          String(equipItem.equipment_encumbrance),
+          10
+        );
       } else {
-        nextEnc.stowedEncumbrance += equipItem.equipment_encumbrance;
+        nextEnc.stowedEncumbrance += parseInt(
+          String(equipItem.equipment_encumbrance),
+          10
+        );
       }
       return nextEnc;
     },
