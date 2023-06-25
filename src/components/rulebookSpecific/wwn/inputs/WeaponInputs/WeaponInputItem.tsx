@@ -17,7 +17,10 @@ import { Pill } from '~/components/Pill';
 import { Text } from '~/components/Text';
 import { ATTRIBUTES, WEAPON_TRAITS, WeaponTrait } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
@@ -99,6 +102,7 @@ export function WeaponInputItem({
 }: WeaponInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
+  const atLeastMd = useBreakpointsAtLeast('md');
   const isXxs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
   const { calculateEncumbrances } = useContext(EncumbranceContext);
@@ -138,8 +142,7 @@ export function WeaponInputItem({
   return (
     <FormSection
       borderless
-      canToggleVisibility={false}
-      columns={isLessThanSm ? 1 : 2}
+      columns={isLessThanSm || atLeastMd ? 1 : 2}
       isNested
       title={sectionTitle}
       titleColor={weaponReadied ? 'text' : 'textAccent'}
@@ -157,7 +160,7 @@ export function WeaponInputItem({
             name={weaponNameFieldName}
           />
         </GridBox>
-        {isLessThanSm && (
+        {(isLessThanSm || atLeastMd) && (
           <TextAreaInput<WwnCharacterData>
             label="Description"
             name={createWeaponFieldName('weapon_description', index)}
@@ -198,7 +201,7 @@ export function WeaponInputItem({
           />
         </GridBox>
       </GridBox>
-      {!isLessThanSm && (
+      {!isLessThanSm && !atLeastMd && (
         <TextAreaInput<WwnCharacterData>
           label="Description"
           name={createWeaponFieldName('weapon_description', index)}

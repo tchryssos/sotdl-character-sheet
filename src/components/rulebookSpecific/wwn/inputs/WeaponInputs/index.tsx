@@ -1,10 +1,15 @@
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 
+import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsIsExactly,
+} from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
 import { AAMFormSection } from '../AAMFormSection';
@@ -26,6 +31,11 @@ const createDefaultWeapon = (): WwnWeapon => ({
   weapon_damage: '1d6',
 });
 
+function WeaponChildWrapper({ children }: PropsWithChildren<unknown>) {
+  const atLeastMd = useBreakpointsAtLeast('md');
+  return <GridBox columns={atLeastMd ? 2 : 1}>{children}</GridBox>;
+}
+
 export function WeaponInputs() {
   const [hideUnreadied, setHideUndreadied] = useState(false);
   const { isEditMode } = useContext(EditContext);
@@ -42,6 +52,7 @@ export function WeaponInputs() {
   return (
     <AAMFormSection columns={1} icon={RpgIcons.DualDaggers} title="Weapons">
       <AddAnotherMultiField<WwnCharacterData>
+        ChildWrapper={WeaponChildWrapper}
         createDefaultValue={createDefaultWeapon}
         parentFieldName="weapons"
       >

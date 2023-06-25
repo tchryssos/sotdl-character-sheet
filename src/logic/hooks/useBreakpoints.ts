@@ -14,10 +14,10 @@ export const useBreakpointsAtLeast = (breakpoint: BreakpointSize) => {
   return breakpoints.includes(breakpoint);
 };
 
-// export const useBreakpointsIsExactly = (breakpoint: BreakpointSize) => {
-//   const breakpoints = useContext(BreakpointsContext);
-//   return breakpoints[breakpoints.length - 1] === breakpoint;
-// };
+export const useBreakpointsIsExactly = (breakpoint: BreakpointSize) => {
+  const breakpoints = useContext(BreakpointsContext);
+  return breakpoints[breakpoints.length - 1] === breakpoint;
+};
 
 export const useBreakpointsIsGreaterThan = (breakpoint: BreakpointSize) => {
   const breakpoints = useContext(BreakpointsContext);
