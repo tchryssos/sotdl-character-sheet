@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/dist/client/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import { Layout } from '~/components/meta/Layout';
 import { NotFound } from '~/components/NotFound';
@@ -64,6 +64,8 @@ function CharacterSheetPage({
   const [rulebook, setRulebook] = useState<RulebookType | null | undefined>(
     undefined
   );
+  const hasFetchedCharacter = useRef(false);
+
   const {
     query: { id, rulebook: queryRulebook },
     push,
@@ -79,6 +81,7 @@ function CharacterSheetPage({
   useEffect(() => {
     if (character) {
       setRulebook(character.rulebookName);
+      hasFetchedCharacter.current = true;
     } else if (activeId === NEW_ID) {
       if (
         activeRulebook &&
@@ -89,7 +92,12 @@ function CharacterSheetPage({
         push(createCharacterRoute(CREATE_ID));
       }
     } else {
-      setRulebook(null);
+      // Having no rulebook AND no character leads to a 404
+      // so we only want to set rulebook to false on a missing character
+      // if we haven't already fetched the character this session
+      if (!hasFetchedCharacter.current) {
+        setRulebook(null);
+      }
       addNotifications([
         createNotification(ERRORS[ErrorTypes.CharacterNotFound]),
       ]);

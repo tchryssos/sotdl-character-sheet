@@ -27,7 +27,12 @@ function SkillInput({ skill, hideUntrained }: SkillInputProps) {
 
   const fieldName: `skill_${Skill}` = `skill_${skill}`;
 
-  const showUntrained = watch(fieldName) === WWN_SKILL_UNTRAINED && !isEditMode;
+  const skillValue = watch(fieldName);
+
+  const showUntrained =
+    (skillValue === WWN_SKILL_UNTRAINED ||
+      String(skillValue) === String(WWN_SKILL_UNTRAINED)) &&
+    !isEditMode;
 
   const untrainedId = `untrained-${skill}`;
 
@@ -55,6 +60,7 @@ const untrainedSkillLSKey = 'showUntrainedSkills';
 export function SkillInputs() {
   const isLessThanSm = useBreakpointsLessThan('sm');
   const isXxs = useBreakpointsLessThan('xs');
+  const { isEditMode } = useContext(EditContext);
 
   const [untrainedHidden, setUntrainedHidden] = useState(
     globalThis?.localStorage?.getItem(untrainedSkillLSKey) === 'true'
@@ -79,14 +85,16 @@ export function SkillInputs() {
           <SkillInput hideUntrained={untrainedHidden} key={s} skill={s} />
         ))}
       </GridBox>
-      <CheckboxInput
-        alwaysEditable
-        customOnChange={onToggleUntrained}
-        inputLike
-        isChecked={untrainedHidden}
-        name="Hide Untrained"
-        size="sm"
-      />
+      {!isEditMode && (
+        <CheckboxInput
+          alwaysEditable
+          customOnChange={onToggleUntrained}
+          inputLike
+          isChecked={untrainedHidden}
+          name="Hide Untrained"
+          size="sm"
+        />
+      )}
       <GridBox columns={skillColumns}>
         <NumberInput<WwnCharacterData> name="remaining_skill_points" />
       </GridBox>

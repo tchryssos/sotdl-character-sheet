@@ -35,23 +35,33 @@ export function SaveButton({
 
   const onSave = async () => {
     setisSaving(true);
-    const resp = await saveCharacter({
-      id: characterId as number | typeof NEW_ID,
-      characterData: getValues() as CharacterData,
-      playerId,
-      rulebookName,
-      name: characterName,
-      imageUrl: null,
-    });
-    if (isSuccessfulCharacterResponse(resp)) {
-      addNotifications([
-        createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
-      ]);
-      if (characterId === NEW_ID) {
-        push(createCharacterRoute(resp.id));
+    try {
+      const resp = await saveCharacter({
+        id: characterId as number | typeof NEW_ID,
+        characterData: getValues() as CharacterData,
+        playerId,
+        rulebookName,
+        name: characterName,
+        imageUrl: null,
+      });
+      if (isSuccessfulCharacterResponse(resp)) {
+        addNotifications([
+          createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
+        ]);
+        if (characterId === NEW_ID) {
+          push(createCharacterRoute(resp.id));
+        }
+      } else {
+        addNotifications([
+          createNotification(ERRORS[resp.error as ErrorTypes]),
+        ]);
       }
-    } else {
-      addNotifications([createNotification(ERRORS[resp.error as ErrorTypes])]);
+    } catch (e) {
+      addNotifications([
+        createNotification(
+          ERRORS['Something went wrong saving your character']
+        ),
+      ]);
     }
     setisSaving(false);
   };

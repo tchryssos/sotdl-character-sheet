@@ -145,11 +145,13 @@ export const lightTheme = {
   ...theme,
   colors: lightModeColors,
   filters: lightModeFilters,
+  mode: 'light' as ColorMode,
 };
 export const darkTheme = {
   ...theme,
   colors: darkModeColors,
   filters: darkModeFilters,
+  mode: 'dark' as ColorMode,
 };
 
 // All keys should be the same, so we can just type the theme obj as any of the themes
