@@ -12,7 +12,8 @@ type StyledProps = Pick<BaseButtonProps, 'transparent' | 'severity'>;
 
 const StyledButton = styled(ButtonUnstyled)<StyledProps>(
   ({ theme, transparent, severity }) => {
-    let severityColor: Color = 'accentHeavy';
+    let severityColor: Color =
+      theme.mode === 'light' ? 'primary' : 'accentHeavy';
     switch (severity) {
       case 'danger':
         severityColor = 'danger';

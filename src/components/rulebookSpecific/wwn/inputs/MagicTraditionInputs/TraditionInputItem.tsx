@@ -73,7 +73,6 @@ export function TraditionInputItem({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { isEditMode } = useContext(EditContext);
   const { watch, getValues } = useFormContext<WwnCharacterData>();
-  const isLessThanSm = useBreakpointsLessThan('sm');
 
   const nameFieldName = createTraditionFieldName('tradition_name', index);
   const name = watch(nameFieldName) as string;
@@ -137,10 +136,7 @@ export function TraditionInputItem({
           icon={RpgIcons.WandLight}
           title={`Tradition - ${name}`}
         >
-          <GridBox
-            alignItems="end"
-            gridTemplateColumns={isLessThanSm ? '1fr' : '1fr auto'}
-          >
+          <GridBox alignItems="end" gridTemplateColumns="1fr auto">
             <TextInput<WwnCharacterData> label="Name" name={nameFieldName} />
             {isEditMode && (
               <DeleteButton onDelete={() => setShowDeleteModal(true)} />
