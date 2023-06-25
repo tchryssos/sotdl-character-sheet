@@ -4,11 +4,15 @@ import {
 } from '~/constants/routing/api';
 import { NEW_ID } from '~/constants/routing/shared';
 import { ApiResponse } from '~/typings/api';
-import { CharacterSaveData, StrictCharacter } from '~/typings/characters';
+import {
+  CharacterData,
+  CharacterSaveData,
+  StrictCharacter,
+} from '~/typings/characters';
 
 export const saveCharacter = async (
   data: CharacterSaveData
-): Promise<ApiResponse<StrictCharacter>> => {
+): Promise<ApiResponse<StrictCharacter<CharacterData>>> => {
   const { name, characterData, playerId, id, rulebookName } = data;
   const isCreateCharacter = id === NEW_ID;
 
@@ -30,7 +34,8 @@ export const saveCharacter = async (
     }
   );
 
-  const respData: ApiResponse<StrictCharacter> = await resp.json();
+  const respData: ApiResponse<StrictCharacter<CharacterData>> =
+    await resp.json();
 
   return respData;
 };

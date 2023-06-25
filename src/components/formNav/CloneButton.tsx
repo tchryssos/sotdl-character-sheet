@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { IconButton } from '~/components/buttons/IconButton';
 import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
@@ -7,33 +8,34 @@ import { MoveFile } from '~/components/icons/MoveFile';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
-import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
+import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
-import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { RulebookType } from '~/typings/rulebooks';
 
 interface CloneButtonProps {
   characterName: string;
-  characterData: SotdlCharacterData;
   playerId: number;
+  rulebookName: RulebookType;
 }
 
 export function CloneButton({
-  characterData,
   characterName,
   playerId,
+  rulebookName,
 }: CloneButtonProps) {
   const [isConfirmCloneOpen, setIsConfirmCloneOpen] = useState(false);
   const { push } = useRouter();
   const { addNotifications } = useContext(NotificationsContext);
+  const { getValues } = useFormContext();
 
   const onClone = async () => {
     const resp = await saveCharacter({
       id: NEW_ID,
-      characterData,
-      rulebookName: SOTDL_NAME,
+      characterData: getValues() as CharacterData,
+      rulebookName,
       name: characterName,
       imageUrl: null,
       playerId,

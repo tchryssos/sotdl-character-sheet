@@ -1,33 +1,35 @@
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { IconButton } from '~/components/buttons/IconButton';
 import { Save } from '~/components/icons/Save';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
-import { SOTDL_NAME } from '~/constants/sotdl/game';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
+import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
-import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { RulebookType } from '~/typings/rulebooks';
 
 interface SaveButtonProps {
   playerId: number;
   characterName: string;
-  characterData: SotdlCharacterData;
   characterId?: string;
+  rulebookName: RulebookType;
 }
 
 export function SaveButton({
   playerId,
-  characterData,
   characterName,
   characterId = NEW_ID,
+  rulebookName,
 }: SaveButtonProps) {
   const [isSaving, setisSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
+  const { getValues } = useFormContext();
 
   const { push } = useRouter();
 
@@ -35,9 +37,9 @@ export function SaveButton({
     setisSaving(true);
     const resp = await saveCharacter({
       id: characterId as number | typeof NEW_ID,
-      characterData,
+      characterData: getValues() as CharacterData,
       playerId,
-      rulebookName: SOTDL_NAME,
+      rulebookName,
       name: characterName,
       imageUrl: null,
     });

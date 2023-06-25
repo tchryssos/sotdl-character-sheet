@@ -20,6 +20,7 @@ export const TextArea = styled(TextareaAutosize)<{ height?: number }>(
     padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
     fontFamily: theme.fontFamily.normal,
     resize: 'vertical',
+    marginTop: theme.spacing[8],
   })
 );
 
@@ -43,6 +44,8 @@ export function TextAreaInput<T extends Record<string, unknown>>({
         className={className}
         disabled={disabled}
         readOnly={readOnly || nonEditLocked}
+        // MUI sets overflow on inline level, so we need to override it here
+        style={{ overflow: 'auto' }}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...register(name, validations)}
       />

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import ButtonUnstyled from '@mui/base/ButtonUnstyled';
+import { Button as ButtonUnstyled } from '@mui/base';
 import { forwardRef } from 'react';
 
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
@@ -8,7 +8,7 @@ import { Color } from '~/typings/theme';
 import { FlexBox } from '../box/FlexBox';
 import { BaseButtonProps } from './types';
 
-type StyledProps = Pick<Required<BaseButtonProps>, 'transparent' | 'severity'>;
+type StyledProps = Pick<BaseButtonProps, 'transparent' | 'severity'>;
 
 const StyledButton = styled(ButtonUnstyled)<StyledProps>(
   ({ theme, transparent, severity }) => {
@@ -90,10 +90,9 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
            * with this ref to the point where we actually run into a problem, so
            * I'm just ignoring this error.
            */
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ref={forwardedRef as any}
+          ref={forwardedRef as unknown}
           severity={severity}
-          transparent={Boolean(transparent)}
+          transparent={Boolean(transparent) || undefined}
         >
           {children}
         </ButtonLike>
@@ -107,8 +106,7 @@ export const BaseButton = forwardRef<HTMLButtonElement, BaseButtonProps>(
         disabled={disabled || (!onClick && type !== 'submit')}
         ref={forwardedRef}
         severity={severity}
-        transparent={Boolean(transparent)}
-        // eslint-disable-next-line react/button-has-type
+        transparent={Boolean(transparent) || undefined}
         type={type}
         onClick={onClick}
       >

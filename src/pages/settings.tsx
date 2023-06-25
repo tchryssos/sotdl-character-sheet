@@ -36,11 +36,7 @@ function PersonalizationForm() {
 
   return (
     <Form defaultValues={personalizationValues} onSubmit={() => null}>
-      <FormSection
-        canToggleVisibility={false}
-        isCollapsible={false}
-        title="Personalization"
-      >
+      <FormSection isCollapsible={false} title="Personalization">
         <ColorMode colorModeKey={colorModeKey} />
       </FormSection>
     </Form>
@@ -97,12 +93,7 @@ function ProfileForm({ userMeta }: ProfileFormProps) {
 
   return (
     <Form defaultValues={profileValues} onSubmit={onSubmit}>
-      <FormSection
-        canToggleVisibility={false}
-        columns={1}
-        isCollapsible={false}
-        title="Profile"
-      >
+      <FormSection columns={1} isCollapsible={false} title="Profile">
         <Text as="p" fontStyle="italic" variant="body-sm">
           You may need to log out and log back in for changes to take effect.
         </Text>

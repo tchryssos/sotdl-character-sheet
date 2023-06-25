@@ -26,25 +26,27 @@ interface WrapperProps extends Pick<AddAnotherButtonProps, 'includeLabel'> {
   children: React.ReactNode;
 }
 
-const ButtonWrapper: React.FC<WrapperProps> = ({ includeLabel, children }) => {
+function ButtonWrapper({ includeLabel, children }: WrapperProps) {
   if (includeLabel) {
     return <Label label={SHY}>{children}</Label>;
   }
   return <>{children}</>;
-};
+}
 
-export const AddAnotherButton: React.FC<AddAnotherButtonProps> = ({
+export function AddAnotherButton({
   onClick,
   includeLabel,
   label = '+',
   className,
-}) => (
-  <ButtonWrapper includeLabel={includeLabel}>
-    <StyledButton
-      className={className}
-      label={label}
-      transparent
-      onClick={onClick}
-    />
-  </ButtonWrapper>
-);
+}: AddAnotherButtonProps) {
+  return (
+    <ButtonWrapper includeLabel={includeLabel}>
+      <StyledButton
+        className={className}
+        label={label}
+        transparent
+        onClick={onClick}
+      />
+    </ButtonWrapper>
+  );
+}

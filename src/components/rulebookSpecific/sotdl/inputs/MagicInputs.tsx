@@ -5,13 +5,12 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextInput } from '~/components/form/TextInput';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import { SotdlCharacterData, SotdlSpell } from '~/typings/sotdl/characterData';
 
@@ -23,10 +22,6 @@ const SpellSlash = styled.span(({ theme }) => ({
   color: theme.colors.text,
   fontSize: theme.fontSize.title,
 }));
-
-const SpellDelete = styled(DeleteButton)`
-  margin-top: ${pxToRem(17)};
-`;
 
 const spellTypeOptions = [
   {
@@ -44,12 +39,12 @@ const createMakeSpellName =
   (spellKey: keyof SotdlSpell): `spells.${number}.${keyof SotdlSpell}` =>
     `spells.${index}.${spellKey}`;
 
-const SpellField: React.FC<SortableAddAnotherChildProps> = ({
+function SpellField({
   sortIndexMap,
   fieldId,
-  onDeleteFn,
+  onDelete,
   postSortIndex,
-}) => {
+}: SortableAddAnotherChildProps) {
   const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext();
   const isLessThanSm = useBreakpointsLessThan('sm');
@@ -89,12 +84,11 @@ const SpellField: React.FC<SortableAddAnotherChildProps> = ({
     isLessThanSm ? '' : ` ${tradition} ${capitalize(type)} ${level}`
   }: ${remainingCastings}/${totalCastings}`;
 
-  const onDelete = () => onDeleteFn(postSortIndex);
+  const onDeleteSpell = () => onDelete(postSortIndex);
 
   return (
     <FormSection
       borderless
-      canToggleVisibility={false}
       gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
       title={sectionTitle}
       visibilityTitle={`spell${index}`}
@@ -142,11 +136,14 @@ const SpellField: React.FC<SortableAddAnotherChildProps> = ({
         />
       </GridBox>
       {isEditMode && (
-        <SpellDelete disabled={index === undefined} onDelete={onDelete} />
+        <AddAnotherMultiDelete
+          disabled={index === undefined}
+          onDelete={onDeleteSpell}
+        />
       )}
     </FormSection>
   );
-};
+}
 
 const createDefaultSpell = (): SotdlSpell => ({
   spell_name: '',
@@ -158,7 +155,7 @@ const createDefaultSpell = (): SotdlSpell => ({
   spell_remaining_castings: 1,
 });
 
-export const MagicInputs: React.FC = () => {
+export function MagicInputs() {
   const isLessThanMd = useBreakpointsLessThan('md');
 
   return (
@@ -181,10 +178,10 @@ export const MagicInputs: React.FC = () => {
             fieldId={fieldId}
             postSortIndex={index}
             sortIndexMap={sortIndexMap}
-            onDeleteFn={onDelete}
+            onDelete={onDelete}
           />
         )}
       </AddAnotherMultiField>
     </FormSection>
   );
-};
+}

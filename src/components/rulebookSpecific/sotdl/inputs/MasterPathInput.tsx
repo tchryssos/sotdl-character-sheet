@@ -4,7 +4,7 @@ import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { TextInput } from '../../../form/TextInput';
 
-export const MasterPathInput = () => {
+export function MasterPathInput() {
   const { watch } = useFormContext();
 
   const level: number = watch<keyof SotdlCharacterData>('level', 0);
@@ -14,4 +14,4 @@ export const MasterPathInput = () => {
   return (
     <TextInput<SotdlCharacterData> disabled={!isMaster} name="master_path" />
   );
-};
+}

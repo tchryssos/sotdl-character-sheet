@@ -2,6 +2,7 @@ import { character } from '@prisma/client';
 import { ErrorResponse } from './api';
 import { RulebookType } from './rulebooks';
 import { SotdlCharacterData } from './sotdl/characterData';
+import { WwnCharacterData } from './wwn/characterData';
 
 export type CharacterSaveData = Omit<
   character,
@@ -10,12 +11,12 @@ export type CharacterSaveData = Omit<
   id: number | 'new';
 };
 
-export type CharacterData = SotdlCharacterData;
+export type CharacterData = SotdlCharacterData | WwnCharacterData;
 
-export type StrictCharacter = Omit<
+export type StrictCharacter<T extends CharacterData> = Omit<
   character,
   'characterData' | 'rulebookName'
 > & {
-  characterData: CharacterData;
+  characterData: T;
   rulebookName: RulebookType;
 };

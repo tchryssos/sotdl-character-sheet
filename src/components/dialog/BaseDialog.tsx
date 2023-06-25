@@ -1,8 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FocusTrap } from '@mui/base';
-import ModalUnstyled, { ModalUnstyledProps } from '@mui/base/ModalUnstyled';
+import {
+  FocusTrap,
+  Modal as ModalUnstyled,
+  ModalProps as ModalUnstyledProps,
+} from '@mui/base';
 
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Spacing } from '~/typings/theme';

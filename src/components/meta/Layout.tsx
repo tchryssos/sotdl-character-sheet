@@ -31,6 +31,7 @@ export function Layout({ children, title, meta }: LayoutProps) {
   const [docTitle, setDocTitle] = useState(title);
   const [navTitle, setNavTitle] = useState('');
   const [iconPortalNode, setIconPortalNode] = useState<HTMLDivElement>();
+  const [headerPortalNode, setHeaderPortalNode] = useState<HTMLDivElement>();
   const [dropdownItems, setDropdownItems] =
     useState<DropdownMenuProps['menuItems']>(emptyArr);
   const isAtLeastXs = useBreakpointsAtLeast('xs');
@@ -45,14 +46,21 @@ export function Layout({ children, title, meta }: LayoutProps) {
     }
   }, []);
 
+  const setHeaderPortalNodeCallback = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      setHeaderPortalNode(node);
+    }
+  }, []);
+
   const layoutContextValue = useMemo(
     () => ({
       setNavTitle,
       iconPortalNode,
+      headerPortalNode,
       setDropdownItems,
       setDocTitle,
     }),
-    [iconPortalNode]
+    [iconPortalNode, headerPortalNode]
   );
 
   return (
@@ -60,6 +68,7 @@ export function Layout({ children, title, meta }: LayoutProps) {
       <Head meta={meta} title={docTitle} />
       <NavBar
         dropdownMenuItems={dropdownItems}
+        setHeaderPortalNode={setHeaderPortalNodeCallback}
         setIconPortalNode={setIconPortalNodeCallback}
         title={navTitle}
       />

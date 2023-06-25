@@ -1,3 +1,5 @@
+import { startCase } from 'lodash';
+
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { BonusInput } from '../../../form/BonusInput';
@@ -18,7 +20,14 @@ const bonusCalc = (attr: number) => attr - 10;
 export function AttributeInput<T extends Record<string, unknown>>({
   name,
 }: AttributeInputProps<T>) {
+  const label = startCase(name.split('_')[1] || name);
   return (
-    <BonusInput bonusCalculationFn={bonusCalc} max={20} min={0} name={name} />
+    <BonusInput
+      bonusCalculationFn={bonusCalc}
+      label={label}
+      max={20}
+      min={0}
+      name={name}
+    />
   );
 }

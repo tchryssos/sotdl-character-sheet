@@ -7,34 +7,19 @@ import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
 import { BaseButton } from '../buttons/BaseButton';
 import { Check } from '../icons/Check';
+import { Close } from '../icons/Close';
 import { Input } from './Input';
 import { Label } from './Label';
-
-const Wrapper = styled.div`
-  width: fit-content;
-  position: relative;
-`;
-
-const CheckButton = styled(BaseButton)(({ theme }) => ({
-  width: theme.spacing[40],
-  height: theme.spacing[40],
-}));
-
-const CheckInput = styled(Input)`
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  opacity: 0;
-  z-index: -1;
-`;
 
 type CheckboxBaseProps<T> = Omit<
   CheckboxInputProps<T>,
   'type' | 'onChange' | 'customOnChange'
 >;
 
-type CheckboxProps<T> = CheckboxBaseProps<T> &
-  (
+type CheckboxProps<T> = CheckboxBaseProps<T> & {
+  size?: 'sm' | 'md';
+  useX?: boolean;
+} & (
     | {
         inputLike?: false;
         customOnChange?: () => void;
@@ -46,6 +31,27 @@ type CheckboxProps<T> = CheckboxBaseProps<T> &
         isChecked: boolean;
       }
   );
+
+const Wrapper = styled.div`
+  width: fit-content;
+  position: relative;
+`;
+
+const CheckButton = styled(BaseButton)<Pick<CheckboxProps<never>, 'size'>>(
+  ({ theme, size = 'md' }) => ({
+    width: size === 'md' ? theme.spacing[40] : theme.spacing[24],
+    height: size === 'md' ? theme.spacing[40] : theme.spacing[24],
+    marginTop: theme.spacing[8],
+  })
+);
+
+const CheckInput = styled(Input)`
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+`;
 
 export function CheckboxInput<T extends Record<string, unknown>>({
   label,
@@ -59,6 +65,8 @@ export function CheckboxInput<T extends Record<string, unknown>>({
   customOnChange,
   inputLike,
   isChecked,
+  size = 'md',
+  useX,
 }: CheckboxProps<T>) {
   const { watch, setValue } = useFormContext();
   const checked = inputLike ? isChecked : watch(name);
@@ -77,11 +85,10 @@ export function CheckboxInput<T extends Record<string, unknown>>({
   };
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {!inputLike && (
         <CheckInput
           alwaysEditable={alwaysEditable}
-          className={className}
           disabled={disabled || readOnly}
           hideLabel={hideLabel}
           label={label}
@@ -94,14 +101,26 @@ export function CheckboxInput<T extends Record<string, unknown>>({
         label={hideLabel || !inputLike ? '' : label || startCase(name)}
         labelFor={name}
       >
-        <CheckButton disabled={!canEdit} transparent onClick={onChange}>
-          {checked && (
-            <Check
-              color="text"
-              title={`${name} checked`}
-              titleId={`${name}-checked`}
-            />
-          )}
+        <CheckButton
+          disabled={!canEdit}
+          size={size}
+          transparent
+          onClick={onChange}
+        >
+          {checked &&
+            (useX ? (
+              <Close
+                color="text"
+                title={`${name} checked`}
+                titleId={`${name}-checked`}
+              />
+            ) : (
+              <Check
+                color="text"
+                title={`${name} checked`}
+                titleId={`${name}-checked`}
+              />
+            ))}
         </CheckButton>
       </Label>
     </Wrapper>

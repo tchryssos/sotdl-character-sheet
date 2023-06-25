@@ -78,6 +78,7 @@
     "react/jsx-one-expression-per-line": "off",
     "react/function-component-definition": "warn",
     "react/jsx-no-useless-fragment": "off",
+    "react/jsx-props-no-spreading": "off",
 
     // Typescript
     "@typescript-eslint/explicit-module-boundary-types": "off",

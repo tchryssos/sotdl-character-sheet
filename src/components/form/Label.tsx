@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import styled from '@emotion/styled';
+import { PropsWithChildren } from 'react';
 
-import { Text } from '../Text';
+import { Text, TextProps } from '../Text';
 import { KeyName } from './typings';
 
 type LabelProps<T extends Record<string, unknown>> = {
@@ -25,6 +26,14 @@ const StyledLabel = styled.label<{ size: LabelProps<any>['size'] }>(
   })
 );
 
+export function LabelText({ children, ...rest }: PropsWithChildren<TextProps>) {
+  return (
+    <Text as="p" fontWeight="bold" variant="body-sm" {...rest}>
+      {children}
+    </Text>
+  );
+}
+
 export function Label<T extends Record<string, unknown>>({
   labelFor,
   label,
@@ -40,9 +49,7 @@ export function Label<T extends Record<string, unknown>>({
       size={size}
       {...labelProps}
     >
-      <Text as="p" fontWeight="bold" variant="body-sm">
-        {label}
-      </Text>
+      <LabelText>{label}</LabelText>
       {children}
     </StyledLabel>
   ) : (

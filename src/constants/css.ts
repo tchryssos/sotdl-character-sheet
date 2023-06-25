@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as CSS from 'csstype';
 
-import { Theme } from '~/constants/theme';
-import { Spacing } from '~/typings/theme';
+import { Spacing } from '../typings/theme';
+import { Theme } from './theme';
 
 export const ALLOWED_COMMON_CSS_KEYS = [
   'alignSelf',
@@ -28,6 +28,7 @@ export const ALLOWED_COMMON_CSS_KEYS = [
   'borderTopStyle',
   'borderTopWidth',
   'borderWidth',
+  'borderRadius',
   'bottom',
   'boxShadow',
   'color',
@@ -40,6 +41,8 @@ export const ALLOWED_COMMON_CSS_KEYS = [
   'gridColumnStart',
   'gridRowEnd',
   'gridRowStart',
+  'gridColumn',
+  'gridRow',
   'height',
   'justifySelf',
   'left',
@@ -51,6 +54,8 @@ export const ALLOWED_COMMON_CSS_KEYS = [
   'marginTop',
   'maxHeight',
   'maxWidth',
+  'minHeight',
+  'minWidth',
   'overflow',
   'padding',
   'paddingBottom',
@@ -157,8 +162,18 @@ export const CUSTOM_THEME_CSS_PROPS = {
   fontWeight: 'fontWeight',
   fontFamily: 'fontFamily',
   borderWidth: 'borderWidth',
-  borderBottomWidth: 'borderRadius',
+  borderTopWidth: 'borderWidth',
+  borderLeftWidth: 'borderWidth',
+  borderRightWidth: 'borderWidth',
+  borderBottomWidth: 'borderWidth',
+  borderRadius: 'borderRadius',
   fontSize: 'fontSize',
+  height: 'spacing',
+  width: 'spacing',
+  maxWidth: 'spacing',
+  maxHeight: 'spacing',
+  minWidth: 'spacing',
+  minHeight: 'spacing',
   // ts-prune-ignore-next
 } satisfies {
   [k in keyof RawAllowedCssProps]: keyof Theme;

@@ -76,12 +76,14 @@ const UserName = styled(Text)`
 interface NavBarProps {
   title: string;
   setIconPortalNode: (node: HTMLDivElement) => void;
+  setHeaderPortalNode: (node: HTMLDivElement) => void;
   dropdownMenuItems: DropdownMenuProps['menuItems'];
 }
 
 export function NavBar({
   title,
   setIconPortalNode,
+  setHeaderPortalNode,
   dropdownMenuItems,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
@@ -97,6 +99,7 @@ export function NavBar({
             <HomeLink href={HOME_ROUTE}>
               <Logo size={isXxs ? 'xs' : 'sm'} />
             </HomeLink>
+            <Portal flexGap={flexGap} ref={setHeaderPortalNode} />
             {title && (
               <Title as="h2" variant={isXxs ? 'body-sm' : 'body'}>
                 {title}

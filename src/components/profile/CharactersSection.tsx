@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
-import { StrictCharacter } from '~/typings/characters';
+import { CharacterData, StrictCharacter } from '~/typings/characters';
 
 import { FormSection } from '../form/FormSection';
 import { Text } from '../Text';
@@ -17,7 +17,7 @@ const Section = styled(FormSection)`
 `;
 
 interface CharactersSectionProps {
-  characters: StrictCharacter[];
+  characters: StrictCharacter<CharacterData>[];
 }
 
 export function CharactersSection({ characters }: CharactersSectionProps) {
@@ -26,7 +26,6 @@ export function CharactersSection({ characters }: CharactersSectionProps) {
 
   return (
     <Section
-      canToggleVisibility={false}
       // eslint-disable-next-line no-nested-ternary
       columns={greaterThanXxs ? (greaterThanSm ? 3 : 2) : 1}
       title="Characters"

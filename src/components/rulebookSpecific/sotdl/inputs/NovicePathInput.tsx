@@ -4,7 +4,7 @@ import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { TextInput } from '../../../form/TextInput';
 
-export const NovicePathInput = () => {
+export function NovicePathInput() {
   const { watch } = useFormContext();
   const level: number = watch<keyof SotdlCharacterData>('level', 0);
   const isNovice = level >= 1;
@@ -12,4 +12,4 @@ export const NovicePathInput = () => {
   return (
     <TextInput<SotdlCharacterData> disabled={!isNovice} name="novice_path" />
   );
-};
+}

@@ -21,7 +21,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { getIconIdxFromUrl } from '~/logic/user';
 import { prisma } from '~/logic/utils/prisma';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
-import { StrictCharacter } from '~/typings/characters';
+import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { StrictSessionUser, StrictUser } from '~/typings/user';
 
 import FourOhFour from '../404';
@@ -31,7 +31,7 @@ interface ProfilePageProps {
     StrictUser,
     'createdOn' | 'isPaid' | 'imageUrl' | 'displayName' | 'id'
   >;
-  userCharacters: StrictCharacter[];
+  userCharacters: StrictCharacter<CharacterData>[];
 }
 
 const iconSize = 64;
@@ -124,7 +124,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const { params } = context;
 
   let user: StrictUser | undefined;
-  let userCharacters: StrictCharacter[] = [];
+  let userCharacters: StrictCharacter<CharacterData>[] = [];
 
   if (params?.id) {
     const parsedId = parseInt(params.id as string, 10);
@@ -147,7 +147,7 @@ export const getServerSideProps: GetServerSideProps = async (
               createdOn: 'asc',
             },
           ],
-        })) || []) as StrictCharacter[];
+        })) || []) as StrictCharacter<CharacterData>[];
       }
     }
   }

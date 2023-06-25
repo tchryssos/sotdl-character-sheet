@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
-import { sortBy } from 'lodash';
-import { useContext, useEffect, useState } from 'react';
+import { sortBy, startCase } from 'lodash';
+import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { EditContext } from '~/logic/contexts/editContext';
+import { SortableAddAnotherChildProps } from '~/typings/form';
 import { KeyOfListField, ListFieldRecord } from '~/typings/util';
 
 import { Box } from '../box/Box';
+import { FlexBox } from '../box/FlexBox';
 import { Text } from '../Text';
 import { AddAnotherButton } from './AddAnotherButton';
 
@@ -19,15 +21,25 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
     sortIndexMap: Map<string, number>;
   }) => React.ReactNode;
   createDefaultValue: () => Record<string, unknown>;
-  HeaderRow?: React.FC;
+  HeaderRow?: React.ComponentType;
   // @TODO Type this so that it knows which properties are available via
   // parentFieldName
   sortProperties?: KeyOfListField<T>[];
+  ChildWrapper?: React.ComponentType<PropsWithChildren>;
+  simpleDelete?: boolean;
+  addLabel?: string;
+  emptyLabel?: string;
+  filterFn?: (props: SortableAddAnotherChildProps) => boolean;
 };
 
 const ChildContainer = styled(Box)`
   max-width: 100%;
+  overflow: hidden;
 `;
+
+function EmptyChildWrapper({ children }: { children?: React.ReactNode }) {
+  return <>{children}</>;
+}
 
 export function AddAnotherMultiField<T extends Record<string, unknown>>({
   parentFieldName,
@@ -35,6 +47,11 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   createDefaultValue,
   HeaderRow,
   sortProperties,
+  ChildWrapper = EmptyChildWrapper,
+  simpleDelete,
+  addLabel,
+  emptyLabel,
+  filterFn,
 }: AddAnotherMultiFieldProps<T>) {
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -76,29 +93,46 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
     const removedId = controlledFields[index].id;
     const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
-    const nextValue = [...(parentField || [])];
-    nextValue.splice(valueRemovedIndex, 1);
-
     remove(valueRemovedIndex);
   };
 
   return (
     <>
-      {isEditMode && <AddAnotherButton onClick={onCreate} />}
+      {isEditMode && (
+        <FlexBox gap={16}>
+          <AddAnotherButton label={addLabel} onClick={onCreate} />
+          {simpleDelete && (
+            <AddAnotherButton
+              label="-"
+              onClick={() => onDelete(controlledFields.length - 1)}
+            />
+          )}
+        </FlexBox>
+      )}
       {Boolean(controlledFields.length) && HeaderRow && <HeaderRow />}
-      {controlledFields.map((field, i) => (
-        <ChildContainer key={field.id}>
-          {children({
+      <ChildWrapper>
+        {/* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap#for_adding_and_removing_items_during_a_map */}
+        {controlledFields.flatMap((field, i) => {
+          const props = {
             index: i,
             onDelete,
             fieldId: field.id,
             sortIndexMap,
-          })}
-        </ChildContainer>
-      ))}
+          };
+
+          if (filterFn?.({ ...props, postSortIndex: i }) === false) {
+            return [];
+          }
+
+          return [
+            <ChildContainer key={field.id}>{children(props)}</ChildContainer>,
+          ];
+        })}
+      </ChildWrapper>
       {!controlledFields.length && (
         <Text as="p" fontStyle="italic" variant="body-sm">
-          Empty (use edit mode to add some {parentFieldName})
+          {emptyLabel ||
+            `Empty (use edit mode to add some ${startCase(parentFieldName)})`}
         </Text>
       )}
     </>

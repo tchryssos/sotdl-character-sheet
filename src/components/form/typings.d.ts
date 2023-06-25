@@ -81,10 +81,22 @@ export type SelectOption = {
   disabled?: boolean;
 };
 
+type BaseSelectMultipleProps =
+  | {
+      multiple: true;
+      maxSelected?: number;
+      DisplayComponent?: React.ComponentType<{ name: string }>;
+    }
+  | {
+      multiple?: never;
+      maxSelected?: never;
+      DisplayComponent?: never;
+    };
+
 type BaseSelectProps = {
   options: SelectOption[];
   placeholder?: string;
-};
+} & BaseSelectMultipleProps;
 
 export type ConnectedSelectProps<U> = Omit<
   BaseInputProps<

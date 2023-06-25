@@ -1,22 +1,22 @@
 import { useUser } from '@auth0/nextjs-auth0';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { FormSection } from '~/components/form/FormSection';
-import { ArmorInput } from '~/components/rulebookSpecific/sotdl/gameInputs/ArmorInput';
-import { AttributeInput } from '~/components/rulebookSpecific/sotdl/gameInputs/AttributeInput';
-import { CurrencyInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/CurrencyInputs';
-import { DescriptionInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/DescriptionInputs';
-import { EquipmentInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/EquipmentInputs';
-import { EvilInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/EvilInputs';
-import { FortuneFateInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/FortuneFateInputs';
-import { GeneralNotesInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/GeneralNotesInputs';
-import { HealthInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/HealthInputs';
-import { HistoryInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/HistoryInputs';
-import { MagicInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/MagicInputs';
-import { PhysicalTraitsInputs } from '~/components/rulebookSpecific/sotdl/gameInputs/PhysicalTraitsInputs';
-import { WeaponInput } from '~/components/rulebookSpecific/sotdl/gameInputs/WeaponInput';
+import { ArmorInput } from '~/components/rulebookSpecific/sotdl/inputs/ArmorInput';
+import { AttributeInput } from '~/components/rulebookSpecific/sotdl/inputs/AttributeInput';
+import { CurrencyInputs } from '~/components/rulebookSpecific/sotdl/inputs/CurrencyInputs';
+import { DescriptionInputs } from '~/components/rulebookSpecific/sotdl/inputs/DescriptionInputs';
+import { EquipmentInputs } from '~/components/rulebookSpecific/sotdl/inputs/EquipmentInputs';
+import { EvilInputs } from '~/components/rulebookSpecific/sotdl/inputs/EvilInputs';
+import { FortuneFateInputs } from '~/components/rulebookSpecific/sotdl/inputs/FortuneFateInputs';
+import { GeneralNotesInputs } from '~/components/rulebookSpecific/sotdl/inputs/GeneralNotesInputs';
+import { HealthInputs } from '~/components/rulebookSpecific/sotdl/inputs/HealthInputs';
+import { HistoryInputs } from '~/components/rulebookSpecific/sotdl/inputs/HistoryInputs';
+import { MagicInputs } from '~/components/rulebookSpecific/sotdl/inputs/MagicInputs';
+import { PhysicalTraitsInputs } from '~/components/rulebookSpecific/sotdl/inputs/PhysicalTraitsInputs';
+import { WeaponInput } from '~/components/rulebookSpecific/sotdl/inputs/WeaponInput';
 import { DEFAULT_VALUES } from '~/constants/sotdl/form';
 import { ATTRIBUTES } from '~/constants/sotdl/game';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -24,17 +24,23 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
 import { StrictCharacter } from '~/typings/characters';
+import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { FormNav } from './FormNav';
-import { BasicInfoInputs } from './gameInputs/BasicInfoInputs';
+import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 
 interface SotdlCharacterSheetProps {
-  character?: StrictCharacter;
+  character?: StrictCharacter<SotdlCharacterData>;
 }
 
 export function CharacterSheet({ character }: SotdlCharacterSheetProps) {
-  const { isEditMode, setIsEditMode, isMyCharacter, setIsMyCharacter } =
-    useSheetState();
+  const {
+    isEditMode,
+    setIsEditMode,
+    isMyCharacter,
+    setIsMyCharacter,
+    editProviderVal,
+  } = useSheetState();
 
   const { user } = useUser();
 
@@ -46,11 +52,6 @@ export function CharacterSheet({ character }: SotdlCharacterSheetProps) {
   const isLessThanXs = useBreakpointsLessThan('xs');
 
   useSheetHotkeys(isEditMode, setIsEditMode);
-
-  const editProviderVal = useMemo(
-    () => ({ isEditMode, setIsEditMode }),
-    [isEditMode, setIsEditMode]
-  );
 
   return (
     <EditContext.Provider value={editProviderVal}>
