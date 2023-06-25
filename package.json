@@ -38,7 +38,9 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.25.0",
     "superjson": "^1.12.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "@playwright/test": "^1.35.0"
+
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.2.0",
