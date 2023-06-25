@@ -86,8 +86,7 @@ function CharacterSheetPage({
       ) {
         setRulebook(activeRulebook as RulebookType);
       } else {
-        setRulebook('wwn');
-        // push(createCharacterRoute(CREATE_ID));
+        push(createCharacterRoute(CREATE_ID));
       }
     } else {
       setRulebook(null);

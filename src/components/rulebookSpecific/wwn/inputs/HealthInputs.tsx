@@ -6,13 +6,19 @@ import { RpgIcons } from '~/constants/icons';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 export function HealthInputs() {
-  const { watch } = useFormContext();
+  const { watch } = useFormContext<WwnCharacterData>();
 
-  const constitution = watch<keyof WwnCharacterData>('attribute_constitution');
+  const constitution = watch('attribute_constitution');
+
   return (
     <FormSection icon={RpgIcons.HeartGuy} title="Health">
-      <NumberInput<WwnCharacterData> min={0} name="health_max" />
-      <NumberInput<WwnCharacterData> name="health_current" />
+      <NumberInput<WwnCharacterData>
+        alwaysEditable
+        label="Current HP"
+        min={0}
+        name="health_current"
+      />
+      <NumberInput<WwnCharacterData> label="Max HP" min={0} name="health_max" />
       <NumberInput<WwnCharacterData>
         max={constitution || 18}
         min={0}

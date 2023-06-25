@@ -109,6 +109,7 @@ function ErrorIntermediary({ error }: ErrorIntermediaryProps) {
       ]);
     }
   }, [error, addNotifications]);
+
   return null;
 }
 
