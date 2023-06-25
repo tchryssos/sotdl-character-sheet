@@ -40,7 +40,7 @@ export const DEFAULT_VALUES: WwnCharacterData = {
   skill_stab: WWN_SKILL_UNTRAINED,
   skill_trade: WWN_SKILL_UNTRAINED,
   skill_work: WWN_SKILL_UNTRAINED,
-  remaining_skill_points: WWN_SKILL_UNTRAINED,
+  remaining_skill_points: 0,
   foci: [],
   magic_efforts: [],
   magic_traditions: [],
