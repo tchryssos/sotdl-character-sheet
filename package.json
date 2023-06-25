@@ -13,8 +13,6 @@
     "build": "next build",
     "build:serve": "yarn build && yarn next start -p 3003",
     "prepare": "husky install",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
     "test": "jest",
     "lint": "next lint && yarn lint:prune",
     "lint:prune": "! ts-prune -i src/pages/* -i src/logic/tests/* | grep -v -e 'used in module' -e src/pages",
@@ -40,15 +38,9 @@
     "superjson": "^1.12.2",
     "uuid": "^9.0.0",
     "@playwright/test": "^1.35.0"
-
   },
   "devDependencies": {
     "@emotion/eslint-plugin": "^11.2.0",
-    "@storybook/addon-actions": "^6.3.2",
-    "@storybook/addon-docs": "^6.3.2",
-    "@storybook/addon-essentials": "^6.3.2",
-    "@storybook/addon-links": "^6.3.2",
-    "@storybook/react": "^6.3.2",
     "@testing-library/react": "^14.0.0",
     "@tsconfig/recommended": "^1.0.1",
     "@types/dompurify": "^2.4.0",
