@@ -73,7 +73,6 @@ export function TraditionInputItem({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { isEditMode } = useContext(EditContext);
   const { watch, getValues } = useFormContext<WwnCharacterData>();
-  const isLessThanSm = useBreakpointsLessThan('sm');
 
   const nameFieldName = createTraditionFieldName('tradition_name', index);
   const name = watch(nameFieldName) as string;
