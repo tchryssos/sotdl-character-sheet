@@ -25,7 +25,7 @@ const defaultRulebook: NewRulebook = {
   fullName: '',
   name: '',
   description: '',
-  isActive: true,
+  isActive: false,
 };
 
 interface RulebookSelectProps {

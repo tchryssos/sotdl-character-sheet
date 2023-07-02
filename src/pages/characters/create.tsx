@@ -2,7 +2,6 @@
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { rulebook } from '@prisma/client';
-import { sample } from 'lodash';
 import { useContext, useEffect, useState } from 'react';
 
 import { AsciiFigure, AsciiText } from '~/components/ascii/Ascii';
@@ -12,7 +11,6 @@ import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { Text } from '~/components/Text';
-import * as ASCII_ART from '~/constants/ascii';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { RULEBOOK_QUERY_PARAM } from '~/constants/search';
@@ -107,12 +105,6 @@ function SelectRulebook({ rulebooks }: SelectRulebookProps) {
               }`}
             >
               <RulebookBox>
-                <RulebookFigure label="Rulebook background">
-                  <RulebookAscii color="accentHeavy" fontSize={16}>
-                    {/* Grab any ascii except the logo */}
-                    {sample(Object.values(ASCII_ART).slice(0))}
-                  </RulebookAscii>
-                </RulebookFigure>
                 <RulebookTitle as="h2">{rb.fullName}</RulebookTitle>
               </RulebookBox>
             </RulebookLink>
