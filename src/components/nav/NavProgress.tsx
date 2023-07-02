@@ -5,9 +5,11 @@ import { useCallback, useEffect, useState } from 'react';
 
 const scroll = keyframes`
   from {
+    visibility:  visible;
     transform: translateX(-100%)
   }
   to {
+    visibility: visible;
     transform: translateX(100%)
   }
 `;
@@ -21,7 +23,9 @@ const ProgressBar = styled.div`
   position: fixed;
   z-index: 200;
   background-color: ${({ theme }) => theme.colors.primary};
+  visibility: hidden;
   animation: ${scroll} 2s infinite;
+  animation-delay: 250ms;
 `;
 
 export function NavProgress() {
