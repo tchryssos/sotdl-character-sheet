@@ -28,6 +28,7 @@ export function CharactersSection({ characters }: CharactersSectionProps) {
     <Section
       // eslint-disable-next-line no-nested-ternary
       columns={greaterThanXxs ? (greaterThanSm ? 3 : 2) : 1}
+      isCollapsible={false}
       title="Characters"
     >
       {characters.length ? (

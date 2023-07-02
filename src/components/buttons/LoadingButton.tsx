@@ -3,27 +3,35 @@ import styled from '@emotion/styled';
 import { LoadingSpinner } from '../LoadingSpinner';
 import { Text } from '../Text';
 import { BaseButton } from './BaseButton';
+import { TextButtonProps } from './TextButton';
 
-type LoadingButtonBaseProps = {
-  disabled?: boolean;
+type LoadingButtonBaseProps = Pick<
+  TextButtonProps,
+  'label' | 'disabled' | 'className'
+> & {
   loading: boolean;
-  label: string;
+};
+
+type ButtonLikeProps = {
+  buttonLike: true;
+  type?: never;
+  onClick?: never;
 };
 
 type SubmitProps = {
   type: 'submit';
   onClick?: never;
+  buttonLike?: never;
 };
 
 type ButtonProps = {
   type: 'button';
-  onClick: () => void;
+  onClick?: () => void;
+  buttonLike?: never;
 };
 
 type LoadingButtonProps = LoadingButtonBaseProps &
-  (SubmitProps | ButtonProps) & {
-    className?: string;
-  };
+  (SubmitProps | ButtonProps | ButtonLikeProps);
 
 const Spinner = styled(LoadingSpinner)`
   max-height: ${({ theme }) => theme.fontSize.body};
@@ -45,9 +53,11 @@ export function LoadingButton({
   type = 'button',
   onClick,
   className,
+  buttonLike,
 }: LoadingButtonProps) {
   return (
     <Button
+      buttonLike={buttonLike}
       className={className}
       disabled={disabled || loading}
       loading={loading}

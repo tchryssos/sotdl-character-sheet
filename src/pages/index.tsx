@@ -64,9 +64,9 @@ function Home() {
               <Link href={createCharacterRoute(CREATE_ID)}>
                 <TextButton buttonLike label="Create a Character" />
               </Link>
-              <Divider label="or" />
               {!error && (
                 <>
+                  <Divider label="or" />
                   {user ? (
                     <Link
                       href={createUsersRoute((user as StrictSessionUser).id)}

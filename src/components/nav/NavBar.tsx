@@ -18,6 +18,7 @@ import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { RpgIcon } from '../icons/RpgIcon';
 import { Link } from '../Link';
 import { Text } from '../Text';
+import { NavProgress } from './NavProgress';
 
 const Toolbar = styled(FlexBox)(({ theme }) => ({
   position: 'fixed',
@@ -93,6 +94,7 @@ export function NavBar({
 
   return (
     <Toolbar center flex={1}>
+      <NavProgress />
       <InnerToolbar alignItems="flex-end" flex={1} flexDirection="column">
         <TopRow alignItems="center" justifyContent="space-between">
           <LogoTitleBox alignItems="center" gap={flexGap}>
