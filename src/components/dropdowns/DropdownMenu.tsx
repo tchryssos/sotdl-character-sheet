@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import { MouseEventHandler, useCallback, useEffect, useState } from 'react';
+import ClickAwayListener from '@mui/base/ClickAwayListener';
+import Popper, { PopperProps } from '@mui/base/Popper';
+import { MouseEventHandler, useState } from 'react';
 
 import { FlexBox } from '../box/FlexBox';
 import { TextButton } from '../buttons/TextButton';
@@ -12,24 +14,15 @@ const DropdownWrapper = styled.div`
   position: relative;
 `;
 
-const DropdownPane = styled(Pane)<{ isHidden: boolean }>(
-  ({ theme, isHidden }) => ({
-    position: 'absolute',
-    top: theme.spacing[40],
-    right: 0,
-    padding: 0,
-    backgroundColor: theme.colors.background,
-    zIndex: 100,
-    ...(isHidden && {
-      display: 'hidden',
-      height: 0,
-      width: 0,
-      boxShadow: 'none',
-      border: 'none',
-      overflow: 'hidden',
-    }),
-  })
-);
+const DropdownPopper = styled(Popper)`
+  z-index: 100;
+`;
+
+const DropdownPane = styled(Pane)(({ theme }) => ({
+  padding: 0,
+  backgroundColor: theme.colors.background,
+  marginTop: theme.spacing['8'],
+}));
 
 const DropdownLink = styled(Link)`
   width: 100%;
@@ -75,23 +68,37 @@ type MenuItemObj =
 
 export interface DropdownMenuProps {
   menuItems: MenuItemObj[];
-  children: (props: { toggleOpen: MouseEventHandler }) => React.ReactNode;
+  dropdownId: string;
+  children: (props: {
+    toggleOpen: MouseEventHandler;
+    describedBy: string;
+  }) => React.ReactNode;
+  placement?: PopperProps['placement'];
 }
 
 interface MenuItemProps {
   item: MenuItemObj;
+  setAnchorEl: (el: null) => void;
 }
-function MenuItem({ item }: MenuItemProps) {
+function MenuItem({ item, setAnchorEl }: MenuItemProps) {
+  const onClick = () => setAnchorEl(null);
   switch (item.type) {
     case 'link':
       return (
-        <DropdownLink href={item.href}>
+        <DropdownLink href={item.href} onClick={onClick}>
           <Text variant="body">{item.text}</Text>
         </DropdownLink>
       );
     case 'button':
       return (
-        <DropdownButton label={item.text} transparent onClick={item.onClick} />
+        <DropdownButton
+          label={item.text}
+          transparent
+          onClick={() => {
+            item.onClick();
+            onClick();
+          }}
+        />
       );
     case 'label':
       return <DropdownLabel variant="body-sm">-- {item.text} --</DropdownLabel>;
@@ -100,36 +107,43 @@ function MenuItem({ item }: MenuItemProps) {
   }
 }
 
-export function DropdownMenu({ menuItems, children }: DropdownMenuProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function DropdownMenu({
+  menuItems,
+  children,
+  dropdownId,
+  placement = 'bottom-start',
+}: DropdownMenuProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const toggleOpen: MouseEventHandler = (e) => {
     e.stopPropagation();
-    setIsOpen(!isOpen);
+    setAnchorEl(anchorEl ? null : (e.currentTarget as HTMLElement));
   };
-  const setClosed = useCallback(() => setIsOpen(false), []);
 
-  useEffect(() => {
-    if (isOpen) {
-      globalThis.addEventListener('click', setClosed);
-    } else {
-      globalThis.removeEventListener('click', setClosed);
-    }
-    return () => globalThis.removeEventListener('click', setClosed);
-  }, [isOpen, setClosed]);
+  const isOpen = Boolean(anchorEl);
+  const id = isOpen ? dropdownId : undefined;
 
   return (
-    <DropdownWrapper>
-      {children({ toggleOpen })}
-      <DropdownPane isHidden={!isOpen} shadowed>
-        {menuItems.map((item, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <ItemWrapper flexDirection="column" key={`${item.type}-${i}`}>
-            <MenuItem item={item} />
-            {i !== menuItems.length - 1 && <Divider color="accentLight" />}
-          </ItemWrapper>
-        ))}
-      </DropdownPane>
-    </DropdownWrapper>
+    <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+      <DropdownWrapper>
+        {children({ toggleOpen, describedBy: dropdownId })}
+        <DropdownPopper
+          anchorEl={anchorEl}
+          id={id}
+          open={isOpen}
+          placement={placement}
+        >
+          <DropdownPane shadowed>
+            {menuItems.map((item, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <ItemWrapper flexDirection="column" key={`${item.type}-${i}`}>
+                <MenuItem item={item} setAnchorEl={setAnchorEl} />
+                {i !== menuItems.length - 1 && <Divider color="accentLight" />}
+              </ItemWrapper>
+            ))}
+          </DropdownPane>
+        </DropdownPopper>
+      </DropdownWrapper>
+    </ClickAwayListener>
   );
 }

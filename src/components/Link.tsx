@@ -7,11 +7,12 @@ interface LinkProps {
   children: React.ReactNode;
   className?: string;
   underline?: boolean;
+  onClick?: () => void;
 }
 
 interface StyledProps extends Pick<LinkProps, 'underline'> {}
 
-const StyledLink = styled.a<StyledProps>`
+const StyledLink = styled(NextLink)<StyledProps>`
   color: ${({ theme }) => theme.colors.text};
   display: inline-block;
   text-decoration: ${({ underline }) => (underline ? 'underline' : 'none')};
@@ -26,17 +27,18 @@ export function Link({
   children,
   className,
   underline,
+  onClick,
 }: LinkProps) {
   return (
-    <NextLink href={href} legacyBehavior passHref>
-      <StyledLink
-        className={className}
-        rel="noopener noreferrer"
-        target={isInternal ? '_self' : '_blank'}
-        underline={underline}
-      >
-        {children}
-      </StyledLink>
-    </NextLink>
+    <StyledLink
+      className={className}
+      href={href}
+      rel="noopener noreferrer"
+      target={isInternal ? '_self' : '_blank'}
+      underline={underline}
+      onClick={onClick}
+    >
+      {children}
+    </StyledLink>
   );
 }

@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
+import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { FlexBox } from '../box/FlexBox';
 import { Link } from '../Link';
@@ -30,8 +32,22 @@ export function ProfileCharacterListItem({
     id,
     rulebookName,
     name,
-    characterData: { level, ancestry },
+    characterData: { level, type, ...characterData },
   } = character;
+
+  let characterDescriptor = '';
+
+  switch (type) {
+    case 'sotdl':
+      characterDescriptor = (characterData as SotdlCharacterData).ancestry;
+      break;
+    case 'wwn':
+      characterDescriptor = (characterData as WwnCharacterData).class_name;
+      break;
+    default:
+      break;
+  }
+
   return (
     <CharacterLink href={createCharacterRoute(id, rulebookName)}>
       <FlexBox flexDirection="column">
@@ -42,9 +58,9 @@ export function ProfileCharacterListItem({
         </FlexBox>
         <Text as="p" variant="body-sm">
           <Caps>{rulebookName}</Caps>
-          {level !== undefined || ancestry ? ' - ' : ''}
+          {level !== undefined || characterDescriptor ? ' - ' : ''}
           {level !== undefined ? `Level ${level} ` : ''}
-          {`${ancestry ? `${ancestry}` : ''}`}
+          {characterDescriptor}
         </Text>
       </FlexBox>
     </CharacterLink>

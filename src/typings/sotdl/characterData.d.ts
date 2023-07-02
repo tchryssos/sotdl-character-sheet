@@ -4,6 +4,7 @@ import {
   ListFieldRecord,
   ValuesOf,
 } from '../util';
+import { SotdlName } from './game';
 
 export type SotdlSpell = {
   spell_name: string;
@@ -34,7 +35,7 @@ export type SotdlArmor = {
 };
 
 export type SotdlCharacterData = {
-  type: 'sotdl';
+  type: SotdlName;
   name: string;
   level: number;
   ancestry: string;
