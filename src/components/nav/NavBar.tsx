@@ -18,6 +18,7 @@ import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { RpgIcon } from '../icons/RpgIcon';
 import { Link } from '../Link';
 import { Text } from '../Text';
+import { NavProgress } from './NavProgress';
 
 const Toolbar = styled(FlexBox)(({ theme }) => ({
   position: 'fixed',
@@ -92,48 +93,51 @@ export function NavBar({
   const userName = getNameFromUser(user as StrictSessionUser);
 
   return (
-    <Toolbar center flex={1}>
-      <InnerToolbar alignItems="flex-end" flex={1} flexDirection="column">
-        <TopRow alignItems="center" justifyContent="space-between">
-          <LogoTitleBox alignItems="center" gap={flexGap}>
-            <HomeLink href={HOME_ROUTE}>
-              <Logo size={isXxs ? 'xs' : 'sm'} />
-            </HomeLink>
-            <Portal flexGap={flexGap} ref={setHeaderPortalNode} />
-            {title && (
-              <Title as="h2" variant={isXxs ? 'body-sm' : 'body'}>
-                {title}
-              </Title>
-            )}
-          </LogoTitleBox>
-          <FlexBox alignItems="center" gap={flexGap}>
-            <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            {userName && !isXxs && (
-              <Link
-                href={createUsersRoute((user as StrictSessionUser).id)}
-                isInternal
-              >
-                <GridBox
-                  alignItems="center"
-                  gap={8}
-                  gridTemplateColumns="auto 1fr"
-                  maxWidth={pxToRem(200)}
+    <>
+      <Toolbar center flex={1}>
+        <NavProgress />
+        <InnerToolbar alignItems="flex-end" flex={1} flexDirection="column">
+          <TopRow alignItems="center" justifyContent="space-between">
+            <LogoTitleBox alignItems="center" gap={flexGap}>
+              <HomeLink href={HOME_ROUTE}>
+                <Logo size={isXxs ? 'xs' : 'sm'} />
+              </HomeLink>
+              <Portal flexGap={flexGap} ref={setHeaderPortalNode} />
+              {title && (
+                <Title as="h2" variant={isXxs ? 'body-sm' : 'body'}>
+                  {title}
+                </Title>
+              )}
+            </LogoTitleBox>
+            <FlexBox alignItems="center" gap={flexGap}>
+              <Portal flexGap={flexGap} ref={setIconPortalNode} />
+              {userName && !isXxs && (
+                <Link
+                  href={createUsersRoute((user as StrictSessionUser).id)}
+                  isInternal
                 >
-                  <Box height={pxToRem(18)} width={pxToRem(18)}>
-                    <RpgIcon
-                      iconIndex={getIconFromUser(user as StrictSessionUser)}
-                    />
-                  </Box>
-                  <UserName as="p" overflow="hidden" textOverflow="ellipsis">
-                    {userName}
-                  </UserName>
-                </GridBox>
-              </Link>
-            )}
-            <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
-          </FlexBox>
-        </TopRow>
-      </InnerToolbar>
-    </Toolbar>
+                  <GridBox
+                    alignItems="center"
+                    gap={8}
+                    gridTemplateColumns="auto 1fr"
+                    maxWidth={pxToRem(200)}
+                  >
+                    <Box height={pxToRem(18)} width={pxToRem(18)}>
+                      <RpgIcon
+                        iconIndex={getIconFromUser(user as StrictSessionUser)}
+                      />
+                    </Box>
+                    <UserName as="p" overflow="hidden" textOverflow="ellipsis">
+                      {userName}
+                    </UserName>
+                  </GridBox>
+                </Link>
+              )}
+              <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
+            </FlexBox>
+          </TopRow>
+        </InnerToolbar>
+      </Toolbar>
+    </>
   );
 }

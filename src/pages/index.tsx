@@ -1,12 +1,10 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 import { LogoAscii } from '~/components/ascii/LogoAscii';
 import { AuthLink } from '~/components/AuthLink';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
-import { LoadingButton } from '~/components/buttons/LoadingButton';
 import { TextButton } from '~/components/buttons/TextButton';
 import { Divider } from '~/components/Divider';
 import { Link } from '~/components/Link';
@@ -47,7 +45,6 @@ const Logo = styled(LogoAscii)`
 
 function Home() {
   const { user, error, isLoading } = useUser();
-  const [myCharactersLoading, setMyCharactersLoading] = useState(false);
   return (
     <Layout
       meta="A collection of online ttrpg character sheets"
@@ -73,21 +70,12 @@ function Home() {
                   {user ? (
                     <Link
                       href={createUsersRoute((user as StrictSessionUser).id)}
-                      onClick={() => setMyCharactersLoading(true)}
                     >
-                      <LoadingButton
-                        buttonLike
-                        label="My Characters"
-                        loading={myCharactersLoading}
-                      />
+                      <TextButton buttonLike label="My Characters" />
                     </Link>
                   ) : (
                     <AuthLink type="login">
-                      <LoadingButton
-                        buttonLike
-                        label="Authenticate"
-                        loading={false}
-                      />
+                      <TextButton buttonLike label="Authenticate" />
                     </AuthLink>
                   )}
                 </>
