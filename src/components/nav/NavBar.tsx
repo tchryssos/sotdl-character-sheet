@@ -1,5 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import { HOME_ROUTE } from '~/constants/routing/client';
 import { createUsersRoute } from '~/constants/routing/shared';
@@ -17,6 +18,7 @@ import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { RpgIcon } from '../icons/RpgIcon';
 import { Link } from '../Link';
+import { LoadingSpinner } from '../LoadingSpinner';
 import { Text } from '../Text';
 
 const Toolbar = styled(FlexBox)(({ theme }) => ({
@@ -86,6 +88,7 @@ export function NavBar({
   setHeaderPortalNode,
   dropdownMenuItems,
 }: NavBarProps) {
+  const [isLoadingProfile, setIsLoadingProfile] = useState(false);
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
   const { user } = useUser();
@@ -112,6 +115,7 @@ export function NavBar({
               <Link
                 href={createUsersRoute((user as StrictSessionUser).id)}
                 isInternal
+                onClick={() => setIsLoadingProfile(true)}
               >
                 <GridBox
                   alignItems="center"
@@ -120,9 +124,13 @@ export function NavBar({
                   maxWidth={pxToRem(200)}
                 >
                   <Box height={pxToRem(18)} width={pxToRem(18)}>
-                    <RpgIcon
-                      iconIndex={getIconFromUser(user as StrictSessionUser)}
-                    />
+                    {isLoadingProfile ? (
+                      <LoadingSpinner title="Loading profile" />
+                    ) : (
+                      <RpgIcon
+                        iconIndex={getIconFromUser(user as StrictSessionUser)}
+                      />
+                    )}
                   </Box>
                   <UserName as="p" overflow="hidden" textOverflow="ellipsis">
                     {userName}

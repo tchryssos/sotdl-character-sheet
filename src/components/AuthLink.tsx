@@ -12,12 +12,14 @@ const PlainATag = styled.a(({ theme }) => ({
   cursor: 'pointer',
 }));
 
-export const AuthLink: React.FC<AuthLinkProps> = ({
-  type,
-  children,
-  className,
-}) => (
-  <PlainATag aria-label={type} className={className} href={`/api/auth/${type}`}>
-    {children}
-  </PlainATag>
-);
+export function AuthLink({ type, children, className }: AuthLinkProps) {
+  return (
+    <PlainATag
+      aria-label={type}
+      className={className}
+      href={`/api/auth/${type}`}
+    >
+      {children}
+    </PlainATag>
+  );
+}

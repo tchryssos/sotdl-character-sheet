@@ -10,6 +10,7 @@ import { IconButton } from '~/components/buttons/IconButton';
 import { Gear } from '~/components/icons/Gear';
 import { RpgIcon } from '~/components/icons/RpgIcon';
 import { Link } from '~/components/Link';
+import { LoadingSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
 import { CharactersSection } from '~/components/profile/CharactersSection';
@@ -39,6 +40,7 @@ const smIconSize = 48;
 const premiumSize = 16;
 
 function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
+  const [isLoadingSettings, setIsLoadingSettings] = useState(false);
   const [iconIdx, setIconIdx] = useState(getIconIdxFromUrl(userMeta?.imageUrl));
   const { user } = useUser();
 
@@ -103,9 +105,17 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
           </FlexBox>
           {(user as StrictSessionUser)?.id === userMeta?.id && (
             <Box marginLeft="auto">
-              <Link href={SETTINGS_ROUTE} isInternal>
+              <Link
+                href={SETTINGS_ROUTE}
+                isInternal
+                onClick={() => setIsLoadingSettings(true)}
+              >
                 <IconButton buttonLike>
-                  <Gear title="Profile settings" />
+                  {isLoadingSettings ? (
+                    <LoadingSpinner title="Loading settings" />
+                  ) : (
+                    <Gear title="Profile settings" />
+                  )}
                 </IconButton>
               </Link>
             </Box>

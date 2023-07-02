@@ -4,7 +4,7 @@ import { Text } from '../Text';
 import { BaseButton } from './BaseButton';
 import { CoreButtonProps } from './types';
 
-interface TextButtonProps extends CoreButtonProps {
+export interface TextButtonProps extends CoreButtonProps {
   label: string;
   transparent?: boolean;
 }
