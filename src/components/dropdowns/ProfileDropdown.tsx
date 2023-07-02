@@ -104,9 +104,9 @@ export function ProfileDropdown({ dropdownMenuItems }: ProfileDropdownProps) {
   );
 
   return (
-    <DropdownMenu menuItems={menuItems}>
-      {({ toggleOpen }) => (
-        <IconButton onClick={toggleOpen}>
+    <DropdownMenu dropdownId="profile-menu" menuItems={menuItems}>
+      {({ toggleOpen, describedBy }) => (
+        <IconButton aria-describedby={describedBy} onClick={toggleOpen}>
           <Hamburger title="Menu" titleId="menu" />
         </IconButton>
       )}
