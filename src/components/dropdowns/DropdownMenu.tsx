@@ -78,18 +78,27 @@ export interface DropdownMenuProps {
 
 interface MenuItemProps {
   item: MenuItemObj;
+  setAnchorEl: (el: null) => void;
 }
-function MenuItem({ item }: MenuItemProps) {
+function MenuItem({ item, setAnchorEl }: MenuItemProps) {
+  const onClick = () => setAnchorEl(null);
   switch (item.type) {
     case 'link':
       return (
-        <DropdownLink href={item.href}>
+        <DropdownLink href={item.href} onClick={onClick}>
           <Text variant="body">{item.text}</Text>
         </DropdownLink>
       );
     case 'button':
       return (
-        <DropdownButton label={item.text} transparent onClick={item.onClick} />
+        <DropdownButton
+          label={item.text}
+          transparent
+          onClick={() => {
+            item.onClick();
+            onClick();
+          }}
+        />
       );
     case 'label':
       return <DropdownLabel variant="body-sm">-- {item.text} --</DropdownLabel>;
@@ -128,7 +137,7 @@ export function DropdownMenu({
             {menuItems.map((item, i) => (
               // eslint-disable-next-line react/no-array-index-key
               <ItemWrapper flexDirection="column" key={`${item.type}-${i}`}>
-                <MenuItem item={item} />
+                <MenuItem item={item} setAnchorEl={setAnchorEl} />
                 {i !== menuItems.length - 1 && <Divider color="accentLight" />}
               </ItemWrapper>
             ))}
