@@ -21,6 +21,7 @@ import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
+import { PathInputs } from './inputs/PathInputs/PathInputs';
 
 const SotwwCharacterSheet = styled(FormComponent)`
   padding-bottom: ${({ theme }) => theme.spacing[48]};
@@ -63,7 +64,8 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
   const isLessThanMd = useBreakpointsLessThan('md');
 
   return (
-    <EditContext.Provider value={editProviderVal}>
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    <EditContext.Provider value={{ ...editProviderVal, isEditMode: true }}>
       <SotwwCharacterSheet
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
@@ -87,7 +89,10 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
             </GridBox>
           </TabPanel>
           <TabPanel>
-            <AttributeInputs />
+            <GridBox columns={1} {...sharedGapProps}>
+              <AttributeInputs />
+              <PathInputs />
+            </GridBox>
           </TabPanel>
         </Tabs>
       </SotwwCharacterSheet>

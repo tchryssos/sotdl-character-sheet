@@ -5,9 +5,11 @@ import { NumberInput } from '~/components/form/NumberInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 export function BasicInfoInputs() {
+  const isLessThanXs = useBreakpointsLessThan('xs');
   return (
     <FormSection columns={1} icon={RpgIcons.SinglePage} title="Basic Info">
       <FlexBox flexDirection="column" gap={16}>
@@ -16,7 +18,10 @@ export function BasicInfoInputs() {
           <NumberInput<SotwwCharacterData> max={10} min={1} name="level" />
         </Box>
         <TextAreaInput<SotwwCharacterData> name="description" />
-        <TextAreaInput<SotwwCharacterData> name="professions" />
+        <FlexBox flexDirection={isLessThanXs ? 'column' : 'row'} gap={16}>
+          <TextAreaInput<SotwwCharacterData> name="languages" />
+          <TextAreaInput<SotwwCharacterData> name="professions" />
+        </FlexBox>
       </FlexBox>
     </FormSection>
   );

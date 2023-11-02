@@ -32,4 +32,5 @@ export enum RpgIcons {
   WandLight = '333',
   Lightning = '377',
   InsetGem = '104',
+  Weed = '286',
 }
