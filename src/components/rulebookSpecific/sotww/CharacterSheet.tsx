@@ -18,6 +18,7 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
+import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 
@@ -26,13 +27,17 @@ const SotwwCharacterSheet = styled(FormComponent)`
 `;
 
 interface SotwwCharacterSheetProps {
-  character: StrictCharacter<SotwwCharacterData>;
+  character?: StrictCharacter<SotwwCharacterData>;
 }
 
 const tabLabels: TabLabelObject[] = [
   {
     label: 'Description',
     icon: RpgIcons.Scroll,
+  },
+  {
+    label: 'Abilities',
+    icon: RpgIcons.Ripple,
   },
 ];
 
@@ -80,6 +85,9 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
               <BasicInfoInputs />
               <BackgroundInputs />
             </GridBox>
+          </TabPanel>
+          <TabPanel>
+            <AttributeInputs />
           </TabPanel>
         </Tabs>
       </SotwwCharacterSheet>
