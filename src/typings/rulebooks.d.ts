@@ -1,6 +1,6 @@
 import { rulebook } from '@prisma/client';
 
-export type RulebookType = 'swn' | 'sotdl' | 'wwn';
+export type RulebookType = 'swn' | 'sotdl' | 'wwn' | 'sotww';
 
 export type RulebookSaveData = Omit<
   rulebook,

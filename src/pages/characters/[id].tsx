@@ -5,6 +5,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Layout } from '~/components/meta/Layout';
 import { NotFound } from '~/components/NotFound';
 import { CharacterSheet as SotdlCharacterSheet } from '~/components/rulebookSpecific/sotdl/CharacterSheet';
+import { CharacterSheet as SotwwCharacterSheet } from '~/components/rulebookSpecific/sotww/CharacterSheet';
 import { CharacterSheet as SwnCharacterSheet } from '~/components/rulebookSpecific/swn/CharacterSheet';
 import { CharacterSheet as WwnCharacterSheet } from '~/components/rulebookSpecific/wwn/CharacterSheet';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
@@ -21,6 +22,7 @@ import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { NotificationBody } from '~/typings/notifications';
 import { RulebookType, StrictRulebook } from '~/typings/rulebooks';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 interface DisplaySheetProps {
@@ -45,6 +47,12 @@ function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
       return (
         <WwnCharacterSheet
           character={character as StrictCharacter<WwnCharacterData>}
+        />
+      );
+    case 'sotww':
+      return (
+        <SotwwCharacterSheet
+          character={character as StrictCharacter<SotwwCharacterData>}
         />
       );
     default:
