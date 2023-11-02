@@ -1,11 +1,25 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 
+import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
+import { TabPanel } from '~/components/tabs/TabPanel';
+import { Tabs } from '~/components/tabs/Tabs';
+import { TabLabelObject } from '~/components/tabs/types';
+import { RpgIcons } from '~/constants/icons';
+import { DEFAULT_VALUES } from '~/constants/sotww/form';
+import { FORM_COLUMN_GAP, FORM_ROW_GAP } from '~/constants/styles';
 import { EditContext } from '~/logic/contexts/editContext';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
+import { getTabIndex } from '~/logic/utils/getTabIndex';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
+
+import { BackgroundInputs } from './inputs/BackgroundInputs';
+import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 
 const SotwwCharacterSheet = styled(FormComponent)`
   padding-bottom: ${({ theme }) => theme.spacing[48]};
@@ -14,6 +28,18 @@ const SotwwCharacterSheet = styled(FormComponent)`
 interface SotwwCharacterSheetProps {
   character: StrictCharacter<SotwwCharacterData>;
 }
+
+const tabLabels: TabLabelObject[] = [
+  {
+    label: 'Description',
+    icon: RpgIcons.Scroll,
+  },
+];
+
+const sharedGapProps = {
+  columnGap: pxToRem(FORM_COLUMN_GAP),
+  rowGap: pxToRem(FORM_ROW_GAP),
+};
 
 export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
   const {
@@ -27,14 +53,35 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
     queryTab,
   } = useSheetState();
   useSheetHotkeys(isEditMode, setIsEditMode);
+  const router = useRouter();
+
+  const isLessThanMd = useBreakpointsLessThan('md');
 
   return (
     <EditContext.Provider value={editProviderVal}>
       <SotwwCharacterSheet
-        defaultValues={character?.characterData || {}}
+        defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
       >
-        sheet
+        <Tabs
+          defaultTab={getTabIndex(tabLabels, queryTab)}
+          tabLabels={tabLabels}
+          onChange={(index) =>
+            router.replace({
+              query: {
+                ...router.query,
+                tab: tabLabels[index].label.toLowerCase(),
+              },
+            })
+          }
+        >
+          <TabPanel>
+            <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+              <BasicInfoInputs />
+              <BackgroundInputs />
+            </GridBox>
+          </TabPanel>
+        </Tabs>
       </SotwwCharacterSheet>
     </EditContext.Provider>
   );

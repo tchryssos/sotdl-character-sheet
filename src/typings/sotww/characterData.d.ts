@@ -5,4 +5,6 @@ export type SotwwCharacterData = {
   name: string;
   level: number;
   ancestry: string;
+  description: string;
+  professions: string;
 };
