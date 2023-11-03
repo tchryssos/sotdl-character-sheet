@@ -18,6 +18,7 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
+import { FormNav } from './FormNav';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
@@ -72,11 +73,12 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <EditContext.Provider value={{ ...editProviderVal, isEditMode: true }}>
+    <EditContext.Provider value={editProviderVal}>
       <SotwwCharacterSheet
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
       >
+        <FormNav isMyCharacter={isMyCharacter} />
         <Tabs
           defaultTab={getTabIndex(tabLabels, queryTab)}
           tabLabels={tabLabels}
