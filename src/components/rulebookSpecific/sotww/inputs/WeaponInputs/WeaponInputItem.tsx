@@ -1,9 +1,13 @@
 import { upperFirst } from 'lodash';
+import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { FormSection } from '~/components/form/FormSection';
 import { SelectInput } from '~/components/form/SelectInput';
+import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import {
@@ -13,9 +17,9 @@ import {
   WEAPON_PROPERTY_ABBREVIATIONS,
   WEAPON_TRAITS,
 } from '~/constants/sotww/game';
+import { EditContext } from '~/logic/contexts/editContext';
 import {
   useBreakpointsAtLeast,
-  useBreakpointsIsExactly,
   useBreakpointsLessThan,
 } from '~/logic/hooks/useBreakpoints';
 import { makeSimpleSelectOptionsFromArray } from '~/logic/utils/form/makeSimpleSelectOptionsFromArray';
@@ -54,6 +58,7 @@ export function WeaponInputItem({
   postSortIndex: index,
   onDelete,
 }: WeaponInputItemProps) {
+  const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext<SotwwCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
   const atLeastMd = useBreakpointsAtLeast('md');
@@ -82,48 +87,57 @@ export function WeaponInputItem({
   return (
     <FormSection
       borderless
-      columns={!exactlySm ? 1 : 2}
+      columns={1}
       isNested
       title={sectionTitle}
       visibilityTitle={`weapon${index}`}
     >
-      <GridBox columns={1}>
+      <GridBox gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}>
         <TextInput<SotwwCharacterData>
           label="Name"
           name={weaponNameFieldName}
         />
-        <GridBox columns={2}>
-          <TextInput<SotwwCharacterData>
-            label="Damage"
-            name={weaponDamageFieldName}
-          />
-          <SelectInput<SotwwCharacterData>
-            label="Grip"
-            name={createWeaponFieldName('weapon_grip', index)}
-            options={weaponGripOptions}
-          />
-        </GridBox>
-        <SelectInput<SotwwCharacterData>
-          label="Traits"
-          multiple
-          name={weaponTraitsFieldName}
-          options={weaponTraitOptions}
-        />
-        <GridBox columns={!exactlySm && !exactlyXss ? 2 : 1}>
-          <SelectInput<SotwwCharacterData>
-            label="Advantages"
-            multiple
-            name={createWeaponFieldName('weapon_advantages', index)}
-            options={weaponAdvantageOptions}
-          />
-          <SelectInput<SotwwCharacterData>
-            label="Disadvantages"
-            multiple
-            name={createWeaponFieldName('weapon_disadvantages', index)}
-            options={weaponDisadvantageOptions}
-          />
-        </GridBox>
+        {isEditMode && (
+          <FlexBox alignItems="flex-end">
+            <DeleteButton onDelete={() => onDelete(index)} />
+          </FlexBox>
+        )}
       </GridBox>
+      <GridBox columns={2}>
+        <TextInput<SotwwCharacterData>
+          label="Damage"
+          name={weaponDamageFieldName}
+        />
+        <SelectInput<SotwwCharacterData>
+          label="Grip"
+          name={createWeaponFieldName('weapon_grip', index)}
+          options={weaponGripOptions}
+        />
+      </GridBox>
+      <SelectInput<SotwwCharacterData>
+        label="Traits"
+        multiple
+        name={weaponTraitsFieldName}
+        options={weaponTraitOptions}
+      />
+      <GridBox columns={!exactlySm && !exactlyXss ? 2 : 1}>
+        <SelectInput<SotwwCharacterData>
+          label="Advantages"
+          multiple
+          name={createWeaponFieldName('weapon_advantages', index)}
+          options={weaponAdvantageOptions}
+        />
+        <SelectInput<SotwwCharacterData>
+          label="Disadvantages"
+          multiple
+          name={createWeaponFieldName('weapon_disadvantages', index)}
+          options={weaponDisadvantageOptions}
+        />
+      </GridBox>
+      <TextAreaInput<SotwwCharacterData>
+        label="Description"
+        name={createWeaponFieldName('weapon_description', index)}
+      />
     </FormSection>
   );
 }
