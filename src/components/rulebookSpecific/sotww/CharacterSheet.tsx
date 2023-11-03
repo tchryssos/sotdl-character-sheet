@@ -72,7 +72,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <EditContext.Provider value={{ ...editProviderVal, isEditMode: false }}>
+    <EditContext.Provider value={{ ...editProviderVal, isEditMode: true }}>
       <SotwwCharacterSheet
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}

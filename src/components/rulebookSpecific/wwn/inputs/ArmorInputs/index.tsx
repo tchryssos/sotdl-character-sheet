@@ -9,7 +9,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
 
-import { AAMFormSection } from '../AAMFormSection';
+import { AAMFormSection } from '../../../../form/AAMFormSection';
 import { ArmorInputItem } from './ArmorInputItem';
 
 const HideCheckbox = styled(CheckboxInput)`
