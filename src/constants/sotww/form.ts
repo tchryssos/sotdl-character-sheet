@@ -25,4 +25,5 @@ export const DEFAULT_VALUES: SotwwCharacterData = {
   defense: 10,
   size: 1,
   speed: 5,
+  weapons: [],
 };

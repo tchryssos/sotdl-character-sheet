@@ -1,8 +1,23 @@
+import {
+  SotwwWeaponAdvantage,
+  SotwwWeaponDisadvantage,
+  SotwwWeaponTrait,
+} from '~/constants/sotww/game';
 import { SotwwName } from './game';
 
 type SotwwPathBenefit = {
   path_benefit_name: string;
   path_benefit_description: string;
+};
+
+export type SotwwWeapon = {
+  weapon_name: string;
+  weapon_damage: string;
+  weapon_traits: SotwwWeaponTrait[];
+  weapon_advantages: SotwwWeaponAdvantage[];
+  weapon_disadvantages: SotwwWeaponDisadvantage[];
+  weapon_grip: 0 | 1 | 2;
+  weapon_description: string;
 };
 
 export type SotwwCharacterData = {
@@ -30,4 +45,5 @@ export type SotwwCharacterData = {
   defense: number;
   size: number;
   speed: number;
+  weapons: SotwwWeapon[];
 };
