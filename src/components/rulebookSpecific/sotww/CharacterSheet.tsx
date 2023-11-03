@@ -23,6 +23,8 @@ import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
 import { PathInputs } from './inputs/PathInputs/PathInputs';
+import { PhysicalTraitsInputs } from './inputs/PhysicalTraitsInputs';
+import { WeaponInputs } from './inputs/WeaponInputs';
 
 const SotwwCharacterSheet = styled(FormComponent)`
   padding-bottom: ${({ theme }) => theme.spacing[48]};
@@ -104,7 +106,11 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
           {/* Combat */}
           <TabPanel>
             <GridBox columns={1} {...sharedGapProps}>
-              <DefenseInputs />
+              <GridBox columns={2}>
+                <DefenseInputs />
+                <PhysicalTraitsInputs />
+              </GridBox>
+              <WeaponInputs />
             </GridBox>
           </TabPanel>
         </Tabs>

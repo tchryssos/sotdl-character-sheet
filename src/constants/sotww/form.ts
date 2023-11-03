@@ -23,4 +23,6 @@ export const DEFAULT_VALUES: SotwwCharacterData = {
   health_max: 1,
   damage: 0,
   defense: 10,
+  size: 1,
+  speed: 5,
 };

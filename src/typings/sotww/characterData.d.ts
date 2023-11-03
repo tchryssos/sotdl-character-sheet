@@ -28,4 +28,6 @@ export type SotwwCharacterData = {
   health_max: number;
   damage: number;
   defense: number;
+  size: number;
+  speed: number;
 };
