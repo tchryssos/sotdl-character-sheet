@@ -18,9 +18,9 @@ import { US_SHORT_DATE_FORMAT } from '~/constants/dates';
 import { RpgIcons } from '~/constants/icons';
 import { SETTINGS_ROUTE } from '~/constants/routing/client';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { getIconIdxFromUrl } from '~/logic/user';
 import { prisma } from '~/logic/utils/prisma';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { getIconIdxFromUrl } from '~/logic/utils/user';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { StrictSessionUser, StrictUser } from '~/typings/user';
 

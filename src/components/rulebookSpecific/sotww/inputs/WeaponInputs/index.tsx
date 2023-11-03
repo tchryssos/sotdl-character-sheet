@@ -15,7 +15,7 @@ const createDefaultWeapon = (): SotwwWeapon => ({
   weapon_damage: '1d6',
   weapon_description: '',
   weapon_disadvantages: [],
-  weapon_grip: 1,
+  weapon_grip: 'one',
   weapon_traits: [],
 });
 

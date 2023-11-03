@@ -14,8 +14,8 @@ export const WEAPON_TRAITS = [
   'precise',
   'range',
   'special',
-  'shattering',
   'sharp',
+  'shattering',
   'thrown',
   'versatile',
 ] as const;

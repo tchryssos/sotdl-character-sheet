@@ -11,6 +11,7 @@ import {
 import { EditContext } from '~/logic/contexts/editContext';
 import { Spacing } from '~/typings/theme';
 
+import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { Pill } from '../Pill';
 import { Text } from '../Text';
@@ -63,10 +64,14 @@ function ValueDisplay({ name, multiple }: ValueDisplayProps) {
 
   if (multiple && value) {
     if (!value.length) {
-      return <Text variant="body-sm">None</Text>;
+      return (
+        <Box marginTop={8}>
+          <Text variant="body-sm">None</Text>
+        </Box>
+      );
     }
     return (
-      <FlexBox gap={8} marginTop={8}>
+      <FlexBox flexWrap="wrap" gap={8} marginTop={8}>
         {value.map((v) => (
           <Pill key={v} text={upperFirst(v)} />
         ))}

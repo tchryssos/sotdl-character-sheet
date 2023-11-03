@@ -16,7 +16,7 @@ export type SotwwWeapon = {
   weapon_traits: SotwwWeaponTrait[];
   weapon_advantages: SotwwWeaponAdvantage[];
   weapon_disadvantages: SotwwWeaponDisadvantage[];
-  weapon_grip: 0 | 1 | 2;
+  weapon_grip: 'off' | 'one' | 'two';
   weapon_description: string;
 };
 
