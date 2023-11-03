@@ -21,6 +21,7 @@ import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
+import { DefenseInputs } from './inputs/DefenseInputs';
 import { PathInputs } from './inputs/PathInputs/PathInputs';
 
 const SotwwCharacterSheet = styled(FormComponent)`
@@ -39,6 +40,10 @@ const tabLabels: TabLabelObject[] = [
   {
     label: 'Abilities',
     icon: RpgIcons.Ripple,
+  },
+  {
+    label: 'Combat',
+    icon: RpgIcons.StackedSkulls,
   },
 ];
 
@@ -65,7 +70,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values
-    <EditContext.Provider value={{ ...editProviderVal, isEditMode: true }}>
+    <EditContext.Provider value={{ ...editProviderVal, isEditMode: false }}>
       <SotwwCharacterSheet
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
@@ -82,16 +87,24 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
             })
           }
         >
+          {/* Description */}
           <TabPanel>
             <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
               <BasicInfoInputs />
               <BackgroundInputs />
             </GridBox>
           </TabPanel>
+          {/* Abilities */}
           <TabPanel>
             <GridBox columns={1} {...sharedGapProps}>
               <AttributeInputs />
               <PathInputs />
+            </GridBox>
+          </TabPanel>
+          {/* Combat */}
+          <TabPanel>
+            <GridBox columns={1} {...sharedGapProps}>
+              <DefenseInputs />
             </GridBox>
           </TabPanel>
         </Tabs>

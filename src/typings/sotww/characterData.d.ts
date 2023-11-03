@@ -24,4 +24,8 @@ export type SotwwCharacterData = {
   path_expert_benefits: SotwwPathBenefit[];
   path_master: string;
   path_master_benefits: SotwwPathBenefit[];
+  health_current: number;
+  health_max: number;
+  damage: number;
+  defense: number;
 };

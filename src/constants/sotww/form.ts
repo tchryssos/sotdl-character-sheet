@@ -15,4 +15,12 @@ export const DEFAULT_VALUES: SotwwCharacterData = {
   attribute_will: 10,
   path_novice: '',
   path_novice_benefits: [],
+  path_expert: '',
+  path_expert_benefits: [],
+  path_master: '',
+  path_master_benefits: [],
+  health_current: 1,
+  health_max: 1,
+  damage: 0,
+  defense: 10,
 };

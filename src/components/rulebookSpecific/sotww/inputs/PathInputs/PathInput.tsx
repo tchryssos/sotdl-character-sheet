@@ -82,11 +82,7 @@ function BenefitChildWrapper({ children }: PropsWithChildren<unknown>) {
 
 export function PathInput({ pathType, icon }: PathInputProps) {
   return (
-    <FormSection
-      columns={1}
-      icon={icon}
-      title={`${upperFirst(pathType)} Path - `}
-    >
+    <FormSection columns={1} icon={icon} title={`${upperFirst(pathType)} Path`}>
       <TextInput<SotwwCharacterData>
         label={`${upperFirst(pathType)} Path`}
         name={`path_${pathType}`}
