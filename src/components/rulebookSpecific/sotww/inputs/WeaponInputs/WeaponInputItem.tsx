@@ -24,14 +24,14 @@ import {
 } from '~/logic/hooks/useBreakpoints';
 import { makeSimpleSelectOptionsFromArray } from '~/logic/utils/form/makeSimpleSelectOptionsFromArray';
 import { SortableAddAnotherChildProps } from '~/typings/form';
-import { SotwwCharacterData } from '~/typings/sotww/characterData';
+import { SotwwCharacterData, SotwwWeapon } from '~/typings/sotww/characterData';
 
 import { createWeaponFieldName } from './utils';
 
 interface WeaponInputItemProps
   extends Omit<SortableAddAnotherChildProps, 'sortIndexMap' | 'fieldId'> {}
 
-const weaponGripOptions: SelectOption[] = [
+const weaponGripOptions: SelectOption<SotwwWeapon['weapon_grip']>[] = [
   {
     label: 'One',
     value: 'one',

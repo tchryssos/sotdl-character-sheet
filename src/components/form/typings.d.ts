@@ -75,8 +75,8 @@ export type CheckboxInputProps<U> = BaseInputProps<
   U
 >;
 
-export type SelectOption = {
-  value: string;
+export type SelectOption<T = string> = {
+  value: T;
   label: string;
   disabled?: boolean;
 };
