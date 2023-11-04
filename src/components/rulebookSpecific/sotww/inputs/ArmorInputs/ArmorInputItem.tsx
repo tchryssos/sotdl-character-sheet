@@ -1,32 +1,34 @@
 /* eslint-disable no-nested-ternary */
+import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
+import { Text } from '~/components/Text';
+import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SortableAddAnotherChildProps } from '~/typings/form';
-import { SotwwArmor, SotwwCharacterData } from '~/typings/sotww/characterData';
+import { SotwwCharacterData } from '~/typings/sotww/characterData';
+
+import { createArmorFieldName } from './utils';
 
 interface ArmorInputItemProps
   extends Pick<SortableAddAnotherChildProps, 'onDelete' | 'postSortIndex'> {}
-
-const createArmorFieldName = (
-  name: keyof SotwwArmor,
-  index: number
-): `armors.${number}.${keyof SotwwArmor}` => `armors.${index}.${name}`;
 
 export function ArmorInputItem({
   postSortIndex: index,
   onDelete,
 }: ArmorInputItemProps) {
+  const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext<SotwwCharacterData>();
 
   const isXxs = useBreakpointsLessThan('xs');
-  const isLessThanSm = useBreakpointsLessThan('sm');
 
   const armorEquippedFieldName = createArmorFieldName('armor_equipped', index);
   const armorEquipped = watch(armorEquippedFieldName) as boolean;
@@ -62,6 +64,7 @@ export function ArmorInputItem({
       columns={1}
       isNested
       title={title}
+      titleColor={armorEquipped ? 'text' : 'textAccent'}
       visibilityTitle={`armors${index}`}
     >
       <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
@@ -72,12 +75,16 @@ export function ArmorInputItem({
         />
         <TextInput<SotwwCharacterData> label="Name" name={armorNameFieldName} />
       </GridBox>
-      <GridBox columns={isXxs ? 1 : 2}>
+      <GridBox alignItems="flex-end" gap={8} gridTemplateColumns="1fr auto 1fr">
         <NumberInput<SotwwCharacterData>
           label="Defense Score"
           min={0}
           name={armorScoreFieldName}
         />
+        <Text as="p" marginBottom={8}>
+          {' '}
+          or{' '}
+        </Text>
         <NumberInput<SotwwCharacterData>
           label="Defense Bonus"
           min={0}
@@ -88,6 +95,11 @@ export function ArmorInputItem({
         label="Description"
         name={createArmorFieldName('armor_description', index)}
       />
+      {isEditMode && (
+        <FlexBox justifyContent="flex-end">
+          <DeleteButton onDelete={() => onDelete(index)} />
+        </FlexBox>
+      )}
     </FormSection>
   );
 }
