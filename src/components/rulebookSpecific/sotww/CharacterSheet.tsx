@@ -19,6 +19,7 @@ import { StrictCharacter } from '~/typings/characters';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 import { FormNav } from './FormNav';
+import { ArmorInputs } from './inputs/ArmorInputs';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
@@ -115,6 +116,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
                 <PhysicalTraitsInputs />
               </GridBox>
               <WeaponInputs />
+              <ArmorInputs />
             </GridBox>
           </TabPanel>
         </Tabs>

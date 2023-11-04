@@ -8,7 +8,11 @@ export function PhysicalTraitsInputs() {
     <FormSection columns={2} icon={RpgIcons.Foot} title="Physical Traits">
       <NumberInput<SotwwCharacterData> name="size" />
       <NumberInput<SotwwCharacterData> name="speed" />
-      <NumberInput<SotwwCharacterData> min={0} name="defense_natural" />
+      <NumberInput<SotwwCharacterData>
+        label="Natural Defense"
+        min={0}
+        name="defense_natural"
+      />
     </FormSection>
   );
 }

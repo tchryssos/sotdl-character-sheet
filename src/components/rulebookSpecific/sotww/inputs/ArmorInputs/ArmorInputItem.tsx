@@ -1,3 +1,93 @@
-export function ArmorInputItem() {
-  return <div>armor input</div>;
+/* eslint-disable no-nested-ternary */
+import { useFormContext } from 'react-hook-form';
+
+import { GridBox } from '~/components/box/GridBox';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
+import { FormSection } from '~/components/form/FormSection';
+import { NumberInput } from '~/components/form/NumberInput';
+import { TextAreaInput } from '~/components/form/TextAreaInput';
+import { TextInput } from '~/components/form/TextInput';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { SortableAddAnotherChildProps } from '~/typings/form';
+import { SotwwArmor, SotwwCharacterData } from '~/typings/sotww/characterData';
+
+interface ArmorInputItemProps
+  extends Pick<SortableAddAnotherChildProps, 'onDelete' | 'postSortIndex'> {}
+
+const createArmorFieldName = (
+  name: keyof SotwwArmor,
+  index: number
+): `armors.${number}.${keyof SotwwArmor}` => `armors.${index}.${name}`;
+
+export function ArmorInputItem({
+  postSortIndex: index,
+  onDelete,
+}: ArmorInputItemProps) {
+  const { watch } = useFormContext<SotwwCharacterData>();
+
+  const isXxs = useBreakpointsLessThan('xs');
+  const isLessThanSm = useBreakpointsLessThan('sm');
+
+  const armorEquippedFieldName = createArmorFieldName('armor_equipped', index);
+  const armorEquipped = watch(armorEquippedFieldName) as boolean;
+
+  const armorNameFieldName = createArmorFieldName('armor_name', index);
+  const armorName = watch(armorNameFieldName) as string;
+
+  const armorScoreFieldName = createArmorFieldName(
+    'armor_defense_score',
+    index
+  );
+  const armorScore = watch(armorScoreFieldName) as number;
+
+  const armorBonusFieldName = createArmorFieldName(
+    'armor_defense_bonus',
+    index
+  );
+  const armorBonus = watch(armorBonusFieldName) as number;
+
+  const naturalDefense = watch('defense_natural');
+
+  const relevantArmorBonus =
+    armorScore > naturalDefense ? armorScore : armorBonus;
+
+  // If the armor would set a new defense score, show that, otherwise, show bonus with +
+  const title = `${armorName}, Def ${
+    armorScore > naturalDefense ? '' : '+'
+  }${relevantArmorBonus}`;
+
+  return (
+    <FormSection
+      borderless
+      columns={1}
+      isNested
+      title={title}
+      visibilityTitle={`armors${index}`}
+    >
+      <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
+        <CheckboxInput<SotwwCharacterData>
+          alwaysEditable
+          label="Equipped"
+          name={armorEquippedFieldName}
+        />
+        <TextInput<SotwwCharacterData> label="Name" name={armorNameFieldName} />
+      </GridBox>
+      <GridBox columns={isXxs ? 1 : 2}>
+        <NumberInput<SotwwCharacterData>
+          label="Defense Score"
+          min={0}
+          name={armorScoreFieldName}
+        />
+        <NumberInput<SotwwCharacterData>
+          label="Defense Bonus"
+          min={0}
+          name={armorBonusFieldName}
+        />
+      </GridBox>
+      <TextAreaInput<SotwwCharacterData>
+        label="Description"
+        name={createArmorFieldName('armor_description', index)}
+      />
+    </FormSection>
+  );
 }

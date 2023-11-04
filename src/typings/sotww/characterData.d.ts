@@ -25,6 +25,7 @@ export type SotwwArmor = {
   armor_description: string;
   armor_defense_bonus: number;
   armor_defense_score: number;
+  armor_equipped: boolean;
 };
 
 export type SotwwCharacterData = {
@@ -54,4 +55,5 @@ export type SotwwCharacterData = {
   size: number;
   speed: number;
   weapons: SotwwWeapon[];
+  armors: SotwwArmor[];
 };
