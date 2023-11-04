@@ -18,6 +18,7 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
+import { DefenseProvider } from './DefenseProvider';
 import { FormNav } from './FormNav';
 import { ArmorInputs } from './inputs/ArmorInputs';
 import { AttributeInputs } from './inputs/AttributeInputs';
@@ -79,47 +80,49 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
       >
-        <FormNav isMyCharacter={isMyCharacter} />
-        <Tabs
-          defaultTab={getTabIndex(tabLabels, queryTab)}
-          tabLabels={tabLabels}
-          onChange={(index) =>
-            router.replace({
-              query: {
-                ...router.query,
-                tab: tabLabels[index].label.toLowerCase(),
-              },
-            })
-          }
-        >
-          {/* Description */}
-          <TabPanel>
-            <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-              <BasicInfoInputs />
-              <BackgroundInputs />
-            </GridBox>
-          </TabPanel>
-
-          {/* Abilities */}
-          <TabPanel>
-            <GridBox columns={1} {...sharedGapProps}>
-              <AttributeInputs />
-              <PathInputs />
-            </GridBox>
-          </TabPanel>
-
-          {/* Combat */}
-          <TabPanel>
-            <GridBox columns={1} {...sharedGapProps}>
-              <GridBox columns={2}>
-                <DefenseInputs />
-                <PhysicalTraitsInputs />
+        <DefenseProvider>
+          <FormNav isMyCharacter={isMyCharacter} />
+          <Tabs
+            defaultTab={getTabIndex(tabLabels, queryTab)}
+            tabLabels={tabLabels}
+            onChange={(index) =>
+              router.replace({
+                query: {
+                  ...router.query,
+                  tab: tabLabels[index].label.toLowerCase(),
+                },
+              })
+            }
+          >
+            {/* Description */}
+            <TabPanel>
+              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                <BasicInfoInputs />
+                <BackgroundInputs />
               </GridBox>
-              <WeaponInputs />
-              <ArmorInputs />
-            </GridBox>
-          </TabPanel>
-        </Tabs>
+            </TabPanel>
+
+            {/* Abilities */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <AttributeInputs />
+                <PathInputs />
+              </GridBox>
+            </TabPanel>
+
+            {/* Combat */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <GridBox columns={2}>
+                  <DefenseInputs />
+                  <PhysicalTraitsInputs />
+                </GridBox>
+                <WeaponInputs />
+                <ArmorInputs />
+              </GridBox>
+            </TabPanel>
+          </Tabs>
+        </DefenseProvider>
       </SotwwCharacterSheet>
     </EditContext.Provider>
   );

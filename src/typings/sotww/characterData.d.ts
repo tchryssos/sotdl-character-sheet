@@ -18,6 +18,7 @@ export type SotwwWeapon = {
   weapon_disadvantages: SotwwWeaponDisadvantage[];
   weapon_grip: 'off' | 'one' | 'two';
   weapon_description: string;
+  weapon_equipped: boolean;
 };
 
 export type SotwwArmor = {

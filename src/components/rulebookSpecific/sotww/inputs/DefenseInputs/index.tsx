@@ -10,6 +10,8 @@ import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
+import { DefenseInput } from './DefenseInput';
+
 export function DefenseInputs() {
   const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext<SotwwCharacterData>();
@@ -40,7 +42,7 @@ export function DefenseInputs() {
         )}
       </FlexBox>
       <NumberInput<SotwwCharacterData> alwaysEditable name="damage" />
-      <NumberInput<SotwwCharacterData> name="defense" />
+      <DefenseInput />
     </FormSection>
   );
 }

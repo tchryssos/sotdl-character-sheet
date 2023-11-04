@@ -5,6 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/FormSection';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
@@ -69,10 +70,15 @@ export function WeaponInputItem({
   const weaponNameFieldName = createWeaponFieldName('weapon_name', index);
   const weaponDamageFieldName = createWeaponFieldName('weapon_damage', index);
   const weaponTraitsFieldName = createWeaponFieldName('weapon_traits', index);
+  const weaponEquippedFieldName = createWeaponFieldName(
+    'weapon_equipped',
+    index
+  );
 
   const weaponName = watch(weaponNameFieldName) as string;
   const weaponDamage = watch(weaponDamageFieldName) as string;
   const weaponTraits = watch(weaponTraitsFieldName) as SotwwWeaponTrait[];
+  const weaponEquipped = watch(weaponEquippedFieldName) as boolean;
 
   const sectionTitle = `${weaponName}, ${weaponDamage}${
     weaponTraits.length && !isLessThanSm
@@ -91,18 +97,19 @@ export function WeaponInputItem({
       columns={1}
       isNested
       title={sectionTitle}
+      titleColor={weaponEquipped ? 'text' : 'textAccent'}
       visibilityTitle={`weapon${index}`}
     >
-      <GridBox gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}>
+      <GridBox gridTemplateColumns={exactlyXss ? '1fr' : 'auto 1fr'}>
+        <CheckboxInput<SotwwCharacterData>
+          alwaysEditable
+          label="Equipped"
+          name={weaponEquippedFieldName}
+        />
         <TextInput<SotwwCharacterData>
           label="Name"
           name={weaponNameFieldName}
         />
-        {isEditMode && (
-          <FlexBox alignItems="flex-end">
-            <DeleteButton onDelete={() => onDelete(index)} />
-          </FlexBox>
-        )}
       </GridBox>
       <GridBox columns={2}>
         <TextInput<SotwwCharacterData>
@@ -142,6 +149,11 @@ export function WeaponInputItem({
         label="Description"
         name={createWeaponFieldName('weapon_description', index)}
       />
+      {isEditMode && (
+        <FlexBox justifyContent="flex-end">
+          <DeleteButton onDelete={() => onDelete(index)} />
+        </FlexBox>
+      )}
     </FormSection>
   );
 }
