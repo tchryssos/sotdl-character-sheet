@@ -13,7 +13,7 @@ import { Spacing } from '~/typings/theme';
 
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
-import { Pill } from '../Pill';
+import { Pill } from '../pills/Pill';
 import { Text } from '../Text';
 import { Label } from './Label';
 

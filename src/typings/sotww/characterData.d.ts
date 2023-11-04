@@ -20,6 +20,13 @@ export type SotwwWeapon = {
   weapon_description: string;
 };
 
+export type SotwwArmor = {
+  armor_name: string;
+  armor_description: string;
+  armor_defense_bonus: number;
+  armor_defense_score: number;
+};
+
 export type SotwwCharacterData = {
   type: SotwwName;
   name: string;
@@ -43,6 +50,7 @@ export type SotwwCharacterData = {
   health_max: number;
   damage: number;
   defense: number;
+  defense_natural: number;
   size: number;
   speed: number;
   weapons: SotwwWeapon[];

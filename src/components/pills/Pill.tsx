@@ -3,7 +3,7 @@ import { ComponentProps } from 'react';
 
 import { Color } from '~/typings/theme';
 
-import { Text } from './Text';
+import { Text } from '../Text';
 
 interface PillProps {
   variant?: ComponentProps<typeof Text>['variant'];

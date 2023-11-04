@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { max, startCase } from 'lodash';
+import { min, startCase } from 'lodash';
 import { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
@@ -40,7 +40,7 @@ function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
   const currentPath = startCase(masterPath || expertPath || novicePath);
 
   const onHealthClick = () => {
-    setValue('damage', max([currentHealth, damage + 1]) as number);
+    setValue('damage', min([currentHealth, damage + 1]) as number);
   };
 
   return (

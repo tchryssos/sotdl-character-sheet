@@ -10,6 +10,7 @@ import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
+import { PropertyPills } from '~/components/pills/PropertyPills';
 import {
   SotwwWeaponTrait,
   WEAPON_ADVANTAGES,
@@ -115,6 +116,7 @@ export function WeaponInputItem({
         />
       </GridBox>
       <SelectInput<SotwwCharacterData>
+        DisplayComponent={PropertyPills}
         label="Traits"
         multiple
         name={weaponTraitsFieldName}
@@ -122,12 +124,14 @@ export function WeaponInputItem({
       />
       <GridBox columns={!exactlySm && !exactlyXss ? 2 : 1}>
         <SelectInput<SotwwCharacterData>
+          DisplayComponent={PropertyPills}
           label="Advantages"
           multiple
           name={createWeaponFieldName('weapon_advantages', index)}
           options={weaponAdvantageOptions}
         />
         <SelectInput<SotwwCharacterData>
+          DisplayComponent={PropertyPills}
           label="Disadvantages"
           multiple
           name={createWeaponFieldName('weapon_disadvantages', index)}

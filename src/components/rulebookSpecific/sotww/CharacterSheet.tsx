@@ -98,6 +98,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
               <BackgroundInputs />
             </GridBox>
           </TabPanel>
+
           {/* Abilities */}
           <TabPanel>
             <GridBox columns={1} {...sharedGapProps}>
@@ -105,6 +106,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
               <PathInputs />
             </GridBox>
           </TabPanel>
+
           {/* Combat */}
           <TabPanel>
             <GridBox columns={1} {...sharedGapProps}>

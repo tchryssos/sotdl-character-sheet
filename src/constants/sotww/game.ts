@@ -52,14 +52,16 @@ function recursiveSetAbbrv<T extends string>(
   return obj;
 }
 
+export type SotwwWeaponProperty =
+  | SotwwWeaponTrait
+  | SotwwWeaponAdvantage
+  | SotwwWeaponDisadvantage;
+
 export const WEAPON_PROPERTY_ABBREVIATIONS = [
   ...WEAPON_TRAITS,
   ...WEAPON_ADVANTAGES,
   ...WEAPON_DISADVANTAGES,
 ].reduce(
   (obj, currProperty) => recursiveSetAbbrv(obj, currProperty),
-  {} as Record<
-    SotwwWeaponTrait | SotwwWeaponAdvantage | SotwwWeaponDisadvantage,
-    string
-  >
+  {} as Record<SotwwWeaponProperty, string>
 );
