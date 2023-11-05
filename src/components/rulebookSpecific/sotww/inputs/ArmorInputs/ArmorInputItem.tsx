@@ -28,8 +28,14 @@ export function ArmorInputItem({
   onDelete,
 }: ArmorInputItemProps) {
   const { isEditMode } = useContext(EditContext);
-  const { recalculateDefense } = useContext(DefenseContext);
-  const { watch } = useFormContext<SotwwCharacterData>();
+  const { recalculateDefense, highestArmorId } = useContext(DefenseContext);
+  const { watch, register, setValue } = useFormContext<SotwwCharacterData>();
+
+  const armorIdFieldName = createArmorFieldName('armor_id', index);
+
+  useEffect(() => {
+    register(armorIdFieldName);
+  }, [index, register, setValue, armorIdFieldName]);
 
   const isXxs = useBreakpointsLessThan('xs');
 
@@ -51,14 +57,14 @@ export function ArmorInputItem({
   );
   const armorBonus = guaranteeNumberValue(watch(armorBonusFieldName) as number);
 
-  const naturalDefense = guaranteeNumberValue(watch('defense_natural'));
+  const armorId = watch(armorIdFieldName);
 
   const relevantArmorBonus =
-    armorScore > naturalDefense ? armorScore : armorBonus;
+    armorId === highestArmorId ? armorScore : armorBonus;
 
   // If the armor would set a new defense score, show that, otherwise, show bonus with +
   const title = `${armorName}, Def ${
-    armorScore > naturalDefense ? '' : '+'
+    armorId === highestArmorId ? '' : '+'
   }${relevantArmorBonus}`;
 
   useEffect(() => {

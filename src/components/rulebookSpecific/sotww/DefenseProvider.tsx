@@ -10,17 +10,20 @@ import { SotwwCharacterData } from '~/typings/sotww/characterData';
 interface DefenseProviderInterface {
   totalDefense: number;
   recalculateDefense: () => void;
+  highestArmorId: string | null;
 }
 
 export const DefenseContext = createContext<DefenseProviderInterface>({
   totalDefense: DEFAULT_VALUES.defense,
   recalculateDefense: () => null,
+  highestArmorId: null,
 });
 
 export function DefenseProvider({ children }: PropsWithChildren<unknown>) {
   const { getValues } = useFormContext<SotwwCharacterData>();
 
   const [totalDefense, setTotalDefense] = useState(DEFAULT_VALUES.defense);
+  const [highestArmorId, setHighestArmorId] = useState<string | null>(null);
 
   /**
    * There's an edge case where two equipped armor pieces with the same armor score
@@ -49,8 +52,10 @@ export function DefenseProvider({ children }: PropsWithChildren<unknown>) {
           (a) => -guaranteeNumberValue(a.armor_defense_score)
         );
 
+        const bestArmor = equippedArmors[0];
+
         const bestArmorScore = guaranteeNumberValue(
-          equippedArmors[0]?.armor_defense_score
+          bestArmor?.armor_defense_score
         );
 
         let defenseScore = naturalDefense;
@@ -60,8 +65,11 @@ export function DefenseProvider({ children }: PropsWithChildren<unknown>) {
         // use that score as your base defense score
         // and skip that armor piece when calculating bonuses
         if (bestArmorScore > naturalDefense) {
+          setHighestArmorId(bestArmor.armor_id);
           defenseScore = bestArmorScore;
           armorSlice = 1;
+        } else {
+          setHighestArmorId(null);
         }
 
         const armorBonuses = sumBy(
@@ -78,8 +86,9 @@ export function DefenseProvider({ children }: PropsWithChildren<unknown>) {
     () => ({
       totalDefense,
       recalculateDefense,
+      highestArmorId,
     }),
-    [totalDefense, recalculateDefense]
+    [totalDefense, recalculateDefense, highestArmorId]
   );
 
   return (

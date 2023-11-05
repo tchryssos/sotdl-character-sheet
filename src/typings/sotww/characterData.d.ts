@@ -19,6 +19,7 @@ export type SotwwWeapon = {
   weapon_grip: 'off' | 'one' | 'two';
   weapon_description: string;
   weapon_equipped: boolean;
+  weapon_id: string;
 };
 
 export type SotwwArmor = {
@@ -27,6 +28,7 @@ export type SotwwArmor = {
   armor_defense_bonus: number;
   armor_defense_score: number;
   armor_equipped: boolean;
+  armor_id: string;
 };
 
 export type SotwwCharacterData = {

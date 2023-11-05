@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { PropsWithChildren, useCallback, useContext, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { v4 as uuid4 } from 'uuid';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AAMFormSection } from '~/components/form/AAMFormSection';
@@ -30,6 +31,7 @@ const createDefaultArmor = (): SotwwArmor => ({
   armor_defense_score: 11,
   armor_defense_bonus: 0,
   armor_equipped: false,
+  armor_id: uuid4(),
 });
 
 export function ArmorInputs() {
