@@ -27,6 +27,7 @@ import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { CurrencyInputs } from './inputs/CurrencyInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
 import { EquipmentInputs } from './inputs/EquipmentInputs';
+import { MagicTraditionInputs } from './inputs/MagicInputs/MagicTraditionInputs';
 import { PathInputs } from './inputs/PathInputs/PathInputs';
 import { PhysicalTraitsInputs } from './inputs/PhysicalTraitsInputs';
 import { WeaponInputs } from './inputs/WeaponInputs';
@@ -51,6 +52,10 @@ const tabLabels: TabLabelObject[] = [
   {
     label: 'Combat',
     icon: RpgIcons.StackedSkulls,
+  },
+  {
+    label: 'Magic',
+    icon: RpgIcons.Fireball,
   },
   {
     label: 'Inventory',
@@ -125,6 +130,13 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
                 </GridBox>
                 <WeaponInputs />
                 <ArmorInputs />
+              </GridBox>
+            </TabPanel>
+
+            {/* Magic */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <MagicTraditionInputs />
               </GridBox>
             </TabPanel>
 

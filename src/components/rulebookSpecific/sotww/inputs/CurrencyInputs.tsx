@@ -1,4 +1,3 @@
-import { GridBox } from '~/components/box/GridBox';
 import { FormSection } from '~/components/form/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { RpgIcons } from '~/constants/icons';
