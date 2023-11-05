@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -13,9 +13,11 @@ import { TextInput } from '~/components/form/TextInput';
 import { Text } from '~/components/Text';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
+import { DefenseContext } from '../../DefenseProvider';
 import { createArmorFieldName } from './utils';
 
 interface ArmorInputItemProps
@@ -26,6 +28,7 @@ export function ArmorInputItem({
   onDelete,
 }: ArmorInputItemProps) {
   const { isEditMode } = useContext(EditContext);
+  const { recalculateDefense } = useContext(DefenseContext);
   const { watch } = useFormContext<SotwwCharacterData>();
 
   const isXxs = useBreakpointsLessThan('xs');
@@ -40,15 +43,15 @@ export function ArmorInputItem({
     'armor_defense_score',
     index
   );
-  const armorScore = watch(armorScoreFieldName) as number;
+  const armorScore = guaranteeNumberValue(watch(armorScoreFieldName) as number);
 
   const armorBonusFieldName = createArmorFieldName(
     'armor_defense_bonus',
     index
   );
-  const armorBonus = watch(armorBonusFieldName) as number;
+  const armorBonus = guaranteeNumberValue(watch(armorBonusFieldName) as number);
 
-  const naturalDefense = watch('defense_natural');
+  const naturalDefense = guaranteeNumberValue(watch('defense_natural'));
 
   const relevantArmorBonus =
     armorScore > naturalDefense ? armorScore : armorBonus;
@@ -57,6 +60,10 @@ export function ArmorInputItem({
   const title = `${armorName}, Def ${
     armorScore > naturalDefense ? '' : '+'
   }${relevantArmorBonus}`;
+
+  useEffect(() => {
+    recalculateDefense();
+  }, [armorBonus, armorScore, armorEquipped, recalculateDefense]);
 
   return (
     <FormSection

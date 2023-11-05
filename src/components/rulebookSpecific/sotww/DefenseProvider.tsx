@@ -22,6 +22,19 @@ export function DefenseProvider({ children }: PropsWithChildren<unknown>) {
 
   const [totalDefense, setTotalDefense] = useState(DEFAULT_VALUES.defense);
 
+  /**
+   * There's an edge case where two equipped armor pieces with the same armor score
+   * but different bonuses are just sorted index-sequentially (I think).
+   *
+   * This means that there's no guarantee that the defense score will be "smart"
+   * enough to know that the players probably intend to use the armor with the lower
+   * bonus as their "main" armor, and get the defense bonus from the other piece.
+   *
+   * I'm not actually sure if this is possible in game, (ex. can you have two 15 armor
+   * score pieces at all? I doubt it) so it might be moot
+   * (which is why I'm not solving it now), but if I come back here trying to
+   * figure this out in the future, this should help.
+   */
   const recalculateDefense = useMemo(
     () =>
       debounce(() => {
@@ -33,8 +46,9 @@ export function DefenseProvider({ children }: PropsWithChildren<unknown>) {
         // Select only equipped armors, sort by defense score
         const equippedArmors = sortBy(
           armors.filter((a) => a.armor_equipped),
-          (a) => guaranteeNumberValue(a.armor_defense_score)
+          (a) => -guaranteeNumberValue(a.armor_defense_score)
         );
+
         const bestArmorScore = guaranteeNumberValue(
           equippedArmors[0]?.armor_defense_score
         );
