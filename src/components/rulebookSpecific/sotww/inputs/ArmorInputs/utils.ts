@@ -1,6 +1,7 @@
-import { SotwwArmor } from '~/typings/sotww/characterData';
+import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
+import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
-export const createArmorFieldName = (
-  name: keyof SotwwArmor,
-  index: number
-): `armors.${number}.${keyof SotwwArmor}` => `armors.${index}.${name}`;
+export const createArmorFieldName = makeNestedFieldNameFn<
+  SotwwCharacterData,
+  'armors'
+>('armors');

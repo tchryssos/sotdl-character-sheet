@@ -31,6 +31,11 @@ export type SotwwArmor = {
   armor_id: string;
 };
 
+export type SotwwEquipment = {
+  equipment_name: string;
+  equipment_description: string;
+};
+
 export type SotwwCharacterData = {
   type: SotwwName;
   name: string;
@@ -59,4 +64,5 @@ export type SotwwCharacterData = {
   speed: number;
   weapons: SotwwWeapon[];
   armors: SotwwArmor[];
+  equipment: SotwwEquipment[];
 };

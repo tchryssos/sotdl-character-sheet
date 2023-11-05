@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { PropsWithChildren, useCallback, useContext, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { v4 as uuid4 } from 'uuid';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AAMFormSection } from '~/components/form/AAMFormSection';
@@ -28,6 +29,7 @@ const createDefaultWeapon = (): SotwwWeapon => ({
   weapon_grip: 'one',
   weapon_traits: [],
   weapon_equipped: false,
+  weapon_id: uuid4(),
 });
 
 function WeaponChildWrapper({ children }: PropsWithChildren<unknown>) {
