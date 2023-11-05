@@ -28,4 +28,8 @@ export const DEFAULT_VALUES: SotwwCharacterData = {
   speed: 5,
   weapons: [],
   armors: [],
+  equipment: [],
+  currency_copper: 0,
+  currency_gold: 0,
+  currency_silver: 0,
 };

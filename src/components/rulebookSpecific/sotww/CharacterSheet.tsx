@@ -24,6 +24,7 @@ import { ArmorInputs } from './inputs/ArmorInputs';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
+import { CurrencyInputs } from './inputs/CurrencyInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
 import { EquipmentInputs } from './inputs/EquipmentInputs';
 import { PathInputs } from './inputs/PathInputs/PathInputs';
@@ -131,6 +132,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
                 <EquipmentInputs />
+                <CurrencyInputs />
               </GridBox>
             </TabPanel>
           </Tabs>

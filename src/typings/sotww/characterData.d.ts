@@ -65,4 +65,7 @@ export type SotwwCharacterData = {
   weapons: SotwwWeapon[];
   armors: SotwwArmor[];
   equipment: SotwwEquipment[];
+  currency_copper: number;
+  currency_silver: number;
+  currency_gold: number;
 };
