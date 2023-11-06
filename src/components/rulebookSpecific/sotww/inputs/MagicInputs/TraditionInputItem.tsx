@@ -31,12 +31,12 @@ const createTraditionFieldName = makeNestedFieldNameFn<
 >('magic_traditions');
 
 const createDefaultTraditionTalent = (): SotwwTraditionTalent => ({
-  talent_name: 'Control Air',
+  talent_name: '',
   talent_description: '',
 });
 
 const createDefaultSpell = (): SotwwSpell => ({
-  spell_name: 'Flight',
+  spell_name: '',
   spell_description: '',
   spell_level: 0,
   spell_casts: [
@@ -110,9 +110,9 @@ export function TraditionInputItem({
           icon={RpgIcons.Lightning}
           title={`Spells - ${traditionName}`}
         >
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <AddAnotherMultiField<SotwwMagicTradition>
             ChildWrapper={SpellChildWrapper}
+            addLabel="Empty (use Edit Mode to add some Spells)"
             createDefaultValue={createDefaultSpell}
             parentFieldName={
               createTraditionFieldName(

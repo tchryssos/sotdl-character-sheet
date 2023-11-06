@@ -9,7 +9,7 @@ import {
 import { TraditionInputItem } from './TraditionInputItem';
 
 const createDefaultTradition = (): SotwwMagicTradition => ({
-  tradition_name: 'Aeromancy',
+  tradition_name: '',
   tradition_spells: [],
   tradition_talents: [],
 });
