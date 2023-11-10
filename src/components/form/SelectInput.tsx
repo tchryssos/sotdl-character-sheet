@@ -21,18 +21,27 @@ const placeholderVal = 'placeholder-ignore';
 
 const multipleHeight: Spacing = 48;
 
-const Selector = styled.select(({ theme, multiple }) => ({
-  height: multiple ? theme.spacing[multipleHeight] : theme.spacing[40],
-  padding: theme.spacing[4],
-  fontSize: theme.fontSize.body,
-  width: '100%',
-  marginTop: theme.spacing[8],
-  ...(multiple && {
-    '&:focus, &:hover': {
-      height: multiple ? theme.spacing[96] : theme.spacing[multipleHeight],
-    },
-  }),
-}));
+const Selector = styled.select<{ showDisabledState: boolean }>(
+  ({ theme, multiple, showDisabledState }) => ({
+    height: multiple ? theme.spacing[multipleHeight] : theme.spacing[40],
+    padding: theme.spacing[4],
+    fontSize: theme.fontSize.body,
+    width: '100%',
+    marginTop: theme.spacing[8],
+    ...(multiple && {
+      '&:focus, &:hover': {
+        height: multiple ? theme.spacing[96] : theme.spacing[multipleHeight],
+      },
+    }),
+    ...(showDisabledState && {
+      backgroundColor: 'transparent',
+      outlineColor: theme.colors.accentLight,
+      borderColor: theme.colors.accentLight,
+      boxShadow: 'none',
+      borderStyle: 'solid',
+    }),
+  })
+);
 
 function Option({ value, label, disabled }: SelectOption) {
   return (
@@ -134,6 +143,7 @@ export function SelectInput<T extends Record<string, unknown>>(
           defaultValue={onChange && placeholder ? placeholderVal : undefined}
           disabled={disabled}
           multiple={multiple}
+          showDisabledState={Boolean(nonEditLocked || readOnly)}
           onChange={onChange}
           {...register?.(name, validations)}
         >

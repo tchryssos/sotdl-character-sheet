@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { PropsWithChildren, useContext, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -12,7 +13,10 @@ import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
 import { FORM_ROW_GAP } from '~/constants/styles';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import {
@@ -22,6 +26,7 @@ import {
   SotwwTraditionTalent,
 } from '~/typings/sotww/characterData';
 
+import { TraditionSpellInputItem } from './TraditionSpellInputItem';
 import { TraditionTalentInputItem } from './TraditionTalentInputItem';
 
 interface TraditionInputItemProps
@@ -50,12 +55,22 @@ const createDefaultSpell = (): SotwwSpell => ({
 
 function TalentChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanSm = useBreakpointsLessThan('sm');
-  return <GridBox columns={isLessThanSm ? 1 : 2}>{children}</GridBox>;
+  const isAtLeastLg = useBreakpointsAtLeast('lg');
+  return (
+    <GridBox columns={isAtLeastLg ? 3 : isLessThanSm ? 1 : 2}>
+      {children}
+    </GridBox>
+  );
 }
 
 function SpellChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanMd = useBreakpointsLessThan('md');
-  return <GridBox columns={isLessThanMd ? 1 : 2}>{children}</GridBox>;
+  const isAtLeastLg = useBreakpointsAtLeast('lg');
+  return (
+    <GridBox columns={isAtLeastLg ? 3 : isLessThanMd ? 1 : 2}>
+      {children}
+    </GridBox>
+  );
 }
 
 export function TraditionInputItem({
@@ -137,15 +152,13 @@ export function TraditionInputItem({
               fieldId,
               sortIndexMap,
             }) => (
-              // <SpellInputItem
-              //   fieldId={fieldId}
-              //   key={fieldId}
-              //   parentIndex={index}
-              //   postSortIndex={spellIndex}
-              //   sortIndexMap={sortIndexMap}
-              //   onDelete={spellOnDelete}
-              // />
-              <div>spells</div>
+              <TraditionSpellInputItem
+                fieldId={fieldId}
+                parentIndex={index}
+                postSortIndex={spellIndex}
+                sortIndexMap={sortIndexMap}
+                onDelete={spellOnDelete}
+              />
             )}
           </AddAnotherMultiField>
           {/* {!isEditMode && (
@@ -176,7 +189,7 @@ export function TraditionInputItem({
         labeledById="delete-tradition"
         message="Deleting it will delete all the associated talents and spells as well."
         open={showDeleteModal}
-        title="Are you sure you want to delete this Tradition?"
+        title={`Are you sure you want to delete the ${traditionName} tradition ?`}
       />
     </>
   );

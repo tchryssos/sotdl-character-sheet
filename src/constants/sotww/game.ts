@@ -65,3 +65,10 @@ export const WEAPON_PROPERTY_ABBREVIATIONS = [
   (obj, currProperty) => recursiveSetAbbrv(obj, currProperty),
   {} as Record<SotwwWeaponProperty, string>
 );
+
+export const spellLevelValueToName = {
+  0: 'starting',
+  1: 'novice',
+  2: 'expert',
+  3: 'master',
+} as const;
