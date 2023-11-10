@@ -42,7 +42,7 @@ export type SotwwSpellCast = {
 
 export type SotwwSpell = {
   spell_name: string;
-  spell_level: 0 | 1 | 2;
+  spell_level: 0 | 1 | 2 | 3;
   spell_description: string;
   spell_casts: SotwwSpellCast[];
 };
@@ -55,7 +55,7 @@ export type SotwwTraditionTalent = {
 export type SotwwMagicTradition = {
   tradition_name: string;
   tradition_spells: any[];
-  tradition_talents: any[];
+  tradition_talents: SotwwTraditionTalent[];
 };
 
 export type SotwwCharacterData = {

@@ -22,6 +22,8 @@ import {
   SotwwTraditionTalent,
 } from '~/typings/sotww/characterData';
 
+import { TraditionTalentInputItem } from './TraditionTalentInputItem';
+
 interface TraditionInputItemProps
   extends Omit<SortableAddAnotherChildProps, 'sortIndexMap' | 'fieldId'> {}
 
@@ -88,10 +90,11 @@ export function TraditionInputItem({
             )}
           </GridBox>
           <FlexBox flexDirection="column">
-            <LabelText marginBottom={8}>Magic Arts</LabelText>
+            <LabelText marginBottom={8}>Tradition Talents</LabelText>
             {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <AddAnotherMultiField<any>
               ChildWrapper={TalentChildWrapper}
+              addLabel={`+ Add a new ${traditionName} Talent`}
               createDefaultValue={createDefaultTraditionTalent}
               emptyLabel="Empty (use Edit Mode to add some Talents)"
               parentFieldName={createTraditionFieldName(
@@ -99,8 +102,12 @@ export function TraditionInputItem({
                 index
               )}
             >
-              {({ index: artIndex, onDelete: artOnDelete, fieldId }) => (
-                <div>tradition</div>
+              {({ index: talentIndex, onDelete: talentOnDelete }) => (
+                <TraditionTalentInputItem
+                  parentIndex={index}
+                  postSortIndex={talentIndex}
+                  onDelete={talentOnDelete}
+                />
               )}
             </AddAnotherMultiField>
           </FlexBox>
@@ -112,8 +119,9 @@ export function TraditionInputItem({
         >
           <AddAnotherMultiField<SotwwMagicTradition>
             ChildWrapper={SpellChildWrapper}
-            addLabel="Empty (use Edit Mode to add some Spells)"
+            addLabel={`+ Add a new ${traditionName} Spell`}
             createDefaultValue={createDefaultSpell}
+            emptyLabel="Empty (use Edit Mode to add some Spells)"
             parentFieldName={
               createTraditionFieldName(
                 'tradition_spells',

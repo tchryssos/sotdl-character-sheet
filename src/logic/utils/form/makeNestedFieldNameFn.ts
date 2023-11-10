@@ -17,3 +17,27 @@ export function makeNestedFieldNameFn<
   ): `${U}.${number}.${Extract<keyof T[U][number], string>}` =>
     `${parentFieldName}.${index}.${name}`;
 }
+
+export function makeDoubleNestedFieldNameFn<
+  T extends CharacterData,
+  // for ex. "armors" as in CharacterData.armors
+  U extends Extract<keyof ListFieldRecord<T>, string>,
+  // for ex. "armor_defense_value" as in CharacterData.armors[0].armor_defense_value
+  // @ts-expect-error T[U][number] is always valid
+  V extends Extract<keyof ListFieldRecord<T[U][number]>, string>
+>(grandParentFieldName: U, parentFieldName: V) {
+  return (
+    parentIndex: number,
+    fieldName: Extract<
+      // @ts-expect-error T[U][number][V][number] is always valid
+      keyof T[typeof grandParentFieldName][number][typeof parentFieldName][number],
+      string
+    >,
+    index: number
+  ): `${U}.${number}.${V}.${number}.${Extract<
+    // @ts-expect-error T[U][number][V][number] is always valid
+    keyof T[U][number][V][number],
+    string
+  >}` =>
+    `${grandParentFieldName}.${parentIndex}.${parentFieldName}.${index}.${fieldName}`;
+}
