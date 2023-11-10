@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { startCase } from 'lodash';
-import { useContext } from 'react';
+import { PropsWithChildren, useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
+import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
+import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/FormSection';
+import { LabelText } from '~/components/form/Label';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
@@ -14,7 +18,11 @@ import { spellLevelValueToName } from '~/constants/sotww/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { makeDoubleNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { SortableAddAnotherChildProps } from '~/typings/form';
-import { SotwwCharacterData, SotwwSpell } from '~/typings/sotww/characterData';
+import {
+  SotwwCharacterData,
+  SotwwSpell,
+  SotwwSpellCast,
+} from '~/typings/sotww/characterData';
 
 interface SpellInputItemProps extends SortableAddAnotherChildProps {
   parentIndex: number;
@@ -31,6 +39,18 @@ const createSpellFieldName = makeDoubleNestedFieldNameFn<
   'magic_traditions',
   'tradition_spells'
 >('magic_traditions', 'tradition_spells');
+
+const createDefaultSpellCast = (): SotwwSpellCast => ({
+  spell_cast: false,
+});
+
+function SpellCastWrapper({ children }: PropsWithChildren<unknown>) {
+  return (
+    <FlexBox flexWrap="wrap" gap={8}>
+      {children}
+    </FlexBox>
+  );
+}
 
 export function TraditionSpellInputItem({
   postSortIndex,
@@ -56,6 +76,9 @@ export function TraditionSpellInputItem({
   const levelFieldName = indexedCreateSpellFieldName('spell_level');
   const level = watch(levelFieldName) as SotwwSpell['spell_level'];
 
+  const spellCastsFieldName = indexedCreateSpellFieldName('spell_casts');
+  const spellCasts = watch(spellCastsFieldName) as SotwwSpellCast[];
+
   return (
     <FormSection
       borderless
@@ -63,23 +86,44 @@ export function TraditionSpellInputItem({
       isNested
       title={`${name} - ${startCase(spellLevelValueToName[level])}`}
     >
-      <FlexBox flexDirection="column" gap={16}>
-        <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
-          <SelectInput
-            label="Level"
-            name={levelFieldName}
-            options={spellLevelOptions}
-          />
-          <TextInput label="Name" name={nameFieldName} />
-          {/* {isEditMode && (
-            <DeleteButton onDelete={() => onDelete(postSortIndex)} />
-          )} */}
-        </GridBox>
-        <TextAreaInput
-          label="Description"
-          name={indexedCreateSpellFieldName('spell_description')}
+      <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
+        <SelectInput
+          label="Level"
+          name={levelFieldName}
+          options={spellLevelOptions}
         />
+        <TextInput label="Name" name={nameFieldName} />
+      </GridBox>
+      <TextAreaInput
+        label="Description"
+        name={indexedCreateSpellFieldName('spell_description')}
+      />
+      <FlexBox flexDirection="column" gap={8}>
+        {(isEditMode || Boolean(spellCasts.length)) && (
+          <LabelText>Spell Casts</LabelText>
+        )}
+        <AddAnotherMultiField<any>
+          ChildWrapper={SpellCastWrapper}
+          addLabel="+"
+          createDefaultValue={createDefaultSpellCast}
+          emptyLabel={null}
+          parentFieldName={spellCastsFieldName}
+          simpleDelete
+        >
+          {({ index: spellCastIndex }) => (
+            <CheckboxInput
+              hideLabel
+              name={`${spellCastsFieldName}.${spellCastIndex}.spell_cast`}
+              useX
+            />
+          )}
+        </AddAnotherMultiField>
       </FlexBox>
+      {isEditMode && (
+        <FlexBox justifyContent="flex-end">
+          <DeleteButton onDelete={() => onDelete(postSortIndex)} />
+        </FlexBox>
+      )}
     </FormSection>
   );
 }
