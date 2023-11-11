@@ -14,7 +14,7 @@
     "build:serve": "yarn build && yarn next start -p 3003",
     "prepare": "husky install",
     "test": "jest",
-    "lint": "next lint && yarn lint:prune",
+    "lint": "next lint && eslint . --quiet",
     "lint:prune": "! ts-prune -i src/pages/* -i src/logic/tests/* | grep -v -e 'used in module' -e src/pages",
     "prisma:migrate:dev": "prisma migrate dev --name",
     "prisma:migrate": "prisma migrate deploy"

@@ -11,6 +11,7 @@ import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
+import { ErrorResponse } from '~/typings/api';
 import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { RulebookType } from '~/typings/rulebooks';
@@ -48,7 +49,9 @@ export function CloneButton({
       ]);
       push(createCharacterRoute(resp.id));
     } else {
-      addNotifications([createNotification(ERRORS[resp.error as ErrorTypes])]);
+      addNotifications([
+        createNotification(ERRORS[(resp as ErrorResponse).error as ErrorTypes]),
+      ]);
     }
   };
 

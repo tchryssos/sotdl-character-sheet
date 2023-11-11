@@ -1,0 +1,26 @@
+name: Lint
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-linters:
+    name: Run linters
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/yarn
+      - name: Init prisma
+        run: yarn prisma generate
+      - name: Run linting
+        run: yarn lint
+      - name: Check Typescript
+        run: yarn tsc
