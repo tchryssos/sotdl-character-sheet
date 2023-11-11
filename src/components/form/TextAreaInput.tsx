@@ -12,7 +12,7 @@ import { Label } from './Label';
 const defaultHeight = 40;
 
 export const TextArea = styled(TextareaAutosize)<{ height?: number }>(
-  ({ theme, height }) => ({
+  ({ theme, height, readOnly }) => ({
     height: pxToRem(height || defaultHeight),
     minHeight: theme.spacing[40],
     fontSize: theme.fontSize.subBody,
@@ -21,6 +21,13 @@ export const TextArea = styled(TextareaAutosize)<{ height?: number }>(
     fontFamily: theme.fontFamily.normal,
     resize: 'vertical',
     marginTop: theme.spacing[8],
+    ...(readOnly && {
+      backgroundColor: 'transparent',
+      outlineColor: theme.colors.accentLight,
+      borderColor: theme.colors.accentLight,
+      boxShadow: 'none',
+      borderStyle: 'solid',
+    }),
   })
 );
 

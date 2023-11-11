@@ -11,8 +11,9 @@ import {
 import { EditContext } from '~/logic/contexts/editContext';
 import { Spacing } from '~/typings/theme';
 
+import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
-import { Pill } from '../Pill';
+import { Pill } from '../pills/Pill';
 import { Text } from '../Text';
 import { Label } from './Label';
 
@@ -20,18 +21,27 @@ const placeholderVal = 'placeholder-ignore';
 
 const multipleHeight: Spacing = 48;
 
-const Selector = styled.select(({ theme, multiple }) => ({
-  height: multiple ? theme.spacing[multipleHeight] : theme.spacing[40],
-  padding: theme.spacing[4],
-  fontSize: theme.fontSize.body,
-  width: '100%',
-  marginTop: theme.spacing[8],
-  ...(multiple && {
-    '&:focus, &:hover': {
-      height: multiple ? theme.spacing[96] : theme.spacing[multipleHeight],
-    },
-  }),
-}));
+const Selector = styled.select<{ showDisabledState: boolean }>(
+  ({ theme, multiple, showDisabledState }) => ({
+    height: multiple ? theme.spacing[multipleHeight] : theme.spacing[40],
+    padding: theme.spacing[4],
+    fontSize: theme.fontSize.body,
+    width: '100%',
+    marginTop: theme.spacing[8],
+    ...(multiple && {
+      '&:focus, &:hover': {
+        height: multiple ? theme.spacing[96] : theme.spacing[multipleHeight],
+      },
+    }),
+    ...(showDisabledState && {
+      backgroundColor: 'transparent',
+      outlineColor: theme.colors.accentLight,
+      borderColor: theme.colors.accentLight,
+      boxShadow: 'none',
+      borderStyle: 'solid',
+    }),
+  })
+);
 
 function Option({ value, label, disabled }: SelectOption) {
   return (
@@ -63,10 +73,14 @@ function ValueDisplay({ name, multiple }: ValueDisplayProps) {
 
   if (multiple && value) {
     if (!value.length) {
-      return <Text variant="body-sm">None</Text>;
+      return (
+        <Box marginTop={8}>
+          <Text variant="body-sm">None</Text>
+        </Box>
+      );
     }
     return (
-      <FlexBox gap={8} marginTop={8}>
+      <FlexBox flexWrap="wrap" gap={8} marginTop={8}>
         {value.map((v) => (
           <Pill key={v} text={upperFirst(v)} />
         ))}
@@ -129,6 +143,7 @@ export function SelectInput<T extends Record<string, unknown>>(
           defaultValue={onChange && placeholder ? placeholderVal : undefined}
           disabled={disabled}
           multiple={multiple}
+          showDisabledState={Boolean(nonEditLocked || readOnly)}
           onChange={onChange}
           {...register?.(name, validations)}
         >

@@ -1,4 +1,3 @@
-import styled from '@emotion/styled';
 import { startCase, toUpper } from 'lodash';
 import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -13,8 +12,8 @@ import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
-import { Pill } from '~/components/Pill';
-import { Text } from '~/components/Text';
+import { Pill } from '~/components/pills/Pill';
+import { PropertyPills } from '~/components/pills/PropertyPills';
 import { ATTRIBUTES, WEAPON_TRAITS, WeaponTrait } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import {
@@ -25,11 +24,6 @@ import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttri
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
 import { EncumbranceContext } from '../../EncumbranceProvider';
-
-const TraitPill = styled(Pill)`
-  min-width: ${({ theme }) => theme.spacing[24]};
-  text-align: center;
-`;
 
 interface WeaponInputItemProps {
   index: number;
@@ -54,24 +48,6 @@ const weaponTraitsOptions: SelectOption[] = WEAPON_TRAITS.map((t) => ({
 
 interface WeaponTraitsDisplayProps {
   name: string;
-}
-
-function WeaponTraitsDisplay({ name }: WeaponTraitsDisplayProps) {
-  const { watch } = useFormContext<WwnCharacterData>();
-
-  const weaponTraits = watch(name as `weapons.${number}.weapon_traits`);
-
-  if (!weaponTraits.length) {
-    return <Text variant="body-sm">None</Text>;
-  }
-
-  return (
-    <FlexBox flexWrap="wrap" gap={8} marginTop={8}>
-      {weaponTraits.map((v) => (
-        <TraitPill key={v} text={toUpper(v)} />
-      ))}
-    </FlexBox>
-  );
 }
 
 function WeaponAttributeDisplay({ name }: WeaponTraitsDisplayProps) {
@@ -186,7 +162,7 @@ export function WeaponInputItem({
             options={weaponAttributeOptions}
           />
           <SelectInput<WwnCharacterData>
-            DisplayComponent={WeaponTraitsDisplay}
+            DisplayComponent={PropertyPills}
             label="Traits"
             multiple
             name={weaponTraitsFieldName}

@@ -3,6 +3,7 @@ import { ErrorResponse } from './api';
 import { RulebookType } from './rulebooks';
 import { SotdlCharacterData } from './sotdl/characterData';
 import { WwnCharacterData } from './wwn/characterData';
+import { SotwwCharacterData } from './sotww/characterData';
 
 export type CharacterSaveData = Omit<
   character,
@@ -11,7 +12,10 @@ export type CharacterSaveData = Omit<
   id: number | 'new';
 };
 
-export type CharacterData = SotdlCharacterData | WwnCharacterData;
+export type CharacterData =
+  | SotdlCharacterData
+  | WwnCharacterData
+  | SotwwCharacterData;
 
 export type StrictCharacter<T extends CharacterData> = Omit<
   character,

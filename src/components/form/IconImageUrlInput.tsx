@@ -8,7 +8,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { getIconButtonSize, IconButton } from '~/components/buttons/IconButton';
 import { RpgIcon } from '~/components/icons/RpgIcon';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
-import { getIconIdxFromUrl } from '~/logic/user';
+import { getIconIdxFromUrl } from '~/logic/utils/user';
 
 import { BaseButton } from '../buttons/BaseButton';
 import { Refresh } from '../icons/Refresh';

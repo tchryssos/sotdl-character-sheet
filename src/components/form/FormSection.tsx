@@ -30,6 +30,7 @@ interface FormSectionProps {
   gridTemplateRows?: GridBoxProps['gridTemplateRows'];
   isNested?: boolean;
   titleColor?: Color;
+  onToggleOpen?: (nextOpenState: boolean) => void;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -109,6 +110,7 @@ export function FormSection({
   gridTemplateRows = 'min-content',
   isNested,
   titleColor,
+  onToggleOpen,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -120,6 +122,7 @@ export function FormSection({
 
   const onChangeExpanded = () => {
     const nextOpenState = !isOpen;
+    onToggleOpen?.(nextOpenState);
     setIsOpen(nextOpenState);
     setSectionVisibilityInfo(
       visibilityTitle || title,

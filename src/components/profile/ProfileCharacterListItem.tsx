@@ -1,8 +1,10 @@
+/* eslint-disable camelcase */
 import styled from '@emotion/styled';
 
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
+import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { FlexBox } from '../box/FlexBox';
@@ -38,12 +40,24 @@ export function ProfileCharacterListItem({
   let characterDescriptor = '';
 
   switch (type) {
-    case 'sotdl':
-      characterDescriptor = (characterData as SotdlCharacterData).ancestry;
+    case 'sotdl': {
+      const { novice_path, expert_path, master_path, ancestry } =
+        characterData as SotdlCharacterData;
+      characterDescriptor =
+        master_path || expert_path || novice_path || ancestry || '';
       break;
+    }
     case 'wwn':
       characterDescriptor = (characterData as WwnCharacterData).class_name;
       break;
+    case 'sotww': {
+      const { path_novice, path_expert, path_master, ancestry } =
+        characterData as SotwwCharacterData;
+
+      characterDescriptor =
+        path_master || path_expert || path_novice || ancestry || '';
+      break;
+    }
     default:
       break;
   }

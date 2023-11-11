@@ -12,7 +12,7 @@ import { useIsEditingLocked } from '~/logic/hooks/useIsEditingLocked';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const StyledInput = styled.input<Pick<InputProps<any>, 'noOutline'>>(
-  ({ theme, noOutline }) => ({
+  ({ theme, noOutline, readOnly }) => ({
     width: '100%',
     height: theme.spacing[INPUT_HEIGHT],
     fontSize: theme.fontSize.body,
@@ -23,6 +23,13 @@ export const StyledInput = styled.input<Pick<InputProps<any>, 'noOutline'>>(
       borderColor: 'transparent',
       outlineColor: 'transparent',
       paddingLeft: 0,
+    }),
+    ...(readOnly && {
+      backgroundColor: 'transparent',
+      outlineColor: theme.colors.accentLight,
+      borderColor: theme.colors.accentLight,
+      boxShadow: 'none',
+      borderStyle: 'solid',
     }),
   })
 );

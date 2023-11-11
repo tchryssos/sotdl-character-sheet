@@ -4,8 +4,8 @@ import styled from '@emotion/styled';
 import { HOME_ROUTE } from '~/constants/routing/client';
 import { createUsersRoute } from '~/constants/routing/shared';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { getIconFromUser, getNameFromUser } from '~/logic/user';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import { getIconFromUser, getNameFromUser } from '~/logic/utils/user';
 import { Spacing } from '~/typings/theme';
 import { StrictSessionUser } from '~/typings/user';
 

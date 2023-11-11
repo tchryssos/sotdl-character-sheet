@@ -28,7 +28,7 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   ChildWrapper?: React.ComponentType<PropsWithChildren>;
   simpleDelete?: boolean;
   addLabel?: string;
-  emptyLabel?: string;
+  emptyLabel?: string | null;
   filterFn?: (props: SortableAddAnotherChildProps) => boolean;
 };
 
@@ -129,7 +129,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
           ];
         })}
       </ChildWrapper>
-      {!controlledFields.length && (
+      {!controlledFields.length && emptyLabel !== null && (
         <Text as="p" fontStyle="italic" variant="body-sm">
           {emptyLabel ||
             `Empty (use edit mode to add some ${startCase(parentFieldName)})`}
