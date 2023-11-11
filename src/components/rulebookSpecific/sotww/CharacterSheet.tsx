@@ -1,5 +1,7 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
@@ -69,11 +71,10 @@ const sharedGapProps = {
 };
 
 export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
+  const { user } = useUser();
   const {
     isEditMode,
     setIsEditMode,
-    // isLoading,
-    // setIsLoading,
     isMyCharacter,
     setIsMyCharacter,
     editProviderVal,
@@ -83,6 +84,12 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
   const router = useRouter();
 
   const isLessThanMd = useBreakpointsLessThan('md');
+
+  useEffect(() => {
+    setIsMyCharacter(
+      Boolean(character?.playerId && character.playerId === user?.id)
+    );
+  }, [character?.playerId, setIsMyCharacter, user?.id]);
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values

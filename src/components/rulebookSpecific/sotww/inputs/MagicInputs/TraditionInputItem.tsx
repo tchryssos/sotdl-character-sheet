@@ -161,18 +161,6 @@ export function TraditionInputItem({
               />
             )}
           </AddAnotherMultiField>
-          {/* {!isEditMode && (
-            <FlexBox justifyContent="flex-end">
-              <HideSpellsCheckbox
-                alwaysEditable
-                customOnChange={onHideUnpreparedSpells}
-                inputLike
-                isChecked={hideUnprepared}
-                name="Hide Unprepared Spells"
-                size="sm"
-              />
-            </FlexBox>
-          )} */}
         </FormSection>
       </FlexBox>
       <ConfirmationDialog

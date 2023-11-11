@@ -60,7 +60,7 @@ export function TraditionSpellInputItem({
   parentIndex,
 }: SpellInputItemProps) {
   const { isEditMode } = useContext(EditContext);
-  const { watch, setValue } = useFormContext();
+  const { watch } = useFormContext();
   const index = sortIndexMap.get(fieldId);
 
   if (index === undefined) {
@@ -94,30 +94,32 @@ export function TraditionSpellInputItem({
         />
         <TextInput label="Name" name={nameFieldName} />
       </GridBox>
-      <TextAreaInput
-        label="Description"
-        name={indexedCreateSpellFieldName('spell_description')}
-      />
-      <FlexBox flexDirection="column" gap={8}>
-        {(isEditMode || Boolean(spellCasts.length)) && (
-          <LabelText>Spell Casts</LabelText>
-        )}
-        <AddAnotherMultiField<any>
-          ChildWrapper={SpellCastWrapper}
-          addLabel="+"
-          createDefaultValue={createDefaultSpellCast}
-          emptyLabel={null}
-          parentFieldName={spellCastsFieldName}
-          simpleDelete
-        >
-          {({ index: spellCastIndex }) => (
-            <CheckboxInput
-              hideLabel
-              name={`${spellCastsFieldName}.${spellCastIndex}.spell_cast`}
-              useX
-            />
+      <FlexBox flexDirection="column" gap={16}>
+        <TextAreaInput
+          label="Description"
+          name={indexedCreateSpellFieldName('spell_description')}
+        />
+        <FlexBox flexDirection="column" gap={8}>
+          {(isEditMode || Boolean(spellCasts.length)) && (
+            <LabelText>Spell Casts</LabelText>
           )}
-        </AddAnotherMultiField>
+          <AddAnotherMultiField<any>
+            ChildWrapper={SpellCastWrapper}
+            addLabel="+"
+            createDefaultValue={createDefaultSpellCast}
+            emptyLabel={null}
+            parentFieldName={spellCastsFieldName}
+            simpleDelete
+          >
+            {({ index: spellCastIndex }) => (
+              <CheckboxInput
+                hideLabel
+                name={`${spellCastsFieldName}.${spellCastIndex}.spell_cast`}
+                useX
+              />
+            )}
+          </AddAnotherMultiField>
+        </FlexBox>
       </FlexBox>
       {isEditMode && (
         <FlexBox justifyContent="flex-end">

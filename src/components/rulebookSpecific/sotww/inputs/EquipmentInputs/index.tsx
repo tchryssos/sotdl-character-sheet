@@ -24,7 +24,7 @@ function EquipmentChildWrapper({ children }: PropsWithChildren<unknown>) {
 }
 
 const createDefaultEquipment = (): SotwwEquipment => ({
-  equipment_name: 'Poultice',
+  equipment_name: '',
   equipment_description: '',
 });
 
