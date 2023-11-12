@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import { PropsWithChildren, useContext, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -13,10 +12,7 @@ import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
 import { FORM_ROW_GAP } from '~/constants/styles';
 import { EditContext } from '~/logic/contexts/editContext';
-import {
-  useBreakpointsAtLeast,
-  useBreakpointsLessThan,
-} from '~/logic/hooks/useBreakpoints';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import {
@@ -45,7 +41,7 @@ const createDefaultTraditionTalent = (): SotwwTraditionTalent => ({
 const createDefaultSpell = (): SotwwSpell => ({
   spell_name: '',
   spell_description: '',
-  spell_level: 0,
+  spell_level: 1,
   spell_casts: [
     {
       spell_cast: false,
@@ -55,22 +51,12 @@ const createDefaultSpell = (): SotwwSpell => ({
 
 function TalentChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanSm = useBreakpointsLessThan('sm');
-  const isAtLeastLg = useBreakpointsAtLeast('lg');
-  return (
-    <GridBox columns={isAtLeastLg ? 3 : isLessThanSm ? 1 : 2}>
-      {children}
-    </GridBox>
-  );
+  return <GridBox columns={isLessThanSm ? 1 : 2}>{children}</GridBox>;
 }
 
 function SpellChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanMd = useBreakpointsLessThan('md');
-  const isAtLeastLg = useBreakpointsAtLeast('lg');
-  return (
-    <GridBox columns={isAtLeastLg ? 3 : isLessThanMd ? 1 : 2}>
-      {children}
-    </GridBox>
-  );
+  return <GridBox columns={isLessThanMd ? 1 : 2}>{children}</GridBox>;
 }
 
 export function TraditionInputItem({
