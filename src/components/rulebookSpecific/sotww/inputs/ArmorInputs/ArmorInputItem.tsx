@@ -59,13 +59,34 @@ export function ArmorInputItem({
 
   const armorId = watch(armorIdFieldName);
 
-  const relevantArmorBonus =
-    armorId === highestArmorId ? armorScore : armorBonus;
+  const naturalDefense = guaranteeNumberValue(watch('defense_natural'));
+
+  let relevantArmorBonus: {
+    type: 'score' | 'bonus';
+    value: number;
+  } = {
+    type: 'score',
+    value: armorScore,
+  };
+
+  if (highestArmorId) {
+    if (armorId !== highestArmorId) {
+      relevantArmorBonus = {
+        type: 'bonus',
+        value: armorBonus,
+      };
+    }
+  } else if (armorScore <= naturalDefense) {
+    relevantArmorBonus = {
+      type: 'bonus',
+      value: armorBonus,
+    };
+  }
 
   // If the armor would set a new defense score, show that, otherwise, show bonus with +
   const title = `${armorName}, Def ${
-    armorId === highestArmorId ? '' : '+'
-  }${relevantArmorBonus}`;
+    relevantArmorBonus.type === 'score' ? '' : '+'
+  }${relevantArmorBonus.value}`;
 
   useEffect(() => {
     recalculateDefense();

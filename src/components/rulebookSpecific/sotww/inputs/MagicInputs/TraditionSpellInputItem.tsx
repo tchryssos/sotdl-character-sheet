@@ -86,46 +86,49 @@ export function TraditionSpellInputItem({
       isNested
       title={`${name} - ${startCase(spellLevelValueToName[level])}`}
     >
-      <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
-        <SelectInput
-          label="Level"
-          name={levelFieldName}
-          options={spellLevelOptions}
-        />
-        <TextInput label="Name" name={nameFieldName} />
-      </GridBox>
       <FlexBox flexDirection="column" gap={16}>
-        <TextAreaInput
-          label="Description"
-          name={indexedCreateSpellFieldName('spell_description')}
-        />
-        <FlexBox flexDirection="column" gap={8}>
-          {(isEditMode || Boolean(spellCasts.length)) && (
-            <LabelText>Spell Casts</LabelText>
-          )}
-          <AddAnotherMultiField<any>
-            ChildWrapper={SpellCastWrapper}
-            addLabel="+"
-            createDefaultValue={createDefaultSpellCast}
-            emptyLabel={null}
-            parentFieldName={spellCastsFieldName}
-            simpleDelete
-          >
-            {({ index: spellCastIndex }) => (
-              <CheckboxInput
-                hideLabel
-                name={`${spellCastsFieldName}.${spellCastIndex}.spell_cast`}
-                useX
-              />
+        <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
+          <SelectInput
+            label="Level"
+            name={levelFieldName}
+            options={spellLevelOptions}
+          />
+          <TextInput label="Name" name={nameFieldName} />
+        </GridBox>
+        <FlexBox flexDirection="column" gap={16}>
+          <TextAreaInput
+            label="Description"
+            name={indexedCreateSpellFieldName('spell_description')}
+          />
+          <FlexBox flexDirection="column" gap={8}>
+            {(isEditMode || Boolean(spellCasts.length)) && (
+              <LabelText>Spell Casts</LabelText>
             )}
-          </AddAnotherMultiField>
+            <AddAnotherMultiField<any>
+              ChildWrapper={SpellCastWrapper}
+              addLabel="+"
+              createDefaultValue={createDefaultSpellCast}
+              emptyLabel={null}
+              parentFieldName={spellCastsFieldName}
+              simpleDelete
+            >
+              {({ index: spellCastIndex }) => (
+                <CheckboxInput
+                  alwaysEditable
+                  hideLabel
+                  name={`${spellCastsFieldName}.${spellCastIndex}.spell_cast`}
+                  useX
+                />
+              )}
+            </AddAnotherMultiField>
+          </FlexBox>
         </FlexBox>
+        {isEditMode && (
+          <FlexBox justifyContent="flex-end">
+            <DeleteButton onDelete={() => onDelete(postSortIndex)} />
+          </FlexBox>
+        )}
       </FlexBox>
-      {isEditMode && (
-        <FlexBox justifyContent="flex-end">
-          <DeleteButton onDelete={() => onDelete(postSortIndex)} />
-        </FlexBox>
-      )}
     </FormSection>
   );
 }
