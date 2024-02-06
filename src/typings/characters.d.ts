@@ -4,6 +4,7 @@ import { RulebookType } from './rulebooks';
 import { SotdlCharacterData } from './sotdl/characterData';
 import { WwnCharacterData } from './wwn/characterData';
 import { SotwwCharacterData } from './sotww/characterData';
+import { CwnCharacterData } from './cwn/characterData';
 
 export type CharacterSaveData = Omit<
   character,
@@ -15,7 +16,8 @@ export type CharacterSaveData = Omit<
 export type CharacterData =
   | SotdlCharacterData
   | WwnCharacterData
-  | SotwwCharacterData;
+  | SotwwCharacterData
+  | CwnCharacterData;
 
 export type StrictCharacter<T extends CharacterData> = Omit<
   character,
