@@ -20,8 +20,10 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
+import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
+import { SkillInputs } from './inputs/SkillInputs';
 
 interface CwnCharacterSheetProps {
   character: StrictCharacter<CwnCharacterData>;
@@ -108,6 +110,15 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
               <BasicInfoInputs />
               <BackgroundInputs />
+            </GridBox>
+          </TabPanel>
+
+          {/* Stats */}
+          <TabPanel>
+            <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+              <AttributeInputs />
+              <SkillInputs />
+              {/* <EncumbranceInput /> */}
             </GridBox>
           </TabPanel>
         </Tabs>
