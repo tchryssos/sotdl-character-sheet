@@ -4,7 +4,6 @@ export type CwnCharacterData = {
   type: CwnName;
   name: string;
   level: number;
-  ancestry: string;
   goal: string;
   description: string;
   attribute_strength: number;
