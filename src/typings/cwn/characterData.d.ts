@@ -1,4 +1,11 @@
+import { ContactRelationship } from '~/constants/cwn/game';
 import { CwnName } from './game';
+
+export interface CwnContact {
+  relationship: ContactRelationship;
+  name: string;
+  description: string;
+}
 
 export type CwnCharacterData = {
   type: CwnName;
@@ -14,8 +21,6 @@ export type CwnCharacterData = {
   attribute_charisma: number;
   background_name: string;
   background_details: string;
-  class_name: string;
-  class_abilities: WwnClassAbility[];
   skill_administer: number;
   skill_connect: number;
   skill_drive: number;
@@ -36,6 +41,7 @@ export type CwnCharacterData = {
   skill_trade: number;
   skill_work: number;
   remaining_skill_points: number;
+  contacts: CwnContact[];
   foci: WwnFocus[];
   magic_efforts: WwnEffort[];
   magic_traditions: WwnTradition[];

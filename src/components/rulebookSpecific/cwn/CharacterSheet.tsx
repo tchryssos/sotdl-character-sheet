@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+import { Box } from '~/components/box/Box';
 import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { TabPanel } from '~/components/tabs/TabPanel';
@@ -23,6 +24,7 @@ import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
+import { ContactsInput } from './inputs/ContactsInput';
 import { SkillInputs } from './inputs/SkillInputs';
 
 interface CwnCharacterSheetProps {
@@ -110,6 +112,9 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
               <BasicInfoInputs />
               <BackgroundInputs />
+              <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
+                <ContactsInput />
+              </Box>
             </GridBox>
           </TabPanel>
 

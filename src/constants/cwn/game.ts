@@ -26,3 +26,6 @@ export const SKILLS = (
   UNSORTED_SKILLS as unknown as string[]
 ).sort() as unknown as typeof UNSORTED_SKILLS;
 export type Skill = (typeof UNSORTED_SKILLS)[number];
+
+export const CONTACT_RELATIONSHIPS = ['acquaintance', 'friend'] as const;
+export type ContactRelationship = (typeof CONTACT_RELATIONSHIPS)[number];
