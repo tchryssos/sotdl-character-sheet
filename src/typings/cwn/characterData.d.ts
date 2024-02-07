@@ -7,6 +7,11 @@ export interface CwnContact {
   description: string;
 }
 
+export interface CwnEdge {
+  name: string;
+  description: string;
+}
+
 export type CwnCharacterData = {
   type: CwnName;
   name: string;
@@ -43,6 +48,7 @@ export type CwnCharacterData = {
   remaining_skill_points: number;
   contacts: CwnContact[];
   foci: WwnFocus[];
+  edges: CwnEdge[];
   magic_efforts: WwnEffort[];
   magic_traditions: WwnTradition[];
   magic_spell_slots: WwnSpellSlot[];

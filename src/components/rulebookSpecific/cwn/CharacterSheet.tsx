@@ -25,6 +25,7 @@ import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
+import { EdgesInput } from './inputs/EdgesInput';
 import { SkillInputs } from './inputs/SkillInputs';
 
 interface CwnCharacterSheetProps {
@@ -123,7 +124,15 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
               <AttributeInputs />
               <SkillInputs />
-              {/* <EncumbranceInput /> */}
+            </GridBox>
+          </TabPanel>
+
+          {/* Abilities */}
+          <TabPanel>
+            <GridBox columns={1} {...sharedGapProps}>
+              <EdgesInput />
+              {/* <ClassInputs />
+              <FociInputs /> */}
             </GridBox>
           </TabPanel>
         </Tabs>

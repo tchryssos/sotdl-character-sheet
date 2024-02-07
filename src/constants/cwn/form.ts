@@ -38,6 +38,7 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   skill_work: CWN_SKILL_UNTRAINED,
   remaining_skill_points: 0,
   foci: [],
+  edges: [],
   magic_efforts: [],
   magic_traditions: [],
   magic_spell_slots: [],

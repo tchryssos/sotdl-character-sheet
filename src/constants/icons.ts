@@ -35,4 +35,5 @@ export enum RpgIcons {
   Weed = '286',
   Foot = '081',
   SunglassesGuy = '010',
+  PuzzlePiece = '411',
 }

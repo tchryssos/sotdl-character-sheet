@@ -30,7 +30,7 @@ const relationshipSelectOptions: SelectOption[] = CONTACT_RELATIONSHIPS.map(
   })
 );
 
-export function ContactInput({
+export function ContactInputItem({
   postSortIndex: index,
   onDelete,
 }: ContactInputProps) {

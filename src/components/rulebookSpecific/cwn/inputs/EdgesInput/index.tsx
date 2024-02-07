@@ -5,32 +5,31 @@ import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { FormSection } from '~/components/form/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { CwnCharacterData, CwnContact } from '~/typings/cwn/characterData';
+import { CwnCharacterData, CwnEdge } from '~/typings/cwn/characterData';
 
-import { ContactInputItem } from './ContactInputItem';
+import { EdgeInputItem } from './EdgeInputItem';
 
 const createDefaultValue = () =>
   ({
     name: '',
-    relationship: 'acquaintance',
     description: '',
-  } satisfies CwnContact);
+  } satisfies CwnEdge);
 
-function ContactsChildWrapper({ children }: PropsWithChildren<unknown>) {
-  const lessThanMd = useBreakpointsLessThan('md');
-  return <GridBox columns={lessThanMd ? 1 : 2}>{children}</GridBox>;
+function EdgeChildWrapper({ children }: PropsWithChildren<unknown>) {
+  const isLessThanSm = useBreakpointsLessThan('sm');
+  return <GridBox columns={isLessThanSm ? 1 : 2}>{children}</GridBox>;
 }
 
-export function ContactsInput() {
+export function EdgesInput() {
   return (
-    <FormSection columns={1} icon={RpgIcons.SunglassesGuy} title="Contacts">
+    <FormSection columns={1} icon={RpgIcons.PuzzlePiece} title="Edges">
       <AddAnotherMultiField<CwnCharacterData>
-        ChildWrapper={ContactsChildWrapper}
+        ChildWrapper={EdgeChildWrapper}
         createDefaultValue={createDefaultValue}
-        parentFieldName="contacts"
+        parentFieldName="edges"
       >
         {({ index, onDelete, fieldId }) => (
-          <ContactInputItem
+          <EdgeInputItem
             key={fieldId}
             postSortIndex={index}
             onDelete={onDelete}
