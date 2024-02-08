@@ -6,7 +6,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { LabelText } from '~/components/form/Label';
 import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';

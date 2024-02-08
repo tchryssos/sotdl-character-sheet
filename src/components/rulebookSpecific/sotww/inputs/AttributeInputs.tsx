@@ -1,7 +1,7 @@
 import { startCase } from 'lodash';
 
 import { BonusInput } from '~/components/form/BonusInput';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInputProps } from '~/components/form/typings';
 import { RpgIcons } from '~/constants/icons';
 import { ATTRIBUTES } from '~/constants/sotww/game';

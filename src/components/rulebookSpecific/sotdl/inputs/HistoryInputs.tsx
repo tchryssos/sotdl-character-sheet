@@ -2,14 +2,14 @@ import { GridBox } from '~/components/box/GridBox';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 
-import { FormSection } from '../../../form/FormSection';
+import { FormSection } from '../../../form/containers/FormSection';
 import { TextAreaInput } from '../../../form/TextAreaInput';
 import { TextInput } from '../../../form/TextInput';
 import { ExpertPathInput } from './ExpertPathInput';
 import { MasterPathInput } from './MasterPathInput';
 import { NovicePathInput } from './NovicePathInput';
 
-export const HistoryInputs: React.FC = () => {
+export function HistoryInputs() {
   const isLessThanSm = useBreakpointsLessThan('sm');
   return (
     <FormSection columns={1} title="History">
@@ -27,4 +27,4 @@ export const HistoryInputs: React.FC = () => {
       </GridBox>
     </FormSection>
   );
-};
+}

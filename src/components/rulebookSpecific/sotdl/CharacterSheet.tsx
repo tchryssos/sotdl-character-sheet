@@ -2,8 +2,8 @@ import { useUser } from '@auth0/nextjs-auth0';
 import { useEffect } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { Form as FormComponent } from '~/components/form/Form';
-import { FormSection } from '~/components/form/FormSection';
 import { ArmorInput } from '~/components/rulebookSpecific/sotdl/inputs/ArmorInput';
 import { AttributeInput } from '~/components/rulebookSpecific/sotdl/inputs/AttributeInput';
 import { CurrencyInputs } from '~/components/rulebookSpecific/sotdl/inputs/CurrencyInputs';

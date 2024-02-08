@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { RpgIcons } from '~/constants/icons';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';

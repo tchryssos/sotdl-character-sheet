@@ -1,6 +1,6 @@
 import { startCase } from 'lodash';
 
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { ATTRIBUTES } from '~/constants/wwn/game';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { RpgIcons } from '~/constants/icons';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';

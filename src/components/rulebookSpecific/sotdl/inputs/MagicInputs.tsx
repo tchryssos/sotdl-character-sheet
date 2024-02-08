@@ -14,7 +14,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import { SotdlCharacterData, SotdlSpell } from '~/typings/sotdl/characterData';
 
-import { FormSection } from '../../../form/FormSection';
+import { FormSection } from '../../../form/containers/FormSection';
 import { NumberInput } from '../../../form/NumberInput';
 import { TextAreaInput } from '../../../form/TextAreaInput';
 

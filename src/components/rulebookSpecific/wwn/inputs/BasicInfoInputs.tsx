@@ -1,6 +1,6 @@
 import { Box } from '~/components/box/Box';
 import { FlexBox } from '~/components/box/FlexBox';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';

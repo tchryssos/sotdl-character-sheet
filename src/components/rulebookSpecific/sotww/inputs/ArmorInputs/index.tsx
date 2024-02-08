@@ -4,9 +4,9 @@ import { useFormContext } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 
 import { GridBox } from '~/components/box/GridBox';
-import { AAMFormSection } from '~/components/form/AAMFormSection';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
+import { AAMFormSection } from '~/components/form/containers/AAMFormSection';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';

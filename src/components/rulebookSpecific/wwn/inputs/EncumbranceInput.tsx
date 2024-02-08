@@ -3,7 +3,7 @@ import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { Label } from '~/components/form/Label';
 import { Text } from '~/components/Text';
 import { RpgIcons } from '~/constants/icons';

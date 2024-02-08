@@ -10,8 +10,8 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 
 import { LoadingButton } from '../buttons/LoadingButton';
 import { CheckboxInput } from '../form/CheckboxInput';
+import { FormSection } from '../form/containers/FormSection';
 import { Form, FormBox } from '../form/Form';
-import { FormSection } from '../form/FormSection';
 import { SelectInput } from '../form/SelectInput';
 import { TextAreaInput } from '../form/TextAreaInput';
 import { TextInput } from '../form/TextInput';

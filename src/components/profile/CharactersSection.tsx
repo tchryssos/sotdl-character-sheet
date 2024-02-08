@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
 
-import { FormSection } from '../form/FormSection';
+import { FormSection } from '../form/containers/FormSection';
 import { Text } from '../Text';
 import { ProfileCharacterListItem } from './ProfileCharacterListItem';
 

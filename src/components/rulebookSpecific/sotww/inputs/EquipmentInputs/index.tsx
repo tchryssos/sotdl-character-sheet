@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
-import { AAMFormSection } from '~/components/form/AAMFormSection';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
+import { AAMFormSection } from '~/components/form/containers/AAMFormSection';
 import { RpgIcons } from '~/constants/icons';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import {

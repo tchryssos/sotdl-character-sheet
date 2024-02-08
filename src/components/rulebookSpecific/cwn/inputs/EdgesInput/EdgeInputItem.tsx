@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
-import { AAMItemFormSection } from '~/components/form/AAMItemFormSection';
+import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { EditContext } from '~/logic/contexts/editContext';

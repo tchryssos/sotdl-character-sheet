@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { AsciiFigure, AsciiText } from '~/components/ascii/Ascii';
 import { FlexBox } from '~/components/box/FlexBox';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';

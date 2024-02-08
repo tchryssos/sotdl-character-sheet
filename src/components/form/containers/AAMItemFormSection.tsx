@@ -1,6 +1,6 @@
 import { ComponentProps, PropsWithChildren } from 'react';
 
-import { FormSection } from '../FormSection';
+import { FormSection } from './FormSection';
 
 interface AAMItemFormSectionProps
   extends Pick<

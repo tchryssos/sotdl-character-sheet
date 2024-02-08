@@ -8,13 +8,13 @@ import { VisibilityContext } from '~/logic/contexts/visibilityContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Color } from '~/typings/theme';
 
-import { Box } from '../box/Box';
-import { FlexBox } from '../box/FlexBox';
-import { GridBox, GridBoxProps } from '../box/GridBox';
-import { BaseButton } from '../buttons/BaseButton';
-import { CollapseButton } from '../buttons/CollapseButton';
-import { RpgIcon } from '../icons/RpgIcon';
-import { Text } from '../Text';
+import { Box } from '../../box/Box';
+import { FlexBox } from '../../box/FlexBox';
+import { GridBox, GridBoxProps } from '../../box/GridBox';
+import { BaseButton } from '../../buttons/BaseButton';
+import { CollapseButton } from '../../buttons/CollapseButton';
+import { RpgIcon } from '../../icons/RpgIcon';
+import { Text } from '../../Text';
 
 interface FormSectionProps {
   title: string;

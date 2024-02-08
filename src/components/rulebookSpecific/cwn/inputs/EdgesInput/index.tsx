@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { CwnCharacterData, CwnEdge } from '~/typings/cwn/characterData';
