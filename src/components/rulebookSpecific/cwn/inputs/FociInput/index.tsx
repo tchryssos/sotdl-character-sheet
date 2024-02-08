@@ -7,6 +7,8 @@ import { RpgIcons } from '~/constants/icons';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { CwnCharacterData, CwnFocus } from '~/typings/cwn/characterData';
 
+import { FocusInputItem } from './FocusInputItem';
+
 function FociChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanSm = useBreakpointsLessThan('sm');
   return <GridBox columns={isLessThanSm ? 1 : 2}>{children}</GridBox>;
@@ -15,7 +17,7 @@ function FociChildWrapper({ children }: PropsWithChildren<unknown>) {
 const createDefaultValue = () =>
   ({
     name: '',
-    level: 1,
+    level: '1',
     description: '',
   } satisfies CwnFocus);
 
@@ -28,9 +30,11 @@ export function FociInput() {
         parentFieldName="foci"
       >
         {({ index, onDelete, fieldId }) => (
-          <div>
-            <div>foci</div>
-          </div>
+          <FocusInputItem
+            key={fieldId}
+            postSortIndex={index}
+            onDelete={onDelete}
+          />
         )}
       </AddAnotherMultiField>
     </FormSection>

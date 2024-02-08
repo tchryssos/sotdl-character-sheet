@@ -1,4 +1,4 @@
-import { ContactRelationship } from '~/constants/cwn/game';
+import { ContactRelationship, FocusLevel } from '~/constants/cwn/game';
 import { CwnName } from './game';
 
 export interface CwnContact {
@@ -14,7 +14,7 @@ export interface CwnEdge {
 
 export interface CwnFocus {
   name: string;
-  level: 1 | 2;
+  level: FocusLevel;
   description: string;
 }
 

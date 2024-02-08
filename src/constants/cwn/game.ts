@@ -29,3 +29,6 @@ export type Skill = (typeof UNSORTED_SKILLS)[number];
 
 export const CONTACT_RELATIONSHIPS = ['acquaintance', 'friend'] as const;
 export type ContactRelationship = (typeof CONTACT_RELATIONSHIPS)[number];
+
+export const FOCUS_LEVELS = ['1', '2'] as const;
+export type FocusLevel = (typeof FOCUS_LEVELS)[number];
