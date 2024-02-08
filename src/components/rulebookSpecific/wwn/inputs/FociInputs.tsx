@@ -1,16 +1,14 @@
-import { PropsWithChildren, useContext } from 'react';
+import { PropsWithChildren } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
-import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
+import { AAMItemTitleAndDelete } from '~/components/form/AAMItemTitleAndDelete';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
-import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
-import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnFocus } from '~/typings/wwn/characterData';
 
@@ -25,7 +23,6 @@ const createMakeFocusFieldName =
     `foci.${index}.${focusKey}`;
 
 function FocusItem({ index, onDelete }: FocusItemProps) {
-  const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext();
 
   const makeFocusFieldName = createMakeFocusFieldName(index);
@@ -39,18 +36,12 @@ function FocusItem({ index, onDelete }: FocusItemProps) {
 
   return (
     <AAMItemFormSection title={sectionTitle} visibilityTitle={`focus${index}`}>
-      <GridBox
-        alignItems="end"
-        gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
-      >
-        <TextInput<WwnCharacterData> label="Name" name={focusNameFieldName} />
-        {isEditMode && (
-          <AddAnotherMultiDelete
-            disabled={index === undefined}
-            onDelete={() => onDelete(index)}
-          />
-        )}
-      </GridBox>
+      <AAMItemTitleAndDelete<WwnCharacterData>
+        index={index}
+        label="Name"
+        name={focusNameFieldName}
+        onDelete={onDelete}
+      />
       <TextAreaInput<WwnCharacterData>
         label="Description"
         name={makeFocusFieldName('focus_description')}

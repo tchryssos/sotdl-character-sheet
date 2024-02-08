@@ -1,16 +1,12 @@
 import { capitalize } from 'lodash';
-import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { GridBox } from '~/components/box/GridBox';
-import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
+import { AAMItemTitleAndDelete } from '~/components/form/AAMItemTitleAndDelete';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
-import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { CONTACT_RELATIONSHIPS } from '~/constants/cwn/game';
-import { EditContext } from '~/logic/contexts/editContext';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
@@ -34,7 +30,6 @@ export function ContactInputItem({
   postSortIndex: index,
   onDelete,
 }: ContactInputProps) {
-  const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext<CwnCharacterData>();
 
   const contactNameFieldName = createContactFieldName('name', index);
@@ -51,15 +46,12 @@ export function ContactInputItem({
       title={`${contactName} - ${capitalize(contactRelationship)}`}
       visibilityTitle={`${contactName}${index}`}
     >
-      <GridBox
-        alignItems="end"
-        gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
-      >
-        <TextInput<CwnCharacterData> label="Name" name={contactNameFieldName} />
-        {isEditMode && (
-          <AddAnotherMultiDelete onDelete={() => onDelete(index)} />
-        )}
-      </GridBox>
+      <AAMItemTitleAndDelete<CwnCharacterData>
+        index={index}
+        label="Name"
+        name={contactNameFieldName}
+        onDelete={onDelete}
+      />
       <SelectInput<CwnCharacterData>
         label="Relationship"
         name={contactRelationshipFieldName}

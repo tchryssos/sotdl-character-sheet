@@ -1,12 +1,8 @@
-import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { GridBox } from '~/components/box/GridBox';
-import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
+import { AAMItemTitleAndDelete } from '~/components/form/AAMItemTitleAndDelete';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
-import { TextInput } from '~/components/form/TextInput';
-import { EditContext } from '~/logic/contexts/editContext';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
@@ -19,8 +15,6 @@ const createEdgeFieldName = makeNestedFieldNameFn<CwnCharacterData, 'edges'>(
 );
 
 export function EdgeInputItem({ onDelete, postSortIndex }: EdgeInputProps) {
-  const { isEditMode } = useContext(EditContext);
-
   const { watch } = useFormContext<CwnCharacterData>();
 
   const nameFieldName = createEdgeFieldName('name', postSortIndex);
@@ -30,15 +24,12 @@ export function EdgeInputItem({ onDelete, postSortIndex }: EdgeInputProps) {
       title={name}
       visibilityTitle={`${name}${postSortIndex}`}
     >
-      <GridBox
-        alignItems="end"
-        gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
-      >
-        <TextInput<CwnCharacterData> label="Edge Name" name={nameFieldName} />
-        {isEditMode && (
-          <AddAnotherMultiDelete onDelete={() => onDelete(postSortIndex)} />
-        )}
-      </GridBox>
+      <AAMItemTitleAndDelete<CwnCharacterData>
+        index={postSortIndex}
+        label="Edge Name"
+        name={nameFieldName}
+        onDelete={onDelete}
+      />
       <TextAreaInput<CwnCharacterData>
         label="Edge Description"
         name={createEdgeFieldName('description', postSortIndex)}
