@@ -26,6 +26,7 @@ import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
 import { EdgesInput } from './inputs/EdgesInput';
+import { FociInput } from './inputs/FociInput';
 import { SkillInputs } from './inputs/SkillInputs';
 
 interface CwnCharacterSheetProps {
@@ -131,8 +132,7 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
           <TabPanel>
             <GridBox columns={1} {...sharedGapProps}>
               <EdgesInput />
-              {/* <ClassInputs />
-              <FociInputs /> */}
+              <FociInput />
             </GridBox>
           </TabPanel>
         </Tabs>

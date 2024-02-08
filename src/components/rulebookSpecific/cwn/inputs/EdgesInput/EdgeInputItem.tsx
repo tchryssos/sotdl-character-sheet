@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
-import { FormSection } from '~/components/form/FormSection';
+import { AAMItemFormSection } from '~/components/form/AAMItemFormSection';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { EditContext } from '~/logic/contexts/editContext';
@@ -26,10 +26,7 @@ export function EdgeInputItem({ onDelete, postSortIndex }: EdgeInputProps) {
   const nameFieldName = createEdgeFieldName('name', postSortIndex);
   const name = watch(nameFieldName);
   return (
-    <FormSection
-      borderless
-      columns={1}
-      isNested
+    <AAMItemFormSection
       title={name}
       visibilityTitle={`${name}${postSortIndex}`}
     >
@@ -46,6 +43,6 @@ export function EdgeInputItem({ onDelete, postSortIndex }: EdgeInputProps) {
         label="Edge Description"
         name={createEdgeFieldName('description', postSortIndex)}
       />
-    </FormSection>
+    </AAMItemFormSection>
   );
 }

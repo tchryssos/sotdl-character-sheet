@@ -4,7 +4,8 @@ import { useFormContext } from 'react-hook-form';
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
-import { FormSection } from '~/components/form/FormSection';
+import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
@@ -37,13 +38,7 @@ function FocusItem({ index, onDelete }: FocusItemProps) {
   )}`;
 
   return (
-    <FormSection
-      borderless
-      columns={1}
-      isNested
-      title={sectionTitle}
-      visibilityTitle={`focus${index}`}
-    >
+    <AAMItemFormSection title={sectionTitle} visibilityTitle={`focus${index}`}>
       <GridBox
         alignItems="end"
         gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
@@ -66,7 +61,7 @@ function FocusItem({ index, onDelete }: FocusItemProps) {
         min={1}
         name={focusLevelFieldName}
       />
-    </FormSection>
+    </AAMItemFormSection>
   );
 }
 

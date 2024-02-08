@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiDelete } from '~/components/buttons/DeleteButton';
-import { FormSection } from '~/components/form/FormSection';
+import { AAMItemFormSection } from '~/components/form/AAMItemFormSection';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
@@ -47,10 +47,7 @@ export function ContactInputItem({
   const contactRelationship = watch(contactRelationshipFieldName);
 
   return (
-    <FormSection
-      borderless
-      columns={1}
-      isNested
+    <AAMItemFormSection
       title={`${contactName} - ${capitalize(contactRelationship)}`}
       visibilityTitle={`${contactName}${index}`}
     >
@@ -72,6 +69,6 @@ export function ContactInputItem({
         label="Description"
         name={createContactFieldName('description', index)}
       />
-    </FormSection>
+    </AAMItemFormSection>
   );
 }
