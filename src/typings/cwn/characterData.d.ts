@@ -69,6 +69,7 @@ export type CwnCharacterData = {
   system_strain_current: number;
   system_strain_max: number;
   traumatic_hit: boolean;
+  trauma_target: number;
   major_injuries: CwnMajorInjury[];
   other_statuses: CwnOtherStatus[];
   //   attack_bonus_base: number;

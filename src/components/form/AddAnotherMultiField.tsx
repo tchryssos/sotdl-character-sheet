@@ -30,6 +30,8 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   addLabel?: string;
   emptyLabel?: string | null;
   filterFn?: (props: SortableAddAnotherChildProps) => boolean;
+  alwaysEditable?: boolean;
+  onAdd?: (index?: number) => void;
 };
 
 const ChildContainer = styled(Box)`
@@ -52,6 +54,8 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   addLabel,
   emptyLabel,
   filterFn,
+  alwaysEditable,
+  onAdd,
 }: AddAnotherMultiFieldProps<T>) {
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
@@ -87,6 +91,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   const onCreate = () => {
     const nextValue = createDefaultValue();
     append(nextValue);
+    onAdd?.(controlledFields.length - 1);
   };
 
   const onDelete = (index: number) => {
@@ -98,7 +103,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
 
   return (
     <>
-      {isEditMode && (
+      {(isEditMode || alwaysEditable) && (
         <FlexBox gap={16} width="100%">
           <AddAnotherButton label={addLabel} onClick={onCreate} />
           {simpleDelete && (

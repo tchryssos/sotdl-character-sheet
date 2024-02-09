@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useContext } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { Label } from '~/components/form/Label';
+import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { CwnCharacterData, CwnMajorInjury } from '~/typings/cwn/characterData';
 
@@ -30,6 +31,7 @@ function InjuryChildWrapper({ children }: PropsWithChildren<unknown>) {
 }
 
 export function MajorInjuriesInput() {
+  const { setIsEditMode } = useContext(EditContext);
   return (
     <InjuryLabel<CwnCharacterData>
       label="Major Injuries"
@@ -38,9 +40,11 @@ export function MajorInjuriesInput() {
     >
       <AddAnotherMultiField<CwnCharacterData>
         ChildWrapper={InjuryChildWrapper}
+        alwaysEditable
         createDefaultValue={createDefaultValue}
         emptyLabel="No Major Injuries"
         parentFieldName="major_injuries"
+        onAdd={() => setIsEditMode(true)}
       >
         {({ index, onDelete, fieldId }) => (
           <InjuryInputItem

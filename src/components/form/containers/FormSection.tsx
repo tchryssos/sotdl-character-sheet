@@ -164,7 +164,7 @@ export function FormSection({
                 paddingRight={2}
                 variant={isNested ? 'body-lg' : 'title-sm'}
               >
-                {title}
+                {title || '""'}
               </FormTitle>
             </TitleBox>
             {icon && (
