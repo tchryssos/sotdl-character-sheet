@@ -7,6 +7,8 @@ import { Label } from '~/components/form/Label';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { CwnCharacterData, CwnMajorInjury } from '~/typings/cwn/characterData';
 
+import { InjuryInputItem } from './InjuryInputItem';
+
 const InjuryLabel = styled(Label)`
   align-items: flex-start;
   gap: ${({ theme }) => theme.spacing[4]};
@@ -37,9 +39,11 @@ export function MajorInjuriesInput() {
         parentFieldName="major_injuries"
       >
         {({ index, onDelete, fieldId }) => (
-          <div>
-            <div>injury</div>
-          </div>
+          <InjuryInputItem
+            key={fieldId}
+            postSortIndex={index}
+            onDelete={onDelete}
+          />
         )}
       </AddAnotherMultiField>
     </InjuryLabel>
