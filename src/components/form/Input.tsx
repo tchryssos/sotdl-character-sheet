@@ -76,7 +76,10 @@ export function Input<T extends Record<string, unknown>>(props: InputProps<T>) {
 
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
-      <InputUnstyled slots={{ input: StyledInput }} {...modInputProps} />
+      <InputUnstyled
+        slotProps={{ input: modInputProps }}
+        slots={{ input: StyledInput }}
+      />
     </Label>
   );
 }

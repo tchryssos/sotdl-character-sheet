@@ -27,6 +27,7 @@ import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
 import { EdgesInput } from './inputs/EdgesInput';
 import { FociInput } from './inputs/FociInput';
+import { HealthInputs } from './inputs/HealthInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 
 interface CwnCharacterSheetProps {
@@ -134,6 +135,11 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
               <EdgesInput />
               <FociInput />
             </GridBox>
+          </TabPanel>
+
+          {/* Combat */}
+          <TabPanel>
+            <HealthInputs />
           </TabPanel>
         </Tabs>
       </StyledForm>
