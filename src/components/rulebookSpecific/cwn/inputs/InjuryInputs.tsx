@@ -12,6 +12,7 @@ export function InjuryInputs() {
     <FormSection columns={1} icon={RpgIcons.BoneLg} title="Injuries">
       <GridBox>
         <CheckboxInput<CwnCharacterData>
+          alwaysEditable
           label="Traumatic Hit"
           name="traumatic_hit"
         />
