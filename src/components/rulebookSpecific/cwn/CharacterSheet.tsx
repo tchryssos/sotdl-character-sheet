@@ -28,6 +28,7 @@ import { ContactsInput } from './inputs/ContactsInput';
 import { EdgesInput } from './inputs/EdgesInput';
 import { FociInput } from './inputs/FociInput';
 import { HealthInputs } from './inputs/HealthInputs';
+import { InjuryInputs } from './inputs/InjuryInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 
 interface CwnCharacterSheetProps {
@@ -52,13 +53,17 @@ const tabLabels: TabLabelObject[] = [
     icon: RpgIcons.Ripple,
   },
   {
+    label: 'Status',
+    icon: RpgIcons.SmileGuy,
+  },
+  {
     label: 'Combat',
     icon: RpgIcons.StackedSkulls,
   },
-  {
-    label: 'Magic',
-    icon: RpgIcons.Fireball,
-  },
+  // {
+  //   label: 'Magic',
+  //   icon: RpgIcons.Fireball,
+  // },
   {
     label: 'Equipment',
     icon: RpgIcons.Chest,
@@ -137,9 +142,12 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             </GridBox>
           </TabPanel>
 
-          {/* Combat */}
+          {/* Status */}
           <TabPanel>
-            <HealthInputs />
+            <GridBox columns={1} {...sharedGapProps}>
+              <HealthInputs />
+              <InjuryInputs />
+            </GridBox>
           </TabPanel>
         </Tabs>
       </StyledForm>

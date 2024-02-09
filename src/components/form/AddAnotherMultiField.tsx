@@ -99,7 +99,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   return (
     <>
       {isEditMode && (
-        <FlexBox gap={16}>
+        <FlexBox gap={16} width="100%">
           <AddAnotherButton label={addLabel} onClick={onCreate} />
           {simpleDelete && (
             <AddAnotherButton

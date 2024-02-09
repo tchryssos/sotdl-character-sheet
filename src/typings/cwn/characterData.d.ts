@@ -18,6 +18,11 @@ export interface CwnFocus {
   description: string;
 }
 
+export interface CwnMajorInjury {
+  name: string;
+  description: string;
+}
+
 export type CwnCharacterData = {
   type: CwnName;
   name: string;
@@ -58,6 +63,8 @@ export type CwnCharacterData = {
   health_current: number;
   system_strain_current: number;
   system_strain_max: number;
+  traumatic_hit: boolean;
+  major_injuries: CwnMajorInjury[];
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;
