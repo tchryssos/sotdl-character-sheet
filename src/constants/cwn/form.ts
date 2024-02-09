@@ -45,6 +45,7 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   system_strain_max: CWN_DEFAULT_ATTRIBUTE_SCORE,
   traumatic_hit: false,
   major_injuries: [],
+  other_statuses: [],
   // attack_bonus_base: 0,
   // attack_bonus_melee: 0,
   // attack_bonus_ranged: 0,

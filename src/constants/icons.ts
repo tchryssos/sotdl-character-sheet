@@ -38,4 +38,5 @@ export enum RpgIcons {
   PuzzlePiece = '411',
   SmileGuy = '018',
   BoneLg = '372',
+  Bubbles = '440',
 }
