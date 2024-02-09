@@ -25,7 +25,8 @@ const handleThemedCssProps = ({
   // ... and if the value of the prop exists in the theme for that key...
   const propValueIsThemeSubkey = Object.keys(
     theme[propCorrespondingThemeKey]
-  ).includes(propValue as string);
+  ).includes(String(propValue));
+
   if (propValueIsThemeSubkey) {
     // ... set the value of the prop to the corresponding theme value
     return theme[propCorrespondingThemeKey][
