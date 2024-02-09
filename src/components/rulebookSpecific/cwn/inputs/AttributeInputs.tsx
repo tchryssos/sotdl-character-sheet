@@ -1,4 +1,6 @@
 import { startCase } from 'lodash';
+import { useEffect, useRef } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
@@ -42,14 +44,20 @@ function AttributeInput<T extends Record<string, unknown>>({
 export function AttributeInputs() {
   const isLessThanXs = useBreakpointsLessThan('xs');
 
-  // const { watch } = useFormContext<CwnCharacterData>();
-  // const dexterity = watch('attribute_dexterity');
+  const { watch, setValue, getValues } = useFormContext<CwnCharacterData>();
+  const constitution = watch('attribute_constitution');
+  const constitutionRef = useRef(constitution);
 
-  // const { calculateAc } = useContext(AcContext);
+  // Max system strain is _affected_ by constitution, but not solely
+  // dependent on it
+  useEffect(() => {
+    const constitutionDifference = constitution - constitutionRef.current;
+    const currSysMax = getValues('system_strain_max');
 
-  // useEffect(() => {
-  //   calculateAc();
-  // }, [dexterity, calculateAc]);
+    setValue('system_strain_max', currSysMax + constitutionDifference);
+
+    constitutionRef.current = constitution;
+  }, [constitution, getValues, setValue]);
 
   return (
     <FormSection
