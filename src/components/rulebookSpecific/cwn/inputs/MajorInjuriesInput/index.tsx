@@ -22,7 +22,11 @@ const createDefaultValue = () =>
 
 function InjuryChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanSm = useBreakpointsLessThan('sm');
-  return <GridBox columns={isLessThanSm ? 1 : 2}>{children}</GridBox>;
+  return (
+    <GridBox columns={isLessThanSm ? 1 : 2} width="100%">
+      {children}
+    </GridBox>
+  );
 }
 
 export function MajorInjuriesInput() {
