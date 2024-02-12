@@ -33,6 +33,9 @@ export type CwnCharacterData = {
   name: string;
   level: number;
   description: string;
+  goal: string;
+  languages: string;
+  ties: string;
   attribute_strength: number;
   attribute_dexterity: number;
   attribute_constitution: number;
@@ -72,6 +75,10 @@ export type CwnCharacterData = {
   trauma_target: number;
   major_injuries: CwnMajorInjury[];
   other_statuses: CwnOtherStatus[];
+  save_physical: number;
+  save_mental: number;
+  save_evasion: number;
+  save_luck: number;
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;
@@ -83,3 +90,18 @@ export type CwnCharacterData = {
   //   currency_silver: number;
   //   currency_gold: number;
 };
+
+export type AttributeName = keyof Pick<
+  CwnCharacterData,
+  | 'attribute_charisma'
+  | 'attribute_constitution'
+  | 'attribute_dexterity'
+  | 'attribute_intelligence'
+  | 'attribute_strength'
+  | 'attribute_wisdom'
+>;
+
+export type SaveName = keyof Pick<
+  CwnCharacterData,
+  'save_physical' | 'save_evasion' | 'save_mental' | 'save_luck'
+>;

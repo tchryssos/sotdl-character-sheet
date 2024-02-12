@@ -2,12 +2,16 @@ import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 export const CWN_SKILL_UNTRAINED = -1;
 const CWN_DEFAULT_ATTRIBUTE_SCORE = 10;
+export const CWN_DEFAULT_SAVE_SCORE = 15;
 
 export const DEFAULT_VALUES: CwnCharacterData = {
   type: 'cwn',
   name: '',
   level: 1,
   description: '',
+  goal: '',
+  languages: '',
+  ties: '',
   attribute_strength: CWN_DEFAULT_ATTRIBUTE_SCORE,
   attribute_dexterity: CWN_DEFAULT_ATTRIBUTE_SCORE,
   attribute_constitution: CWN_DEFAULT_ATTRIBUTE_SCORE,
@@ -47,6 +51,10 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   trauma_target: 6,
   major_injuries: [],
   other_statuses: [],
+  save_evasion: CWN_DEFAULT_SAVE_SCORE,
+  save_luck: CWN_DEFAULT_SAVE_SCORE,
+  save_mental: CWN_DEFAULT_SAVE_SCORE,
+  save_physical: CWN_DEFAULT_SAVE_SCORE,
   // attack_bonus_base: 0,
   // attack_bonus_melee: 0,
   // attack_bonus_ranged: 0,

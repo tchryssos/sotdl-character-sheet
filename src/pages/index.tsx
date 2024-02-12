@@ -1,5 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 import { LogoAscii } from '~/components/ascii/LogoAscii';
 import { AuthLink } from '~/components/AuthLink';
@@ -44,7 +45,13 @@ const Logo = styled(LogoAscii)`
 `;
 
 function Home() {
+  const [awaitingAuth, setAwaitingAuth] = useState(false);
   const { user, error, isLoading } = useUser();
+
+  useEffect(() => {
+    if (user) setAwaitingAuth(false);
+  }, [user]);
+
   return (
     <Layout
       meta="A collection of online ttrpg character sheets"
@@ -57,7 +64,7 @@ function Home() {
           <Text as="h1" marginBottom={16} variant="title-lg">
             rpg sheet dot&nbsp;games
           </Text>
-          {isLoading ? (
+          {isLoading || awaitingAuth ? (
             <AuthLoading title="Auth loading" titleId="auth-loading" />
           ) : (
             <ButtonWrapper columns={1} rowGap={8}>
@@ -74,7 +81,10 @@ function Home() {
                       <TextButton buttonLike label="My Characters" />
                     </Link>
                   ) : (
-                    <AuthLink type="login">
+                    <AuthLink
+                      type="login"
+                      onClick={() => setAwaitingAuth(true)}
+                    >
                       <TextButton buttonLike label="Authenticate" />
                     </AuthLink>
                   )}

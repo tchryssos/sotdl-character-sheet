@@ -16,7 +16,7 @@ export function BasicInfoInputs() {
           <NumberInput<CwnCharacterData> max={10} min={0} name="level" />
         </Box>
         <TextAreaInput<CwnCharacterData> name="description" />
-        <TextAreaInput<CwnCharacterData> name="goal" />
+        <TextAreaInput<CwnCharacterData> name="languages" />
       </FlexBox>
     </FormSection>
   );

@@ -22,14 +22,16 @@ import { StrictCharacter } from '~/typings/characters';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { AttributeInputs } from './inputs/AttributeInputs';
-import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
+import { DefensesInputs } from './inputs/DefensesInputs';
 import { EdgesInput } from './inputs/EdgesInput';
 import { FociInput } from './inputs/FociInput';
 import { HealthInputs } from './inputs/HealthInputs';
+import { HistoryInputs } from './inputs/HistoryInputs';
 import { InjuryInputs } from './inputs/InjuryInputs';
 import { OtherStatusesInput } from './inputs/OtherStatusesInput';
+import { SaveInputs } from './inputs/SaveInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 
 interface CwnCharacterSheetProps {
@@ -120,7 +122,7 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
           <TabPanel>
             <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
               <BasicInfoInputs />
-              <BackgroundInputs />
+              <HistoryInputs />
               <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
                 <ContactsInput />
               </Box>
@@ -147,9 +149,22 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
           <TabPanel>
             <GridBox columns={1} {...sharedGapProps}>
               <HealthInputs />
+              <SaveInputs />
               <InjuryInputs />
               <OtherStatusesInput />
             </GridBox>
+          </TabPanel>
+
+          {/* Combat */}
+          <TabPanel>
+            <GridBox columns={1} {...sharedGapProps}>
+              <DefensesInputs />
+            </GridBox>
+          </TabPanel>
+
+          {/* Equipment */}
+          <TabPanel>
+            <Box>Equipment</Box>
           </TabPanel>
         </Tabs>
       </StyledForm>

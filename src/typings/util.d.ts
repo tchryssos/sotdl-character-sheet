@@ -23,3 +23,7 @@ type ListFieldRecord<T extends Record<string, unknown>> = {
 // type BooleanFieldsRecord<T extends Record<string, unknown>> = {
 //   [K in keyof T as T[K] extends boolean ? K : never]: T[K];
 // };
+
+type NumberFieldsRecord<T extends Record<string, unknown>> = {
+  [K in keyof T as T[K] extends number ? K : never]: T[K];
+};
