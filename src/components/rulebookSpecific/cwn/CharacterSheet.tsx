@@ -21,6 +21,7 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { StrictCharacter } from '~/typings/characters';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
+import { AcProvider } from './AcProvider';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
@@ -106,67 +107,69 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
         defaultValues={character?.characterData || DEFAULT_VALUES}
         onSubmit={() => undefined}
       >
-        <Tabs
-          defaultTab={getTabIndex(tabLabels, queryTab)}
-          tabLabels={tabLabels}
-          onChange={(index) =>
-            router.replace({
-              query: {
-                ...router.query,
-                tab: tabLabels[index].label.toLowerCase(),
-              },
-            })
-          }
-        >
-          {/* Description */}
-          <TabPanel>
-            <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-              <BasicInfoInputs />
-              <HistoryInputs />
-              <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
-                <ContactsInput />
-              </Box>
-            </GridBox>
-          </TabPanel>
+        <AcProvider>
+          <Tabs
+            defaultTab={getTabIndex(tabLabels, queryTab)}
+            tabLabels={tabLabels}
+            onChange={(index) =>
+              router.replace({
+                query: {
+                  ...router.query,
+                  tab: tabLabels[index].label.toLowerCase(),
+                },
+              })
+            }
+          >
+            {/* Description */}
+            <TabPanel>
+              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                <BasicInfoInputs />
+                <HistoryInputs />
+                <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
+                  <ContactsInput />
+                </Box>
+              </GridBox>
+            </TabPanel>
 
-          {/* Stats */}
-          <TabPanel>
-            <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-              <AttributeInputs />
-              <SkillInputs />
-            </GridBox>
-          </TabPanel>
+            {/* Stats */}
+            <TabPanel>
+              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                <AttributeInputs />
+                <SkillInputs />
+              </GridBox>
+            </TabPanel>
 
-          {/* Abilities */}
-          <TabPanel>
-            <GridBox columns={1} {...sharedGapProps}>
-              <EdgesInput />
-              <FociInput />
-            </GridBox>
-          </TabPanel>
+            {/* Abilities */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <EdgesInput />
+                <FociInput />
+              </GridBox>
+            </TabPanel>
 
-          {/* Status */}
-          <TabPanel>
-            <GridBox columns={1} {...sharedGapProps}>
-              <HealthInputs />
-              <SaveInputs />
-              <InjuryInputs />
-              <OtherStatusesInput />
-            </GridBox>
-          </TabPanel>
+            {/* Status */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <HealthInputs />
+                <SaveInputs />
+                <InjuryInputs />
+                <OtherStatusesInput />
+              </GridBox>
+            </TabPanel>
 
-          {/* Combat */}
-          <TabPanel>
-            <GridBox columns={1} {...sharedGapProps}>
-              <DefensesInputs />
-            </GridBox>
-          </TabPanel>
+            {/* Combat */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <DefensesInputs />
+              </GridBox>
+            </TabPanel>
 
-          {/* Equipment */}
-          <TabPanel>
-            <Box>Equipment</Box>
-          </TabPanel>
-        </Tabs>
+            {/* Equipment */}
+            <TabPanel>
+              <Box>Equipment</Box>
+            </TabPanel>
+          </Tabs>
+        </AcProvider>
       </StyledForm>
     </EditContext.Provider>
   );

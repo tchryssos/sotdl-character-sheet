@@ -1,4 +1,9 @@
-import { ContactRelationship, FocusLevel } from '~/constants/cwn/game';
+import {
+  ArmorTrait,
+  ArmorWeight,
+  ContactRelationship,
+  FocusLevel,
+} from '~/constants/cwn/game';
 import { CwnName } from './game';
 
 export interface CwnContact {
@@ -26,6 +31,20 @@ export interface CwnMajorInjury {
 export interface CwnOtherStatus {
   name: string;
   description: string;
+}
+
+export interface CwnArmor {
+  name: string;
+  ac_ranged: number;
+  ac_melee: number;
+  damage_soak: number;
+  encumbrance: number;
+  trauma_target_mod: number;
+  description: string;
+  weight: ArmorWeight;
+  traits: ArmorTrait[];
+  equipped: boolean;
+  accessories: Omit<CwnArmor, 'accessories' | 'equipped' | 'weight'>[];
 }
 
 export type CwnCharacterData = {
@@ -79,6 +98,9 @@ export type CwnCharacterData = {
   save_mental: number;
   save_evasion: number;
   save_luck: number;
+  armor_class_ranged: number;
+  armor_class_melee: number;
+  armors: CwnArmor[];
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;
