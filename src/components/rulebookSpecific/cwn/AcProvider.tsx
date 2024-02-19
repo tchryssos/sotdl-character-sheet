@@ -10,18 +10,30 @@ import { useFormContext } from 'react-hook-form';
 import { DEFAULT_VALUES } from '~/constants/cwn/form';
 import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
-import { CwnCharacterData } from '~/typings/cwn/characterData';
+import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 
-interface AcContextInterface {
+export interface AcContextInterface {
   rangedAc: number;
   meleeAc: number;
   calculateAc: () => void;
+  acDescriptions: {
+    ranged: string;
+    melee: string;
+  };
 }
+
+export const acDescriptionBreakChar = '#';
+
+const defaultDescriptions: AcContextInterface['acDescriptions'] = {
+  ranged: `Base: ${DEFAULT_VALUES.armor_class_ranged}`,
+  melee: `Base: ${DEFAULT_VALUES.armor_class_melee}`,
+};
 
 export const AcContext = createContext<AcContextInterface>({
   meleeAc: DEFAULT_VALUES.armor_class_melee,
   rangedAc: DEFAULT_VALUES.armor_class_ranged,
   calculateAc: () => null,
+  acDescriptions: defaultDescriptions,
 });
 
 type AcProviderProps = PropsWithChildren<unknown>;
@@ -29,6 +41,7 @@ type AcProviderProps = PropsWithChildren<unknown>;
 export function AcProvider({ children }: AcProviderProps) {
   const [rangedAc, setRangedAc] = useState(DEFAULT_VALUES.armor_class_ranged);
   const [meleeAc, setMeleeAc] = useState(DEFAULT_VALUES.armor_class_melee);
+  const [acDescriptions, setAcDescriptions] = useState(defaultDescriptions);
 
   const { getValues } = useFormContext<CwnCharacterData>();
 
@@ -45,17 +58,18 @@ export function AcProvider({ children }: AcProviderProps) {
     );
     const shield = armors.find((a) => a.weight === 'shield' && a.readied);
 
-    const accessoryBonuses = [...equippedAccessories, shield]
-      .filter(Boolean)
-      .reduce(
-        (bonusObj, currArmor) => ({
-          melee:
-            bonusObj.melee + (guaranteeNumberValue(currArmor!.ac_melee) || 0),
-          ranged:
-            bonusObj.ranged + (guaranteeNumberValue(currArmor!.ac_ranged) || 0),
-        }),
-        { melee: 0, ranged: 0 }
-      );
+    const relevantAccessories = [...equippedAccessories, shield].filter(
+      Boolean
+    ) as CwnArmor[];
+
+    const accessoryBonuses = relevantAccessories.reduce(
+      (bonusObj, currArmor) => ({
+        melee: bonusObj.melee + (guaranteeNumberValue(currArmor.ac_melee) || 0),
+        ranged:
+          bonusObj.ranged + (guaranteeNumberValue(currArmor.ac_ranged) || 0),
+      }),
+      { melee: 0, ranged: 0 }
+    );
 
     setRangedAc(
       dexBonus +
@@ -71,6 +85,36 @@ export function AcProvider({ children }: AcProviderProps) {
         ) +
         accessoryBonuses.melee
     );
+
+    const armorDescriptions = {
+      ranged: equippedArmor
+        ? `${equippedArmor.name}: ${equippedArmor.ac_ranged}`
+        : `Base: ${DEFAULT_VALUES.armor_class_ranged}`,
+      melee: equippedArmor
+        ? `${equippedArmor.name}: ${equippedArmor.ac_melee}`
+        : `Base: ${DEFAULT_VALUES.armor_class_melee}`,
+    };
+    const accessoryDescriptions = {
+      ranged: relevantAccessories
+        .map((a) => `${a.name}: ${a.ac_ranged}`)
+        .join(acDescriptionBreakChar),
+      melee: relevantAccessories
+        .map((a) => `${a.name}: ${a.ac_melee}`)
+        .join(acDescriptionBreakChar),
+    };
+    const dexDescription = `Dex: ${dexBonus}`;
+    setAcDescriptions({
+      ranged: [
+        armorDescriptions.ranged,
+        accessoryDescriptions.ranged,
+        dexDescription,
+      ].join(acDescriptionBreakChar),
+      melee: [
+        armorDescriptions.melee,
+        accessoryDescriptions.melee,
+        dexDescription,
+      ].join(acDescriptionBreakChar),
+    });
   }, [getValues]);
 
   const providerValue = useMemo(
@@ -78,8 +122,9 @@ export function AcProvider({ children }: AcProviderProps) {
       meleeAc,
       rangedAc,
       calculateAc,
+      acDescriptions,
     }),
-    [rangedAc, meleeAc, calculateAc]
+    [rangedAc, meleeAc, calculateAc, acDescriptions]
   );
 
   return (
