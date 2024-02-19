@@ -36,5 +36,23 @@ export type FocusLevel = (typeof FOCUS_LEVELS)[number];
 export const ARMOR_WEIGHT = ['civilian', 'suit'] as const;
 export type ArmorWeight = (typeof ARMOR_WEIGHT)[number];
 
-export const ARMOR_TRAITS = ['subtle', 'heavy', 'no-suit'] as const;
-export type ArmorTrait = (typeof ARMOR_TRAITS)[number];
+export const ARMOR_TRAITS = {
+  subtle: {
+    name: 'Subtle',
+    description:
+      "Subtle armor can be worn in most social situations without drawing comment; it's either discreet enough or commonplace enough that only the most formal occasions will forbid it. Obvious armor is the sort of thing that nobody would wear unless they expected imminent trouble, and its wearers will likely be treated accordingly.",
+    abbreviation: 'S',
+  },
+  heavy: {
+    name: 'Heavy',
+    description:
+      'The armor or accessory applies a -1 penalty to all Sneak or Exert skill checks. Multiple heavy items stack.',
+    abbreviation: 'H',
+  },
+  'no-suit': {
+    name: 'No Suit',
+    description: 'This accessory cannot be added to suit armor.',
+    abbreviation: 'NS',
+  },
+} as const;
+export type ArmorTrait = keyof typeof ARMOR_TRAITS;
