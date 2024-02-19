@@ -22,10 +22,10 @@ import { StrictCharacter } from '~/typings/characters';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { AcProvider } from './AcProvider';
+import { ArmorClassInputs } from './inputs/ArmorClassInputs';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
-import { DefensesInputs } from './inputs/DefensesInputs';
 import { EdgesInput } from './inputs/EdgesInput';
 import { FociInput } from './inputs/FociInput';
 import { HealthInputs } from './inputs/HealthInputs';
@@ -160,7 +160,7 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             {/* Combat */}
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
-                <DefensesInputs />
+                <ArmorClassInputs />
               </GridBox>
             </TabPanel>
 

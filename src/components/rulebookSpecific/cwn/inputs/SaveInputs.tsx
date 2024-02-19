@@ -2,8 +2,10 @@ import { capitalize, max } from 'lodash';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { Box } from '~/components/box/Box';
 import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
+import { Text } from '~/components/Text';
 import { CWN_DEFAULT_SAVE_SCORE } from '~/constants/cwn/form';
 import { RpgIcons } from '~/constants/icons';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
@@ -73,6 +75,12 @@ export function SaveInputs() {
       icon={RpgIcons.Rabbit}
       title="Saves"
     >
+      <Box gridColumnEnd={atLeastXs ? 5 : 3} gridColumnStart={1}>
+        <Text as="p" variant="body-xs">
+          Your Saves are automatically calculated based on your level and your
+          attribute modifiers.
+        </Text>
+      </Box>
       <SaveInput
         modifierAttrs={['attribute_strength', 'attribute_constitution']}
         saveName="save_physical"

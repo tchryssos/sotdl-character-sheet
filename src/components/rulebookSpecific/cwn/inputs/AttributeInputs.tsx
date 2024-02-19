@@ -1,5 +1,5 @@
 import { startCase } from 'lodash';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FormSection } from '~/components/form/containers/FormSection';
@@ -11,6 +11,7 @@ import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { BonusInput } from '../../../form/BonusInput';
 import { NumberInputProps } from '../../../form/typings';
+import { AcContext } from '../AcProvider';
 // import { AcContext } from '../AcProvider';
 
 type AttributeInputProps<T> = Omit<NumberInputProps<T>, 'type' | 'name'> & {
@@ -58,6 +59,13 @@ export function AttributeInputs() {
 
     constitutionRef.current = constitution;
   }, [constitution, getValues, setValue]);
+
+  const dexterity = watch('attribute_dexterity');
+  const { calculateAc } = useContext(AcContext);
+
+  useEffect(() => {
+    calculateAc();
+  }, [dexterity, calculateAc]);
 
   return (
     <FormSection

@@ -23,8 +23,16 @@ export function AcInput() {
   return (
     <FlexBox flexDirection="column" gap={4}>
       <GridBox columns={2}>
-        <NumberInput<CwnCharacterData> name="armor_class_melee" readOnly />
-        <NumberInput<CwnCharacterData> name="armor_class_ranged" readOnly />
+        <NumberInput<CwnCharacterData>
+          label="Melee"
+          name="armor_class_melee"
+          readOnly
+        />
+        <NumberInput<CwnCharacterData>
+          label="Ranged"
+          name="armor_class_ranged"
+          readOnly
+        />
       </GridBox>
     </FlexBox>
   );
