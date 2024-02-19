@@ -65,12 +65,26 @@ export function ArmorInputItem({
 
   const weightFieldName = createArmorFieldName('weight', index);
   const weight = watch(weightFieldName) as ArmorWeight;
+  const isAccessory = weight === 'accessory';
 
   const idFieldName = createArmorFieldName('id', index);
   const id = watch(idFieldName) as string;
 
   const equippedToFieldName = createArmorFieldName('equippedTo', index);
   const equippedTo = watch(equippedToFieldName) as string;
+
+  useEffect(() => {
+    if (isAccessory) {
+      if (equippedTo) {
+        setValue(
+          readiedFieldName,
+          Boolean(getValues('armors').find((a) => a.id === equippedTo)?.readied)
+        );
+      } else {
+        setValue(readiedFieldName, false);
+      }
+    }
+  }, [equippedTo, isAccessory, setValue, readiedFieldName, getValues]);
 
   const setAC = (armorName: keyof CwnArmor, value: number) => {
     setValue(
@@ -93,26 +107,46 @@ export function ArmorInputItem({
       visibilityTitle={`${name}${index}`}
     >
       <FlexBox flexDirection="column" gap={isXxs ? 16 : 24}>
-        <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
-          <CheckboxInput
-            alwaysEditable
-            customOnChange={() => {
-              setValue(readiedFieldName, !readied);
-              // Only one armor can be worn at a time,
-              // so unequip any other equipped armor when equipping this one
-              getValues('armors').forEach((a, i) => {
-                if (id !== a.id && a.readied) {
-                  const otherEquippedName = createArmorFieldName('readied', i);
-                  setValue(otherEquippedName, false);
-                }
-              });
-            }}
-            inputLike
-            isChecked={readied}
-            label="Readied"
-            name={readiedFieldName}
-          />
+        <GridBox
+          gridTemplateColumns={isXxs || isAccessory ? '1fr' : 'auto 1fr'}
+        >
+          {!isAccessory && (
+            <CheckboxInput
+              alwaysEditable
+              customOnChange={() => {
+                setValue(readiedFieldName, !readied);
+                // Only one armor can be worn at a time,
+                // so unequip any other equipped armor when equipping this one
+                getValues('armors').forEach((a, i) => {
+                  if (id !== a.id && a.readied) {
+                    const otherEquippedName = createArmorFieldName(
+                      'readied',
+                      i
+                    );
+                    setValue(otherEquippedName, false);
+                  }
+                });
+              }}
+              inputLike
+              isChecked={readied}
+              label="Readied"
+              name={readiedFieldName}
+            />
+          )}
           <TextInput<CwnCharacterData> label="Name" name={nameFieldName} />
+        </GridBox>
+        <GridBox columns={isAccessory ? 2 : 1}>
+          <SelectInput<CwnCharacterData>
+            label="Type"
+            name={createArmorFieldName('weight', index)}
+            options={armorWeightOptions}
+          />
+          {isAccessory && (
+            <EquippedToInput
+              accessoryArmorId={id}
+              equippedToFieldName={equippedToFieldName}
+            />
+          )}
         </GridBox>
         <GridBox columns={lessThanSm ? 2 : 4}>
           <NumberInput<CwnCharacterData>
@@ -142,11 +176,12 @@ export function ArmorInputItem({
             name={createArmorFieldName('trauma_target_mod', index)}
           />
         </GridBox>
-        <GridBox>
+        <GridBox gridTemplateColumns={isXxs ? '1fr 1fr' : '3fr 1fr'}>
           <SelectInput<CwnCharacterData>
-            label="Type"
-            name={createArmorFieldName('weight', index)}
-            options={armorWeightOptions}
+            label="Traits"
+            multiple
+            name={traitsFieldName}
+            options={armorTraitOptions}
           />
           <NumberInput<CwnCharacterData>
             label="Encumbrance"
@@ -154,18 +189,7 @@ export function ArmorInputItem({
             name={createArmorFieldName('encumbrance', index)}
           />
         </GridBox>
-        <SelectInput<CwnCharacterData>
-          label="Traits"
-          multiple
-          name={traitsFieldName}
-          options={armorTraitOptions}
-        />
-        {weight === 'accessory' && (
-          <EquippedToInput
-            accessoryArmorId={id}
-            equippedToFieldName={equippedToFieldName}
-          />
-        )}
+
         <TextAreaInput<CwnCharacterData>
           label="Description"
           name={createArmorFieldName('description', index)}

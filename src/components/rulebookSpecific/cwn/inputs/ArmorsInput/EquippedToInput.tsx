@@ -85,7 +85,7 @@ export function EquippedToInput({
     const [nextParentAccessories, nextParentAccessoryFieldName] =
       findParentArmorAccessories(parentArmorId);
 
-    // Unlike above, this should always be true, but we like to keep ts happy
+    // Unlike above, this should always exist but we like to keep ts happy
     if (nextParentAccessoryFieldName) {
       setValue(nextParentAccessoryFieldName, [
         ...nextParentAccessories,
