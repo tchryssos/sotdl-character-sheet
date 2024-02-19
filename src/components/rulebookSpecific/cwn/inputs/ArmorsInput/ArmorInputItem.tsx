@@ -107,12 +107,16 @@ export function ArmorInputItem({
     }
   }, [readied, isAccessory, getValues, id, setValue]);
 
+  useEffect(() => {
+    calculateAc();
+  }, [accessories, calculateAc]);
+
   const setAC = (armorName: keyof CwnArmor, value: number) => {
     setValue(
       createArmorFieldName(armorName, index),
       guaranteeNumberValue(value)
     );
-    calculateAc(getValues('armors')[index]);
+    calculateAc();
   };
 
   /**
@@ -142,24 +146,26 @@ export function ArmorInputItem({
             <CheckboxInput
               alwaysEditable
               customOnChange={() => {
+                const armors = getValues('armors');
                 setValue(readiedFieldName, !readied);
                 // Only one armor can be worn at a time,
                 // so unequip any other equipped armor when equipping this one
-                // however, exclude shields and accessories to the current armor
-                getValues('armors').forEach((a, i) => {
-                  if (
-                    id !== a.id &&
-                    a.equippedTo !== id &&
-                    a.readied &&
-                    a.weight !== 'shield'
-                  ) {
-                    const otherEquippedName = createArmorFieldName(
-                      'readied',
-                      i
-                    );
-                    setValue(otherEquippedName, false);
+                armors.forEach((a, i) => {
+                  if (id !== a.id && a.equippedTo !== id && a.readied) {
+                    // Armor unequips armor, shields unequip shields
+                    const shouldUnequip =
+                      (weight === 'shield' && a.weight === 'shield') ||
+                      (weight !== 'shield' && a.weight !== 'shield');
+                    if (shouldUnequip) {
+                      const otherEquippedName = createArmorFieldName(
+                        'readied',
+                        i
+                      );
+                      setValue(otherEquippedName, false);
+                    }
                   }
                 });
+                calculateAc();
               }}
               inputLike
               isChecked={readied}

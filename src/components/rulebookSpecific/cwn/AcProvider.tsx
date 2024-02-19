@@ -3,19 +3,19 @@ import {
   PropsWithChildren,
   useCallback,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { DEFAULT_VALUES } from '~/constants/cwn/form';
+import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
-import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
+import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 interface AcContextInterface {
   rangedAc: number;
   meleeAc: number;
-  calculateAc: (armor?: CwnArmor) => void;
+  calculateAc: () => void;
 }
 
 export const AcContext = createContext<AcContextInterface>({
@@ -29,38 +29,49 @@ type AcProviderProps = PropsWithChildren<unknown>;
 export function AcProvider({ children }: AcProviderProps) {
   const [rangedAc, setRangedAc] = useState(DEFAULT_VALUES.armor_class_ranged);
   const [meleeAc, setMeleeAc] = useState(DEFAULT_VALUES.armor_class_melee);
-  const currentDexModRef = useRef<number>(0);
 
   const { getValues } = useFormContext<CwnCharacterData>();
 
-  const calculateAc = useCallback(
-    (armor?: CwnArmor) => {
-      const dexterity = getValues('attribute_dexterity');
-      const dexBonus = calcAttributeBonus(dexterity);
-      // If the fn is called with a new armor equip, calc based on armor
-      if (armor) {
-        const accessoryBonuses = armor.accessories.reduce(
-          (totalBonuses, accessory) => ({
-            melee: totalBonuses.melee + accessory.ac_melee,
-            ranged: totalBonuses.ranged + accessory.ac_ranged,
-          }),
-          { melee: 0, ranged: 0 }
-        );
+  const calculateAc = useCallback(() => {
+    const dexterity = getValues('attribute_dexterity');
+    const dexBonus = calcAttributeBonus(dexterity);
 
-        setRangedAc(armor.ac_ranged + accessoryBonuses.ranged + dexBonus);
-        setMeleeAc(armor.ac_melee + accessoryBonuses.melee + dexBonus);
-      } else {
-        // else calc based on dex change
-        const dexDifferential = dexBonus - currentDexModRef.current;
-        if (dexDifferential) {
-          setRangedAc((lastRanged) => lastRanged + dexDifferential);
-          setMeleeAc((lastMelee) => lastMelee + dexDifferential);
-        }
-      }
-      currentDexModRef.current = dexBonus;
-    },
-    [getValues]
-  );
+    const armors = getValues('armors');
+    const equippedArmor = armors.find(
+      (a) => a.weight !== 'accessory' && a.weight !== 'shield' && a.readied
+    );
+    const equippedAccessories = armors.filter(
+      (a) => equippedArmor && a.equippedTo === equippedArmor.id
+    );
+    const shield = armors.find((a) => a.weight === 'shield' && a.readied);
+
+    const accessoryBonuses = [...equippedAccessories, shield]
+      .filter(Boolean)
+      .reduce(
+        (bonusObj, currArmor) => ({
+          melee:
+            bonusObj.melee + (guaranteeNumberValue(currArmor!.ac_melee) || 0),
+          ranged:
+            bonusObj.ranged + (guaranteeNumberValue(currArmor!.ac_ranged) || 0),
+        }),
+        { melee: 0, ranged: 0 }
+      );
+
+    setRangedAc(
+      dexBonus +
+        guaranteeNumberValue(
+          equippedArmor?.ac_ranged || DEFAULT_VALUES.armor_class_ranged
+        ) +
+        accessoryBonuses.ranged
+    );
+    setMeleeAc(
+      dexBonus +
+        guaranteeNumberValue(
+          equippedArmor?.ac_melee || DEFAULT_VALUES.armor_class_melee
+        ) +
+        accessoryBonuses.melee
+    );
+  }, [getValues]);
 
   const providerValue = useMemo(
     () => ({
