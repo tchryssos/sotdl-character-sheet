@@ -1,5 +1,5 @@
-import { upperFirst } from 'lodash';
-import { ChangeEvent, useContext } from 'react';
+import { capitalize, upperFirst } from 'lodash';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -11,7 +11,12 @@ import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
-import { ARMOR_TRAITS, ARMOR_WEIGHT, ArmorTrait } from '~/constants/cwn/game';
+import {
+  ARMOR_TRAITS,
+  ARMOR_WEIGHT,
+  ArmorTrait,
+  ArmorWeight,
+} from '~/constants/cwn/game';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
@@ -19,11 +24,10 @@ import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { AcContext } from '../../AcProvider';
+import { EquippedToInput } from './EquippedToInput';
 
 interface ArmorInputItemProps
-  extends Pick<SortableAddAnotherChildProps, 'onDelete' | 'postSortIndex'> {
-  hideUnequipped: boolean;
-}
+  extends Pick<SortableAddAnotherChildProps, 'onDelete' | 'postSortIndex'> {}
 
 const createArmorFieldName = makeNestedFieldNameFn<CwnCharacterData, 'armors'>(
   'armors'
@@ -44,7 +48,6 @@ const armorTraitOptions: SelectOption[] = Object.keys(ARMOR_TRAITS).map(
 export function ArmorInputItem({
   postSortIndex: index,
   onDelete,
-  hideUnequipped,
 }: ArmorInputItemProps) {
   const { setValue, watch, getValues } = useFormContext<CwnCharacterData>();
   const { calculateAc } = useContext(AcContext);
@@ -54,11 +57,20 @@ export function ArmorInputItem({
   const nameFieldName = createArmorFieldName('name', index);
   const name = watch(nameFieldName) as string;
 
-  const equippedFieldName = createArmorFieldName('equipped', index);
-  const equipped = watch(equippedFieldName) as boolean;
+  const readiedFieldName = createArmorFieldName('readied', index);
+  const readied = watch(readiedFieldName) as boolean;
 
   const traitsFieldName = createArmorFieldName('traits', index);
   const traits = watch(traitsFieldName) as ArmorTrait[];
+
+  const weightFieldName = createArmorFieldName('weight', index);
+  const weight = watch(weightFieldName) as ArmorWeight;
+
+  const idFieldName = createArmorFieldName('id', index);
+  const id = watch(idFieldName) as string;
+
+  const equippedToFieldName = createArmorFieldName('equippedTo', index);
+  const equippedTo = watch(equippedToFieldName) as string;
 
   const setAC = (armorName: keyof CwnArmor, value: number) => {
     setValue(
@@ -68,34 +80,37 @@ export function ArmorInputItem({
     calculateAc(getValues('armors')[index]);
   };
 
-  const title = `${name}${traits.length ? ' - ' : ''}${traits
-    .map((t) => ARMOR_TRAITS[t].abbreviation)
-    .join(', ')}`;
+  const title = name
+    ? `${name} - ${capitalize(weight)}${traits.length ? ', ' : ''}${traits
+        .map((t) => ARMOR_TRAITS[t].abbreviation)
+        .join(', ')}`
+    : '""';
 
   return (
     <AAMItemFormSection
       title={title}
-      titleColor={equipped ? 'text' : 'textAccent'}
+      titleColor={readied ? 'text' : 'textAccent'}
       visibilityTitle={`${name}${index}`}
     >
       <FlexBox flexDirection="column" gap={isXxs ? 16 : 24}>
         <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
           <CheckboxInput
+            alwaysEditable
             customOnChange={() => {
-              setValue(equippedFieldName, !equipped);
+              setValue(readiedFieldName, !readied);
               // Only one armor can be worn at a time,
               // so unequip any other equipped armor when equipping this one
               getValues('armors').forEach((a, i) => {
-                if (i !== index && a.equipped) {
-                  const otherEquippedName = createArmorFieldName('equipped', i);
+                if (id !== a.id && a.readied) {
+                  const otherEquippedName = createArmorFieldName('readied', i);
                   setValue(otherEquippedName, false);
                 }
               });
             }}
             inputLike
-            isChecked={equipped}
-            label="Equipped"
-            name={equippedFieldName}
+            isChecked={readied}
+            label="Readied"
+            name={readiedFieldName}
           />
           <TextInput<CwnCharacterData> label="Name" name={nameFieldName} />
         </GridBox>
@@ -129,7 +144,7 @@ export function ArmorInputItem({
         </GridBox>
         <GridBox>
           <SelectInput<CwnCharacterData>
-            label="Weight"
+            label="Type"
             name={createArmorFieldName('weight', index)}
             options={armorWeightOptions}
           />
@@ -145,6 +160,12 @@ export function ArmorInputItem({
           name={traitsFieldName}
           options={armorTraitOptions}
         />
+        {weight === 'accessory' && (
+          <EquippedToInput
+            accessoryArmorId={id}
+            equippedToFieldName={equippedToFieldName}
+          />
+        )}
         <TextAreaInput<CwnCharacterData>
           label="Description"
           name={createArmorFieldName('description', index)}

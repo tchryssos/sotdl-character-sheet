@@ -34,6 +34,7 @@ export interface CwnOtherStatus {
 }
 
 export interface CwnArmor {
+  id: string;
   name: string;
   ac_ranged: number;
   ac_melee: number;
@@ -43,8 +44,11 @@ export interface CwnArmor {
   description: string;
   weight: ArmorWeight;
   traits: ArmorTrait[];
-  equipped: boolean;
-  accessories: Omit<CwnArmor, 'accessories' | 'equipped' | 'weight'>[];
+  readied: boolean;
+  // Accessories are armors too
+  // so we sort of "join table" them here
+  accessories: string[];
+  equippedTo: string;
 }
 
 export type CwnCharacterData = {

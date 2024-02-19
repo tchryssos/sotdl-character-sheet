@@ -33,7 +33,12 @@ export type ContactRelationship = (typeof CONTACT_RELATIONSHIPS)[number];
 export const FOCUS_LEVELS = ['1', '2'] as const;
 export type FocusLevel = (typeof FOCUS_LEVELS)[number];
 
-export const ARMOR_WEIGHT = ['civilian', 'suit'] as const;
+export const ARMOR_WEIGHT = [
+  'civilian',
+  'suit',
+  'accessory',
+  'shield',
+] as const;
 export type ArmorWeight = (typeof ARMOR_WEIGHT)[number];
 
 export const ARMOR_TRAITS = {

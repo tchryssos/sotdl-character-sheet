@@ -79,10 +79,14 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
-  let controlledFields = fields.map((field, i) => ({
-    ...field,
-    ...parentField?.[i],
-  }));
+  let controlledFields = fields.map((field, i) => {
+    const parentFieldItem = parentField?.[i] || {};
+    return {
+      ...field,
+      ...parentFieldItem,
+      ...(parentFieldItem?.id ? { fieldId: field.id } : {}),
+    };
+  });
 
   if (sortProperties) {
     controlledFields = sortBy(controlledFields, sortProperties);
@@ -121,7 +125,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
           const props = {
             index: i,
             onDelete,
-            fieldId: field.id,
+            fieldId: field.fieldId || field.id,
             sortIndexMap,
           };
 
