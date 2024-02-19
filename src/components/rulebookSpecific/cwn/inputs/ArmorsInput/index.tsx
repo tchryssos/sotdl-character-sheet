@@ -18,8 +18,8 @@ const HideCheckbox = styled(CheckboxInput)`
 const createDefaultValue = () =>
   ({
     name: '',
-    ac_ranged: 0,
-    ac_melee: 0,
+    ac_ranged: 10,
+    ac_melee: 10,
     damage_soak: 0,
     encumbrance: 0,
     trauma_target_mod: 0,

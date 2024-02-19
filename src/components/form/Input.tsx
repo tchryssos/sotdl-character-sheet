@@ -65,7 +65,7 @@ export function Input<T extends Record<string, unknown>>(props: InputProps<T>) {
     step,
     type,
     onBlur: registeredInput.onBlur,
-    onChange: (e: ChangeEvent) => {
+    onChange: (e: ChangeEvent<HTMLInputElement>) => {
       if (customOnChange) {
         customOnChange(e);
       } else {

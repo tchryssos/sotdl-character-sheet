@@ -5,7 +5,7 @@ import { FormSection } from './FormSection';
 interface AAMItemFormSectionProps
   extends Pick<
     ComponentProps<typeof FormSection>,
-    'title' | 'visibilityTitle' | 'columns'
+    'title' | 'visibilityTitle' | 'columns' | 'titleColor'
   > {}
 
 export function AAMItemFormSection({
@@ -13,6 +13,7 @@ export function AAMItemFormSection({
   visibilityTitle,
   columns = 1,
   children,
+  titleColor,
 }: PropsWithChildren<AAMItemFormSectionProps>) {
   return (
     <FormSection
@@ -20,6 +21,7 @@ export function AAMItemFormSection({
       columns={columns}
       isNested
       title={title}
+      titleColor={titleColor}
       visibilityTitle={visibilityTitle}
     >
       {children}
