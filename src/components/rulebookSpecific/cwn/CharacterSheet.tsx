@@ -23,6 +23,7 @@ import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { AcProvider } from './AcProvider';
 import { ArmorClassInputs } from './inputs/ArmorClassInputs';
+import { ArmorsInput } from './inputs/ArmorsInput';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
@@ -161,6 +162,7 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
                 <ArmorClassInputs />
+                <ArmorsInput />
               </GridBox>
             </TabPanel>
 
