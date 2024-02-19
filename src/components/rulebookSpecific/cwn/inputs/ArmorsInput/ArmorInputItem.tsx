@@ -73,6 +73,10 @@ export function ArmorInputItem({
   const equippedToFieldName = createArmorFieldName('equippedTo', index);
   const equippedTo = watch(equippedToFieldName) as string;
 
+  const accessoriesFieldName = createArmorFieldName('accessories', index);
+  const accessories = watch(accessoriesFieldName) as string[];
+
+  // Set accessory ready status to that of parent on assignment
   useEffect(() => {
     if (isAccessory) {
       if (equippedTo) {
@@ -86,6 +90,23 @@ export function ArmorInputItem({
     }
   }, [equippedTo, isAccessory, setValue, readiedFieldName, getValues]);
 
+  // Set the readied status for each accessory on parent readied change
+  useEffect(() => {
+    if (!isAccessory) {
+      const armors = getValues('armors');
+      const accessoryArmors = armors.filter((a) => a.equippedTo === id);
+      accessoryArmors.forEach((ac) => {
+        const accessoryArmorIndex = armors.findIndex((a) => a.id === ac.id);
+        if (accessoryArmorIndex >= 0) {
+          setValue(
+            createArmorFieldName('readied', accessoryArmorIndex),
+            readied
+          );
+        }
+      });
+    }
+  }, [readied, isAccessory, getValues, id, setValue]);
+
   const setAC = (armorName: keyof CwnArmor, value: number) => {
     setValue(
       createArmorFieldName(armorName, index),
@@ -94,10 +115,17 @@ export function ArmorInputItem({
     calculateAc(getValues('armors')[index]);
   };
 
+  /**
+   * If !name, title is ""
+   * If there are accessories, add a "+" after the name (fallout style)
+   * Add the weight and trait abbreviations
+   *
+   * ex. Plated Longcoat+ - Civilian, H
+   */
   const title = name
-    ? `${name} - ${capitalize(weight)}${traits.length ? ', ' : ''}${traits
-        .map((t) => ARMOR_TRAITS[t].abbreviation)
-        .join(', ')}`
+    ? `${name}${accessories.length ? '+' : ''} - ${capitalize(weight)}${
+        traits.length ? ', ' : ''
+      }${traits.map((t) => ARMOR_TRAITS[t].abbreviation).join(', ')}`
     : '""';
 
   return (
@@ -117,8 +145,14 @@ export function ArmorInputItem({
                 setValue(readiedFieldName, !readied);
                 // Only one armor can be worn at a time,
                 // so unequip any other equipped armor when equipping this one
+                // however, exclude shields and accessories to the current armor
                 getValues('armors').forEach((a, i) => {
-                  if (id !== a.id && a.readied) {
+                  if (
+                    id !== a.id &&
+                    a.equippedTo !== id &&
+                    a.readied &&
+                    a.weight !== 'shield'
+                  ) {
                     const otherEquippedName = createArmorFieldName(
                       'readied',
                       i
