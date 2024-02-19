@@ -16,7 +16,8 @@ import { SelectOption } from '~/components/form/typings';
 import { ARMOR_WEIGHT } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
+import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
+import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { AcContext } from '../../AcProvider';
 import { EncumbranceContext } from '../../EncumbranceProvider';
@@ -27,10 +28,9 @@ interface ArmorInputItemProps {
   hideUnequipped: boolean;
 }
 
-const createArmorFieldName = (
-  name: keyof WwnArmor,
-  index: number
-): `armors.${number}.${keyof WwnArmor}` => `armors.${index}.${name}`;
+const createArmorFieldName = makeNestedFieldNameFn<WwnCharacterData, 'armors'>(
+  'armors'
+);
 
 const armorWeightOptions: SelectOption[] = ARMOR_WEIGHT.map((w) => ({
   label: upperFirst(w),

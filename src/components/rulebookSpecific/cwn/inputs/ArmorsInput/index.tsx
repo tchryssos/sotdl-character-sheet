@@ -8,6 +8,8 @@ import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 
+import { ArmorInputItem } from './ArmorInputItem';
+
 const HideCheckbox = styled(CheckboxInput)`
   justify-self: end;
   text-align: end;
@@ -53,9 +55,12 @@ export function ArmorsInput() {
         parentFieldName="armors"
       >
         {({ index, onDelete, fieldId }) => (
-          <div>
-            <div>armor</div>
-          </div>
+          <ArmorInputItem
+            hideUnequipped={hideUnequipped}
+            key={fieldId}
+            postSortIndex={index}
+            onDelete={onDelete}
+          />
         )}
       </AddAnotherMultiField>
       {!isEditMode && (
