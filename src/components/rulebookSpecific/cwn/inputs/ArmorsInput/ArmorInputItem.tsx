@@ -82,16 +82,6 @@ export function ArmorInputItem({
   const accessoriesFieldName = createArmorFieldName('accessories', index);
   const accessories = watch(accessoriesFieldName) as string[];
 
-  console.log(
-    '>>>>>>>',
-    '\nname: ',
-    name,
-    '\nindex: ',
-    index,
-    '\naccessories: ',
-    accessories.length
-  );
-
   // Set accessory ready status to that of parent on assignment
   useEffect(() => {
     if (isAccessory) {
@@ -194,7 +184,6 @@ export function ArmorInputItem({
             label="Name"
             name={nameFieldName}
             onDelete={(i: number) => {
-              console.log('index: ', i);
               if (equippedTo) {
                 removeAccessoryFromParentArmor(id, equippedTo, {
                   setValue,

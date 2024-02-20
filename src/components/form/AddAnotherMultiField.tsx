@@ -43,6 +43,8 @@ function EmptyChildWrapper({ children }: { children?: React.ReactNode }) {
   return <>{children}</>;
 }
 
+const FIELD_ID = 'fieldId';
+
 export function AddAnotherMultiField<T extends Record<string, unknown>>({
   parentFieldName,
   children,
@@ -61,7 +63,9 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   const { fields, append, remove } = useFieldArray({
     control,
     name: parentFieldName as string,
+    keyName: FIELD_ID,
   });
+
   const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);
 
@@ -69,24 +73,22 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
 
   // https://github.com/react-hook-form/react-hook-form/discussions/4264#discussioncomment-398509
   const [sortIndexMap, setSortIndexMap] = useState(
-    new Map(fields.map(({ id }, index) => [id, index]))
+    new Map(fields.map(({ fieldId }, index) => [fieldId, index]))
   );
 
   useEffect(() => {
     if (fields.length !== sortIndexMap.size) {
-      setSortIndexMap(new Map(fields.map(({ id }, index) => [id, index])));
+      setSortIndexMap(
+        new Map(fields.map(({ fieldId }, index) => [fieldId, index]))
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
-  let controlledFields = fields.map((field, i) => {
-    const parentFieldItem = parentField?.[i] || {};
-    return {
-      ...field,
-      ...parentFieldItem,
-      ...(parentFieldItem?.id ? { fieldId: field.id } : {}),
-    };
-  });
+  let controlledFields = fields.map((field, i) => ({
+    ...field,
+    ...(parentField?.[i] || {}),
+  }));
 
   if (sortProperties) {
     controlledFields = sortBy(controlledFields, sortProperties);
@@ -99,7 +101,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   };
 
   const onDelete = (index: number) => {
-    const removedId = controlledFields[index].id;
+    const removedId = controlledFields[index][FIELD_ID];
     const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
     remove(valueRemovedIndex);
@@ -125,7 +127,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
           const props = {
             index: i,
             onDelete,
-            fieldId: field.fieldId || field.id,
+            fieldId: field[FIELD_ID],
             sortIndexMap,
           };
 
@@ -134,7 +136,9 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
           }
 
           return [
-            <ChildContainer key={field.id}>{children(props)}</ChildContainer>,
+            <ChildContainer key={field[FIELD_ID]}>
+              {children(props)}
+            </ChildContainer>,
           ];
         })}
       </ChildWrapper>
