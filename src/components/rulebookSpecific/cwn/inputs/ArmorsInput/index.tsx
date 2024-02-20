@@ -20,6 +20,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
+import { AcContext } from '../../AcProvider';
 import { ArmorInputItem } from './ArmorInputItem';
 
 const HideCheckbox = styled(CheckboxInput)`
@@ -50,7 +51,8 @@ function ArmorChildWrapper({ children }: PropsWithChildren<unknown>) {
 }
 
 export function ArmorsInput() {
-  const { getValues } = useFormContext<CwnCharacterData>();
+  const { getValues, watch } = useFormContext<CwnCharacterData>();
+  const { calculateAc } = useContext(AcContext);
   const [hideUnequipped, setHideUnequipped] = useState(false);
   const lastHideStateRef = useRef(hideUnequipped);
   const { isEditMode } = useContext(EditContext);
@@ -68,6 +70,12 @@ export function ArmorsInput() {
     }
   }, [isEditMode]);
 
+  const armors = watch('armors');
+
+  useEffect(() => {
+    calculateAc();
+  }, [armors, calculateAc]);
+
   const filterUnequippedArmor = useCallback(
     ({ fieldId, sortIndexMap }: SortableAddAnotherChildProps) => {
       const trueFieldIndex = sortIndexMap.get(fieldId);
@@ -77,9 +85,9 @@ export function ArmorsInput() {
       }
 
       if (!isEditMode && hideUnequipped) {
-        const armors = getValues('armors') as CwnArmor[];
+        const filterArmors = getValues('armors') as CwnArmor[];
 
-        const armor = armors[trueFieldIndex];
+        const armor = filterArmors[trueFieldIndex];
 
         if (!armor.readied) {
           return false;

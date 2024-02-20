@@ -4,12 +4,12 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { AAMItemTitleAndDelete } from '~/components/form/AAMItemTitleAndDelete';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
-import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import {
   ARMOR_TRAITS,
@@ -28,6 +28,7 @@ import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { AcContext } from '../../AcProvider';
 import { EquippedToInput } from './EquippedToInput';
+import { removeAccessoryFromParentArmor } from './utils';
 
 interface ArmorInputItemProps
   extends Pick<SortableAddAnotherChildProps, 'onDelete' | 'postSortIndex'> {}
@@ -54,6 +55,7 @@ export function ArmorInputItem({
 }: ArmorInputItemProps) {
   const { setValue, watch, getValues } = useFormContext<CwnCharacterData>();
   const { calculateAc } = useContext(AcContext);
+  // const { isEditMode } = useContext(EditContext);
   const isXxs = useBreakpointsLessThan('xs');
   const lessThanSm = useBreakpointsLessThan('sm');
   const mdUp = useBreakpointsAtLeast('md');
@@ -79,6 +81,16 @@ export function ArmorInputItem({
 
   const accessoriesFieldName = createArmorFieldName('accessories', index);
   const accessories = watch(accessoriesFieldName) as string[];
+
+  console.log(
+    '>>>>>>>',
+    '\nname: ',
+    name,
+    '\nindex: ',
+    index,
+    '\naccessories: ',
+    accessories.length
+  );
 
   // Set accessory ready status to that of parent on assignment
   useEffect(() => {
@@ -177,7 +189,39 @@ export function ArmorInputItem({
               name={readiedFieldName}
             />
           )}
-          <TextInput<CwnCharacterData> label="Name" name={nameFieldName} />
+          <AAMItemTitleAndDelete<CwnCharacterData>
+            index={index}
+            label="Name"
+            name={nameFieldName}
+            onDelete={(i: number) => {
+              console.log('index: ', i);
+              if (equippedTo) {
+                removeAccessoryFromParentArmor(id, equippedTo, {
+                  setValue,
+                  getValues,
+                });
+              } else if (accessories.length) {
+                const armors = getValues('armors');
+                accessories.forEach((ac) => {
+                  // Unready accessories and remove equippedTo
+                  const accessoryArmorIndex = armors.findIndex(
+                    (a) => a.id === ac
+                  );
+                  if (accessoryArmorIndex >= 0) {
+                    setValue(
+                      createArmorFieldName('equippedTo', accessoryArmorIndex),
+                      ''
+                    );
+                    setValue(
+                      createArmorFieldName('readied', accessoryArmorIndex),
+                      false
+                    );
+                  }
+                });
+              }
+              onDelete(i);
+            }}
+          />
         </GridBox>
         <GridBox columns={isAccessory ? 2 : 1}>
           <SelectInput<CwnCharacterData>

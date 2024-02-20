@@ -3,18 +3,17 @@ import { useFormContext } from 'react-hook-form';
 
 import { SelectInput } from '~/components/form/SelectInput';
 import { KeyName, SelectOption } from '~/components/form/typings';
-import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
+
+import {
+  findParentArmorAccessories,
+  removeAccessoryFromParentArmor,
+} from './utils';
 
 interface EquippedToInputProps {
   equippedToFieldName: KeyName<CwnCharacterData>;
   accessoryArmorId: string;
 }
-
-const createParentArmorFieldName = makeNestedFieldNameFn<
-  CwnCharacterData,
-  'armors'
->('armors');
 
 type EquippedToFieldName = `armors.${number}.equippedTo`;
 
@@ -28,7 +27,7 @@ export function EquippedToInput({
   const equippedTo = watch(equippedToFieldName as EquippedToFieldName);
 
   const armorOptions: SelectOption[] = armors.flatMap((armor) => {
-    if (armor.weight === 'accessory') {
+    if (armor.weight === 'accessory' || armor.weight === 'shield') {
       return [];
     }
     return [
@@ -39,43 +38,12 @@ export function EquippedToInput({
     ];
   });
 
-  const findParentArmorAccessories = (
-    parentId: string
-  ): [string[], `armors.${number}.accessories` | null] => {
-    // From the armors array, find the armor with the matching id, get its index
-    const previousParentArmorIndex = armors.findIndex(
-      (armor) => armor.id === parentId
-    );
-
-    if (previousParentArmorIndex === -1) {
-      return [[], null];
-    }
-
-    // Make an armors accessories fieldName based on that index
-    const parentAccessoriesFieldName = createParentArmorFieldName(
-      'accessories',
-      previousParentArmorIndex
-    ) as `armors.${number}.accessories`;
-
-    // Get the accessories from the parent armor
-    const parentAccessories = getValues(parentAccessoriesFieldName) as string[];
-
-    return [parentAccessories, parentAccessoriesFieldName];
-  };
-
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     // First, remove this accessory from the previous parent armor
-    const [prevParentAccessories, prevParentAccessoryFieldName] =
-      findParentArmorAccessories(equippedTo);
-
-    if (prevParentAccessoryFieldName) {
-      setValue(
-        prevParentAccessoryFieldName,
-        prevParentAccessories.filter(
-          (accessory) => accessory !== accessoryArmorId
-        )
-      );
-    }
+    removeAccessoryFromParentArmor(accessoryArmorId, equippedTo, {
+      setValue,
+      getValues,
+    });
 
     // Next, set the equippedTo value to the new parent armor
     const parentArmorId = e.target.value;
@@ -83,9 +51,9 @@ export function EquippedToInput({
 
     // Finally, add this accessory to the new parent armor
     const [nextParentAccessories, nextParentAccessoryFieldName] =
-      findParentArmorAccessories(parentArmorId);
+      findParentArmorAccessories(parentArmorId, getValues);
 
-    // Unlike above, this should always exist but we like to keep ts happy
+    // This should always exist but we like to keep ts happy
     if (nextParentAccessoryFieldName) {
       setValue(nextParentAccessoryFieldName, [
         ...nextParentAccessories,

@@ -11,7 +11,7 @@ import { TextInputProps } from './typings';
 type AAMItemTitleAndDeleteProps<T extends CharacterData> = {
   index: number;
   onDelete: (idx: number) => void;
-} & Pick<TextInputProps<T>, 'name' | 'label'>;
+} & Required<Pick<TextInputProps<T>, 'name' | 'label'>>;
 
 export function AAMItemTitleAndDelete<T extends CharacterData>({
   index,

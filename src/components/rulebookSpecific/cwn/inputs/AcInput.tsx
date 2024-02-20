@@ -44,7 +44,7 @@ export function AcInput() {
   return (
     <FlexBox flexDirection="column" gap={4}>
       <GridBox columns={2}>
-        <FlexBox flexDirection="column">
+        <FlexBox flexDirection="column" gap={8}>
           <NumberInput<CwnCharacterData>
             label="Melee"
             name="armor_class_melee"
@@ -52,7 +52,7 @@ export function AcInput() {
           />
           <AcList acDescription={acDescriptions.melee} />
         </FlexBox>
-        <FlexBox flexDirection="column">
+        <FlexBox flexDirection="column" gap={8}>
           <NumberInput<CwnCharacterData>
             label="Ranged"
             name="armor_class_ranged"
