@@ -1,13 +1,22 @@
 import styled from '@emotion/styled';
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import {
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useFormContext } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 
+import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
@@ -34,6 +43,11 @@ const createDefaultValue = () =>
     equippedTo: '',
     id: uuid4(),
   } satisfies CwnArmor);
+
+function ArmorChildWrapper({ children }: PropsWithChildren<unknown>) {
+  const isLessThanMd = useBreakpointsLessThan('md');
+  return <GridBox columns={isLessThanMd ? 1 : 2}>{children}</GridBox>;
+}
 
 export function ArmorsInput() {
   const { getValues } = useFormContext<CwnCharacterData>();
@@ -80,6 +94,7 @@ export function ArmorsInput() {
   return (
     <FormSection columns={1} icon={RpgIcons.ArmorHead} title="Armors">
       <AddAnotherMultiField<CwnCharacterData>
+        ChildWrapper={ArmorChildWrapper}
         createDefaultValue={createDefaultValue}
         filterFn={filterUnequippedArmor}
         parentFieldName="armors"

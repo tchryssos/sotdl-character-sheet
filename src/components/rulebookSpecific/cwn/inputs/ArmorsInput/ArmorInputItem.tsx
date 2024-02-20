@@ -17,7 +17,10 @@ import {
   ArmorTrait,
   ArmorWeight,
 } from '~/constants/cwn/game';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
 import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
@@ -53,6 +56,7 @@ export function ArmorInputItem({
   const { calculateAc } = useContext(AcContext);
   const isXxs = useBreakpointsLessThan('xs');
   const lessThanSm = useBreakpointsLessThan('sm');
+  const mdUp = useBreakpointsAtLeast('md');
 
   const nameFieldName = createArmorFieldName('name', index);
   const name = watch(nameFieldName) as string;
@@ -211,7 +215,7 @@ export function ArmorInputItem({
             name={createArmorFieldName('damage_soak', index)}
           />
           <NumberInput<CwnCharacterData>
-            label={isXxs ? 'Trauma Mod' : 'Trauma Target Mod'}
+            label={isXxs || mdUp ? 'Trauma Mod' : 'Trauma Target Mod'}
             min={0}
             name={createArmorFieldName('trauma_target_mod', index)}
           />
