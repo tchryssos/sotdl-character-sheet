@@ -268,7 +268,7 @@ export function ArmorInputItem({
         </GridBox>
 
         <TextAreaInput<CwnCharacterData>
-          label="Description"
+          label="Description/Mods"
           name={createArmorFieldName('description', index)}
         />
       </FlexBox>

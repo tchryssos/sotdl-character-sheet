@@ -54,12 +54,12 @@ const tabLabels: TabLabelObject[] = [
     icon: RpgIcons.Dice,
   },
   {
-    label: 'Abilities',
-    icon: RpgIcons.Ripple,
-  },
-  {
     label: 'Status',
     icon: RpgIcons.SmileGuy,
+  },
+  {
+    label: 'Abilities',
+    icon: RpgIcons.Ripple,
   },
   {
     label: 'Combat',
@@ -140,14 +140,6 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
               </GridBox>
             </TabPanel>
 
-            {/* Abilities */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <EdgesInput />
-                <FociInput />
-              </GridBox>
-            </TabPanel>
-
             {/* Status */}
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
@@ -155,6 +147,14 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
                 <SaveInputs />
                 <InjuryInputs />
                 <OtherStatusesInput />
+              </GridBox>
+            </TabPanel>
+
+            {/* Abilities */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <EdgesInput />
+                <FociInput />
               </GridBox>
             </TabPanel>
 

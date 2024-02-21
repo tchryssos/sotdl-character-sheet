@@ -41,4 +41,5 @@ export enum RpgIcons {
   Bubbles = '440',
   Rabbit = '003',
   QuestionMark = '431',
+  Pistol = '327',
 }

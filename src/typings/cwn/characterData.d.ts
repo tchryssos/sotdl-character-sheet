@@ -51,6 +51,8 @@ export interface CwnArmor {
   equippedTo: string;
 }
 
+export interface CwnWeapon {}
+
 export type CwnCharacterData = {
   type: CwnName;
   name: string;
