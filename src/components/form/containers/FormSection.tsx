@@ -182,6 +182,7 @@ export function FormSection({
         {!borderless && <Line />}
       </GridBox>
       <Container
+        alignContent="start"
         borderless={borderless}
         columns={columns}
         gridTemplateColumns={gridTemplateColumns}

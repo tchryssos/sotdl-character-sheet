@@ -7,7 +7,7 @@ import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { SelectInput } from '~/components/form/SelectInput';
 import { SelectOption } from '~/components/form/typings';
-import { WEAPON_TYPES } from '~/constants/cwn/game';
+import { WEAPON_TYPES, WeaponType } from '~/constants/cwn/game';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
@@ -36,6 +36,10 @@ export function WeaponInputItem({
 
   const readiedFieldName = createWeaponFieldName('readied', index);
   const readied = watch(readiedFieldName) as boolean;
+
+  const typeFieldName = createWeaponFieldName('type', index);
+  const type = watch(typeFieldName) as WeaponType;
+  const isRanged = type === 'ranged';
 
   const title = `${name}`;
 
@@ -69,13 +73,13 @@ export function WeaponInputItem({
           name={nameFieldName}
           onDelete={onDelete}
         />
-        {/* <GridBox>
-          <SelectInput<CwnCharacterData>
-            label="Type"
-            name={createWeaponFieldName('type', index)}
-            options={weaponTypeOptions}
-          />
-        </GridBox> */}
+      </GridBox>
+      <GridBox>
+        <SelectInput<CwnCharacterData>
+          label="Type"
+          name={typeFieldName}
+          options={weaponTypeOptions}
+        />
       </GridBox>
     </AAMItemFormSection>
   );
