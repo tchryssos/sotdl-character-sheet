@@ -15,7 +15,6 @@ import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { ARMOR_WEIGHT } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
@@ -43,8 +42,6 @@ export function ArmorInputItem({
   hideUnequipped,
 }: ArmorInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
-  const isLessThanSm = useBreakpointsLessThan('sm');
-  const isXxs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
   const { calculateAc } = useContext(AcContext);
   const { calculateEncumbrances } = useContext(EncumbranceContext);
@@ -93,7 +90,7 @@ export function ArmorInputItem({
       visibilityTitle={`armors${index}`}
     >
       <GridBox columns={1}>
-        <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
+        <GridBox gridTemplateColumns={{ base: '1fr', xs: 'auto 1fr' }}>
           <CheckboxInput<WwnCharacterData>
             alwaysEditable
             label="Equipped"
@@ -101,7 +98,13 @@ export function ArmorInputItem({
           />
           <TextInput<WwnCharacterData> label="Name" name={armorNameFieldName} />
         </GridBox>
-        <GridBox columns={isXxs ? 1 : isLessThanSm ? 2 : 3}>
+        <GridBox
+          gridTemplateColumns={{
+            base: '1fr',
+            xs: '1fr 1fr',
+            sm: 'repeat(3, 1fr)',
+          }}
+        >
           <NumberInput<WwnCharacterData>
             label="Defense"
             min={0}

@@ -10,6 +10,8 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useFilterUnreadied } from '~/logic/utils/rulebookSpecific/cwn/useFilterUnreadied';
 import { CwnCharacterData, CwnWeapon } from '~/typings/cwn/characterData';
 
+import { WeaponInputItem } from './WeaponInputItem';
+
 const HideCheckbox = styled(CheckboxInput)`
   justify-self: end;
   text-align: end;
@@ -49,9 +51,11 @@ export function WeaponsInput() {
         parentFieldName="weapons"
       >
         {({ index, onDelete, fieldId }) => (
-          <div>
-            <div>weapon</div>
-          </div>
+          <WeaponInputItem
+            key={fieldId}
+            postSortIndex={index}
+            onDelete={onDelete}
+          />
         )}
       </AddAnotherMultiField>
       {!isEditMode && (

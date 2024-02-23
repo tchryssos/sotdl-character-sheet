@@ -147,7 +147,12 @@ type RawAllowedGridBoxCssProps = {
   [k in (typeof ALLOWED_GRIDBOX_CSS_KEYS)[number]]?: CSS.Properties[k];
 };
 
-type RawAllowedCustomCssProps = AllowedCustomCssSpacingProps;
+export type AllowedCustomGridProps = {
+  columns?: number;
+};
+
+type RawAllowedCustomCssProps = AllowedCustomCssSpacingProps &
+  AllowedCustomGridProps;
 
 type RawAllowedCssProps = RawAllowedCommonCssProps &
   RawAllowedTextCssProps &
@@ -198,10 +203,9 @@ export const CUSTOM_THEME_CSS_PROPS = {
   maxHeight: 'spacing',
   minWidth: 'spacing',
   minHeight: 'spacing',
-  // ts-prune-ignore-next
-} satisfies {
+} satisfies Partial<{
   [k in keyof RawAllowedCssProps]: keyof Theme;
-};
+}>;
 
 // Map the "raw" allowed css props to account for properties that
 // have a custom theme mapping.
@@ -221,8 +225,9 @@ export type AllowedTextCssProps =
   AllowedCssPropsWithTheme<RawAllowedTextCssProps>;
 export type AllowedFlexboxCssProps =
   AllowedCssPropsWithTheme<RawAllowedFlexboxCssProps>;
-export type AllowedGridBoxCssProps =
-  AllowedCssPropsWithTheme<RawAllowedGridBoxCssProps>;
+export type AllowedGridBoxCssProps = AllowedCssPropsWithTheme<
+  RawAllowedGridBoxCssProps & AllowedCustomGridProps
+>;
 export type AllowedCustomCssProps =
   AllowedCssPropsWithTheme<RawAllowedCustomCssProps>;
 

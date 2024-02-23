@@ -57,7 +57,6 @@ export function ArmorInputItem({
   const { calculateAc } = useContext(AcContext);
   // const { isEditMode } = useContext(EditContext);
   const isXxs = useBreakpointsLessThan('xs');
-  const lessThanSm = useBreakpointsLessThan('sm');
   const mdUp = useBreakpointsAtLeast('md');
 
   const nameFieldName = createArmorFieldName('name', index);
@@ -144,7 +143,7 @@ export function ArmorInputItem({
       titleColor={readied ? 'text' : 'textAccent'}
       visibilityTitle={`${name}${index}`}
     >
-      <FlexBox flexDirection="column" gap={isXxs ? 16 : 24}>
+      <FlexBox flexDirection="column" gap={{ base: 16, xs: 24 }}>
         <GridBox
           gridTemplateColumns={isXxs || isAccessory ? '1fr' : 'auto 1fr'}
         >
@@ -225,7 +224,7 @@ export function ArmorInputItem({
             />
           )}
         </GridBox>
-        <GridBox columns={lessThanSm ? 2 : 4}>
+        <GridBox columns={{ base: 2, sm: 4 }}>
           <NumberInput<CwnCharacterData>
             customOnChange={(e) =>
               setAC('ac_melee', guaranteeNumberValue(e.target.value))
