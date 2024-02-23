@@ -1,11 +1,13 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { CSSObject } from '@emotion/styled';
+import { isPlainObject } from 'lodash';
 
 import {
   ALL_ALLOWED_CSS_PROPS,
   AllowedCustomCssProps,
   AllowedCustomCssSpacingProps,
   CUSTOM_THEME_CSS_PROPS,
+  RequiredStyleByBreakpointKeys,
 } from '~/constants/css';
 import { Theme } from '~/constants/theme';
 
@@ -95,6 +97,17 @@ type HandleCustomCssArgs = Omit<CustomCssArgs, 'currPropKey'> & {
   currPropKey: keyof AllowedCustomCssProps;
 };
 
+const isStyleByBreakpointObj = (value: unknown): boolean => {
+  if (!value || (value && !isPlainObject(value))) {
+    return false;
+  }
+  return (
+    (value as Record<string, unknown>)[
+      'base' as RequiredStyleByBreakpointKeys
+    ] !== undefined
+  );
+};
+
 const handleCustomCssProps = ({
   currPropKey,
   theme,
@@ -117,42 +130,75 @@ export const filterCssProps = (props: Record<string, any>, theme: Theme) =>
   Object.keys(props).reduce((propObj: CssPropObj, currPropKey) => {
     // Create a copy of the propObj so we don't mutate it
     let nextPropObj = { ...propObj } as CssPropObj;
+    const propValue = props[currPropKey];
 
-    // Check if the current prop is a custom CSS prop
-    // for ex. paddingX, paddingY, etc.
-    const usesCustomCss = Object.keys(customCssMapping).includes(currPropKey);
-
-    if (usesCustomCss) {
-      // If it is, handle it using a helper function
-      const customProps = handleCustomCssProps({
-        currPropKey: currPropKey as keyof AllowedCustomCssProps,
-        theme,
-        propValue: props[currPropKey],
+    // Check if the current prop is a style-by-breakpoint object
+    if (isStyleByBreakpointObj(propValue)) {
+      const breakpoints = Object.keys(propValue) as StyleByBreakpointKeys[];
+      // For each breakpoint...
+      breakpoints.forEach((breakpoint) => {
+        // ... if that breakpoint is "base", treat it like a regular prop ...
+        if (breakpoint === 'base') {
+          nextPropObj = {
+            ...nextPropObj,
+            ...filterCssProps({ [currPropKey]: propValue.base }, theme),
+          };
+        } else {
+          // ...otherwise, get the mediaQuery from the theme and nest the prop
+          // under that breakpoint
+          const value = propValue[breakpoint];
+          if (value !== undefined) {
+            nextPropObj = {
+              ...nextPropObj,
+              [theme.breakpoints[breakpoint]]: {
+                ...((nextPropObj[
+                  theme.breakpoints[breakpoint]
+                ] as CssPropObj) || {}),
+                ...filterCssProps({ [currPropKey]: value }, theme),
+              },
+            };
+          }
+        }
       });
-      nextPropObj = { ...nextPropObj, ...customProps };
+      // This else always true during a recursive call of this fn due to breakpoints
     } else {
-      // Check if it is a custom theme prop
-      // aka any prop for which we expect to match a defined theme value
-      const usesCustomTheme = Object.keys(CUSTOM_THEME_CSS_PROPS).includes(
-        currPropKey
-      );
-      if (usesCustomTheme) {
+      // Check if the current prop is a custom CSS prop
+      // for ex. paddingX, paddingY, etc.
+      const usesCustomCss = Object.keys(customCssMapping).includes(currPropKey);
+
+      if (usesCustomCss) {
         // If it is, handle it using a helper function
-        nextPropObj[currPropKey] = handleThemedCssProps({
-          currPropKey: currPropKey as keyof typeof CUSTOM_THEME_CSS_PROPS,
+        const customProps = handleCustomCssProps({
+          currPropKey: currPropKey as keyof AllowedCustomCssProps,
           theme,
-          propValue: props[currPropKey],
+          propValue,
         });
-      } else if (
-        // If it isn't, check if it is a valid CSS prop
-        ALL_ALLOWED_CSS_PROPS.includes(
-          currPropKey as (typeof ALL_ALLOWED_CSS_PROPS)[number]
-        )
-      ) {
-        // If it is, add it to the propObj
-        nextPropObj[currPropKey] = props[currPropKey];
+        nextPropObj = { ...nextPropObj, ...customProps };
+      } else {
+        // Check if it is a custom theme prop
+        // aka any prop for which we expect to match a defined theme value
+        const usesCustomTheme = Object.keys(CUSTOM_THEME_CSS_PROPS).includes(
+          currPropKey
+        );
+        if (usesCustomTheme) {
+          // If it is, handle it using a helper function
+          nextPropObj[currPropKey] = handleThemedCssProps({
+            currPropKey: currPropKey as keyof typeof CUSTOM_THEME_CSS_PROPS,
+            theme,
+            propValue,
+          });
+        } else if (
+          // If it isn't, check if it is a valid CSS prop
+          ALL_ALLOWED_CSS_PROPS.includes(
+            currPropKey as (typeof ALL_ALLOWED_CSS_PROPS)[number]
+          )
+        ) {
+          // If it is, add it to the propObj
+          nextPropObj[currPropKey] = propValue;
+        }
       }
     }
+
     // Return the propObj
     return nextPropObj;
   }, {} as CssPropObj);
