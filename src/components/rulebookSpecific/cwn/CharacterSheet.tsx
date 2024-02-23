@@ -35,6 +35,7 @@ import { InjuryInputs } from './inputs/InjuryInputs';
 import { OtherStatusesInput } from './inputs/OtherStatusesInput';
 import { SaveInputs } from './inputs/SaveInputs';
 import { SkillInputs } from './inputs/SkillInputs';
+import { WeaponsInput } from './inputs/WeaponsInput';
 
 interface CwnCharacterSheetProps {
   character: StrictCharacter<CwnCharacterData>;
@@ -162,7 +163,10 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
                 <ArmorClassInputs />
-                <ArmorsInput />
+                <GridBox columns={isLessThanMd ? 1 : 2}>
+                  <WeaponsInput />
+                  <ArmorsInput />
+                </GridBox>
               </GridBox>
             </TabPanel>
 

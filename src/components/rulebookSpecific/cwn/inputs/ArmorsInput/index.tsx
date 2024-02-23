@@ -1,12 +1,5 @@
 import styled from '@emotion/styled';
-import {
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { PropsWithChildren, useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 
@@ -16,9 +9,8 @@ import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { useFilterUnreadied } from '~/logic/utils/rulebookSpecific/cwn/useFilterUnreadied';
 import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
-import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { AcContext } from '../../AcProvider';
 import { ArmorInputItem } from './ArmorInputItem';
@@ -46,58 +38,26 @@ const createDefaultValue = () =>
   } satisfies CwnArmor);
 
 function ArmorChildWrapper({ children }: PropsWithChildren<unknown>) {
-  const isLessThanMd = useBreakpointsLessThan('md');
-  return <GridBox columns={isLessThanMd ? 1 : 2}>{children}</GridBox>;
+  return <GridBox columns={1}>{children}</GridBox>;
 }
 
 export function ArmorsInput() {
-  const { getValues, watch } = useFormContext<CwnCharacterData>();
+  const { watch } = useFormContext<CwnCharacterData>();
   const { calculateAc } = useContext(AcContext);
-  const [hideUnequipped, setHideUnequipped] = useState(false);
-  const lastHideStateRef = useRef(hideUnequipped);
+
+  const {
+    filterUnreadied: filterUnequippedArmor,
+    hideUnreadied: hideUnequipped,
+    onToggleHide,
+  } = useFilterUnreadied<CwnCharacterData>('armors');
+
   const { isEditMode } = useContext(EditContext);
-
-  const onToggleHide = () => {
-    setHideUnequipped(!hideUnequipped);
-    lastHideStateRef.current = !hideUnequipped;
-  };
-
-  useEffect(() => {
-    if (isEditMode) {
-      setHideUnequipped(false);
-    } else {
-      setHideUnequipped(lastHideStateRef.current);
-    }
-  }, [isEditMode]);
 
   const armors = watch('armors');
 
   useEffect(() => {
     calculateAc();
   }, [armors, calculateAc]);
-
-  const filterUnequippedArmor = useCallback(
-    ({ fieldId, sortIndexMap }: SortableAddAnotherChildProps) => {
-      const trueFieldIndex = sortIndexMap.get(fieldId);
-
-      if (trueFieldIndex === undefined) {
-        return false;
-      }
-
-      if (!isEditMode && hideUnequipped) {
-        const filterArmors = getValues('armors') as CwnArmor[];
-
-        const armor = filterArmors[trueFieldIndex];
-
-        if (!armor.readied) {
-          return false;
-        }
-      }
-
-      return true;
-    },
-    [getValues, hideUnequipped, isEditMode]
-  );
 
   return (
     <FormSection columns={1} icon={RpgIcons.ArmorHead} title="Armors">

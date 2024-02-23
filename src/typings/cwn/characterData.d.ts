@@ -3,8 +3,12 @@ import {
   ArmorWeight,
   ContactRelationship,
   FocusLevel,
+  Attribute,
+  Skill,
+  WeaponType,
 } from '~/constants/cwn/game';
 import { CwnName } from './game';
+import { ValuesOf } from '../util';
 
 export interface CwnContact {
   relationship: ContactRelationship;
@@ -51,7 +55,34 @@ export interface CwnArmor {
   equippedTo: string;
 }
 
-export interface CwnWeapon {}
+export interface CwnWeapon {
+  name: string;
+  type: WeaponType;
+  damage: [number, number, number];
+  range: [number, number];
+  shock: [number, number];
+  encumbrance: number;
+  description: string;
+  mag: number;
+  attribute: Attribute[];
+  readied: boolean;
+  trauma_die: [number, number];
+  trauma_rating: number;
+}
+
+export type AttributeName = ValuesOf<{
+  [K in Attribute]: `attribute_${K}`;
+}>;
+type AttributeFields = {
+  [K in AttributeName]: number;
+};
+
+type SkillName = ValuesOf<{
+  [K in Skill]: `skill_${K}`;
+}>;
+type SkillFields = {
+  [K in SkillName]: number;
+};
 
 export type CwnCharacterData = {
   type: CwnName;
@@ -61,33 +92,8 @@ export type CwnCharacterData = {
   goal: string;
   languages: string;
   ties: string;
-  attribute_strength: number;
-  attribute_dexterity: number;
-  attribute_constitution: number;
-  attribute_intelligence: number;
-  attribute_wisdom: number;
-  attribute_charisma: number;
   background_name: string;
   background_details: string;
-  skill_administer: number;
-  skill_connect: number;
-  skill_drive: number;
-  skill_exert: number;
-  skill_fix: number;
-  skill_heal: number;
-  skill_know: number;
-  skill_lead: number;
-  skill_notice: number;
-  skill_perform: number;
-  skill_program: number;
-  skill_punch: number;
-  skill_shoot: number;
-  skill_sneak: number;
-  skill_survive: number;
-  skill_stab: number;
-  skill_talk: number;
-  skill_trade: number;
-  skill_work: number;
   remaining_skill_points: number;
   contacts: CwnContact[];
   foci: CwnFocus[];
@@ -107,27 +113,18 @@ export type CwnCharacterData = {
   armor_class_ranged: number;
   armor_class_melee: number;
   armors: CwnArmor[];
+  weapons: CwnWeapon[];
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;
   //   initiative_bonus: number;
   //   equipment: WwnEquipment[];
   //   weapons: WwnWeapon[];
-  //   armors: WwnArmor[];
   //   currency_copper: number;
   //   currency_silver: number;
   //   currency_gold: number;
-};
-
-export type AttributeName = keyof Pick<
-  CwnCharacterData,
-  | 'attribute_charisma'
-  | 'attribute_constitution'
-  | 'attribute_dexterity'
-  | 'attribute_intelligence'
-  | 'attribute_strength'
-  | 'attribute_wisdom'
->;
+} & AttributeFields &
+  SkillFields;
 
 export type SaveName = keyof Pick<
   CwnCharacterData,

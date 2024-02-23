@@ -19,6 +19,10 @@ export type CharacterData =
   | SotwwCharacterData
   | CwnCharacterData;
 
+// https://sine-nomine-publishing.myshopify.com/
+// Crawford games
+export type SineNomineCharacterData = WwnCharacterData | CwnCharacterData;
+
 export type StrictCharacter<T extends CharacterData> = Omit<
   character,
   'characterData' | 'rulebookName'

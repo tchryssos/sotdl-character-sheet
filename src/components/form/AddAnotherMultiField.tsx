@@ -12,8 +12,11 @@ import { FlexBox } from '../box/FlexBox';
 import { Text } from '../Text';
 import { AddAnotherButton } from './AddAnotherButton';
 
+export type AddAnotherMultiFieldName<T extends Record<string, unknown>> =
+  Extract<keyof ListFieldRecord<T>, string>;
+
 type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
-  parentFieldName: Extract<keyof ListFieldRecord<T>, string>;
+  parentFieldName: AddAnotherMultiFieldName<T>;
   children: (fieldProps: {
     index: number;
     onDelete: (index: number) => void;

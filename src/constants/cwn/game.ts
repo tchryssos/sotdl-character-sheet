@@ -1,3 +1,13 @@
+const ATTRIBUTES = [
+  'strength',
+  'dexterity',
+  'constitution',
+  'intelligence',
+  'wisdom',
+  'charisma',
+] as const;
+export type Attribute = (typeof ATTRIBUTES)[number];
+
 const UNSORTED_SKILLS = [
   'administer',
   'connect',
@@ -61,3 +71,6 @@ export const ARMOR_TRAITS = {
   },
 } as const;
 export type ArmorTrait = keyof typeof ARMOR_TRAITS;
+
+export const WEAPON_TYPES = ['melee/thrown', 'ranged'] as const;
+export type WeaponType = (typeof WEAPON_TYPES)[number];
