@@ -48,6 +48,7 @@ export type TextInputProps<U> = BaseInputProps<
     validations?: Validations<{
       minLength?: number;
       maxLength?: number;
+      pattern?: RegExp;
     }>;
   },
   U

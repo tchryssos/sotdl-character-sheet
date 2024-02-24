@@ -58,15 +58,15 @@ export interface CwnArmor {
 export interface CwnWeapon {
   name: string;
   type: WeaponType;
-  damage: [number, number, number];
-  range: [number, number];
-  shock: [number, number];
+  damage: `${number}d${number}` | `${number}d${number}+${number}`;
+  range: `${number}/${number}` | '';
+  shock: `${number}/AC ${number}`;
   encumbrance: number;
   description: string;
   mag: number;
   attribute: Attribute[];
   readied: boolean;
-  trauma_die: [number, number];
+  trauma_die: `${number}d${number}`;
   trauma_rating: number;
 }
 

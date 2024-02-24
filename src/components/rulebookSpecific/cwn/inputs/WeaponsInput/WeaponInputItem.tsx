@@ -1,18 +1,20 @@
 import { capitalize } from 'lodash';
-import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AAMItemTitleAndDelete } from '~/components/form/AAMItemTitleAndDelete';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
+import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
+import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { ATTRIBUTES, WEAPON_TYPES, WeaponType } from '~/constants/cwn/game';
+import { SHOCK_REGEX } from '~/constants/cwn/regex';
+import { DICE_WITH_MODIFIER_REGEX, RANGE_REGEX } from '~/constants/regex';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
-import { DamageInputs } from './DamageInputs';
 import { createWeaponFieldName } from './utils';
 
 interface WeaponInputItemProps
@@ -90,7 +92,37 @@ export function WeaponInputItem({
           options={weaponAttributeOptions}
         />
       </GridBox>
-      <DamageInputs index={index} />
+      <TextInput<CwnCharacterData>
+        label="Damage"
+        name={createWeaponFieldName('damage', index)}
+        validations={{
+          pattern: DICE_WITH_MODIFIER_REGEX,
+        }}
+      />
+      <GridBox>
+        <TextInput<CwnCharacterData>
+          label="Range"
+          name={createWeaponFieldName('range', index)}
+          validations={{
+            pattern: RANGE_REGEX,
+          }}
+        />
+        {isRanged ? (
+          <NumberInput<CwnCharacterData>
+            label="Mag"
+            min={1}
+            name={createWeaponFieldName('mag', index)}
+          />
+        ) : (
+          <TextInput<CwnCharacterData>
+            label="Shock"
+            name={createWeaponFieldName('shock', index)}
+            validations={{
+              pattern: SHOCK_REGEX,
+            }}
+          />
+        )}
+      </GridBox>
     </AAMItemFormSection>
   );
 }
