@@ -1,4 +1,5 @@
 import { capitalize } from 'lodash';
+import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
@@ -7,22 +8,24 @@ import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { SelectInput } from '~/components/form/SelectInput';
 import { SelectOption } from '~/components/form/typings';
-import { WEAPON_TYPES, WeaponType } from '~/constants/cwn/game';
-import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
+import { ATTRIBUTES, WEAPON_TYPES, WeaponType } from '~/constants/cwn/game';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
+
+import { DamageInputs } from './DamageInputs';
+import { createWeaponFieldName } from './utils';
 
 interface WeaponInputItemProps
   extends Pick<SortableAddAnotherChildProps, 'postSortIndex' | 'onDelete'> {}
 
-const createWeaponFieldName = makeNestedFieldNameFn<
-  CwnCharacterData,
-  'weapons'
->('weapons');
-
 const weaponTypeOptions: SelectOption[] = WEAPON_TYPES.map((t) => ({
   label: capitalize(t),
   value: t,
+}));
+
+const weaponAttributeOptions: SelectOption[] = ATTRIBUTES.map((a) => ({
+  label: capitalize(a),
+  value: a,
 }));
 
 export function WeaponInputItem({
@@ -80,7 +83,14 @@ export function WeaponInputItem({
           name={typeFieldName}
           options={weaponTypeOptions}
         />
+        <SelectInput<CwnCharacterData>
+          label="Attribute"
+          multiple
+          name={createWeaponFieldName('attribute', index)}
+          options={weaponAttributeOptions}
+        />
       </GridBox>
+      <DamageInputs index={index} />
     </AAMItemFormSection>
   );
 }

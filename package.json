@@ -3,7 +3,6 @@
   "private": false,
   "author": "Troy Chryssos <troychryssos@gmail.com> (troychryssos.com)",
   "description": "An online TTRPG character sheet compendium",
-  "license": "MIT",
   "homepage": "https://rpgsheet.games/",
   "engines": {
     "node": ">=18"

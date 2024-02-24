@@ -1,4 +1,4 @@
-const ATTRIBUTES = [
+export const ATTRIBUTES = [
   'strength',
   'dexterity',
   'constitution',
