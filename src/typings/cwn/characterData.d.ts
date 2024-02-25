@@ -66,7 +66,7 @@ export interface CwnWeapon {
   mag: number;
   attribute: Attribute[];
   readied: boolean;
-  trauma_die: `${number}d${number}`;
+  trauma_die: `${number}d${number}` | '';
   trauma_rating: number;
 }
 

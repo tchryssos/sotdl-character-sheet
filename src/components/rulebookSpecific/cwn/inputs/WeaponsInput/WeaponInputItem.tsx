@@ -7,6 +7,7 @@ import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
+import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { ATTRIBUTES, WEAPON_TYPES, WeaponType } from '~/constants/cwn/game';
@@ -92,13 +93,20 @@ export function WeaponInputItem({
           options={weaponAttributeOptions}
         />
       </GridBox>
-      <TextInput<CwnCharacterData>
-        label="Damage"
-        name={createWeaponFieldName('damage', index)}
-        validations={{
-          pattern: DICE_WITH_MODIFIER_REGEX,
-        }}
-      />
+      <GridBox gridTemplateColumns="5fr 2fr">
+        <TextInput<CwnCharacterData>
+          label="Damage"
+          name={createWeaponFieldName('damage', index)}
+          validations={{
+            pattern: DICE_WITH_MODIFIER_REGEX,
+          }}
+        />
+        <NumberInput<CwnCharacterData>
+          label="Encumbrance"
+          min={0}
+          name={createWeaponFieldName('encumbrance', index)}
+        />
+      </GridBox>
       <GridBox>
         <TextInput<CwnCharacterData>
           label="Range"
@@ -123,6 +131,24 @@ export function WeaponInputItem({
           />
         )}
       </GridBox>
+      <GridBox>
+        <TextInput<CwnCharacterData>
+          label="Trauma Die"
+          name={createWeaponFieldName('trauma_die', index)}
+          validations={{
+            pattern: DICE_WITH_MODIFIER_REGEX,
+          }}
+        />
+        <NumberInput<CwnCharacterData>
+          label="Trauma Rating"
+          min={0}
+          name={createWeaponFieldName('trauma_rating', index)}
+        />
+      </GridBox>
+      <TextAreaInput<CwnCharacterData>
+        label="Description/Mods"
+        name={createWeaponFieldName('description', index)}
+      />
     </AAMItemFormSection>
   );
 }
