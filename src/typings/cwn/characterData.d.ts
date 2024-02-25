@@ -60,7 +60,7 @@ export interface CwnWeapon {
   type: WeaponType;
   damage: `${number}d${number}` | `${number}d${number}+${number}`;
   range: `${number}/${number}` | '';
-  shock: `${number}/AC ${number}`;
+  shock: `${number}/AC ${number}` | '';
   encumbrance: number;
   description: string;
   mag: number;

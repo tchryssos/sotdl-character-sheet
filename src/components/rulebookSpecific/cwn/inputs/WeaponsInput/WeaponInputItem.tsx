@@ -13,7 +13,7 @@ import { SelectOption } from '~/components/form/typings';
 import { ATTRIBUTES, WEAPON_TYPES, WeaponType } from '~/constants/cwn/game';
 import { SHOCK_REGEX } from '~/constants/cwn/regex';
 import { DICE_WITH_MODIFIER_REGEX, RANGE_REGEX } from '~/constants/regex';
-import { CwnCharacterData } from '~/typings/cwn/characterData';
+import { CwnCharacterData, CwnWeapon } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { createWeaponFieldName } from './utils';
@@ -47,7 +47,21 @@ export function WeaponInputItem({
   const type = watch(typeFieldName) as WeaponType;
   const isRanged = type === 'ranged';
 
-  const title = `${name}`;
+  const damageFieldName = createWeaponFieldName('damage', index);
+  const damage = watch(damageFieldName) as CwnWeapon['damage'];
+
+  const rangeFieldName = createWeaponFieldName('range', index);
+  const range = watch(rangeFieldName) as CwnWeapon['range'];
+
+  const shockFieldName = createWeaponFieldName('shock', index);
+  const shock = watch(shockFieldName) as CwnWeapon['shock'];
+  const useShock = !isRanged && shock;
+
+  const title = name
+    ? `${name} - ${damage}${range || useShock ? ', ' : ''}${range}${
+        range && useShock ? ', ' : ''
+      }${useShock ? shock : ''}`
+    : '';
 
   return (
     <AAMItemFormSection
@@ -96,7 +110,7 @@ export function WeaponInputItem({
       <GridBox gridTemplateColumns="5fr 2fr">
         <TextInput<CwnCharacterData>
           label="Damage"
-          name={createWeaponFieldName('damage', index)}
+          name={damageFieldName}
           validations={{
             pattern: DICE_WITH_MODIFIER_REGEX,
           }}
@@ -110,7 +124,7 @@ export function WeaponInputItem({
       <GridBox>
         <TextInput<CwnCharacterData>
           label="Range"
-          name={createWeaponFieldName('range', index)}
+          name={rangeFieldName}
           validations={{
             pattern: RANGE_REGEX,
           }}
@@ -124,7 +138,7 @@ export function WeaponInputItem({
         ) : (
           <TextInput<CwnCharacterData>
             label="Shock"
-            name={createWeaponFieldName('shock', index)}
+            name={shockFieldName}
             validations={{
               pattern: SHOCK_REGEX,
             }}
