@@ -27,6 +27,7 @@ import { ArmorsInput } from './inputs/ArmorsInput';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
+import { CyberwaresInput } from './inputs/CyberwaresInput';
 import { EdgesInput } from './inputs/EdgesInput';
 import { FociInput } from './inputs/FociInput';
 import { HealthInputs } from './inputs/HealthInputs';
@@ -36,6 +37,7 @@ import { OtherStatusesInput } from './inputs/OtherStatusesInput';
 import { SaveInputs } from './inputs/SaveInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 import { WeaponsInput } from './inputs/WeaponsInput';
+import { WeaponAndArmorProvider } from './WeaponAndArmorProvider';
 
 interface CwnCharacterSheetProps {
   character: StrictCharacter<CwnCharacterData>;
@@ -110,71 +112,73 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <AcProvider>
-          <Tabs
-            defaultTab={getTabIndex(tabLabels, queryTab)}
-            tabLabels={tabLabels}
-            onChange={(index) =>
-              router.replace({
-                query: {
-                  ...router.query,
-                  tab: tabLabels[index].label.toLowerCase(),
-                },
-              })
-            }
-          >
-            {/* Description */}
-            <TabPanel>
-              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                <BasicInfoInputs />
-                <HistoryInputs />
-                <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
-                  <ContactsInput />
-                </Box>
-              </GridBox>
-            </TabPanel>
-
-            {/* Stats */}
-            <TabPanel>
-              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                <AttributeInputs />
-                <SkillInputs />
-              </GridBox>
-            </TabPanel>
-
-            {/* Status */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <HealthInputs />
-                <SaveInputs />
-                <InjuryInputs />
-                <OtherStatusesInput />
-              </GridBox>
-            </TabPanel>
-
-            {/* Abilities */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <EdgesInput />
-                <FociInput />
-              </GridBox>
-            </TabPanel>
-
-            {/* Combat */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <ArmorClassInputs />
-                <GridBox columns={isLessThanMd ? 1 : 2}>
-                  <WeaponsInput />
-                  <ArmorsInput />
+          <WeaponAndArmorProvider>
+            <Tabs
+              defaultTab={getTabIndex(tabLabels, queryTab)}
+              tabLabels={tabLabels}
+              onChange={(index) =>
+                router.replace({
+                  query: {
+                    ...router.query,
+                    tab: tabLabels[index].label.toLowerCase(),
+                  },
+                })
+              }
+            >
+              {/* Description */}
+              <TabPanel>
+                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                  <BasicInfoInputs />
+                  <HistoryInputs />
+                  <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
+                    <ContactsInput />
+                  </Box>
                 </GridBox>
-              </GridBox>
-            </TabPanel>
+              </TabPanel>
 
-            {/* Equipment */}
-            <TabPanel>
-              <Box>Equipment</Box>
-            </TabPanel>
-          </Tabs>
+              {/* Stats */}
+              <TabPanel>
+                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                  <AttributeInputs />
+                  <SkillInputs />
+                </GridBox>
+              </TabPanel>
+
+              {/* Status */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <HealthInputs />
+                  <SaveInputs />
+                  <InjuryInputs />
+                  <OtherStatusesInput />
+                </GridBox>
+              </TabPanel>
+
+              {/* Abilities */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <EdgesInput />
+                  <FociInput />
+                </GridBox>
+              </TabPanel>
+
+              {/* Combat */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <ArmorClassInputs />
+                  <GridBox columns={isLessThanMd ? 1 : 2}>
+                    <WeaponsInput />
+                    <ArmorsInput />
+                  </GridBox>
+                </GridBox>
+              </TabPanel>
+
+              {/* Equipment */}
+              <TabPanel>
+                <CyberwaresInput />
+              </TabPanel>
+            </Tabs>
+          </WeaponAndArmorProvider>
         </AcProvider>
       </StyledForm>
     </EditContext.Provider>

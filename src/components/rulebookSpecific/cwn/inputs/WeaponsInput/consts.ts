@@ -1,3 +1,5 @@
+import { v4 as uuid4 } from 'uuid';
+
 import { CwnWeapon } from '~/typings/cwn/characterData';
 
 export const DEFAULT_WEAPON = {
@@ -13,4 +15,5 @@ export const DEFAULT_WEAPON = {
   description: '',
   trauma_die: '1d8',
   trauma_rating: 2,
+  id: uuid4(),
 } satisfies CwnWeapon;

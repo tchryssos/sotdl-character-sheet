@@ -6,6 +6,9 @@ import {
   Attribute,
   Skill,
   WeaponType,
+  CyberwareType,
+  CyberwareConcealmentLevel,
+  CyberwareAs,
 } from '~/constants/cwn/game';
 import { CwnName } from './game';
 import { ValuesOf } from '../util';
@@ -68,7 +71,19 @@ export interface CwnWeapon {
   readied: boolean;
   trauma_die: `${number}d${number}` | '';
   trauma_rating: number;
+  id: string;
 }
+
+export type CwnCyberware = {
+  name: string;
+  description: string;
+  type: CyberwareType;
+  concealment: CyberwareConcealmentLevel;
+  system_strain: number;
+  effect: string;
+  id: string;
+  as: CyberwareAs | null;
+};
 
 export type AttributeName = ValuesOf<{
   [K in Attribute]: `attribute_${K}`;
@@ -114,6 +129,7 @@ export type CwnCharacterData = {
   armor_class_melee: number;
   armors: CwnArmor[];
   weapons: CwnWeapon[];
+  cyberware: CwnCyberware[];
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;

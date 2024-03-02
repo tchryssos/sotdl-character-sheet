@@ -35,6 +35,7 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   filterFn?: (props: SortableAddAnotherChildProps) => boolean;
   alwaysEditable?: boolean;
   onAdd?: (index?: number) => void;
+  setFieldArrayMethods?: (methods: ReturnType<typeof useFieldArray>) => void;
 };
 
 const ChildContainer = styled(Box)`
@@ -61,13 +62,25 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   filterFn,
   alwaysEditable,
   onAdd,
+  setFieldArrayMethods,
 }: AddAnotherMultiFieldProps<T>) {
   const { control, watch } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
+  const methods = useFieldArray({
     control,
     name: parentFieldName as string,
     keyName: FIELD_ID,
   });
+
+  const { fields, append, remove } = methods;
+
+  useEffect(() => {
+    /**
+     * Occasionally we want to manipulate the field array from outside
+     * this input. This enables us to share the field array methods with
+     * a context provider, etc
+     */
+    setFieldArrayMethods?.(methods);
+  }, [methods, setFieldArrayMethods]);
 
   const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);

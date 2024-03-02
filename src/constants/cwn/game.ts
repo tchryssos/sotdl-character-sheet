@@ -74,3 +74,25 @@ export type ArmorTrait = keyof typeof ARMOR_TRAITS;
 
 export const WEAPON_TYPES = ['melee/thrown', 'ranged'] as const;
 export type WeaponType = (typeof WEAPON_TYPES)[number];
+
+export const CYBERWARE_TYPE = [
+  'body',
+  'head',
+  'skin',
+  'limb',
+  'sensory',
+  'medical',
+  'nerve',
+] as const;
+export type CyberwareType = (typeof CYBERWARE_TYPE)[number];
+
+export const CYBERWARE_CONCEALMENT_LEVELS = [
+  'medical',
+  'sight',
+  'touch',
+] as const;
+export type CyberwareConcealmentLevel =
+  (typeof CYBERWARE_CONCEALMENT_LEVELS)[number];
+
+export const CYBERWARE_AS = ['weapons', 'armors'] as const;
+export type CyberwareAs = (typeof CYBERWARE_AS)[number];
