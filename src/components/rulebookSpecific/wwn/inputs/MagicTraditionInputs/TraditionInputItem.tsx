@@ -66,6 +66,8 @@ const createTraditionFieldName = (
 ): `magic_traditions.${number}.${keyof WwnTradition}` =>
   `magic_traditions.${index}.${fieldName}`;
 
+const sortProperties: (keyof WwnSpell)[] = ['spell_level', 'spell_name'];
+
 export function TraditionInputItem({
   index,
   onDelete,
@@ -179,7 +181,7 @@ export function TraditionInputItem({
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               createTraditionFieldName('tradition_spells', index) as any
             }
-            sortProperties={['spell_level', 'spell_name']}
+            sortProperties={sortProperties}
           >
             {({
               index: spellIndex,

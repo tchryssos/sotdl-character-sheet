@@ -155,6 +155,12 @@ const createDefaultSpell = (): SotdlSpell => ({
   spell_remaining_castings: 1,
 });
 
+const sortProperties: (keyof SotdlSpell)[] = [
+  'spell_tradition',
+  'spell_rank',
+  'spell_name',
+];
+
 export function MagicInputs() {
   const isLessThanMd = useBreakpointsLessThan('md');
 
@@ -171,7 +177,7 @@ export function MagicInputs() {
         HeaderRow={undefined}
         createDefaultValue={createDefaultSpell}
         parentFieldName="spells"
-        sortProperties={['spell_tradition', 'spell_rank', 'spell_name']}
+        sortProperties={sortProperties}
       >
         {({ index, onDelete, sortIndexMap, fieldId }) => (
           <SpellField

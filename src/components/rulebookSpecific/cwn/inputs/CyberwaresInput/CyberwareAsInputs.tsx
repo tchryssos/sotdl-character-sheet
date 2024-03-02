@@ -29,6 +29,10 @@ export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
     WeaponAndArmorContext
   );
 
+  const hasLoadedRelatedFields = Boolean(
+    weaponFieldArrayMethods && armorFieldArrayMethods
+  );
+
   const asFieldName = createCyberwareFieldName('as', index);
   const watchedAs = watch(asFieldName) as CyberwareAs | null;
 
@@ -93,6 +97,11 @@ export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
           You can use the checkboxes below to add a copy of this cyberware to
           your weapons or armors list
         </Text>
+        {!hasLoadedRelatedFields && (
+          <Text color="danger" variant="body-xs">
+            Open the &quot;Combat&quot; tab before modifying this field!
+          </Text>
+        )}
         <FlexBox gap={16}>
           {CYBERWARE_AS.map((as) => (
             <CheckboxInput

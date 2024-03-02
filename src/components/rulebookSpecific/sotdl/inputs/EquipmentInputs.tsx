@@ -75,6 +75,8 @@ const createDefaultValue = (): SotdlEquipment => ({
   equipment_notes: '',
 });
 
+const sortProperties: (keyof SotdlEquipment)[] = ['equipment_name'];
+
 export function EquipmentInputs() {
   return (
     <FormSection columns={1} isCollapsible title="Equipment">
@@ -82,7 +84,7 @@ export function EquipmentInputs() {
         HeaderRow={ItemHeader}
         createDefaultValue={createDefaultValue}
         parentFieldName="equipment"
-        sortProperties={['equipment_name']}
+        sortProperties={sortProperties}
       >
         {({ index, onDelete, sortIndexMap, fieldId }) => (
           <ItemField

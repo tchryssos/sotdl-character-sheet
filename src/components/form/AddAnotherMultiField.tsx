@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
@@ -109,14 +110,13 @@ export function AddAnotherMultiField<
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
-  let controlledFields = fields.map((field, i) => ({
-    ...field,
-    ...(parentField?.[i] || {}),
-  }));
-
-  if (sortProperties) {
-    controlledFields = sortBy(controlledFields, sortProperties);
-  }
+  const controlledFields = useMemo(() => {
+    const defaultSorted = fields.map((field, i) => ({
+      ...field,
+      ...(parentField?.[i] || {}),
+    }));
+    return sortBy(defaultSorted, sortProperties || []);
+  }, [fields, parentField, sortProperties]);
 
   const onCreate = useCallback(
     (nextValueOverride?: ReturnType<typeof createDefaultValue>) => {

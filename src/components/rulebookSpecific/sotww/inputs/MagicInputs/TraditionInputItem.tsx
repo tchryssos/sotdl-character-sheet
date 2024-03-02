@@ -59,6 +59,8 @@ function SpellChildWrapper({ children }: PropsWithChildren<unknown>) {
   return <GridBox columns={isLessThanMd ? 1 : 2}>{children}</GridBox>;
 }
 
+const sortProperties: (keyof SotwwSpell)[] = ['spell_level', 'spell_name'];
+
 export function TraditionInputItem({
   postSortIndex: index,
   onDelete,
@@ -130,7 +132,7 @@ export function TraditionInputItem({
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
               ) as any
             }
-            sortProperties={['spell_level', 'spell_name']}
+            sortProperties={sortProperties}
           >
             {({
               index: spellIndex,
