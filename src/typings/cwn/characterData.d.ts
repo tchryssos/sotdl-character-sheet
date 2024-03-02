@@ -40,7 +40,7 @@ export interface CwnOtherStatus {
   description: string;
 }
 
-export interface CwnArmor {
+export type CwnArmor = {
   id: string;
   name: string;
   ac_ranged: number;
@@ -56,9 +56,9 @@ export interface CwnArmor {
   // so we sort of "join table" them here
   accessories: string[];
   equippedTo: string;
-}
+};
 
-export interface CwnWeapon {
+export type CwnWeapon = {
   name: string;
   type: WeaponType;
   damage: `${number}d${number}` | `${number}d${number}+${number}`;
@@ -72,7 +72,7 @@ export interface CwnWeapon {
   trauma_die: `${number}d${number}` | '';
   trauma_rating: number;
   id: string;
-}
+};
 
 export type CwnCyberware = {
   name: string;

@@ -1,13 +1,17 @@
 import { createContext, PropsWithChildren, useMemo, useState } from 'react';
-import { useFieldArray } from 'react-hook-form';
 
-type FieldArrayReturn = ReturnType<typeof useFieldArray>;
+import { FieldArrayManipMethods } from '~/components/form/AddAnotherMultiField';
+import { CwnArmor, CwnWeapon } from '~/typings/cwn/characterData';
 
 export interface WeaponAndArmorContextInterface {
-  weaponFieldArrayMethods: FieldArrayReturn | undefined;
-  setWeaponFieldArrayMethods: (methods: FieldArrayReturn) => void;
-  armorFieldArrayMethods: FieldArrayReturn | undefined;
-  setArmorFieldArrayMethods: (methods: FieldArrayReturn) => void;
+  weaponFieldArrayMethods: FieldArrayManipMethods<CwnWeapon> | undefined;
+  setWeaponFieldArrayMethods: (
+    methods: FieldArrayManipMethods<CwnWeapon>
+  ) => void;
+  armorFieldArrayMethods: FieldArrayManipMethods<CwnArmor> | undefined;
+  setArmorFieldArrayMethods: (
+    methods: FieldArrayManipMethods<CwnArmor>
+  ) => void;
 }
 
 export const WeaponAndArmorContext =
@@ -24,9 +28,9 @@ export function WeaponAndArmorProvider({
   children,
 }: WeaponAndArmorProviderProps) {
   const [weaponFieldArrayMethods, setWeaponFieldArrayMethods] =
-    useState<FieldArrayReturn>();
+    useState<WeaponAndArmorContextInterface['weaponFieldArrayMethods']>();
   const [armorFieldArrayMethods, setArmorFieldArrayMethods] =
-    useState<FieldArrayReturn>();
+    useState<WeaponAndArmorContextInterface['armorFieldArrayMethods']>();
 
   const providerValue = useMemo(
     () => ({

@@ -7,17 +7,16 @@ import { CwnCharacterData, CwnCyberware } from '~/typings/cwn/characterData';
 
 import { CyberwareInputItem } from './CyberwareInputItem';
 
-const createDefaultValue = () =>
-  ({
-    name: '',
-    description: '',
-    concealment: 'touch',
-    type: 'body',
-    system_strain: 0.25,
-    effect: '',
-    id: uuid4(),
-    as: null,
-  } satisfies CwnCyberware);
+const createDefaultValue = (): CwnCyberware => ({
+  name: '',
+  description: '',
+  concealment: 'touch',
+  type: 'body',
+  system_strain: 0.25,
+  effect: '',
+  id: uuid4(),
+  as: null,
+});
 
 export function CyberwaresInput() {
   return (

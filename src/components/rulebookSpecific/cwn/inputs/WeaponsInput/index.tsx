@@ -8,8 +8,9 @@ import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useFilterUnreadied } from '~/logic/utils/rulebookSpecific/cwn/useFilterUnreadied';
-import { CwnCharacterData } from '~/typings/cwn/characterData';
+import { CwnCharacterData, CwnWeapon } from '~/typings/cwn/characterData';
 
+import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { DEFAULT_WEAPON } from './consts';
 import { WeaponInputItem } from './WeaponInputItem';
 
@@ -22,12 +23,13 @@ function WeaponChildWrapper({ children }: PropsWithChildren<unknown>) {
   return <GridBox columns={1}>{children}</GridBox>;
 }
 
-const createDefaultValue = () => DEFAULT_WEAPON;
+const createDefaultValue = (): CwnWeapon => DEFAULT_WEAPON;
 
 export function WeaponsInput() {
   const { isEditMode } = useContext(EditContext);
   const { hideUnreadied, onToggleHide, filterUnreadied } =
     useFilterUnreadied<CwnCharacterData>('weapons');
+  const { setWeaponFieldArrayMethods } = useContext(WeaponAndArmorContext);
 
   return (
     <FormSection columns={1} icon={RpgIcons.Pistol} title="Weapons">
@@ -36,6 +38,7 @@ export function WeaponsInput() {
         createDefaultValue={createDefaultValue}
         filterFn={filterUnreadied}
         parentFieldName="weapons"
+        setFieldArrayMethods={setWeaponFieldArrayMethods}
       >
         {({ index, onDelete, fieldId }) => (
           <WeaponInputItem

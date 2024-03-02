@@ -1,4 +1,5 @@
 import { capitalize } from 'lodash';
+import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
@@ -13,14 +14,10 @@ import {
   CyberwareAs,
   CyberwareType,
 } from '~/constants/cwn/game';
-import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
-import {
-  CwnArmor,
-  CwnCharacterData,
-  CwnWeapon,
-} from '~/typings/cwn/characterData';
+import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
+import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { AsInputs } from './AsInputs';
 import { createCyberwareFieldName } from './utils';
 
@@ -50,6 +47,9 @@ export function CyberwareInputItem({
   postSortIndex: index,
 }: CyberwareInputItemProps) {
   const { watch, setValue, getValues } = useFormContext<CwnCharacterData>();
+  const { weaponFieldArrayMethods, armorFieldArrayMethods } = useContext(
+    WeaponAndArmorContext
+  );
 
   const nameFieldName = createCyberwareFieldName('name', index);
   const name = watch(nameFieldName) as string;
@@ -65,11 +65,16 @@ export function CyberwareInputItem({
 
   const onDelete = () => {
     if (as) {
-      const related = getValues(as);
-      setValue(
-        as,
-        related.filter((r) => r.id !== id) as CwnArmor[] | CwnWeapon[]
-      );
+      const allRelated = getValues(as);
+      const relatedIndex = allRelated.findIndex((r) => r.id === id);
+
+      if (relatedIndex !== -1) {
+        const fieldsDelete =
+          as === 'armors'
+            ? armorFieldArrayMethods?.onDelete
+            : weaponFieldArrayMethods?.onDelete;
+        fieldsDelete?.(relatedIndex);
+      }
     }
     formOnDelete(index);
   };

@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
 import { sortBy, startCase } from 'lodash';
-import { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import {
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { EditContext } from '~/logic/contexts/editContext';
@@ -15,7 +21,15 @@ import { AddAnotherButton } from './AddAnotherButton';
 export type AddAnotherMultiFieldName<T extends Record<string, unknown>> =
   Extract<keyof ListFieldRecord<T>, string>;
 
-type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
+export interface FieldArrayManipMethods<T extends Record<string, unknown>> {
+  onCreate: (nextValueOverride?: T) => void;
+  onDelete: (index: number) => void;
+}
+
+type AddAnotherMultiFieldProps<
+  T extends Record<string, unknown>,
+  U extends Record<string, unknown>
+> = {
   parentFieldName: AddAnotherMultiFieldName<T>;
   children: (fieldProps: {
     index: number;
@@ -23,7 +37,7 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
     fieldId: string;
     sortIndexMap: Map<string, number>;
   }) => React.ReactNode;
-  createDefaultValue: () => Record<string, unknown>;
+  createDefaultValue: () => U;
   HeaderRow?: React.ComponentType;
   // @TODO Type this so that it knows which properties are available via
   // parentFieldName
@@ -35,7 +49,7 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   filterFn?: (props: SortableAddAnotherChildProps) => boolean;
   alwaysEditable?: boolean;
   onAdd?: (index?: number) => void;
-  setFieldArrayMethods?: (methods: ReturnType<typeof useFieldArray>) => void;
+  setFieldArrayMethods?: (methods: FieldArrayManipMethods<U>) => void;
 };
 
 const ChildContainer = styled(Box)`
@@ -49,7 +63,10 @@ function EmptyChildWrapper({ children }: { children?: React.ReactNode }) {
 
 const FIELD_ID = 'fieldId';
 
-export function AddAnotherMultiField<T extends Record<string, unknown>>({
+export function AddAnotherMultiField<
+  T extends Record<string, unknown>,
+  U extends Record<string, unknown> = Record<string, unknown>
+>({
   parentFieldName,
   children,
   createDefaultValue,
@@ -63,7 +80,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   alwaysEditable,
   onAdd,
   setFieldArrayMethods,
-}: AddAnotherMultiFieldProps<T>) {
+}: AddAnotherMultiFieldProps<T, U>) {
   const { control, watch } = useFormContext();
   const methods = useFieldArray({
     control,
@@ -72,15 +89,6 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   });
 
   const { fields, append, remove } = methods;
-
-  useEffect(() => {
-    /**
-     * Occasionally we want to manipulate the field array from outside
-     * this input. This enables us to share the field array methods with
-     * a context provider, etc
-     */
-    setFieldArrayMethods?.(methods);
-  }, [methods, setFieldArrayMethods]);
 
   const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);
@@ -110,18 +118,36 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
     controlledFields = sortBy(controlledFields, sortProperties);
   }
 
-  const onCreate = () => {
-    const nextValue = createDefaultValue();
-    append(nextValue);
-    onAdd?.(controlledFields.length - 1);
-  };
+  const onCreate = useCallback(
+    (nextValueOverride?: ReturnType<typeof createDefaultValue>) => {
+      const nextValue = nextValueOverride || createDefaultValue();
+      append(nextValue);
+      onAdd?.(controlledFields.length - 1);
+    },
+    [append, controlledFields.length, createDefaultValue, onAdd]
+  );
 
-  const onDelete = (index: number) => {
-    const removedId = controlledFields[index][FIELD_ID];
-    const valueRemovedIndex = sortIndexMap.get(removedId)!;
+  const onDelete = useCallback(
+    (index: number) => {
+      const removedId = controlledFields[index][FIELD_ID];
+      const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
-    remove(valueRemovedIndex);
-  };
+      remove(valueRemovedIndex);
+    },
+    [controlledFields, remove, sortIndexMap]
+  );
+
+  useEffect(() => {
+    /**
+     * Occasionally we want to manipulate the field array from outside
+     * this input. This enables us to share the field array methods with
+     * a context provider, etc
+     */
+    setFieldArrayMethods?.({
+      onCreate,
+      onDelete,
+    });
+  }, [onCreate, onDelete, setFieldArrayMethods]);
 
   return (
     <>

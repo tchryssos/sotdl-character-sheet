@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -13,6 +13,7 @@ import {
   CwnWeapon,
 } from '~/typings/cwn/characterData';
 
+import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { createCyberwareFieldName } from './utils';
 
 interface AsInputProps {
@@ -23,6 +24,9 @@ interface AsInputProps {
 export function AsInputs({ index, cyberwareId }: AsInputProps) {
   const { setValue, getValues, watch, register } =
     useFormContext<CwnCharacterData>();
+  const { weaponFieldArrayMethods, armorFieldArrayMethods } = useContext(
+    WeaponAndArmorContext
+  );
 
   const asFieldName = createCyberwareFieldName('as', index);
   const watchedAs = watch(asFieldName) as CyberwareAs | null;

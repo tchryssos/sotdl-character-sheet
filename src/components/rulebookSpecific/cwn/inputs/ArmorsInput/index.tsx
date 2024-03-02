@@ -13,6 +13,7 @@ import { useFilterUnreadied } from '~/logic/utils/rulebookSpecific/cwn/useFilter
 import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { AcContext } from '../../AcProvider';
+import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { ArmorInputItem } from './ArmorInputItem';
 
 const HideCheckbox = styled(CheckboxInput)`
@@ -20,22 +21,21 @@ const HideCheckbox = styled(CheckboxInput)`
   text-align: end;
 `;
 
-const createDefaultValue = () =>
-  ({
-    name: '',
-    ac_ranged: 10,
-    ac_melee: 10,
-    damage_soak: 0,
-    encumbrance: 0,
-    trauma_target_mod: 0,
-    description: '',
-    weight: 'civilian',
-    traits: [],
-    readied: false,
-    accessories: [],
-    equippedTo: '',
-    id: uuid4(),
-  } satisfies CwnArmor);
+const createDefaultValue = (): CwnArmor => ({
+  name: '',
+  ac_ranged: 10,
+  ac_melee: 10,
+  damage_soak: 0,
+  encumbrance: 0,
+  trauma_target_mod: 0,
+  description: '',
+  weight: 'civilian',
+  traits: [],
+  readied: false,
+  accessories: [],
+  equippedTo: '',
+  id: uuid4(),
+});
 
 function ArmorChildWrapper({ children }: PropsWithChildren<unknown>) {
   return <GridBox columns={1}>{children}</GridBox>;
@@ -44,6 +44,7 @@ function ArmorChildWrapper({ children }: PropsWithChildren<unknown>) {
 export function ArmorsInput() {
   const { watch } = useFormContext<CwnCharacterData>();
   const { calculateAc } = useContext(AcContext);
+  const { setArmorFieldArrayMethods } = useContext(WeaponAndArmorContext);
 
   const {
     filterUnreadied: filterUnequippedArmor,
@@ -66,6 +67,7 @@ export function ArmorsInput() {
         createDefaultValue={createDefaultValue}
         filterFn={filterUnequippedArmor}
         parentFieldName="armors"
+        setFieldArrayMethods={setArmorFieldArrayMethods}
       >
         {({ index, onDelete, fieldId }) => (
           <ArmorInputItem
