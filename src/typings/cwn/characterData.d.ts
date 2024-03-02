@@ -77,7 +77,7 @@ export type CwnWeapon = {
 export type CwnCyberware = {
   name: string;
   description: string;
-  type: CyberwareType;
+  cyberware_type: CyberwareType;
   concealment: CyberwareConcealmentLevel;
   system_strain: number;
   effect: string;

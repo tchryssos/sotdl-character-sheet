@@ -2,7 +2,6 @@ import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
-import { GridBox } from '~/components/box/GridBox';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { Label } from '~/components/form/Label';
 import { Text } from '~/components/Text';
@@ -14,6 +13,8 @@ import {
 } from '~/typings/cwn/characterData';
 
 import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
+import { DEFAULT_ARMOR } from '../ArmorsInput/consts';
+import { DEFAULT_WEAPON } from '../WeaponsInput/consts';
 import { createCyberwareFieldName } from './utils';
 
 interface AsInputProps {
@@ -21,7 +22,7 @@ interface AsInputProps {
   cyberwareId: string;
 }
 
-export function AsInputs({ index, cyberwareId }: AsInputProps) {
+export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
   const { setValue, getValues, watch, register } =
     useFormContext<CwnCharacterData>();
   const { weaponFieldArrayMethods, armorFieldArrayMethods } = useContext(
@@ -37,30 +38,60 @@ export function AsInputs({ index, cyberwareId }: AsInputProps) {
 
   const createOnChange = (whichAsCheck: CyberwareAs) => () => {
     const currentAs = getValues(asFieldName) as CyberwareAs | null;
+    let nextAsValue: CyberwareAs | null = whichAsCheck;
 
-    // If checking a new 'as', set it and create the appropriate related item
-    if (!currentAs) {
-      setValue(asFieldName, whichAsCheck);
-    } else if (currentAs === whichAsCheck) {
-      // If unchecking active 'as', set to null and delete association, if any
+    // If the cyberware is already associated to a weapon or armor, remove it
+    if (currentAs) {
       const related = getValues(currentAs);
-      setValue(
-        currentAs,
-        related.filter((r) => r.id !== cyberwareId) as CwnWeapon[] | CwnArmor[]
+      const relatedIndex = related.findIndex(
+        (r: CwnWeapon | CwnArmor) => r.id === cyberwareId
       );
-      setValue(asFieldName, null);
-    } else {
-      // If switching from one as to the other,
-      // delete the old association and create the new one, then change the value
+      if (relatedIndex !== -1) {
+        if (currentAs === 'weapons') {
+          weaponFieldArrayMethods?.onDelete(relatedIndex);
+        } else {
+          armorFieldArrayMethods?.onDelete(relatedIndex);
+        }
+      }
     }
+
+    // If unchecking the current 'as', set the value to null
+    if (currentAs === whichAsCheck) {
+      nextAsValue = null;
+    } else {
+      // Add the current cyberware to the new related list
+      const shared = {
+        id: cyberwareId,
+        name:
+          (getValues(createCyberwareFieldName('name', index)) as string) || '',
+        description:
+          (getValues(
+            createCyberwareFieldName('description', index)
+          ) as string) || '',
+      };
+
+      if (whichAsCheck === 'weapons') {
+        weaponFieldArrayMethods?.onCreate({
+          ...DEFAULT_WEAPON,
+          ...shared,
+        });
+      } else {
+        armorFieldArrayMethods?.onCreate({
+          ...DEFAULT_ARMOR,
+          ...shared,
+        });
+      }
+    }
+
+    setValue(asFieldName, nextAsValue);
   };
 
   return (
     <Label label="Use as..." labelFor={asFieldName}>
       <FlexBox flexDirection="column" gap={8} marginTop={4}>
         <Text color="textAccent" variant="body-xs">
-          You can use the checkboxes below to add this cyberware to your weapons
-          or armors list
+          You can use the checkboxes below to add a copy of this cyberware to
+          your weapons or armors list
         </Text>
         <FlexBox gap={16}>
           {CYBERWARE_AS.map((as) => (

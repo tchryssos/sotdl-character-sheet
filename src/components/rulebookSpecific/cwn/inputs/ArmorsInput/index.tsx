@@ -15,6 +15,7 @@ import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 import { AcContext } from '../../AcProvider';
 import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { ArmorInputItem } from './ArmorInputItem';
+import { DEFAULT_ARMOR } from './consts';
 
 const HideCheckbox = styled(CheckboxInput)`
   justify-self: end;
@@ -22,18 +23,7 @@ const HideCheckbox = styled(CheckboxInput)`
 `;
 
 const createDefaultValue = (): CwnArmor => ({
-  name: '',
-  ac_ranged: 10,
-  ac_melee: 10,
-  damage_soak: 0,
-  encumbrance: 0,
-  trauma_target_mod: 0,
-  description: '',
-  weight: 'civilian',
-  traits: [],
-  readied: false,
-  accessories: [],
-  equippedTo: '',
+  ...DEFAULT_ARMOR,
   id: uuid4(),
 });
 

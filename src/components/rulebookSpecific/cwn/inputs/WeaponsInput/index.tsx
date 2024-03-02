@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { PropsWithChildren, useContext } from 'react';
+import { v4 as uuid4 } from 'uuid';
 
 import { GridBox } from '~/components/box/GridBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
@@ -23,7 +24,10 @@ function WeaponChildWrapper({ children }: PropsWithChildren<unknown>) {
   return <GridBox columns={1}>{children}</GridBox>;
 }
 
-const createDefaultValue = (): CwnWeapon => DEFAULT_WEAPON;
+const createDefaultValue = (): CwnWeapon => ({
+  ...DEFAULT_WEAPON,
+  id: uuid4(),
+});
 
 export function WeaponsInput() {
   const { isEditMode } = useContext(EditContext);

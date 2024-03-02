@@ -7,6 +7,7 @@ import { AAMItemTitleAndDelete } from '~/components/form/AAMItemTitleAndDelete';
 import { AAMItemFormSection } from '~/components/form/containers/AAMItemFormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
+import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { SelectOption } from '~/components/form/typings';
 import {
   CYBERWARE_CONCEALMENT_LEVELS,
@@ -18,7 +19,7 @@ import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
-import { AsInputs } from './AsInputs';
+import { CyberwareAsInputs } from './CyberwareAsInputs';
 import { createCyberwareFieldName } from './utils';
 
 interface CyberwareInputItemProps
@@ -46,7 +47,7 @@ export function CyberwareInputItem({
   onDelete: formOnDelete,
   postSortIndex: index,
 }: CyberwareInputItemProps) {
-  const { watch, setValue, getValues } = useFormContext<CwnCharacterData>();
+  const { watch, getValues } = useFormContext<CwnCharacterData>();
   const { weaponFieldArrayMethods, armorFieldArrayMethods } = useContext(
     WeaponAndArmorContext
   );
@@ -54,7 +55,7 @@ export function CyberwareInputItem({
   const nameFieldName = createCyberwareFieldName('name', index);
   const name = watch(nameFieldName) as string;
 
-  const typeFieldName = createCyberwareFieldName('type', index);
+  const typeFieldName = createCyberwareFieldName('cyberware_type', index);
   const type = watch(typeFieldName) as CyberwareType;
 
   const idFieldName = createCyberwareFieldName('id', index);
@@ -79,7 +80,7 @@ export function CyberwareInputItem({
     formOnDelete(index);
   };
 
-  const title = name ? `${name} - ${type}` : '';
+  const title = name ? `${name} - ${capitalize(type)}` : '';
   return (
     <AAMItemFormSection title={title} visibilityTitle={id}>
       <AAMItemTitleAndDelete<CwnCharacterData>
@@ -106,7 +107,15 @@ export function CyberwareInputItem({
         name={createCyberwareFieldName('system_strain', index)}
         step={0.25}
       />
-      <AsInputs cyberwareId={id} index={index} />
+      <CyberwareAsInputs cyberwareId={id} index={index} />
+      <TextAreaInput<CwnCharacterData>
+        label="Effect"
+        name={createCyberwareFieldName('effect', index)}
+      />
+      <TextAreaInput<CwnCharacterData>
+        label="Description/Mods"
+        name={createCyberwareFieldName('description', index)}
+      />
     </AAMItemFormSection>
   );
 }

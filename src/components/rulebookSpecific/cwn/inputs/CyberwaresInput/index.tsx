@@ -11,7 +11,7 @@ const createDefaultValue = (): CwnCyberware => ({
   name: '',
   description: '',
   concealment: 'touch',
-  type: 'body',
+  cyberware_type: 'body',
   system_strain: 0.25,
   effect: '',
   id: uuid4(),
