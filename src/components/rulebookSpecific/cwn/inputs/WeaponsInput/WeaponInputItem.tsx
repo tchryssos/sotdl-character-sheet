@@ -104,7 +104,6 @@ export function WeaponInputItem({
             index={index}
             label="Name"
             name={nameFieldName}
-            noDelete={Boolean(linkedCyberware)}
             onDelete={(i: number) => {
               if (linkedCyberware) {
                 const cyberwares = getValues('cyberware');

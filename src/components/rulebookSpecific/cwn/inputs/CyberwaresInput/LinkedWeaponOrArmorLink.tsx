@@ -1,39 +1,31 @@
 import { lowerCase } from 'lodash';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import { useFormContext } from 'react-hook-form';
 
 import { Link } from '~/components/Link';
 import { SetTabContext } from '~/components/tabs/Tabs';
 import { Text } from '~/components/Text';
 import { CWN_TAB_LABELS, DEFAULT_VALUES, TabLabel } from '~/constants/cwn/form';
-import { CwnCharacterData, CwnCyberware } from '~/typings/cwn/characterData';
+import { CyberwareAs } from '~/constants/cwn/game';
 
-interface LinkedCyberwareLinkProps {
+interface LinkedWeaponOrArmorLinkProps {
   id: string;
-  cyberware?: CwnCyberware | null;
+  cyberwareAs: CyberwareAs | null;
 }
 
-export function LinkedCyberwareLink({
+export function LinkedWeaponOrArmorLink({
   id,
-  cyberware,
-}: LinkedCyberwareLinkProps) {
+  cyberwareAs,
+}: LinkedWeaponOrArmorLinkProps) {
   const { asPath } = useRouter();
   const setTab = useContext(SetTabContext);
-  const { getValues } = useFormContext<CwnCharacterData>();
-  let linkedCyberware = cyberware;
 
-  if (cyberware === undefined) {
-    const cyberwares = getValues('cyberware');
-    linkedCyberware = cyberwares.find((c) => c.id === id);
-  }
-
-  if (!linkedCyberware) {
+  if (!cyberwareAs) {
     return null;
   }
 
   const basePath = asPath.split('?')[0];
-  const label: TabLabel = 'Equipment';
+  const label: TabLabel = 'Combat';
   const href = `${basePath}?rulebook=${DEFAULT_VALUES.type}&tab=${lowerCase(
     label
   )}#${id}`;
@@ -50,7 +42,7 @@ export function LinkedCyberwareLink({
       }}
     >
       <Text color="text" variant="body-xs">
-        via Cyberware
+        Linked {cyberwareAs === 'weapons' ? 'weapon' : 'armor'}
       </Text>
     </Link>
   );

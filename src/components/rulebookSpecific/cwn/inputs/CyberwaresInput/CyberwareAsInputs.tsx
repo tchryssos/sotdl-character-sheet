@@ -15,6 +15,7 @@ import {
 
 import { DEFAULT_ARMOR } from '../ArmorsInput/consts';
 import { DEFAULT_WEAPON } from '../WeaponsInput/consts';
+import { LinkedWeaponOrArmorLink } from './LinkedWeaponOrArmorLink';
 import { createCyberwareFieldName } from './utils';
 
 interface AsInputProps {
@@ -85,7 +86,7 @@ export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
             paddingTop={8}
             variant="body-xs"
           >
-            {watchedAs === 'armors' ? 'an Armor' : 'a Weapon'}
+            <LinkedWeaponOrArmorLink cyberwareAs={watchedAs} id={cyberwareId} />
           </Text>
         </Label>
       );
@@ -94,7 +95,7 @@ export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
   }
 
   return (
-    <Label label="Use as..." labelFor={asFieldName}>
+    <Label label="Used as" labelFor={asFieldName}>
       <FlexBox flexDirection="column" gap={8} marginTop={4}>
         <Text color="textAccent" variant="body-xs">
           You can use the checkboxes below to add a copy of this cyberware to

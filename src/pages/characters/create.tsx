@@ -10,6 +10,7 @@ import { FormSection } from '~/components/form/containers/FormSection';
 import { Link } from '~/components/Link';
 import { LoadingPageSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';
+import { CwnCharacterSheet } from '~/components/rulebookSpecific/cwn/CharacterSheet';
 import { Text } from '~/components/Text';
 import { ALL_RULEBOOKS_API_PATH } from '~/constants/routing/api';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
@@ -149,7 +150,7 @@ function NewCharacterPage() {
       title="New Character"
     >
       <NewCharacterNav />
-      {isLoading ? (
+      {/* {isLoading ? (
         <LoadingPageSpinner
           title="Loading rulebooks"
           titleId="new-char-rulebook-loading"
@@ -158,7 +159,8 @@ function NewCharacterPage() {
         <Text as="p">Error fetching rulebooks, try again later</Text>
       ) : (
         <SelectRulebook rulebooks={rulebooks.filter((r) => r.isActive)} />
-      )}
+      )} */}
+      <CwnCharacterSheet />
     </Layout>
   );
 }
