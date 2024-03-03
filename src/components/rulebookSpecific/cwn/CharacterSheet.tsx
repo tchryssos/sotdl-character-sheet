@@ -33,6 +33,7 @@ import { HealthInputs } from './inputs/HealthInputs';
 import { HistoryInputs } from './inputs/HistoryInputs';
 import { InjuryInputs } from './inputs/InjuryInputs';
 import { OtherStatusesInput } from './inputs/OtherStatusesInput';
+import { ProgramSubjectInputs } from './inputs/ProgramSubjectInputs';
 import { SaveInputs } from './inputs/SaveInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 import { WeaponsInput } from './inputs/WeaponsInput';
@@ -146,7 +147,12 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
 
             {/* Hacking */}
             <TabPanel>
-              <CyberdeckInputs />
+              <GridBox columns={1}>
+                <CyberdeckInputs />
+                <GridBox gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr' }}>
+                  <ProgramSubjectInputs />
+                </GridBox>
+              </GridBox>
             </TabPanel>
           </Tabs>
         </AcProvider>

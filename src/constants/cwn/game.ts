@@ -1,3 +1,7 @@
+import { capitalize } from 'lodash';
+
+import { SelectOption } from '~/components/form/typings';
+
 export const ATTRIBUTES = [
   'strength',
   'dexterity',
@@ -105,3 +109,11 @@ export const PROGRAM_VERB_TARGETS = [
   'program',
 ] as const;
 export type ProgramVerbTarget = (typeof PROGRAM_VERB_TARGETS)[number];
+export const PROGRAM_VERB_TARGET_OPTIONS: SelectOption[] = (
+  PROGRAM_VERB_TARGETS as unknown as string[]
+)
+  .sort()
+  .map((t) => ({
+    label: capitalize(t),
+    value: t,
+  }));
