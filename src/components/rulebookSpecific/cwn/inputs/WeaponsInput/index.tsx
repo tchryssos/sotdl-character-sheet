@@ -11,7 +11,6 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useFilterUnreadied } from '~/logic/utils/rulebookSpecific/cwn/useFilterUnreadied';
 import { CwnCharacterData, CwnWeapon } from '~/typings/cwn/characterData';
 
-import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { DEFAULT_WEAPON } from './consts';
 import { WeaponInputItem } from './WeaponInputItem';
 
@@ -33,7 +32,6 @@ export function WeaponsInput() {
   const { isEditMode } = useContext(EditContext);
   const { hideUnreadied, onToggleHide, filterUnreadied } =
     useFilterUnreadied<CwnCharacterData>('weapons');
-  const { setWeaponFieldArrayMethods } = useContext(WeaponAndArmorContext);
 
   return (
     <FormSection columns={1} icon={RpgIcons.Pistol} title="Weapons">
@@ -42,7 +40,6 @@ export function WeaponsInput() {
         createDefaultValue={createDefaultValue}
         filterFn={filterUnreadied}
         parentFieldName="weapons"
-        setFieldArrayMethods={setWeaponFieldArrayMethods}
       >
         {({ index, onDelete, fieldId }) => (
           <WeaponInputItem

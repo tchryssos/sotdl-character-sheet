@@ -37,7 +37,6 @@ import { OtherStatusesInput } from './inputs/OtherStatusesInput';
 import { SaveInputs } from './inputs/SaveInputs';
 import { SkillInputs } from './inputs/SkillInputs';
 import { WeaponsInput } from './inputs/WeaponsInput';
-import { WeaponAndArmorProvider } from './WeaponAndArmorProvider';
 
 interface CwnCharacterSheetProps {
   character: StrictCharacter<CwnCharacterData>;
@@ -112,73 +111,71 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <AcProvider>
-          <WeaponAndArmorProvider>
-            <Tabs
-              defaultTab={getTabIndex(tabLabels, queryTab)}
-              tabLabels={tabLabels}
-              onChange={(index) =>
-                router.replace({
-                  query: {
-                    ...router.query,
-                    tab: tabLabels[index].label.toLowerCase(),
-                  },
-                })
-              }
-            >
-              {/* Description */}
-              <TabPanel>
-                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                  <BasicInfoInputs />
-                  <HistoryInputs />
-                  <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
-                    <ContactsInput />
-                  </Box>
-                </GridBox>
-              </TabPanel>
+          <Tabs
+            defaultTab={getTabIndex(tabLabels, queryTab)}
+            tabLabels={tabLabels}
+            onChange={(index) =>
+              router.replace({
+                query: {
+                  ...router.query,
+                  tab: tabLabels[index].label.toLowerCase(),
+                },
+              })
+            }
+          >
+            {/* Description */}
+            <TabPanel>
+              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                <BasicInfoInputs />
+                <HistoryInputs />
+                <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
+                  <ContactsInput />
+                </Box>
+              </GridBox>
+            </TabPanel>
 
-              {/* Stats */}
-              <TabPanel>
-                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                  <AttributeInputs />
-                  <SkillInputs />
-                </GridBox>
-              </TabPanel>
+            {/* Stats */}
+            <TabPanel>
+              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                <AttributeInputs />
+                <SkillInputs />
+              </GridBox>
+            </TabPanel>
 
-              {/* Status */}
-              <TabPanel>
-                <GridBox columns={1} {...sharedGapProps}>
-                  <HealthInputs />
-                  <SaveInputs />
-                  <InjuryInputs />
-                  <OtherStatusesInput />
-                </GridBox>
-              </TabPanel>
+            {/* Status */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <HealthInputs />
+                <SaveInputs />
+                <InjuryInputs />
+                <OtherStatusesInput />
+              </GridBox>
+            </TabPanel>
 
-              {/* Abilities */}
-              <TabPanel>
-                <GridBox columns={1} {...sharedGapProps}>
-                  <EdgesInput />
-                  <FociInput />
-                </GridBox>
-              </TabPanel>
+            {/* Abilities */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <EdgesInput />
+                <FociInput />
+              </GridBox>
+            </TabPanel>
 
-              {/* Combat */}
-              <TabPanel>
-                <GridBox columns={1} {...sharedGapProps}>
-                  <ArmorClassInputs />
-                  <GridBox columns={isLessThanMd ? 1 : 2}>
-                    <WeaponsInput />
-                    <ArmorsInput />
-                  </GridBox>
+            {/* Combat */}
+            <TabPanel>
+              <GridBox columns={1} {...sharedGapProps}>
+                <ArmorClassInputs />
+                <GridBox columns={isLessThanMd ? 1 : 2}>
+                  <WeaponsInput />
+                  <ArmorsInput />
                 </GridBox>
-              </TabPanel>
+              </GridBox>
+            </TabPanel>
 
-              {/* Equipment */}
-              <TabPanel>
-                <CyberwaresInput />
-              </TabPanel>
-            </Tabs>
-          </WeaponAndArmorProvider>
+            {/* Equipment */}
+            <TabPanel>
+              <CyberwaresInput />
+            </TabPanel>
+          </Tabs>
         </AcProvider>
       </StyledForm>
     </EditContext.Provider>

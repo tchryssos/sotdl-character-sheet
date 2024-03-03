@@ -13,7 +13,6 @@ import { useFilterUnreadied } from '~/logic/utils/rulebookSpecific/cwn/useFilter
 import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { AcContext } from '../../AcProvider';
-import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { ArmorInputItem } from './ArmorInputItem';
 import { DEFAULT_ARMOR } from './consts';
 
@@ -34,7 +33,6 @@ function ArmorChildWrapper({ children }: PropsWithChildren<unknown>) {
 export function ArmorsInput() {
   const { watch } = useFormContext<CwnCharacterData>();
   const { calculateAc } = useContext(AcContext);
-  const { setArmorFieldArrayMethods } = useContext(WeaponAndArmorContext);
 
   const {
     filterUnreadied: filterUnequippedArmor,
@@ -57,7 +55,6 @@ export function ArmorsInput() {
         createDefaultValue={createDefaultValue}
         filterFn={filterUnequippedArmor}
         parentFieldName="armors"
-        setFieldArrayMethods={setArmorFieldArrayMethods}
       >
         {({ index, onDelete, fieldId }) => (
           <ArmorInputItem

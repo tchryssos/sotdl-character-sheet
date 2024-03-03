@@ -6,13 +6,13 @@ import { CheckboxInput } from '~/components/form/CheckboxInput';
 import { Label } from '~/components/form/Label';
 import { Text } from '~/components/Text';
 import { CYBERWARE_AS, CyberwareAs } from '~/constants/cwn/game';
+import { EditContext } from '~/logic/contexts/editContext';
 import {
   CwnArmor,
   CwnCharacterData,
   CwnWeapon,
 } from '~/typings/cwn/characterData';
 
-import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { DEFAULT_ARMOR } from '../ArmorsInput/consts';
 import { DEFAULT_WEAPON } from '../WeaponsInput/consts';
 import { createCyberwareFieldName } from './utils';
@@ -23,15 +23,9 @@ interface AsInputProps {
 }
 
 export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
+  const { isEditMode } = useContext(EditContext);
   const { setValue, getValues, watch, register } =
     useFormContext<CwnCharacterData>();
-  const { weaponFieldArrayMethods, armorFieldArrayMethods } = useContext(
-    WeaponAndArmorContext
-  );
-
-  const hasLoadedRelatedFields = Boolean(
-    weaponFieldArrayMethods && armorFieldArrayMethods
-  );
 
   const asFieldName = createCyberwareFieldName('as', index);
   const watchedAs = watch(asFieldName) as CyberwareAs | null;
@@ -46,17 +40,12 @@ export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
 
     // If the cyberware is already associated to a weapon or armor, remove it
     if (currentAs) {
-      const related = getValues(currentAs);
-      const relatedIndex = related.findIndex(
-        (r: CwnWeapon | CwnArmor) => r.id === cyberwareId
+      setValue(
+        currentAs,
+        getValues(currentAs).filter(
+          (r: CwnWeapon | CwnArmor) => r.id !== cyberwareId
+        ) as CwnWeapon[] | CwnArmor[]
       );
-      if (relatedIndex !== -1) {
-        if (currentAs === 'weapons') {
-          weaponFieldArrayMethods?.onDelete(relatedIndex);
-        } else {
-          armorFieldArrayMethods?.onDelete(relatedIndex);
-        }
-      }
     }
 
     // If unchecking the current 'as', set the value to null
@@ -74,21 +63,35 @@ export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
           ) as string) || '',
       };
 
-      if (whichAsCheck === 'weapons') {
-        weaponFieldArrayMethods?.onCreate({
-          ...DEFAULT_WEAPON,
+      setValue(whichAsCheck, [
+        ...getValues(whichAsCheck),
+        {
+          ...(whichAsCheck === 'armors' ? DEFAULT_ARMOR : DEFAULT_WEAPON),
           ...shared,
-        });
-      } else {
-        armorFieldArrayMethods?.onCreate({
-          ...DEFAULT_ARMOR,
-          ...shared,
-        });
-      }
+        },
+      ] as CwnArmor[] | CwnWeapon[]);
     }
 
     setValue(asFieldName, nextAsValue);
   };
+
+  if (!isEditMode) {
+    if (watchedAs) {
+      return (
+        <Label label="Used as" labelFor={asFieldName}>
+          <Text
+            color="textAccent"
+            display="block"
+            paddingTop={8}
+            variant="body-xs"
+          >
+            {watchedAs === 'armors' ? 'an Armor' : 'a Weapon'}
+          </Text>
+        </Label>
+      );
+    }
+    return null;
+  }
 
   return (
     <Label label="Use as..." labelFor={asFieldName}>
@@ -97,11 +100,6 @@ export function CyberwareAsInputs({ index, cyberwareId }: AsInputProps) {
           You can use the checkboxes below to add a copy of this cyberware to
           your weapons or armors list
         </Text>
-        {!hasLoadedRelatedFields && (
-          <Text color="danger" variant="body-xs">
-            Open the &quot;Combat&quot; tab before modifying this field!
-          </Text>
-        )}
         <FlexBox gap={16}>
           {CYBERWARE_AS.map((as) => (
             <CheckboxInput

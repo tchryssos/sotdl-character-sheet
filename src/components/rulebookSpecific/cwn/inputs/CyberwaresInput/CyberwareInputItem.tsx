@@ -15,10 +15,15 @@ import {
   CyberwareAs,
   CyberwareType,
 } from '~/constants/cwn/game';
-import { CwnCharacterData } from '~/typings/cwn/characterData';
+import { EditContext } from '~/logic/contexts/editContext';
+import { useBreakpointsIsExactly } from '~/logic/hooks/useBreakpoints';
+import {
+  CwnArmor,
+  CwnCharacterData,
+  CwnWeapon,
+} from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
-import { WeaponAndArmorContext } from '../../WeaponAndArmorProvider';
 import { CyberwareAsInputs } from './CyberwareAsInputs';
 import { createCyberwareFieldName } from './utils';
 
@@ -47,10 +52,9 @@ export function CyberwareInputItem({
   onDelete: formOnDelete,
   postSortIndex: index,
 }: CyberwareInputItemProps) {
-  const { watch, getValues } = useFormContext<CwnCharacterData>();
-  const { weaponFieldArrayMethods, armorFieldArrayMethods } = useContext(
-    WeaponAndArmorContext
-  );
+  const isXxs = useBreakpointsIsExactly('xxs');
+  const { isEditMode } = useContext(EditContext);
+  const { watch, getValues, setValue } = useFormContext<CwnCharacterData>();
 
   const nameFieldName = createCyberwareFieldName('name', index);
   const name = watch(nameFieldName) as string;
@@ -67,15 +71,10 @@ export function CyberwareInputItem({
   const onDelete = () => {
     if (as) {
       const allRelated = getValues(as);
-      const relatedIndex = allRelated.findIndex((r) => r.id === id);
-
-      if (relatedIndex !== -1) {
-        const fieldsDelete =
-          as === 'armors'
-            ? armorFieldArrayMethods?.onDelete
-            : weaponFieldArrayMethods?.onDelete;
-        fieldsDelete?.(relatedIndex);
-      }
+      setValue(
+        as,
+        allRelated.filter((r) => r.id !== id) as CwnWeapon[] | CwnArmor[]
+      );
     }
     formOnDelete(index);
   };
@@ -89,7 +88,7 @@ export function CyberwareInputItem({
         name={nameFieldName}
         onDelete={onDelete}
       />
-      <GridBox>
+      <GridBox columns={isXxs ? 2 : 3}>
         <SelectInput<CwnCharacterData>
           label="Type"
           name={typeFieldName}
@@ -100,14 +99,15 @@ export function CyberwareInputItem({
           name={createCyberwareFieldName('concealment', index)}
           options={concealmentSelectOptions}
         />
+        <NumberInput<CwnCharacterData>
+          label="System Strain"
+          min={0}
+          name={createCyberwareFieldName('system_strain', index)}
+          step={0.25}
+        />
+        {!isEditMode && <CyberwareAsInputs cyberwareId={id} index={index} />}
       </GridBox>
-      <NumberInput<CwnCharacterData>
-        label="System Strain"
-        min={0}
-        name={createCyberwareFieldName('system_strain', index)}
-        step={0.25}
-      />
-      <CyberwareAsInputs cyberwareId={id} index={index} />
+      {isEditMode && <CyberwareAsInputs cyberwareId={id} index={index} />}
       <TextAreaInput<CwnCharacterData>
         label="Effect"
         name={createCyberwareFieldName('effect', index)}

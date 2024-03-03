@@ -1,13 +1,6 @@
 import styled from '@emotion/styled';
 import { sortBy, startCase } from 'lodash';
-import {
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { EditContext } from '~/logic/contexts/editContext';
@@ -50,7 +43,6 @@ type AddAnotherMultiFieldProps<
   filterFn?: (props: SortableAddAnotherChildProps) => boolean;
   alwaysEditable?: boolean;
   onAdd?: (index?: number) => void;
-  setFieldArrayMethods?: (methods: FieldArrayManipMethods<U>) => void;
 };
 
 const ChildContainer = styled(Box)`
@@ -80,7 +72,6 @@ export function AddAnotherMultiField<
   filterFn,
   alwaysEditable,
   onAdd,
-  setFieldArrayMethods,
 }: AddAnotherMultiFieldProps<T, U>) {
   const { control, watch } = useFormContext();
   const methods = useFieldArray({
@@ -110,44 +101,27 @@ export function AddAnotherMultiField<
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
-  const controlledFields = useMemo(() => {
-    const defaultSorted = fields.map((field, i) => ({
-      ...field,
-      ...(parentField?.[i] || {}),
-    }));
-    return sortBy(defaultSorted, sortProperties || []);
-  }, [fields, parentField, sortProperties]);
+  let controlledFields = fields.map((field, i) => ({
+    ...field,
+    ...(parentField?.[i] || {}),
+  }));
 
-  const onCreate = useCallback(
-    (nextValueOverride?: ReturnType<typeof createDefaultValue>) => {
-      const nextValue = nextValueOverride || createDefaultValue();
-      append(nextValue);
-      onAdd?.(controlledFields.length - 1);
-    },
-    [append, controlledFields.length, createDefaultValue, onAdd]
-  );
+  if (sortProperties) {
+    controlledFields = sortBy(controlledFields, sortProperties);
+  }
 
-  const onDelete = useCallback(
-    (index: number) => {
-      const removedId = controlledFields[index][FIELD_ID];
-      const valueRemovedIndex = sortIndexMap.get(removedId)!;
+  const onCreate = () => {
+    const nextValue = createDefaultValue();
+    append(nextValue);
+    onAdd?.(controlledFields.length - 1);
+  };
 
-      remove(valueRemovedIndex);
-    },
-    [controlledFields, remove, sortIndexMap]
-  );
+  const onDelete = (index: number) => {
+    const removedId = controlledFields[index][FIELD_ID];
+    const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
-  useEffect(() => {
-    /**
-     * Occasionally we want to manipulate the field array from outside
-     * this input. This enables us to share the field array methods with
-     * a context provider, etc
-     */
-    setFieldArrayMethods?.({
-      onCreate,
-      onDelete,
-    });
-  }, [onCreate, onDelete, setFieldArrayMethods]);
+    remove(valueRemovedIndex);
+  };
 
   return (
     <>
