@@ -63,6 +63,7 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   armors: [],
   weapons: [],
   cyberware: [],
+  cyberdecks: [],
   // attack_bonus_base: 0,
   // attack_bonus_melee: 0,
   // attack_bonus_ranged: 0,
@@ -99,6 +100,10 @@ export const CWN_TAB_LABELS = [
   {
     label: 'Equipment',
     icon: RpgIcons.Chest,
+  },
+  {
+    label: 'Hacking',
+    icon: RpgIcons.DoorOpen,
   },
 ] as const satisfies TabLabelObject[];
 export type TabLabel = (typeof CWN_TAB_LABELS)[number]['label'];

@@ -96,3 +96,12 @@ export type CyberwareConcealmentLevel =
 
 export const CYBERWARE_AS = ['weapons', 'armors'] as const;
 export type CyberwareAs = (typeof CYBERWARE_AS)[number];
+
+export const PROGRAM_VERB_TARGETS = [
+  'device',
+  'cyber',
+  'data',
+  'avatar',
+  'program',
+] as const;
+export type ProgramVerbTarget = (typeof PROGRAM_VERB_TARGETS)[number];

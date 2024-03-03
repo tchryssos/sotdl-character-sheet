@@ -9,6 +9,7 @@ import {
   CyberwareType,
   CyberwareConcealmentLevel,
   CyberwareAs,
+  ProgramVerbTarget,
 } from '~/constants/cwn/game';
 import { CwnName } from './game';
 import { ValuesOf } from '../util';
@@ -85,6 +86,31 @@ export type CwnCyberware = {
   as: CyberwareAs | null;
 };
 
+export type CwnCyberdeck = {
+  name: string;
+  bonus_access: number;
+  memory: number;
+  shielding: number;
+  cpu: number;
+  encumbrance: number;
+  description: string;
+  readied: boolean;
+};
+
+export type CwnProgramVerb = {
+  name: string;
+  target_types: ProgramVerbTarget[];
+  access_cost: number;
+  skill_check_mod: number;
+  use: string;
+};
+
+export type CwnProgramSubject = {
+  name: string;
+  subject_type: ProgramVerbTarget;
+  description: string;
+};
+
 export type AttributeName = ValuesOf<{
   [K in Attribute]: `attribute_${K}`;
 }>;
@@ -130,6 +156,9 @@ export type CwnCharacterData = {
   armors: CwnArmor[];
   weapons: CwnWeapon[];
   cyberware: CwnCyberware[];
+  cyberdecks: CwnCyberdeck[];
+  program_subjects: CwnProgramSubject[];
+  program_verbs: CwnProgramVerb[];
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;

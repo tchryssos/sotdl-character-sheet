@@ -43,4 +43,6 @@ export enum RpgIcons {
   QuestionMark = '431',
   Pistol = '327',
   Robot = '434',
+  DoorOpen = '358',
+  IdCard = '138',
 }

@@ -25,6 +25,7 @@ import { ArmorsInput } from './inputs/ArmorsInput';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
+import { CyberdeckInputs } from './inputs/CyberdeckInputs';
 import { CyberwaresInput } from './inputs/CyberwaresInput';
 import { EdgesInput } from './inputs/EdgesInput';
 import { FociInput } from './inputs/FociInput';
@@ -141,6 +142,11 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             {/* Equipment */}
             <TabPanel>
               <CyberwaresInput />
+            </TabPanel>
+
+            {/* Hacking */}
+            <TabPanel>
+              <CyberdeckInputs />
             </TabPanel>
           </Tabs>
         </AcProvider>
