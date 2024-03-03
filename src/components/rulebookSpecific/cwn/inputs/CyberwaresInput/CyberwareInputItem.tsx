@@ -81,7 +81,7 @@ export function CyberwareInputItem({
 
   const title = name ? `${name} - ${capitalize(type)}` : '';
   return (
-    <AAMItemFormSection title={title} visibilityTitle={id}>
+    <AAMItemFormSection linkId={id} title={title} visibilityTitle={id}>
       <AAMItemTitleAndDelete<CwnCharacterData>
         index={index}
         label="Name"

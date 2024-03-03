@@ -139,6 +139,7 @@ export function ArmorInputItem({
 
   return (
     <AAMItemFormSection
+      linkId={id}
       title={title}
       titleColor={readied ? 'text' : 'textAccent'}
       visibilityTitle={`${name}${index}`}

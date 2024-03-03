@@ -11,6 +11,7 @@ import { TextInputProps } from './typings';
 type AAMItemTitleAndDeleteProps<T extends CharacterData> = {
   index: number;
   onDelete: (idx: number) => void;
+  noDelete?: boolean;
 } & Required<Pick<TextInputProps<T>, 'name' | 'label'>>;
 
 export function AAMItemTitleAndDelete<T extends CharacterData>({
@@ -18,15 +19,16 @@ export function AAMItemTitleAndDelete<T extends CharacterData>({
   onDelete,
   name,
   label,
+  noDelete,
 }: AAMItemTitleAndDeleteProps<T>) {
   const { isEditMode } = useContext(EditContext);
   return (
     <GridBox
       alignItems="end"
-      gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
+      gridTemplateColumns={isEditMode && !noDelete ? '1fr auto' : '1fr'}
     >
       <TextInput<T> label={label} name={name} />
-      {isEditMode && (
+      {isEditMode && !noDelete && (
         <AddAnotherMultiDelete
           disabled={index === undefined}
           onDelete={() => onDelete(index)}

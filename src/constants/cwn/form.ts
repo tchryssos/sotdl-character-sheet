@@ -1,4 +1,7 @@
+import { TabLabelObject } from '~/components/tabs/types';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
+
+import { RpgIcons } from '../icons';
 
 export const CWN_SKILL_UNTRAINED = -1;
 const CWN_DEFAULT_ATTRIBUTE_SCORE = 10;
@@ -58,6 +61,8 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   armor_class_melee: 10,
   armor_class_ranged: 10,
   armors: [],
+  weapons: [],
+  cyberware: [],
   // attack_bonus_base: 0,
   // attack_bonus_melee: 0,
   // attack_bonus_ranged: 0,
@@ -69,3 +74,31 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   // currency_silver: 0,
   // currency_gold: 0,
 };
+
+export const CWN_TAB_LABELS = [
+  {
+    label: 'Description',
+    icon: RpgIcons.Scroll,
+  },
+  {
+    label: 'Stats',
+    icon: RpgIcons.Dice,
+  },
+  {
+    label: 'Status',
+    icon: RpgIcons.SmileGuy,
+  },
+  {
+    label: 'Abilities',
+    icon: RpgIcons.Ripple,
+  },
+  {
+    label: 'Combat',
+    icon: RpgIcons.StackedSkulls,
+  },
+  {
+    label: 'Equipment',
+    icon: RpgIcons.Chest,
+  },
+] as const satisfies TabLabelObject[];
+export type TabLabel = (typeof CWN_TAB_LABELS)[number]['label'];

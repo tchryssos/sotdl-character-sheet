@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useContext, useEffect, useState } from 'react';
+import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { RpgIcons } from '~/constants/icons';
 import { Theme } from '~/constants/theme';
@@ -31,6 +31,7 @@ interface FormSectionProps {
   isNested?: boolean;
   titleColor?: Color;
   onToggleOpen?: (nextOpenState: boolean) => void;
+  linkId?: string;
 }
 
 const TitleBox = styled(FlexBox)`
@@ -96,6 +97,18 @@ const ButtonTitleWrapper = styled(BaseButton)`
   margin: 0;
 `;
 
+interface FormSectionLinkProps extends Pick<FormSectionProps, 'linkId'> {}
+function FormSectionLink({
+  linkId,
+  children,
+}: PropsWithChildren<FormSectionLinkProps>) {
+  if (linkId) {
+    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+    return <a id={linkId}>{children}</a>;
+  }
+  return <>{children}</>;
+}
+
 export function FormSection({
   title,
   children,
@@ -111,6 +124,7 @@ export function FormSection({
   isNested,
   titleColor,
   onToggleOpen,
+  linkId,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -158,14 +172,16 @@ export function FormSection({
                   title={title}
                 />
               )}
-              <FormTitle
-                fontStyle="italic"
-                isCollapsible={isCollapsible}
-                paddingRight={2}
-                variant={isNested ? 'body-lg' : 'title-sm'}
-              >
-                {title || '""'}
-              </FormTitle>
+              <FormSectionLink linkId={linkId}>
+                <FormTitle
+                  fontStyle="italic"
+                  isCollapsible={isCollapsible}
+                  paddingRight={2}
+                  variant={isNested ? 'body-lg' : 'title-sm'}
+                >
+                  {title || '""'}
+                </FormTitle>
+              </FormSectionLink>
             </TitleBox>
             {icon && (
               <Box

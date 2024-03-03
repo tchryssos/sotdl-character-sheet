@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
 import { Tabs as MuiTabs, TabsList } from '@mui/base';
-import { ComponentProps, PropsWithChildren, useState } from 'react';
+import {
+  ComponentProps,
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useState,
+} from 'react';
 
 import { TabLabel } from './TabLabel';
 import type { TabLabelObject } from './types';
@@ -17,6 +23,10 @@ const LabelsContainer = styled(TabsList)(({ theme }) => ({
   flexWrap: 'wrap',
 }));
 
+type SetTabContext = (_: unknown, index: number) => void;
+
+export const SetTabContext = createContext<SetTabContext>(() => null);
+
 export function Tabs({
   tabLabels,
   defaultTab = 0,
@@ -24,19 +34,29 @@ export function Tabs({
   onChange,
 }: PropsWithChildren<TabsProps>) {
   const [tabIndex, setTabIndex] = useState(defaultTab);
-  const onTabChange: ComponentProps<typeof MuiTabs>['onChange'] = (_, i) => {
-    setTabIndex(i as number);
-    onChange?.(i as number);
-  };
+
+  const onTabChange = useCallback(
+    (_: unknown, i: number) => {
+      setTabIndex(i as number);
+      onChange?.(i as number);
+    },
+    [onChange]
+  );
 
   return (
-    <MuiTabs defaultValue={defaultTab} value={tabIndex} onChange={onTabChange}>
+    <MuiTabs
+      defaultValue={defaultTab}
+      value={tabIndex}
+      onChange={onTabChange as ComponentProps<typeof MuiTabs>['onChange']}
+    >
       <LabelsContainer>
         {tabLabels.map((label, index) => (
           <TabLabel index={index} key={label.label} label={label} />
         ))}
       </LabelsContainer>
-      {children}
+      <SetTabContext.Provider value={onTabChange}>
+        {children}
+      </SetTabContext.Provider>
     </MuiTabs>
   );
 }

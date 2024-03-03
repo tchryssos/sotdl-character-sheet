@@ -8,9 +8,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { Form } from '~/components/form/Form';
 import { TabPanel } from '~/components/tabs/TabPanel';
 import { Tabs } from '~/components/tabs/Tabs';
-import { TabLabelObject } from '~/components/tabs/types';
-import { DEFAULT_VALUES } from '~/constants/cwn/form';
-import { RpgIcons } from '~/constants/icons';
+import { CWN_TAB_LABELS, DEFAULT_VALUES } from '~/constants/cwn/form';
 import { FORM_COLUMN_GAP, FORM_ROW_GAP } from '~/constants/styles';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
@@ -45,37 +43,6 @@ interface CwnCharacterSheetProps {
 const StyledForm = styled(Form)`
   padding-bottom: ${({ theme }) => theme.spacing[48]};
 `;
-
-const tabLabels: TabLabelObject[] = [
-  {
-    label: 'Description',
-    icon: RpgIcons.Scroll,
-  },
-  {
-    label: 'Stats',
-    icon: RpgIcons.Dice,
-  },
-  {
-    label: 'Status',
-    icon: RpgIcons.SmileGuy,
-  },
-  {
-    label: 'Abilities',
-    icon: RpgIcons.Ripple,
-  },
-  {
-    label: 'Combat',
-    icon: RpgIcons.StackedSkulls,
-  },
-  // {
-  //   label: 'Magic',
-  //   icon: RpgIcons.Fireball,
-  // },
-  {
-    label: 'Equipment',
-    icon: RpgIcons.Chest,
-  },
-];
 
 const sharedGapProps = {
   columnGap: pxToRem(FORM_COLUMN_GAP),
@@ -112,13 +79,13 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
       >
         <AcProvider>
           <Tabs
-            defaultTab={getTabIndex(tabLabels, queryTab)}
-            tabLabels={tabLabels}
+            defaultTab={getTabIndex(CWN_TAB_LABELS, queryTab)}
+            tabLabels={CWN_TAB_LABELS}
             onChange={(index) =>
               router.replace({
                 query: {
                   ...router.query,
-                  tab: tabLabels[index].label.toLowerCase(),
+                  tab: CWN_TAB_LABELS[index].label.toLowerCase(),
                 },
               })
             }

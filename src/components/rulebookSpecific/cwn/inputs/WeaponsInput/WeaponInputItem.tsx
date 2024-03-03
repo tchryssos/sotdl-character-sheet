@@ -1,6 +1,7 @@
 import { capitalize } from 'lodash';
 import { useFormContext } from 'react-hook-form';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { AAMItemTitleAndDelete } from '~/components/form/AAMItemTitleAndDelete';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
@@ -16,6 +17,8 @@ import { DICE_WITH_MODIFIER_REGEX, RANGE_REGEX } from '~/constants/regex';
 import { CwnCharacterData, CwnWeapon } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
+import { LinkedCyberwareLink } from '../CyberwaresInput/LinkedCyberwareLink';
+import { useLinkedCyberware } from '../CyberwaresInput/utils';
 import { createWeaponFieldName } from './utils';
 
 interface WeaponInputItemProps
@@ -57,6 +60,11 @@ export function WeaponInputItem({
   const shock = watch(shockFieldName) as CwnWeapon['shock'];
   const useShock = !isRanged && shock;
 
+  const idFieldName = createWeaponFieldName('id', index);
+  const id = watch(idFieldName) as string;
+
+  const linkedCyberware = useLinkedCyberware(id);
+
   const title = name
     ? `${name} - ${damage}${range || useShock ? ', ' : ''}${range}${
         range && useShock ? ', ' : ''
@@ -65,11 +73,15 @@ export function WeaponInputItem({
 
   return (
     <AAMItemFormSection
+      linkId={id}
       title={title}
       titleColor={readied ? 'text' : 'textAccent'}
       visibilityTitle={`${name}${index}`}
     >
-      <GridBox gridTemplateColumns={{ base: '1fr', xs: 'auto 1fr' }}>
+      <GridBox
+        alignItems="start"
+        gridTemplateColumns={{ base: '1fr', xs: 'auto 1fr' }}
+      >
         <CheckboxInput
           alwaysEditable
           customOnChange={() => {
@@ -87,12 +99,16 @@ export function WeaponInputItem({
           label="Readied"
           name={readiedFieldName}
         />
-        <AAMItemTitleAndDelete<CwnCharacterData>
-          index={index}
-          label="Name"
-          name={nameFieldName}
-          onDelete={onDelete}
-        />
+        <FlexBox flexDirection="column" gap={4}>
+          <AAMItemTitleAndDelete<CwnCharacterData>
+            index={index}
+            label="Name"
+            name={nameFieldName}
+            noDelete={Boolean(linkedCyberware)}
+            onDelete={onDelete}
+          />
+          <LinkedCyberwareLink cyberware={linkedCyberware} id={id} />
+        </FlexBox>
       </GridBox>
       <GridBox>
         <SelectInput<CwnCharacterData>
