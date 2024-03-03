@@ -32,6 +32,7 @@ import { FociInput } from './inputs/FociInput';
 import { HealthInputs } from './inputs/HealthInputs';
 import { HistoryInputs } from './inputs/HistoryInputs';
 import { InjuryInputs } from './inputs/InjuryInputs';
+import { InventoryInputs } from './inputs/InventoryInputs';
 import { OtherStatusesInput } from './inputs/OtherStatusesInput';
 import { ProgramSubjectInputs } from './inputs/ProgramSubjectInputs';
 import { ProgramVerbInputs } from './inputs/ProgramVerbInputs';
@@ -143,7 +144,10 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
 
             {/* Equipment */}
             <TabPanel>
-              <CyberwaresInput />
+              <GridBox columns={1}>
+                <CyberwaresInput />
+                <InventoryInputs />
+              </GridBox>
             </TabPanel>
 
             {/* Hacking */}

@@ -111,6 +111,12 @@ export type CwnProgramSubject = {
   description: string;
 };
 
+export type CwnGeneralItem = {
+  name: string;
+  description: string;
+  encumbrance: number;
+};
+
 export type AttributeName = ValuesOf<{
   [K in Attribute]: `attribute_${K}`;
 }>;
@@ -159,6 +165,9 @@ export type CwnCharacterData = {
   cyberdecks: CwnCyberdeck[];
   program_subjects: CwnProgramSubject[];
   program_verbs: CwnProgramVerb[];
+  inventory: CwnGeneralItem[];
+  attack_bonus: number;
+  currency: number;
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;
