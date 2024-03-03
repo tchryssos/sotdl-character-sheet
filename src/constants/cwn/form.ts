@@ -64,6 +64,8 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   weapons: [],
   cyberware: [],
   cyberdecks: [],
+  program_subjects: [],
+  program_verbs: [],
   // attack_bonus_base: 0,
   // attack_bonus_melee: 0,
   // attack_bonus_ranged: 0,

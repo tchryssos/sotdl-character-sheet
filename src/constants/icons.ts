@@ -46,4 +46,5 @@ export enum RpgIcons {
   DoorOpen = '358',
   IdCard = '138',
   Eye = '083',
+  TongueMouth = '103',
 }
