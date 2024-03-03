@@ -105,7 +105,16 @@ export function WeaponInputItem({
             label="Name"
             name={nameFieldName}
             noDelete={Boolean(linkedCyberware)}
-            onDelete={onDelete}
+            onDelete={(i: number) => {
+              if (linkedCyberware) {
+                const cyberwares = getValues('cyberware');
+                setValue(
+                  'cyberware',
+                  cyberwares.filter((r) => r.id !== id)
+                );
+              }
+              onDelete(i);
+            }}
           />
           <LinkedCyberwareLink cyberware={linkedCyberware} id={id} />
         </FlexBox>

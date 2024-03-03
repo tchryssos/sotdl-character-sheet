@@ -27,6 +27,8 @@ import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { AcContext } from '../../AcProvider';
+import { LinkedCyberwareLink } from '../CyberwaresInput/LinkedCyberwareLink';
+import { useLinkedCyberware } from '../CyberwaresInput/utils';
 import { EquippedToInput } from './EquippedToInput';
 import { removeAccessoryFromParentArmor } from './utils';
 
@@ -74,6 +76,8 @@ export function ArmorInputItem({
 
   const idFieldName = createArmorFieldName('id', index);
   const id = watch(idFieldName) as string;
+
+  const linkedCyberware = useLinkedCyberware(id);
 
   const equippedToFieldName = createArmorFieldName('equippedTo', index);
   const equippedTo = watch(equippedToFieldName) as string;
@@ -179,38 +183,49 @@ export function ArmorInputItem({
               name={readiedFieldName}
             />
           )}
-          <AAMItemTitleAndDelete<CwnCharacterData>
-            index={index}
-            label="Name"
-            name={nameFieldName}
-            onDelete={(i: number) => {
-              if (equippedTo) {
-                removeAccessoryFromParentArmor(id, equippedTo, {
-                  setValue,
-                  getValues,
-                });
-              } else if (accessories.length) {
-                const armors = getValues('armors');
-                accessories.forEach((ac) => {
-                  // Unready accessories and remove equippedTo
-                  const accessoryArmorIndex = armors.findIndex(
-                    (a) => a.id === ac
+          <FlexBox flexDirection="column" gap={4}>
+            <AAMItemTitleAndDelete<CwnCharacterData>
+              index={index}
+              label="Name"
+              name={nameFieldName}
+              onDelete={(i: number) => {
+                if (equippedTo) {
+                  removeAccessoryFromParentArmor(id, equippedTo, {
+                    setValue,
+                    getValues,
+                  });
+                } else if (accessories.length) {
+                  const armors = getValues('armors');
+                  accessories.forEach((ac) => {
+                    // Unready accessories and remove equippedTo
+                    const accessoryArmorIndex = armors.findIndex(
+                      (a) => a.id === ac
+                    );
+                    if (accessoryArmorIndex >= 0) {
+                      setValue(
+                        createArmorFieldName('equippedTo', accessoryArmorIndex),
+                        ''
+                      );
+                      setValue(
+                        createArmorFieldName('readied', accessoryArmorIndex),
+                        false
+                      );
+                    }
+                  });
+                }
+
+                if (linkedCyberware) {
+                  const cyberwares = getValues('cyberware');
+                  setValue(
+                    'cyberware',
+                    cyberwares.filter((r) => r.id !== linkedCyberware.id)
                   );
-                  if (accessoryArmorIndex >= 0) {
-                    setValue(
-                      createArmorFieldName('equippedTo', accessoryArmorIndex),
-                      ''
-                    );
-                    setValue(
-                      createArmorFieldName('readied', accessoryArmorIndex),
-                      false
-                    );
-                  }
-                });
-              }
-              onDelete(i);
-            }}
-          />
+                }
+                onDelete(i);
+              }}
+            />
+            <LinkedCyberwareLink cyberware={linkedCyberware} id={id} />
+          </FlexBox>
         </GridBox>
         <GridBox columns={isAccessory ? 2 : 1}>
           <SelectInput<CwnCharacterData>
