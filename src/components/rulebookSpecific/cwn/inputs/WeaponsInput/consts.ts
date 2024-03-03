@@ -2,7 +2,7 @@ import { CwnWeapon } from '~/typings/cwn/characterData';
 
 export const DEFAULT_WEAPON: Omit<CwnWeapon, 'id'> = {
   name: '',
-  type: 'ranged',
+  weapon_type: 'ranged',
   damage: '1d8',
   range: '10/80',
   shock: '1/AC 15',

@@ -153,7 +153,11 @@ export function AddAnotherMultiField<
     <>
       {(isEditMode || alwaysEditable) && (
         <FlexBox gap={16} width="100%">
-          <AddAnotherButton label={addLabel} onClick={onCreate} />
+          <AddAnotherButton
+            label={addLabel}
+            // Doing this because otherwise e gets passed as the optional arg
+            onClick={() => onCreate()}
+          />
           {simpleDelete && (
             <AddAnotherButton
               label="-"

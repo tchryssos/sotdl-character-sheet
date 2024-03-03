@@ -60,7 +60,7 @@ export type CwnArmor = {
 
 export type CwnWeapon = {
   name: string;
-  type: WeaponType;
+  weapon_type: WeaponType;
   damage: `${number}d${number}` | `${number}d${number}+${number}`;
   range: `${number}/${number}` | '';
   shock: `${number}/AC ${number}` | '';

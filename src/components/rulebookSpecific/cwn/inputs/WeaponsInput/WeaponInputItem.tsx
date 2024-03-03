@@ -43,7 +43,7 @@ export function WeaponInputItem({
   const readiedFieldName = createWeaponFieldName('readied', index);
   const readied = watch(readiedFieldName) as boolean;
 
-  const typeFieldName = createWeaponFieldName('type', index);
+  const typeFieldName = createWeaponFieldName('weapon_type', index);
   const type = watch(typeFieldName) as WeaponType;
   const isRanged = type === 'ranged';
 
