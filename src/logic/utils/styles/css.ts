@@ -222,6 +222,10 @@ export const filterCssProps = (props: Record<string, any>, theme: Theme) => {
    *
    * This stupid fn reorders the media queries so that the larger queries
    * have greater specificity, and therefore, properly display their styles
+   *
+   * TODO: We should be able to do this above by just waiting to inject the
+   * media queries until the end, but I didn't want to do that now
+   * https://github.com/tchryssos/rpg-sheet/issues/204
    */
   Object.values(theme.breakpoints).forEach((breakpoint) => {
     const breakpointStyles = cssPropObj[breakpoint];
