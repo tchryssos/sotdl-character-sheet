@@ -5,10 +5,13 @@ import { useEffect } from 'react';
 
 import { Box } from '~/components/box/Box';
 import { GridBox } from '~/components/box/GridBox';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { Form } from '~/components/form/Form';
+import { NumberInput } from '~/components/form/NumberInput';
 import { TabPanel } from '~/components/tabs/TabPanel';
 import { Tabs } from '~/components/tabs/Tabs';
 import { CWN_TAB_LABELS, DEFAULT_VALUES } from '~/constants/cwn/form';
+import { RpgIcons } from '~/constants/icons';
 import { FORM_COLUMN_GAP, FORM_ROW_GAP } from '~/constants/styles';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
@@ -22,6 +25,7 @@ import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { AcProvider } from './AcProvider';
 import { ArmorClassInputs } from './inputs/ArmorClassInputs';
 import { ArmorsInput } from './inputs/ArmorsInput';
+import { AttackBonusInput } from './inputs/AttackBonusInput';
 import { AttributeInputs } from './inputs/AttributeInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { ContactsInput } from './inputs/ContactsInput';
@@ -134,7 +138,10 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
             {/* Combat */}
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
-                <ArmorClassInputs />
+                <GridBox gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr' }}>
+                  <AttackBonusInput />
+                  <ArmorClassInputs />
+                </GridBox>
                 <GridBox columns={isLessThanMd ? 1 : 2}>
                   <WeaponsInput />
                   <ArmorsInput />
@@ -147,6 +154,13 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
               <GridBox columns={1}>
                 <CyberwaresInput />
                 <InventoryInputs />
+                <FormSection
+                  columns={1}
+                  icon={RpgIcons.DollarCoin}
+                  title="Currency"
+                >
+                  <NumberInput<CwnCharacterData> name="currency" />
+                </FormSection>
               </GridBox>
             </TabPanel>
 

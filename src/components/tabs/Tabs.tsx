@@ -5,6 +5,7 @@ import {
   createContext,
   PropsWithChildren,
   useCallback,
+  useEffect,
   useState,
 } from 'react';
 
@@ -42,6 +43,10 @@ export function Tabs({
     },
     [onChange]
   );
+
+  useEffect(() => {
+    setTabIndex(defaultTab);
+  }, [defaultTab]);
 
   return (
     <MuiTabs

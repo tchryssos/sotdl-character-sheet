@@ -168,6 +168,7 @@ export type CwnCharacterData = {
   inventory: CwnGeneralItem[];
   attack_bonus: number;
   currency: number;
+  attack_bonus: number;
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;

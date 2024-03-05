@@ -130,8 +130,7 @@ function CharacterSheetPage({
 
   return (
     <Layout meta="character sheet" title="character sheet">
-      <CwnCharacterSheet />
-      {/* <DisplaySheet character={character} rulebook={rulebook} /> */}
+      <DisplaySheet character={character} rulebook={rulebook} />
     </Layout>
   );
 }
