@@ -169,6 +169,8 @@ export type CwnCharacterData = {
   attack_bonus: number;
   currency: number;
   attack_bonus: number;
+  damage_soak_max: number;
+  damage_soak_current: number;
   //   attack_bonus_base: number;
   //   attack_bonus_melee: number;
   //   attack_bonus_ranged: number;

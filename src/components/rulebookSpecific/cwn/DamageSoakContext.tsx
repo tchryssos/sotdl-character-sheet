@@ -2,8 +2,8 @@ import {
   createContext,
   PropsWithChildren,
   useCallback,
+  useEffect,
   useMemo,
-  useState,
 } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -11,26 +11,32 @@ import { getEquippedArmorAndAccessories } from '~/logic/utils/rulebookSpecific/c
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 export interface DamageSoakContextInterface {
-  damageSoak: number;
   calculateSoak: () => void;
 }
 
 export const DamageSoakContext = createContext<DamageSoakContextInterface>({
-  damageSoak: 0,
   calculateSoak: () => null,
 });
 
 type DamageSoakProviderProps = PropsWithChildren<unknown>;
 
 export function DamageSoakProvider({ children }: DamageSoakProviderProps) {
-  const [damageSoak, setDamageSoak] = useState(0);
+  const { getValues, register, setValue, watch } =
+    useFormContext<CwnCharacterData>();
 
-  const { getValues } = useFormContext<CwnCharacterData>();
+  useEffect(() => {
+    register('damage_soak_current');
+    register('damage_soak_max');
+  }, [register]);
+
+  const maxDamageSoak = watch('damage_soak_max');
 
   const calculateSoak = useCallback(() => {
     const armors = getValues('armors');
 
     const { armor, accessories } = getEquippedArmorAndAccessories(armors);
+
+    let updatedSoak = 0;
 
     if (armor) {
       const accessorySoak = accessories.reduce(
@@ -38,17 +44,22 @@ export function DamageSoakProvider({ children }: DamageSoakProviderProps) {
         0
       );
 
-      setDamageSoak(armor.damage_soak + accessorySoak);
+      updatedSoak = armor.damage_soak + accessorySoak;
     }
-  }, [getValues]);
+
+    setValue('damage_soak_max', updatedSoak);
+  }, [getValues, setValue]);
 
   const providerValue = useMemo(
     () => ({
-      damageSoak,
       calculateSoak,
     }),
-    [damageSoak, calculateSoak]
+    [calculateSoak]
   );
+
+  useEffect(() => {
+    setValue('damage_soak_current', maxDamageSoak);
+  }, [maxDamageSoak, setValue]);
 
   return (
     <DamageSoakContext.Provider value={providerValue}>

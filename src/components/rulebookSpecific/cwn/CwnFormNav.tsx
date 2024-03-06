@@ -5,11 +5,14 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { BaseButton } from '~/components/buttons/BaseButton';
+import { IconButton } from '~/components/buttons/IconButton';
 import { FormNavBaseButtons } from '~/components/formNav/FormNavBaseButtons';
+import { Refresh } from '~/components/icons/Refresh';
 import { Text } from '~/components/Text';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 interface CwnFormNavProps {
@@ -23,6 +26,7 @@ interface CharacterHeaderProps {
 
 const HealthButton = styled(BaseButton)(({ theme }) => ({
   padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
+  minWidth: pxToRem(108),
 }));
 
 function CharacterNavHeader({ headerPortalNode, name }: CharacterHeaderProps) {
@@ -33,9 +37,15 @@ function CharacterNavHeader({ headerPortalNode, name }: CharacterHeaderProps) {
   const currentHealth = guaranteeNumberValue(watch('health_current'));
   const maxHealth = watch('health_max');
   const level = watch('level');
+  const currentDamageSoak = guaranteeNumberValue(watch('damage_soak_current'));
+  const maxDamageSoak = guaranteeNumberValue(watch('damage_soak_max'));
 
   const onHealthClick = () => {
-    setValue('health_current', Math.max(0, currentHealth - 1));
+    if (currentDamageSoak) {
+      setValue('damage_soak_current', Math.max(0, currentDamageSoak - 1));
+    } else {
+      setValue('health_current', Math.max(0, currentHealth - 1));
+    }
   };
 
   return (
@@ -53,18 +63,30 @@ function CharacterNavHeader({ headerPortalNode, name }: CharacterHeaderProps) {
             </FlexBox>
           </FlexBox>
           {atLeastSm && (
-            <HealthButton
-              severity={currentHealth <= 0 ? 'danger' : 'normal'}
-              title="Take one damage"
-              onClick={onHealthClick}
-            >
-              <Text as="p" variant="body-xs">
-                Health
-              </Text>
-              <Text as="p" fontWeight="bold" variant="body-lg">
-                {currentHealth}/{maxHealth}
-              </Text>
-            </HealthButton>
+            <FlexBox alignItems="center" gap={8}>
+              <HealthButton
+                severity={currentHealth <= 0 ? 'danger' : 'normal'}
+                title="Take one damage"
+                onClick={onHealthClick}
+              >
+                <Text as="p" variant="body-xs">
+                  Health{currentDamageSoak ? ' + Soak' : ''}
+                </Text>
+                <Text as="p" fontWeight="bold" variant="body-lg">
+                  {currentHealth + currentDamageSoak}/{maxHealth}
+                </Text>
+              </HealthButton>
+              <IconButton
+                onClick={() => {
+                  setValue('damage_soak_current', maxDamageSoak);
+                }}
+              >
+                <Refresh
+                  title="Refresh Damage Soak"
+                  titleId="refresh-damage-soak"
+                />
+              </IconButton>
+            </FlexBox>
           )}
         </FlexBox>,
         headerPortalNode

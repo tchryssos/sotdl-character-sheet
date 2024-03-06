@@ -24,6 +24,7 @@ import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { AcProvider } from './AcProvider';
 import { CwnFormNav } from './CwnFormNav';
+import { DamageSoakProvider } from './DamageSoakContext';
 import { ArmorClassInputs } from './inputs/ArmorClassInputs';
 import { ArmorsInput } from './inputs/ArmorsInput';
 import { AttackBonusInput } from './inputs/AttackBonusInput';
@@ -87,96 +88,98 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <AcProvider>
-          <CwnFormNav isMyCharacter={isMyCharacter} />
-          <Tabs
-            defaultTab={getTabIndex(CWN_TAB_LABELS, queryTab)}
-            tabLabels={CWN_TAB_LABELS}
-            onChange={(index) =>
-              router.replace({
-                query: {
-                  ...router.query,
-                  tab: CWN_TAB_LABELS[index].label.toLowerCase(),
-                },
-              })
-            }
-          >
-            {/* Description */}
-            <TabPanel>
-              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                <BasicInfoInputs />
-                <HistoryInputs />
-                <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
-                  <ContactsInput />
-                </Box>
-              </GridBox>
-            </TabPanel>
-
-            {/* Stats */}
-            <TabPanel>
-              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                <AttributeInputs />
-                <SkillInputs />
-              </GridBox>
-            </TabPanel>
-
-            {/* Status */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <HealthInputs />
-                <SaveInputs />
-                <InjuryInputs />
-                <OtherStatusesInput />
-              </GridBox>
-            </TabPanel>
-
-            {/* Abilities */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <EdgesInput />
-                <FociInput />
-              </GridBox>
-            </TabPanel>
-
-            {/* Combat */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <GridBox gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr' }}>
-                  <AttackBonusInput />
-                  <ArmorClassInputs />
+          <DamageSoakProvider>
+            <CwnFormNav isMyCharacter={isMyCharacter} />
+            <Tabs
+              defaultTab={getTabIndex(CWN_TAB_LABELS, queryTab)}
+              tabLabels={CWN_TAB_LABELS}
+              onChange={(index) =>
+                router.replace({
+                  query: {
+                    ...router.query,
+                    tab: CWN_TAB_LABELS[index].label.toLowerCase(),
+                  },
+                })
+              }
+            >
+              {/* Description */}
+              <TabPanel>
+                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                  <BasicInfoInputs />
+                  <HistoryInputs />
+                  <Box gridColumnEnd={isLessThanMd ? 2 : 3} gridColumnStart={1}>
+                    <ContactsInput />
+                  </Box>
                 </GridBox>
-                <GridBox columns={isLessThanMd ? 1 : 2}>
-                  <WeaponsInput />
-                  <ArmorsInput />
-                </GridBox>
-              </GridBox>
-            </TabPanel>
+              </TabPanel>
 
-            {/* Equipment */}
-            <TabPanel>
-              <GridBox columns={1}>
-                <CyberwaresInput />
-                <InventoryInputs />
-                <FormSection
-                  columns={1}
-                  icon={RpgIcons.DollarCoin}
-                  title="Currency"
-                >
-                  <NumberInput<CwnCharacterData> name="currency" />
-                </FormSection>
-              </GridBox>
-            </TabPanel>
-
-            {/* Hacking */}
-            <TabPanel>
-              <GridBox columns={1}>
-                <CyberdeckInputs />
-                <GridBox gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr' }}>
-                  <ProgramVerbInputs />
-                  <ProgramSubjectInputs />
+              {/* Stats */}
+              <TabPanel>
+                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                  <AttributeInputs />
+                  <SkillInputs />
                 </GridBox>
-              </GridBox>
-            </TabPanel>
-          </Tabs>
+              </TabPanel>
+
+              {/* Status */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <HealthInputs />
+                  <SaveInputs />
+                  <InjuryInputs />
+                  <OtherStatusesInput />
+                </GridBox>
+              </TabPanel>
+
+              {/* Abilities */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <EdgesInput />
+                  <FociInput />
+                </GridBox>
+              </TabPanel>
+
+              {/* Combat */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <GridBox gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr' }}>
+                    <AttackBonusInput />
+                    <ArmorClassInputs />
+                  </GridBox>
+                  <GridBox columns={isLessThanMd ? 1 : 2}>
+                    <WeaponsInput />
+                    <ArmorsInput />
+                  </GridBox>
+                </GridBox>
+              </TabPanel>
+
+              {/* Equipment */}
+              <TabPanel>
+                <GridBox columns={1}>
+                  <CyberwaresInput />
+                  <InventoryInputs />
+                  <FormSection
+                    columns={1}
+                    icon={RpgIcons.DollarCoin}
+                    title="Currency"
+                  >
+                    <NumberInput<CwnCharacterData> name="currency" />
+                  </FormSection>
+                </GridBox>
+              </TabPanel>
+
+              {/* Hacking */}
+              <TabPanel>
+                <GridBox columns={1}>
+                  <CyberdeckInputs />
+                  <GridBox gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr' }}>
+                    <ProgramVerbInputs />
+                    <ProgramSubjectInputs />
+                  </GridBox>
+                </GridBox>
+              </TabPanel>
+            </Tabs>
+          </DamageSoakProvider>
         </AcProvider>
       </StyledForm>
     </EditContext.Provider>

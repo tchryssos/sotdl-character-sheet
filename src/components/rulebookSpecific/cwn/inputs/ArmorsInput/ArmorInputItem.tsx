@@ -87,6 +87,8 @@ export function ArmorInputItem({
   const accessoriesFieldName = createArmorFieldName('accessories', index);
   const accessories = watch(accessoriesFieldName) as string[];
 
+  const armorDamageSoakFieldName = createArmorFieldName('damage_soak', index);
+
   // Set accessory ready status to that of parent on assignment
   useEffect(() => {
     if (isAccessory) {
@@ -265,9 +267,16 @@ export function ArmorInputItem({
             name={createArmorFieldName('ac_ranged', index)}
           />
           <NumberInput<CwnCharacterData>
+            customOnChange={(e) => {
+              setValue(
+                armorDamageSoakFieldName,
+                guaranteeNumberValue(e.target.value)
+              );
+              calculateSoak();
+            }}
             label={isXxs ? 'Dmg Soak' : 'Damage Soak'}
             min={0}
-            name={createArmorFieldName('damage_soak', index)}
+            name={armorDamageSoakFieldName}
           />
           <NumberInput<CwnCharacterData>
             label={isXxs || mdUp ? 'Trauma Mod' : 'Trauma Target Mod'}

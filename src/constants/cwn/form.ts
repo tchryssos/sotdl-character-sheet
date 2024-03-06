@@ -69,16 +69,8 @@ export const DEFAULT_VALUES: CwnCharacterData = {
   attack_bonus: 0,
   inventory: [],
   currency: 0,
-  // attack_bonus_base: 0,
-  // attack_bonus_melee: 0,
-  // attack_bonus_ranged: 0,
-  // initiative_bonus: 0,
-  // equipment: [],
-  // weapons: [],
-  // armors: [],
-  // currency_copper: 0,
-  // currency_silver: 0,
-  // currency_gold: 0,
+  damage_soak_max: 0,
+  damage_soak_current: 0,
 };
 
 export const CWN_TAB_LABELS = [
