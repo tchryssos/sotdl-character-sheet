@@ -9,8 +9,9 @@ import { useFormContext } from 'react-hook-form';
 
 import { DEFAULT_VALUES } from '~/constants/cwn/form';
 import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
+import { getEquippedArmorAndAccessories } from '~/logic/utils/rulebookSpecific/cwn/getEquippedArmorAndAccessories';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
-import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
+import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 export interface AcContextInterface {
   rangedAc: number;
@@ -50,17 +51,8 @@ export function AcProvider({ children }: AcProviderProps) {
     const dexBonus = calcAttributeBonus(dexterity);
 
     const armors = getValues('armors');
-    const equippedArmor = armors.find(
-      (a) => a.weight !== 'accessory' && a.weight !== 'shield' && a.readied
-    );
-    const equippedAccessories = armors.filter(
-      (a) => equippedArmor && a.equippedTo === equippedArmor.id
-    );
-    const shield = armors.find((a) => a.weight === 'shield' && a.readied);
-
-    const relevantAccessories = [...equippedAccessories, shield].filter(
-      Boolean
-    ) as CwnArmor[];
+    const { armor: equippedArmor, accessories: relevantAccessories } =
+      getEquippedArmorAndAccessories(armors);
 
     const accessoryBonuses = relevantAccessories.reduce(
       (bonusObj, currArmor) => ({

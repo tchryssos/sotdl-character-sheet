@@ -27,6 +27,7 @@ import { CwnArmor, CwnCharacterData } from '~/typings/cwn/characterData';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 
 import { AcContext } from '../../AcProvider';
+import { DamageSoakContext } from '../../DamageSoakContext';
 import { LinkedCyberwareLink } from '../CyberwaresInput/LinkedCyberwareLink';
 import { useLinkedCyberware } from '../CyberwaresInput/utils';
 import { EquippedToInput } from './EquippedToInput';
@@ -57,7 +58,8 @@ export function ArmorInputItem({
 }: ArmorInputItemProps) {
   const { setValue, watch, getValues } = useFormContext<CwnCharacterData>();
   const { calculateAc } = useContext(AcContext);
-  // const { isEditMode } = useContext(EditContext);
+  const { calculateSoak } = useContext(DamageSoakContext);
+
   const isXxs = useBreakpointsLessThan('xs');
   const mdUp = useBreakpointsAtLeast('md');
 
@@ -120,6 +122,10 @@ export function ArmorInputItem({
     calculateAc();
   }, [accessories, calculateAc]);
 
+  useEffect(() => {
+    calculateSoak();
+  }, [calculateSoak, accessories]);
+
   const setAC = (armorName: keyof CwnArmor, value: number) => {
     setValue(
       createArmorFieldName(armorName, index),
@@ -175,6 +181,7 @@ export function ArmorInputItem({
                     }
                   }
                 });
+                calculateSoak();
                 calculateAc();
               }}
               inputLike
