@@ -65,7 +65,7 @@ export function Input<T extends Record<string, unknown>>(props: InputProps<T>) {
     step,
     type,
     onBlur: registeredInput.onBlur,
-    onChange: (e: ChangeEvent) => {
+    onChange: (e: ChangeEvent<HTMLInputElement>) => {
       if (customOnChange) {
         customOnChange(e);
       } else {
@@ -76,7 +76,10 @@ export function Input<T extends Record<string, unknown>>(props: InputProps<T>) {
 
   return (
     <Label label={hideLabel ? '' : label || startCase(name)} labelFor={name}>
-      <InputUnstyled slots={{ input: StyledInput }} {...modInputProps} />
+      <InputUnstyled
+        slotProps={{ input: modInputProps }}
+        slots={{ input: StyledInput }}
+      />
     </Label>
   );
 }

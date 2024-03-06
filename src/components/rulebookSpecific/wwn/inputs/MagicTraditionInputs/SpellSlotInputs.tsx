@@ -3,7 +3,7 @@ import { PropsWithChildren } from 'react';
 import { FlexBox } from '~/components/box/FlexBox';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import { WwnCharacterData, WwnSpellSlot } from '~/typings/wwn/characterData';

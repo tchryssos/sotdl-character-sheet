@@ -11,7 +11,7 @@ import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotdlArmor, SotdlCharacterData } from '~/typings/sotdl/characterData';
 
 import { AddAnotherMultiField } from '../../../form/AddAnotherMultiField';
-import { FormSection } from '../../../form/FormSection';
+import { FormSection } from '../../../form/containers/FormSection';
 import { Label } from '../../../form/Label';
 import { NumberInput } from '../../../form/NumberInput';
 import { TextAreaInput } from '../../../form/TextAreaInput';

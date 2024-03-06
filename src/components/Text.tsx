@@ -1,8 +1,10 @@
 import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { ComponentType } from 'react';
 
 import { AllowedCommonCssProps, AllowedTextCssProps } from '~/constants/css';
 import { filterCssProps } from '~/logic/utils/styles/css';
+import { DedupeOverlappingProps } from '~/typings/util';
 
 export type TextProps = AllowedCommonCssProps &
   AllowedTextCssProps & {
@@ -68,4 +70,4 @@ export const Text = styled('span')<TextProps>(
       ...filterCssProps(rest, theme),
     };
   }
-);
+) as ComponentType<DedupeOverlappingProps<HTMLSpanElement, TextProps>>;

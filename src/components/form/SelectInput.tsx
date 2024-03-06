@@ -118,7 +118,7 @@ export function SelectInput<T extends Record<string, unknown>>(
   const nonEditLocked = !isEditMode && !alwaysEditable && !isUnconnected;
 
   useEffect(() => {
-    if (placeholder) {
+    if (placeholder && name) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       setValue(name, placeholderVal as any);
     }

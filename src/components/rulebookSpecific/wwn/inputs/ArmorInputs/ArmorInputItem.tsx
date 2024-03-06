@@ -7,7 +7,7 @@ import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
@@ -15,8 +15,8 @@ import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { ARMOR_WEIGHT } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
-import { WwnArmor, WwnCharacterData } from '~/typings/wwn/characterData';
+import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
+import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { AcContext } from '../../AcProvider';
 import { EncumbranceContext } from '../../EncumbranceProvider';
@@ -27,10 +27,9 @@ interface ArmorInputItemProps {
   hideUnequipped: boolean;
 }
 
-const createArmorFieldName = (
-  name: keyof WwnArmor,
-  index: number
-): `armors.${number}.${keyof WwnArmor}` => `armors.${index}.${name}`;
+const createArmorFieldName = makeNestedFieldNameFn<WwnCharacterData, 'armors'>(
+  'armors'
+);
 
 const armorWeightOptions: SelectOption[] = ARMOR_WEIGHT.map((w) => ({
   label: upperFirst(w),
@@ -43,8 +42,6 @@ export function ArmorInputItem({
   hideUnequipped,
 }: ArmorInputItemProps) {
   const { watch } = useFormContext<WwnCharacterData>();
-  const isLessThanSm = useBreakpointsLessThan('sm');
-  const isXxs = useBreakpointsLessThan('xs');
   const { isEditMode } = useContext(EditContext);
   const { calculateAc } = useContext(AcContext);
   const { calculateEncumbrances } = useContext(EncumbranceContext);
@@ -93,7 +90,7 @@ export function ArmorInputItem({
       visibilityTitle={`armors${index}`}
     >
       <GridBox columns={1}>
-        <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
+        <GridBox gridTemplateColumns={{ base: '1fr', xs: 'auto 1fr' }}>
           <CheckboxInput<WwnCharacterData>
             alwaysEditable
             label="Equipped"
@@ -101,7 +98,13 @@ export function ArmorInputItem({
           />
           <TextInput<WwnCharacterData> label="Name" name={armorNameFieldName} />
         </GridBox>
-        <GridBox columns={isXxs ? 1 : isLessThanSm ? 2 : 3}>
+        <GridBox
+          gridTemplateColumns={{
+            base: '1fr',
+            xs: '1fr 1fr',
+            sm: 'repeat(3, 1fr)',
+          }}
+        >
           <NumberInput<WwnCharacterData>
             label="Defense"
             min={0}

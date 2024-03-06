@@ -1,41 +1,35 @@
-import { useTheme } from '@emotion/react';
 import { HTMLAttributes, PropsWithChildren } from 'react';
 
 import {
   AllowedCommonCssProps,
-  AllowedCustomCssSpacingProps,
+  AllowedCustomCssProps,
   AllowedGridBoxCssProps,
 } from '~/constants/css';
-import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 
 import { Box } from './Box';
 
 export type GridBoxProps = Omit<AllowedCommonCssProps, 'display'> &
   AllowedGridBoxCssProps &
-  AllowedCustomCssSpacingProps &
+  AllowedCustomCssProps &
   HTMLAttributes<HTMLDivElement> & {
-    columns?: number;
     className?: string;
   };
 
 export function GridBox({
   children,
   columns = 2,
-  gridTemplateColumns,
   columnGap,
   rowGap,
+  gridTemplateColumns,
   ...rest
 }: PropsWithChildren<GridBoxProps>) {
-  const isAtLeastSm = useBreakpointsAtLeast('sm');
-  const theme = useTheme();
   return (
     <Box
-      columnGap={
-        columnGap || (isAtLeastSm ? theme.spacing[16] : theme.spacing[8])
-      }
+      columnGap={columnGap || { base: 8, sm: 16 }}
+      columns={gridTemplateColumns ? undefined : columns}
       display="grid"
-      gridTemplateColumns={gridTemplateColumns || `repeat(${columns}, 1fr)`}
-      rowGap={rowGap || (isAtLeastSm ? theme.spacing[16] : theme.spacing[8])}
+      gridTemplateColumns={gridTemplateColumns}
+      rowGap={rowGap || { base: 8, sm: 16 }}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >

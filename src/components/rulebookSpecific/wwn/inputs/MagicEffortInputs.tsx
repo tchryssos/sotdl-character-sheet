@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form';
 import { FlexBox } from '~/components/box/FlexBox';
 import { BaseButton } from '~/components/buttons/BaseButton';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { Label } from '~/components/form/Label';
 import { Text } from '~/components/Text';
 import { RpgIcons } from '~/constants/icons';

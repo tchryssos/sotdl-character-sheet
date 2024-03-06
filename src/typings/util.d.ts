@@ -1,3 +1,5 @@
+import { ClassAttributes, Component, HTMLAttributes } from 'react';
+
 // https://stackoverflow.com/a/49402091
 export type KeysOfUnion<T> = T extends T ? keyof T : never;
 
@@ -23,3 +25,19 @@ type ListFieldRecord<T extends Record<string, unknown>> = {
 // type BooleanFieldsRecord<T extends Record<string, unknown>> = {
 //   [K in keyof T as T[K] extends boolean ? K : never]: T[K];
 // };
+
+type NumberFieldsRecord<T extends Record<string, unknown>> = {
+  [K in keyof T as T[K] extends number ? K : never]: T[K];
+};
+
+type ComponentPropsRaw<T extends HTMLElement> = ClassAttributes<T> &
+  HTMLAttributes<T>;
+
+export type DedupeOverlappingProps<
+  T extends HTMLElement,
+  U extends Record<string, unknown>
+> = {
+  [K in keyof ComponentPropsRaw<T>]: K extends keyof U
+    ? U[K]
+    : ComponentPropsRaw<T>[K];
+} & U;

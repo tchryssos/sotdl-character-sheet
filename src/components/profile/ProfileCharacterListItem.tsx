@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
+import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
@@ -56,6 +57,12 @@ export function ProfileCharacterListItem({
 
       characterDescriptor =
         path_master || path_expert || path_novice || ancestry || '';
+      break;
+    }
+    case 'cwn': {
+      const { background_name } = characterData as CwnCharacterData;
+
+      characterDescriptor = background_name;
       break;
     }
     default:

@@ -1,5 +1,5 @@
 export const calcAttributeBonus = (attributeValue: number) => {
-  // There is no bonus calc in WWN
+  // There is no bonus calc in WWN or CWN
   // The rulebook just gives these ranges
   if (attributeValue >= 18) {
     return 2;

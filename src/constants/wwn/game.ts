@@ -31,7 +31,7 @@ const UNSORTED_SKILLS = [
   'trade',
   'work',
 ] as const;
-// If we use the skills array we want it to be alphebetized
+// If we use the skills array we want it to be alphabetized
 // so we just do some TS tomfoolery to make the types play nice
 export const SKILLS = (
   UNSORTED_SKILLS as unknown as string[]

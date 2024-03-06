@@ -4,6 +4,7 @@ interface AuthLinkProps {
   type: 'login' | 'logout';
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }
 
 const PlainATag = styled.a(({ theme }) => ({
@@ -12,12 +13,18 @@ const PlainATag = styled.a(({ theme }) => ({
   cursor: 'pointer',
 }));
 
-export function AuthLink({ type, children, className }: AuthLinkProps) {
+export function AuthLink({
+  type,
+  children,
+  className,
+  onClick,
+}: AuthLinkProps) {
   return (
     <PlainATag
       aria-label={type}
       className={className}
       href={`/api/auth/${type}`}
+      onClick={onClick}
     >
       {children}
     </PlainATag>

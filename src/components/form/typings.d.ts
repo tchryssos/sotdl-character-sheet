@@ -38,7 +38,7 @@ type BaseInputProps<T, U extends Record<string, unknown>> = T & {
   disabled?: boolean;
   hideLabel?: boolean;
   noOutline?: boolean;
-  customOnChange?: (event: ChangeEvent) => void;
+  customOnChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   alwaysEditable?: boolean;
 };
 
@@ -48,6 +48,7 @@ export type TextInputProps<U> = BaseInputProps<
     validations?: Validations<{
       minLength?: number;
       maxLength?: number;
+      pattern?: RegExp;
     }>;
   },
   U

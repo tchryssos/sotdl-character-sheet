@@ -38,12 +38,14 @@ export function NumberInput<T extends Record<string, unknown>>({
   noOutline,
   step,
   alwaysEditable,
+  customOnChange,
 }: NumberInputComponentProps<T>) {
   const isEditingLocked = useIsEditingLocked(Boolean(alwaysEditable));
   return (
     <NumberStyledInput
       alwaysEditable={alwaysEditable}
       className={className}
+      customOnChange={customOnChange}
       disabled={disabled}
       hideLabel={hideLabel}
       isEditingLocked={isEditingLocked}

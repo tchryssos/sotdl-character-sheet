@@ -1,13 +1,30 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as CSS from 'csstype';
 
-import { Spacing } from '../typings/theme';
+import { BreakpointSize, Spacing } from '../typings/theme';
 import { Theme } from './theme';
+
+type OptionalStyleByBreakpointKeys = Exclude<BreakpointSize, 'xxs'>;
+export type RequiredStyleByBreakpointKeys = 'base';
+export type StyleByBreakpointKeys =
+  | OptionalStyleByBreakpointKeys
+  | RequiredStyleByBreakpointKeys;
+
+export type StyleByBreakpointObject<T> = {
+  [K in OptionalStyleByBreakpointKeys]?: T;
+} & {
+  [K in RequiredStyleByBreakpointKeys]: T;
+};
+
+type StyleOrByBreakpoint<T> = T | StyleByBreakpointObject<T>;
 
 export const ALLOWED_COMMON_CSS_KEYS = [
   'alignSelf',
+  'aspectRatio',
   'background',
+  'backdropFilter',
   'backgroundColor',
+  'backgroundImage',
   'border',
   'borderBottom',
   'borderBottomColor',
@@ -56,6 +73,7 @@ export const ALLOWED_COMMON_CSS_KEYS = [
   'maxWidth',
   'minHeight',
   'minWidth',
+  'opacity',
   'overflow',
   'padding',
   'paddingBottom',
@@ -65,9 +83,12 @@ export const ALLOWED_COMMON_CSS_KEYS = [
   'position',
   'right',
   'textOverflow',
+  'textAlign',
   'top',
+  'transform',
   'width',
   'textDecoration',
+  'zIndex',
 ] as const;
 
 const CUSTOM_CSS_SPACING_KEYS = [
@@ -76,17 +97,20 @@ const CUSTOM_CSS_SPACING_KEYS = [
   'paddingX',
   'paddingY',
 ] as const;
+type SpacingValues = Spacing | CSS.Properties['margin'];
 export type AllowedCustomCssSpacingProps = {
-  [k in (typeof CUSTOM_CSS_SPACING_KEYS)[number]]?:
-    | Spacing
-    | CSS.Properties['margin'];
+  [k in (typeof CUSTOM_CSS_SPACING_KEYS)[number]]?: SpacingValues;
 };
 
 type RawAllowedCommonCssProps = {
   [k in (typeof ALLOWED_COMMON_CSS_KEYS)[number]]?: CSS.Properties[k];
 };
 
-export const ALLOWED_TEXT_CSS_KEYS = ['lineHeight', 'lineClamp'] as const;
+export const ALLOWED_TEXT_CSS_KEYS = [
+  'lineHeight',
+  'lineClamp',
+  'textTransform',
+] as const;
 
 type RawAllowedTextCssProps = {
   [k in (typeof ALLOWED_TEXT_CSS_KEYS)[number]]?: CSS.Properties[k];
@@ -123,7 +147,12 @@ type RawAllowedGridBoxCssProps = {
   [k in (typeof ALLOWED_GRIDBOX_CSS_KEYS)[number]]?: CSS.Properties[k];
 };
 
-type RawAllowedCustomCssProps = AllowedCustomCssSpacingProps;
+export type AllowedCustomGridProps = {
+  columns?: number;
+};
+
+type RawAllowedCustomCssProps = AllowedCustomCssSpacingProps &
+  AllowedCustomGridProps;
 
 type RawAllowedCssProps = RawAllowedCommonCssProps &
   RawAllowedTextCssProps &
@@ -174,17 +203,20 @@ export const CUSTOM_THEME_CSS_PROPS = {
   maxHeight: 'spacing',
   minWidth: 'spacing',
   minHeight: 'spacing',
-  // ts-prune-ignore-next
-} satisfies {
+} satisfies Partial<{
   [k in keyof RawAllowedCssProps]: keyof Theme;
-};
+}>;
 
 // Map the "raw" allowed css props to account for properties that
 // have a custom theme mapping.
+// This also applies the "style by breakpoint" pattern
+// to the resolved type
 type AllowedCssPropsWithTheme<T> = {
-  [K in keyof T]: K extends keyof typeof CUSTOM_THEME_CSS_PROPS
-    ? keyof Theme[(typeof CUSTOM_THEME_CSS_PROPS)[K]] | T[K]
-    : T[K];
+  [K in keyof T]: StyleOrByBreakpoint<
+    K extends keyof typeof CUSTOM_THEME_CSS_PROPS
+      ? keyof Theme[(typeof CUSTOM_THEME_CSS_PROPS)[K]] | T[K]
+      : T[K]
+  >;
 };
 
 export type AllowedCommonCssProps =
@@ -193,8 +225,9 @@ export type AllowedTextCssProps =
   AllowedCssPropsWithTheme<RawAllowedTextCssProps>;
 export type AllowedFlexboxCssProps =
   AllowedCssPropsWithTheme<RawAllowedFlexboxCssProps>;
-export type AllowedGridBoxCssProps =
-  AllowedCssPropsWithTheme<RawAllowedGridBoxCssProps>;
+export type AllowedGridBoxCssProps = AllowedCssPropsWithTheme<
+  RawAllowedGridBoxCssProps & AllowedCustomGridProps
+>;
 export type AllowedCustomCssProps =
   AllowedCssPropsWithTheme<RawAllowedCustomCssProps>;
 

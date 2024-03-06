@@ -9,7 +9,7 @@ import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 import { WwnCharacterData, WwnWeapon } from '~/typings/wwn/characterData';
 
-import { AAMFormSection } from '../../../../form/AAMFormSection';
+import { AAMFormSection } from '../../../../form/containers/AAMFormSection';
 import { WeaponInputItem } from './WeaponInputItem';
 
 const HideCheckbox = styled(CheckboxInput)`

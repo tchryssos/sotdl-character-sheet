@@ -4,8 +4,8 @@ import { useContext, useState } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { LoadingButton } from '~/components/buttons/LoadingButton';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { Form } from '~/components/form/Form';
-import { FormSection } from '~/components/form/FormSection';
 import { IconImageUrlInput } from '~/components/form/IconImageUrlInput';
 import { TextInput } from '~/components/form/TextInput';
 import { Layout } from '~/components/meta/Layout';

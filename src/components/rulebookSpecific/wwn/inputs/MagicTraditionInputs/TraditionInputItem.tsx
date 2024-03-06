@@ -8,7 +8,7 @@ import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { LabelText } from '~/components/form/Label';
 import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
@@ -65,6 +65,8 @@ const createTraditionFieldName = (
   index: number
 ): `magic_traditions.${number}.${keyof WwnTradition}` =>
   `magic_traditions.${index}.${fieldName}`;
+
+const sortProperties: (keyof WwnSpell)[] = ['spell_level', 'spell_name'];
 
 export function TraditionInputItem({
   index,
@@ -179,7 +181,7 @@ export function TraditionInputItem({
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               createTraditionFieldName('tradition_spells', index) as any
             }
-            sortProperties={['spell_level', 'spell_name']}
+            sortProperties={sortProperties}
           >
             {({
               index: spellIndex,

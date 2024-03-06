@@ -2,7 +2,7 @@ import { startCase } from 'lodash';
 import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { ATTRIBUTES } from '~/constants/wwn/game';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';

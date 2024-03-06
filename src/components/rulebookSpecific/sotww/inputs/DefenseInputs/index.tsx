@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInput } from '~/components/form/NumberInput';
 import { Text } from '~/components/Text';
 import { RpgIcons } from '~/constants/icons';

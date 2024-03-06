@@ -13,6 +13,7 @@ import { Link } from '~/components/Link';
 import { Layout } from '~/components/meta/Layout';
 import { ProfileNav } from '~/components/nav/ProfileNav';
 import { CharactersSection } from '~/components/profile/CharactersSection';
+import { NotFoundScene } from '~/components/scenes/NotFound';
 import { Text } from '~/components/Text';
 import { US_SHORT_DATE_FORMAT } from '~/constants/dates';
 import { RpgIcons } from '~/constants/icons';
@@ -23,8 +24,6 @@ import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { getIconIdxFromUrl } from '~/logic/utils/user';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { StrictSessionUser, StrictUser } from '~/typings/user';
-
-import FourOhFour from '../404';
 
 interface ProfilePageProps {
   userMeta?: Pick<
@@ -51,7 +50,7 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
   }, [userMeta?.imageUrl]);
 
   if (!userMeta) {
-    return <FourOhFour />;
+    return <NotFoundScene />;
   }
 
   return (

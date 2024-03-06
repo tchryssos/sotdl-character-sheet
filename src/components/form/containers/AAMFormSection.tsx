@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 
 export const AAMFormSection = styled(FormSection)`
   grid-column: span 1;

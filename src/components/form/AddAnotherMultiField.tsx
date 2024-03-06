@@ -12,15 +12,26 @@ import { FlexBox } from '../box/FlexBox';
 import { Text } from '../Text';
 import { AddAnotherButton } from './AddAnotherButton';
 
-type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
-  parentFieldName: Extract<keyof ListFieldRecord<T>, string>;
+export type AddAnotherMultiFieldName<T extends Record<string, unknown>> =
+  Extract<keyof ListFieldRecord<T>, string>;
+
+export interface FieldArrayManipMethods<T extends Record<string, unknown>> {
+  onCreate: (nextValueOverride?: T) => void;
+  onDelete: (index: number) => void;
+}
+
+type AddAnotherMultiFieldProps<
+  T extends Record<string, unknown>,
+  U extends Record<string, unknown>
+> = {
+  parentFieldName: AddAnotherMultiFieldName<T>;
   children: (fieldProps: {
     index: number;
     onDelete: (index: number) => void;
     fieldId: string;
     sortIndexMap: Map<string, number>;
   }) => React.ReactNode;
-  createDefaultValue: () => Record<string, unknown>;
+  createDefaultValue: () => U;
   HeaderRow?: React.ComponentType;
   // @TODO Type this so that it knows which properties are available via
   // parentFieldName
@@ -30,6 +41,8 @@ type AddAnotherMultiFieldProps<T extends Record<string, unknown>> = {
   addLabel?: string;
   emptyLabel?: string | null;
   filterFn?: (props: SortableAddAnotherChildProps) => boolean;
+  alwaysEditable?: boolean;
+  onAdd?: (index?: number) => void;
 };
 
 const ChildContainer = styled(Box)`
@@ -41,7 +54,12 @@ function EmptyChildWrapper({ children }: { children?: React.ReactNode }) {
   return <>{children}</>;
 }
 
-export function AddAnotherMultiField<T extends Record<string, unknown>>({
+const FIELD_ID = 'fieldId';
+
+export function AddAnotherMultiField<
+  T extends Record<string, unknown>,
+  U extends Record<string, unknown> = Record<string, unknown>
+>({
   parentFieldName,
   children,
   createDefaultValue,
@@ -52,12 +70,18 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   addLabel,
   emptyLabel,
   filterFn,
-}: AddAnotherMultiFieldProps<T>) {
+  alwaysEditable,
+  onAdd,
+}: AddAnotherMultiFieldProps<T, U>) {
   const { control, watch } = useFormContext();
-  const { fields, append, remove } = useFieldArray({
+  const methods = useFieldArray({
     control,
     name: parentFieldName as string,
+    keyName: FIELD_ID,
   });
+
+  const { fields, append, remove } = methods;
+
   const parentField: Record<string, unknown>[] | undefined =
     watch(parentFieldName);
 
@@ -65,19 +89,21 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
 
   // https://github.com/react-hook-form/react-hook-form/discussions/4264#discussioncomment-398509
   const [sortIndexMap, setSortIndexMap] = useState(
-    new Map(fields.map(({ id }, index) => [id, index]))
+    new Map(fields.map(({ fieldId }, index) => [fieldId, index]))
   );
 
   useEffect(() => {
     if (fields.length !== sortIndexMap.size) {
-      setSortIndexMap(new Map(fields.map(({ id }, index) => [id, index])));
+      setSortIndexMap(
+        new Map(fields.map(({ fieldId }, index) => [fieldId, index]))
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
 
   let controlledFields = fields.map((field, i) => ({
     ...field,
-    ...parentField?.[i],
+    ...(parentField?.[i] || {}),
   }));
 
   if (sortProperties) {
@@ -87,10 +113,11 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
   const onCreate = () => {
     const nextValue = createDefaultValue();
     append(nextValue);
+    onAdd?.(controlledFields.length - 1);
   };
 
   const onDelete = (index: number) => {
-    const removedId = controlledFields[index].id;
+    const removedId = controlledFields[index][FIELD_ID];
     const valueRemovedIndex = sortIndexMap.get(removedId)!;
 
     remove(valueRemovedIndex);
@@ -98,9 +125,13 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
 
   return (
     <>
-      {isEditMode && (
-        <FlexBox gap={16}>
-          <AddAnotherButton label={addLabel} onClick={onCreate} />
+      {(isEditMode || alwaysEditable) && (
+        <FlexBox gap={16} width="100%">
+          <AddAnotherButton
+            label={addLabel}
+            // Doing this because otherwise e gets passed as the optional arg
+            onClick={() => onCreate()}
+          />
           {simpleDelete && (
             <AddAnotherButton
               label="-"
@@ -116,7 +147,7 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
           const props = {
             index: i,
             onDelete,
-            fieldId: field.id,
+            fieldId: field[FIELD_ID],
             sortIndexMap,
           };
 
@@ -125,7 +156,9 @@ export function AddAnotherMultiField<T extends Record<string, unknown>>({
           }
 
           return [
-            <ChildContainer key={field.id}>{children(props)}</ChildContainer>,
+            <ChildContainer key={field[FIELD_ID]}>
+              {children(props)}
+            </ChildContainer>,
           ];
         })}
       </ChildWrapper>

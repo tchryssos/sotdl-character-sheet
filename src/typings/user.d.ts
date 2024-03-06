@@ -1,4 +1,5 @@
 import { user } from '@prisma/client';
+import { Roles } from '~/constants/users';
 
 interface GoogleUser {
   email: string;
@@ -24,7 +25,7 @@ interface Auth0User {
 }
 
 export type StrictUser = Omit<user, 'role'> & {
-  role: 'player' | 'admin';
+  role: Roles;
 };
 
 export type StrictSessionUser = StrictUser & {

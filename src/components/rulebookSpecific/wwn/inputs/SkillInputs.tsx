@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { GridBox } from '~/components/box/GridBox';
 import { CheckboxInput } from '~/components/form/CheckboxInput';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { Label } from '~/components/form/Label';
 import { NumberInput } from '~/components/form/NumberInput';
 import { Text } from '~/components/Text';

@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 
 import { Layout } from '~/components/meta/Layout';
 import { NotFound } from '~/components/NotFound';
+import { CwnCharacterSheet } from '~/components/rulebookSpecific/cwn/CharacterSheet';
 import { CharacterSheet as SotdlCharacterSheet } from '~/components/rulebookSpecific/sotdl/CharacterSheet';
 import { CharacterSheet as SotwwCharacterSheet } from '~/components/rulebookSpecific/sotww/CharacterSheet';
 import { CharacterSheet as WwnCharacterSheet } from '~/components/rulebookSpecific/wwn/CharacterSheet';
@@ -18,6 +19,7 @@ import { createNotification } from '~/logic/utils/notifications';
 import { prisma } from '~/logic/utils/prisma';
 import { getRulebookAndIdFromLocation } from '~/logic/utils/url';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
+import { CwnCharacterData } from '~/typings/cwn/characterData';
 import { NotificationBody } from '~/typings/notifications';
 import { RulebookType, StrictRulebook } from '~/typings/rulebooks';
 import { SotdlCharacterData } from '~/typings/sotdl/characterData';
@@ -50,6 +52,12 @@ function DisplaySheet({ rulebook, character }: DisplaySheetProps) {
       return (
         <SotwwCharacterSheet
           character={character as StrictCharacter<SotwwCharacterData>}
+        />
+      );
+    case 'cwn':
+      return (
+        <CwnCharacterSheet
+          character={character as StrictCharacter<CwnCharacterData>}
         />
       );
     default:

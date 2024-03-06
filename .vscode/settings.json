@@ -3,7 +3,7 @@
   "eslint.format.enable": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "editor.codeActionsOnSaveTimeout": 750,
   "typescript.tsdk": "node_modules/typescript/lib",
@@ -11,11 +11,18 @@
     "editor.defaultFormatter": "Prisma.prisma"
   },
   "cSpell.words": [
+    "Cyberdeck",
+    "cyberdecks",
+    "Cyberware",
+    "cyberwares",
+    "Manip",
     "nextjs",
     "rpgsheet",
     "Rulebook",
     "Sotdl",
     "sotww",
+    "unequip",
+    "unequips",
     "Unreadied"
   ]
 }

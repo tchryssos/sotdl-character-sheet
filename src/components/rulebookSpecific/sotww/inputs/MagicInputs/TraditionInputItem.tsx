@@ -6,7 +6,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { DeleteButton } from '~/components/buttons/DeleteButton';
 import { ConfirmationDialog } from '~/components/dialog/ConfirmationDialog';
 import { AddAnotherMultiField } from '~/components/form/AddAnotherMultiField';
-import { FormSection } from '~/components/form/FormSection';
+import { FormSection } from '~/components/form/containers/FormSection';
 import { LabelText } from '~/components/form/Label';
 import { TextInput } from '~/components/form/TextInput';
 import { RpgIcons } from '~/constants/icons';
@@ -58,6 +58,8 @@ function SpellChildWrapper({ children }: PropsWithChildren<unknown>) {
   const isLessThanMd = useBreakpointsLessThan('md');
   return <GridBox columns={isLessThanMd ? 1 : 2}>{children}</GridBox>;
 }
+
+const sortProperties: (keyof SotwwSpell)[] = ['spell_level', 'spell_name'];
 
 export function TraditionInputItem({
   postSortIndex: index,
@@ -130,7 +132,7 @@ export function TraditionInputItem({
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
               ) as any
             }
-            sortProperties={['spell_level', 'spell_name']}
+            sortProperties={sortProperties}
           >
             {({
               index: spellIndex,
