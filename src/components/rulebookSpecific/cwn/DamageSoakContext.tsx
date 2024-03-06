@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { useFormContext } from 'react-hook-form';
 
+import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { getEquippedArmorAndAccessories } from '~/logic/utils/rulebookSpecific/cwn/getEquippedArmorAndAccessories';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
@@ -29,7 +30,7 @@ export function DamageSoakProvider({ children }: DamageSoakProviderProps) {
     register('damage_soak_max');
   }, [register]);
 
-  const maxDamageSoak = watch('damage_soak_max');
+  const maxDamageSoak = guaranteeNumberValue(watch('damage_soak_max'));
 
   const calculateSoak = useCallback(() => {
     const armors = getValues('armors');
@@ -40,11 +41,12 @@ export function DamageSoakProvider({ children }: DamageSoakProviderProps) {
 
     if (armor) {
       const accessorySoak = accessories.reduce(
-        (bonus, currArmor) => bonus + currArmor.damage_soak,
+        (bonus, currArmor) =>
+          bonus + guaranteeNumberValue(currArmor.damage_soak),
         0
       );
 
-      updatedSoak = armor.damage_soak + accessorySoak;
+      updatedSoak = guaranteeNumberValue(armor.damage_soak) + accessorySoak;
     }
 
     setValue('damage_soak_max', updatedSoak);
