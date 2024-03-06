@@ -7,6 +7,7 @@
   "engines": {
     "node": ">=18"
   },
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
