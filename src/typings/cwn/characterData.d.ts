@@ -14,32 +14,32 @@ import {
 import { CwnName } from './game';
 import { ValuesOf } from '../util';
 
-export interface CwnContact {
+export type CwnContact = {
   relationship: ContactRelationship;
   name: string;
   description: string;
-}
+};
 
-export interface CwnEdge {
+export type CwnEdge = {
   name: string;
   description: string;
-}
+};
 
-export interface CwnFocus {
+export type CwnFocus = {
   name: string;
   level: FocusLevel;
   description: string;
-}
+};
 
-export interface CwnMajorInjury {
+export type CwnMajorInjury = {
   name: string;
   description: string;
-}
+};
 
-export interface CwnOtherStatus {
+export type CwnOtherStatus = {
   name: string;
   description: string;
-}
+};
 
 export type CwnArmor = {
   id: string;
