@@ -23,6 +23,7 @@ import { StrictCharacter } from '~/typings/characters';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
 import { AcProvider } from './AcProvider';
+import { CwnFormNav } from './CwnFormNav';
 import { ArmorClassInputs } from './inputs/ArmorClassInputs';
 import { ArmorsInput } from './inputs/ArmorsInput';
 import { AttackBonusInput } from './inputs/AttackBonusInput';
@@ -86,6 +87,7 @@ export function CwnCharacterSheet({ character }: CwnCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <AcProvider>
+          <CwnFormNav isMyCharacter={isMyCharacter} />
           <Tabs
             defaultTab={getTabIndex(CWN_TAB_LABELS, queryTab)}
             tabLabels={CWN_TAB_LABELS}
