@@ -18,8 +18,8 @@ export function HealthInputs() {
   const theme = useTheme();
 
   const { watch } = useFormContext<CwnCharacterData>();
-  const maxHealth = watch('health_max');
-  const maxStrain = watch('system_strain_max');
+  const maxHealth = guaranteeNumberValue(watch('health_max'));
+  const maxStrain = guaranteeNumberValue(watch('system_strain_max'));
   const maxDamageSoak = guaranteeNumberValue(watch('damage_soak_max'));
 
   return (
@@ -49,7 +49,7 @@ export function HealthInputs() {
           <NumberInput<CwnCharacterData>
             alwaysEditable
             label="Damage Soak"
-            max={guaranteeNumberValue(maxDamageSoak)}
+            max={maxDamageSoak}
             min={0}
             name="damage_soak_current"
           />

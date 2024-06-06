@@ -6,6 +6,7 @@ import { FormSection } from '~/components/form/containers/FormSection';
 import { RpgIcons } from '~/constants/icons';
 import { ATTRIBUTES } from '~/constants/wwn/game';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { calcAttributeBonus } from '~/logic/utils/rulebookSpecific/wwn/calcAttributeBonus';
 import { CwnCharacterData } from '~/typings/cwn/characterData';
 
@@ -52,8 +53,10 @@ export function AttributeInputs() {
   // Max system strain is _affected_ by constitution, but not solely
   // dependent on it
   useEffect(() => {
-    const constitutionDifference = constitution - constitutionRef.current;
-    const currSysMax = getValues('system_strain_max');
+    const constitutionDifference = guaranteeNumberValue(
+      constitution - constitutionRef.current
+    );
+    const currSysMax = guaranteeNumberValue(getValues('system_strain_max'));
 
     setValue('system_strain_max', currSysMax + constitutionDifference);
 
