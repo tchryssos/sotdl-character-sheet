@@ -111,10 +111,10 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
           )}
         </GridBox>
         <CharactersSection
-          characters={userCharacters.filter((c) => !c.deleted)}
+          characters={userCharacters.filter((c) => !c.inactive)}
         />
         <CharactersSection
-          characters={userCharacters.filter((c) => c.deleted)}
+          characters={userCharacters.filter((c) => c.inactive)}
           isInactive
         />
       </GridBox>
@@ -146,9 +146,9 @@ export const getServerSideProps: GetServerSideProps = async (
           characters: {
             // Eventually we might want to do some pagination here but
             // for now we're just going to grab all of them
-            // where: {
-            //   deleted: false,
-            // },
+            where: {
+              deleted: false,
+            },
             orderBy: {
               createdOn: 'asc',
             },

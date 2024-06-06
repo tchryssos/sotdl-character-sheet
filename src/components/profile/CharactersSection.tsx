@@ -28,6 +28,10 @@ export function CharactersSection({
   const greaterThanXxs = useBreakpointsIsGreaterThan('xxs');
   const greaterThanSm = useBreakpointsIsGreaterThan('sm');
 
+  if (isInactive && !characters.length) {
+    return null;
+  }
+
   return (
     <Section
       // eslint-disable-next-line no-nested-ternary

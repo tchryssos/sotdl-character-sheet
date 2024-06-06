@@ -8,7 +8,7 @@ import { Delete } from '~/components/icons/Delete';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createUsersRoute } from '~/constants/routing/shared';
-import { deleteCharacter } from '~/logic/api/client/deleteCharacter';
+import { markCharacterInactive } from '~/logic/api/client/deleteCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
 import { isErrorResponse } from '~/typings/sotdl/api.guards';
@@ -25,14 +25,14 @@ export function DeleteButton({ characterId, playerId }: DeleteButtonProps) {
   const { user } = useUser();
 
   const onDelete = async () => {
-    const resp = await deleteCharacter(characterId);
+    const resp = await markCharacterInactive(characterId, true);
     setIsConfirmModalOpen(false);
 
     if (isErrorResponse(resp)) {
       addNotifications([createNotification(ERRORS[resp.error as ErrorTypes])]);
     } else {
       addNotifications([
-        createNotification(SUCCESSES[SuccessTypes.CharacterDeleted]),
+        createNotification(SUCCESSES[SuccessTypes.CharacterMadeInactive]),
       ]);
       push(createUsersRoute(playerId));
     }
@@ -42,19 +42,19 @@ export function DeleteButton({ characterId, playerId }: DeleteButtonProps) {
     <>
       <ConfirmationDialog
         cancel={{ onClick: () => setIsConfirmModalOpen(false) }}
-        confirm={{ onClick: onDelete, label: 'Delete', severity: 'danger' }}
-        describedById="recycle-character-description"
-        labeledById="recycle-character"
+        confirm={{ onClick: onDelete, label: 'Deactivate', severity: 'danger' }}
+        describedById="inactive-character-description"
+        labeledById="inactive-character"
         message={`This character will be moved to your "Inactive Characters" list. ${
           user?.isPaid
-            ? 'You can restore them at any time, or recycle them into a blank character.'
-            : 'Inactive characters still count against your character limit, but can be recycled into blank characters at any time.'
+            ? 'You can restore them at any time, recycle them into a blank character, or delete them permanently from your profile page.'
+            : 'Inactive characters still count against your character limit, but can be recycled into blank characters at any time from your profile page.'
         }`}
         open={isConfirmModalOpen}
-        title="Delete character?"
+        title="Deactivate character?"
       />
       <IconButton onClick={() => setIsConfirmModalOpen(true)}>
-        <Delete color="text" title="Delete character" />
+        <Delete color="text" title="Deactivate character" />
       </IconButton>
     </>
   );

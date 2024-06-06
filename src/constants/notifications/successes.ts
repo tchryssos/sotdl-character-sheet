@@ -4,6 +4,7 @@ export enum SuccessTypes {
   CharacterCloned = 'Character cloned successfully',
   CharacterSaved = 'Character saved successfully',
   CharacterDeleted = 'Character deleted successfully',
+  CharacterMadeInactive = 'Character deactivated successfully',
 }
 
 type SuccessNotificationBody = Omit<NotificationBody, 'type'> & {
@@ -21,6 +22,10 @@ export const SUCCESSES: Record<SuccessTypes, SuccessNotificationBody> = {
   },
   [SuccessTypes.CharacterDeleted]: {
     title: SuccessTypes.CharacterDeleted,
+    type: 'success',
+  },
+  [SuccessTypes.CharacterMadeInactive]: {
+    title: SuccessTypes.CharacterMadeInactive,
     type: 'success',
   },
 };
