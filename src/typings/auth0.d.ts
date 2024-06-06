@@ -1,5 +1,5 @@
-import { User } from './user';
+import { StrictUser } from './user';
 
 declare module '@auth0/nextjs-auth0' {
-  interface UserProfile extends User {}
+  interface UserProfile extends StrictUser {}
 }

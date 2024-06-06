@@ -18,9 +18,13 @@ const Section = styled(FormSection)`
 
 interface CharactersSectionProps {
   characters: StrictCharacter<CharacterData>[];
+  isInactive?: boolean;
 }
 
-export function CharactersSection({ characters }: CharactersSectionProps) {
+export function CharactersSection({
+  characters,
+  isInactive,
+}: CharactersSectionProps) {
   const greaterThanXxs = useBreakpointsIsGreaterThan('xxs');
   const greaterThanSm = useBreakpointsIsGreaterThan('sm');
 
@@ -29,7 +33,7 @@ export function CharactersSection({ characters }: CharactersSectionProps) {
       // eslint-disable-next-line no-nested-ternary
       columns={greaterThanXxs ? (greaterThanSm ? 3 : 2) : 1}
       isCollapsible={false}
-      title="Characters"
+      title={`${isInactive ? 'Inactive ' : ''}Characters`}
     >
       {characters.length ? (
         characters.map((c) => (

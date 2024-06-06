@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
 
@@ -21,6 +22,7 @@ export function DeleteButton({ characterId, playerId }: DeleteButtonProps) {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const { push } = useRouter();
   const { addNotifications } = useContext(NotificationsContext);
+  const { user } = useUser();
 
   const onDelete = async () => {
     const resp = await deleteCharacter(characterId);
@@ -41,9 +43,13 @@ export function DeleteButton({ characterId, playerId }: DeleteButtonProps) {
       <ConfirmationDialog
         cancel={{ onClick: () => setIsConfirmModalOpen(false) }}
         confirm={{ onClick: onDelete, label: 'Delete', severity: 'danger' }}
-        describedById="delete-character-description"
-        labeledById="delete-character"
-        message="This character will be removed from your account and no longer accessible by you or others."
+        describedById="recycle-character-description"
+        labeledById="recycle-character"
+        message={`This character will be moved to your "Inactive Characters" list. ${
+          user?.isPaid
+            ? 'You can restore them at any time, or recycle them into a blank character.'
+            : 'Inactive characters still count against your character limit, but can be recycled into blank characters at any time.'
+        }`}
         open={isConfirmModalOpen}
         title="Delete character?"
       />

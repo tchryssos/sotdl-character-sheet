@@ -110,7 +110,13 @@ function ProfilePage({ userMeta, userCharacters }: ProfilePageProps) {
             </Box>
           )}
         </GridBox>
-        <CharactersSection characters={userCharacters} />
+        <CharactersSection
+          characters={userCharacters.filter((c) => !c.deleted)}
+        />
+        <CharactersSection
+          characters={userCharacters.filter((c) => c.deleted)}
+          isInactive
+        />
       </GridBox>
     </Layout>
   );
@@ -122,32 +128,35 @@ export const getServerSideProps: GetServerSideProps = async (
   // Character
   const { params } = context;
 
-  let user: StrictUser | undefined;
-  let userCharacters: StrictCharacter<CharacterData>[] = [];
+  let user:
+    | (StrictUser & {
+        characters: StrictCharacter<CharacterData>[];
+      })
+    | undefined;
 
   if (params?.id) {
     const parsedId = parseInt(params.id as string, 10);
 
     if (!Number.isNaN(parsedId)) {
-      const dbUser = await prisma.user.findUnique({
+      user = (await prisma.user.findUnique({
         where: {
-          id: parseInt(params.id as string, 10),
+          id: parsedId,
         },
-      });
-      if (dbUser) {
-        user = dbUser as StrictUser;
-        userCharacters = ((await prisma.character.findMany({
-          where: {
-            playerId: user.id,
-            deleted: false,
-          },
-          orderBy: [
-            {
+        include: {
+          characters: {
+            // Eventually we might want to do some pagination here but
+            // for now we're just going to grab all of them
+            // where: {
+            //   deleted: false,
+            // },
+            orderBy: {
               createdOn: 'asc',
             },
-          ],
-        })) || []) as StrictCharacter<CharacterData>[];
-      }
+          },
+        },
+      })) as StrictUser & {
+        characters: StrictCharacter<CharacterData>[];
+      };
     }
   }
 
@@ -162,7 +171,7 @@ export const getServerSideProps: GetServerSideProps = async (
             id: user.id,
           }
         : undefined,
-      userCharacters,
+      userCharacters: user?.characters || [],
     },
   };
 };

@@ -26,6 +26,7 @@ interface Auth0User {
 
 export type StrictUser = Omit<user, 'role'> & {
   role: Roles;
+  isPaid: boolean;
 };
 
 export type StrictSessionUser = StrictUser & {
