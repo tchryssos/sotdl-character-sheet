@@ -1,4 +1,7 @@
-import { createCharacterApiRoute } from '~/constants/routing/api';
+import {
+  createCharacterApiRoute,
+  createMarkCharacterInactiveApiRoute,
+} from '~/constants/routing/api';
 import { MarkInactiveBody } from '~/pages/api/characters/[id]/markInactive';
 import { ApiResponse } from '~/typings/api';
 
@@ -6,7 +9,7 @@ export const markCharacterInactive = async (
   id: number,
   inactive: boolean
 ): Promise<ApiResponse<string>> => {
-  const resp = await fetch(createCharacterApiRoute(id), {
+  const resp = await fetch(createMarkCharacterInactiveApiRoute(id), {
     method: 'PATCH',
     body: JSON.stringify({ inactive: String(inactive) } as MarkInactiveBody),
   });

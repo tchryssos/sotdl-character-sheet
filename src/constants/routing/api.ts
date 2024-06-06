@@ -15,6 +15,8 @@ export const CREATE_CHARACTER_API_ROUTE = `${API_PREFIX}/${CHARACTERS_PATH}/${NE
 
 export const createCharacterApiRoute = (id: number | string) =>
   `${API_PREFIX}${createCharacterRoute(id)}`;
+export const createMarkCharacterInactiveApiRoute = (id: number | string) =>
+  `${createCharacterApiRoute(id)}/markInactive`;
 // END - CHARACTER ROUTES - END //
 
 // START - Users ROUTES - START //

@@ -32,10 +32,12 @@ const markInactive: NextApiHandler = withApiAuthRequired(async (req, res) => {
 
     rejectNonAdminOrSelf(req, res, currCharacter.playerId);
 
-    const { body } = req as { body: MarkInactiveBody };
+    const body: MarkInactiveBody = await JSON.parse(req.body);
 
     const inactive = await prisma.character.update({
-      id: parsedId,
+      where: {
+        id: currCharacter.id,
+      },
       data: {
         inactive: Boolean(body.inactive === 'true'),
       },
