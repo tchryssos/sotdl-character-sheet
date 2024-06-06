@@ -17,7 +17,8 @@
     "lint": "next lint && eslint . --quiet",
     "lint:prune": "! ts-prune -i src/pages/* -i src/logic/tests/* | grep -v -e 'used in module' -e src/pages",
     "prisma:migrate:dev": "prisma migrate dev --name",
-    "prisma:migrate": "prisma migrate deploy"
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:regenerate": "prisma generate"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^1.9.1",
@@ -63,7 +64,7 @@
     "jest": "^27.0.6",
     "lint-staged": "^10.5.4",
     "prettier": "2.8.8",
-    "prisma": "^4.11.0",
+    "prisma": "4.15.0",
     "ts-prune": "^0.10.3",
     "typescript": "^5.3.3"
   },

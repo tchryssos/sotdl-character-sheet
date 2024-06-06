@@ -45,4 +45,5 @@ model character {
   player         user     @relation(fields: [playerId], references: [id])
   rulebook       rulebook @relation(fields: [rulebookName], references: [name])
   deleted        Boolean  @default(false)
+  inactive       Boolean  @default(false)
 }
