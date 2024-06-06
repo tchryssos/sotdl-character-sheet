@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 
+import { BaseButtonProps } from '~/components/buttons/types';
 import { RpgIcons } from '~/constants/icons';
 import { Theme } from '~/constants/theme';
 import { VisibilityContext } from '~/logic/contexts/visibilityContext';
@@ -89,13 +90,28 @@ const CollapseToggle = styled(CollapseButton)`
   }
 `;
 
-const ButtonTitleWrapper = styled(BaseButton)`
+const StyledButtonWrapper = styled(BaseButton)`
   border: none;
   height: min-content;
   min-width: 0;
   padding: 0;
   margin: 0;
 `;
+
+interface ButtonTitleWrapperProps
+  extends BaseButtonProps,
+    Pick<FormSectionProps, 'isCollapsible'> {}
+
+function ButtonTitleWrapper({
+  isCollapsible,
+  children,
+  ...rest
+}: PropsWithChildren<ButtonTitleWrapperProps>) {
+  if (isCollapsible) {
+    return <StyledButtonWrapper {...rest}>{children}</StyledButtonWrapper>;
+  }
+  return <>{children}</>;
+}
 
 interface FormSectionLinkProps extends Pick<FormSectionProps, 'linkId'> {}
 function FormSectionLink({
@@ -135,14 +151,16 @@ export function FormSection({
   const [isOpen, setIsOpen] = useState(defaultExpanded);
 
   const onChangeExpanded = () => {
-    const nextOpenState = !isOpen;
-    onToggleOpen?.(nextOpenState);
-    setIsOpen(nextOpenState);
-    setSectionVisibilityInfo(
-      visibilityTitle || title,
-      'isExpanded',
-      nextOpenState
-    );
+    if (isCollapsible) {
+      const nextOpenState = !isOpen;
+      onToggleOpen?.(nextOpenState);
+      setIsOpen(nextOpenState);
+      setSectionVisibilityInfo(
+        visibilityTitle || title,
+        'isExpanded',
+        nextOpenState
+      );
+    }
   };
 
   useEffect(() => {
