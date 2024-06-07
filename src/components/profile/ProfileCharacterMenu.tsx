@@ -1,42 +1,26 @@
-import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
-import { TextButton } from '../buttons/TextButton';
+import { TextButton, TextButtonProps } from '../buttons/TextButton';
 import { Divider } from '../Divider';
-import { ButtonMenuItem } from '../dropdowns/DropdownMenu';
 
 interface ProfileCharacterMenuProps {
   name: string;
   id: string | number;
-  menuItems: ButtonMenuItem[];
+  menuItems: TextButtonProps[];
 }
 
 export function ProfileCharacterMenu({
-  name,
-  id,
+  // name,
+  // id,
   menuItems,
 }: ProfileCharacterMenuProps) {
   if (!menuItems.length) return null;
 
-  // return (
-  //   <DropdownMenu dropdownId={`${name}-${id}-menu`} menuItems={menuItems}>
-  //     {({ toggleOpen, describedBy }) => (
-  //       <IconButton aria-describedby={describedBy} onClick={toggleOpen}>
-  //         <Kebab title="Character menu" titleId="character-menu" />
-  //       </IconButton>
-  //     )}
-  //   </DropdownMenu>
-  // );
   return (
     <>
-      <Divider color="accentLight" />
+      <Divider color="smudge" />
       <FlexBox gap={8} justifyContent="flex-end">
-        {menuItems.map((item, i) => (
-          <TextButton
-            key={item.text}
-            label={item.text}
-            variant="body-xs"
-            onClick={item.onClick}
-          />
+        {menuItems.map(({ label, ...rest }, i) => (
+          <TextButton key={label} label={label} variant="body-xs" {...rest} />
         ))}
       </FlexBox>
     </>

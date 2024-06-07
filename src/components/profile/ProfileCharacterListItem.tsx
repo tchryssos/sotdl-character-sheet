@@ -10,8 +10,10 @@ import { SotdlCharacterData } from '~/typings/sotdl/characterData';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
+import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
-import { ButtonMenuItem, MenuItemObj } from '../dropdowns/DropdownMenu';
+import { TextButtonProps } from '../buttons/TextButton';
+import { Open } from '../icons/Open';
 import { Link } from '../Link';
 import { Text } from '../Text';
 import { ProfileCharacterMenu } from './ProfileCharacterMenu';
@@ -78,19 +80,20 @@ export function ProfileCharacterListItem({
   }
 
   const menuItems = useMemo(() => {
-    let items: ButtonMenuItem[] = [];
+    let items: TextButtonProps[] = [];
 
     if (character.playerId === user?.id) {
       if (isInactive) {
         items = [
           {
             type: 'button',
-            text: 'Reactivate',
+            label: 'Reactivate',
             onClick: () => {},
           },
           {
             type: 'button',
-            text: 'Delete',
+            label: 'Delete',
+            severity: 'danger',
             onClick: () => {},
           },
         ];
@@ -98,7 +101,7 @@ export function ProfileCharacterListItem({
         items = [
           {
             type: 'button',
-            text: 'Deactivate',
+            label: 'Deactivate',
             onClick: () => {},
           },
         ];
@@ -111,18 +114,25 @@ export function ProfileCharacterListItem({
   return (
     <Item flexDirection="column" gap={8}>
       <Link href={createCharacterRoute(id, rulebookName)} title={name}>
-        <FlexBox flexDirection="column">
-          <FlexBox>
-            <Text as="span" variant="body">
-              {name}
+        <FlexBox alignItems="center" justifyContent="space-between">
+          <FlexBox flexDirection="column">
+            <FlexBox>
+              <Text as="span" variant="body">
+                {name}
+              </Text>
+            </FlexBox>
+            <Text as="p" variant="body-sm">
+              <Caps>{rulebookName}</Caps>
+              {level !== undefined || characterDescriptor ? ' - ' : ''}
+              {level !== undefined ? `Level ${level} ` : ''}
+              {characterDescriptor}
             </Text>
           </FlexBox>
-          <Text as="p" variant="body-sm">
-            <Caps>{rulebookName}</Caps>
-            {level !== undefined || characterDescriptor ? ' - ' : ''}
-            {level !== undefined ? `Level ${level} ` : ''}
-            {characterDescriptor}
-          </Text>
+          {!isInactive && (
+            <Box height={24} width={24}>
+              <Open title="open-character" />
+            </Box>
+          )}
         </FlexBox>
       </Link>
       <ProfileCharacterMenu id={id} menuItems={menuItems} name={name} />
