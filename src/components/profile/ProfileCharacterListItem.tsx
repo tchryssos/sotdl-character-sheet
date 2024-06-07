@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
-import { useMemo } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
@@ -33,6 +33,27 @@ const Caps = styled.span`
 interface ProfileCharacterListItemProps {
   character: StrictCharacter<CharacterData>;
   isInactive: boolean;
+}
+
+interface ActiveLinkProps
+  extends Pick<ProfileCharacterListItemProps, 'isInactive'> {
+  href: string;
+  name: string;
+}
+function ActiveLink({
+  href,
+  name,
+  isInactive,
+  children,
+}: PropsWithChildren<ActiveLinkProps>) {
+  if (isInactive) {
+    return <div>{children}</div>;
+  }
+  return (
+    <Link href={href} title={name}>
+      {children}
+    </Link>
+  );
 }
 
 export function ProfileCharacterListItem({
@@ -113,7 +134,11 @@ export function ProfileCharacterListItem({
 
   return (
     <Item flexDirection="column" gap={8}>
-      <Link href={createCharacterRoute(id, rulebookName)} title={name}>
+      <ActiveLink
+        href={createCharacterRoute(id, rulebookName)}
+        isInactive={isInactive}
+        name={name}
+      >
         <FlexBox alignItems="center" justifyContent="space-between">
           <FlexBox flexDirection="column">
             <FlexBox>
@@ -134,7 +159,7 @@ export function ProfileCharacterListItem({
             </Box>
           )}
         </FlexBox>
-      </Link>
+      </ActiveLink>
       <ProfileCharacterMenu id={id} menuItems={menuItems} name={name} />
     </Item>
   );
