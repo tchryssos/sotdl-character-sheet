@@ -11,8 +11,9 @@ import { WwnCharacterData } from '~/typings/wwn/characterData';
 import { FlexBox } from '../box/FlexBox';
 import { Link } from '../Link';
 import { Text } from '../Text';
+import { ProfileCharacterMenu } from './ProfileCharacterMenu';
 
-const CharacterLink = styled(Link)`
+const Item = styled(FlexBox)`
   width: 100%;
   height: 100%;
   padding: ${({ theme }) => theme.spacing[4]};
@@ -70,20 +71,23 @@ export function ProfileCharacterListItem({
   }
 
   return (
-    <CharacterLink href={createCharacterRoute(id, rulebookName)}>
-      <FlexBox flexDirection="column">
-        <FlexBox>
-          <Text as="span" variant="body">
-            {name}
+    <Item alignItems="center" justifyContent="space-between">
+      <Link href={createCharacterRoute(id, rulebookName)} title={name}>
+        <FlexBox flexDirection="column">
+          <FlexBox>
+            <Text as="span" variant="body">
+              {name}
+            </Text>
+          </FlexBox>
+          <Text as="p" variant="body-sm">
+            <Caps>{rulebookName}</Caps>
+            {level !== undefined || characterDescriptor ? ' - ' : ''}
+            {level !== undefined ? `Level ${level} ` : ''}
+            {characterDescriptor}
           </Text>
         </FlexBox>
-        <Text as="p" variant="body-sm">
-          <Caps>{rulebookName}</Caps>
-          {level !== undefined || characterDescriptor ? ' - ' : ''}
-          {level !== undefined ? `Level ${level} ` : ''}
-          {characterDescriptor}
-        </Text>
-      </FlexBox>
-    </CharacterLink>
+      </Link>
+      <ProfileCharacterMenu id={id} name={name} />
+    </Item>
   );
 }

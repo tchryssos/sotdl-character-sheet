@@ -8,6 +8,7 @@ interface LinkProps {
   className?: string;
   underline?: boolean;
   onClick?: () => void;
+  title?: string;
 }
 
 interface StyledProps extends Pick<LinkProps, 'underline'> {}
@@ -28,6 +29,7 @@ export function Link({
   className,
   underline,
   onClick,
+  title,
 }: LinkProps) {
   return (
     <StyledLink
@@ -35,6 +37,7 @@ export function Link({
       href={href}
       rel="noopener noreferrer"
       target={isInternal ? '_self' : '_blank'}
+      title={title}
       underline={underline}
       onClick={onClick}
     >
