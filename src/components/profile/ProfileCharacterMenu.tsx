@@ -19,7 +19,7 @@ export function ProfileCharacterMenu({
     <>
       <Divider color="smudge" />
       <FlexBox gap={8} justifyContent="flex-end">
-        {menuItems.map(({ label, ...rest }, i) => (
+        {menuItems.map(({ label, ...rest }) => (
           <TextButton key={label} label={label} variant="body-xs" {...rest} />
         ))}
       </FlexBox>
