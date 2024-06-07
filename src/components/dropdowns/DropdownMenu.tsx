@@ -46,7 +46,13 @@ const DropdownLabel = styled(Text)`
   user-select: none;
 `;
 
-type MenuItemObj =
+export type ButtonMenuItem = {
+  type: 'button';
+  text: string;
+  onClick: () => void;
+};
+
+export type MenuItemObj =
   | {
       type: 'link';
       href: string;
@@ -56,11 +62,7 @@ type MenuItemObj =
       type: 'special';
       component: React.ReactNode;
     }
-  | {
-      type: 'button';
-      text: string;
-      onClick: () => void;
-    }
+  | ButtonMenuItem
   | {
       type: 'label';
       text: string;

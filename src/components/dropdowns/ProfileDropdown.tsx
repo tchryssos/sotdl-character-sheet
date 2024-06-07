@@ -12,7 +12,7 @@ import { AuthLink } from '../AuthLink';
 import { IconButton } from '../buttons/IconButton';
 import { Hamburger } from '../icons/Hamburger';
 import { Text } from '../Text';
-import { DropdownMenu, DropdownMenuProps } from './DropdownMenu';
+import { DropdownMenu, MenuItemObj } from './DropdownMenu';
 
 const DropdownAuthLink = styled(AuthLink)`
   width: 100%;
@@ -28,8 +28,8 @@ const createMenuItems = (
   user: StrictSessionUser | undefined,
   isLoading: boolean,
   isXxs: boolean
-): DropdownMenuProps['menuItems'] => {
-  let items: DropdownMenuProps['menuItems'] = [];
+): MenuItemObj[] => {
+  let items: MenuItemObj[] = [];
 
   if (!isLoading) {
     if (user?.id) {
@@ -46,8 +46,8 @@ const createMenuItems = (
                 href: ADMIN_PANEL_ROUTE,
                 text: 'Admin panel',
               },
-            ] as DropdownMenuProps['menuItems'])
-          : ([] as DropdownMenuProps['menuItems'])),
+            ] as MenuItemObj[])
+          : ([] as MenuItemObj[])),
         ...items,
         {
           type: 'link',
@@ -88,7 +88,7 @@ const createMenuItems = (
 };
 
 interface ProfileDropdownProps {
-  dropdownMenuItems: DropdownMenuProps['menuItems'];
+  dropdownMenuItems: MenuItemObj[];
 }
 
 export function ProfileDropdown({ dropdownMenuItems }: ProfileDropdownProps) {

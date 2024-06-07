@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
+import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
+import { useMemo } from 'react';
 
 import { createCharacterRoute } from '~/constants/routing/shared';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
@@ -9,6 +11,7 @@ import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { FlexBox } from '../box/FlexBox';
+import { ButtonMenuItem, MenuItemObj } from '../dropdowns/DropdownMenu';
 import { Link } from '../Link';
 import { Text } from '../Text';
 import { ProfileCharacterMenu } from './ProfileCharacterMenu';
@@ -16,7 +19,7 @@ import { ProfileCharacterMenu } from './ProfileCharacterMenu';
 const Item = styled(FlexBox)`
   width: 100%;
   height: 100%;
-  padding: ${({ theme }) => theme.spacing[4]};
+  padding: ${({ theme }) => theme.spacing[8]};
   border: ${({ theme }) =>
     `${theme.borderWidth[1]} solid ${theme.colors.accentLight}`};
 `;
@@ -27,10 +30,12 @@ const Caps = styled.span`
 
 interface ProfileCharacterListItemProps {
   character: StrictCharacter<CharacterData>;
+  isInactive: boolean;
 }
 
 export function ProfileCharacterListItem({
   character,
+  isInactive,
 }: ProfileCharacterListItemProps) {
   const {
     id,
@@ -38,6 +43,8 @@ export function ProfileCharacterListItem({
     name,
     characterData: { level, type, ...characterData },
   } = character;
+
+  const { user } = useUser();
 
   let characterDescriptor = '';
 
@@ -70,8 +77,39 @@ export function ProfileCharacterListItem({
       break;
   }
 
+  const menuItems = useMemo(() => {
+    let items: ButtonMenuItem[] = [];
+
+    if (character.playerId === user?.id) {
+      if (isInactive) {
+        items = [
+          {
+            type: 'button',
+            text: 'Reactivate',
+            onClick: () => {},
+          },
+          {
+            type: 'button',
+            text: 'Delete',
+            onClick: () => {},
+          },
+        ];
+      } else {
+        items = [
+          {
+            type: 'button',
+            text: 'Deactivate',
+            onClick: () => {},
+          },
+        ];
+      }
+    }
+
+    return items;
+  }, [isInactive, character.playerId, user?.id]);
+
   return (
-    <Item alignItems="center" justifyContent="space-between">
+    <Item flexDirection="column" gap={8}>
       <Link href={createCharacterRoute(id, rulebookName)} title={name}>
         <FlexBox flexDirection="column">
           <FlexBox>
@@ -87,7 +125,7 @@ export function ProfileCharacterListItem({
           </Text>
         </FlexBox>
       </Link>
-      <ProfileCharacterMenu id={id} name={name} />
+      <ProfileCharacterMenu id={id} menuItems={menuItems} name={name} />
     </Item>
   );
 }

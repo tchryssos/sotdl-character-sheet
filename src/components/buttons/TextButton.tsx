@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 
-import { Text } from '../Text';
+import { Text, TextProps } from '../Text';
 import { BaseButton } from './BaseButton';
 import { CoreButtonProps } from './types';
 
-export interface TextButtonProps extends CoreButtonProps {
+export interface TextButtonProps
+  extends CoreButtonProps,
+    Pick<TextProps, 'variant'> {
   label: string;
   transparent?: boolean;
 }
@@ -19,11 +21,15 @@ const StyledButton = styled(BaseButton)<Pick<TextButtonProps, 'transparent'>>(
   })
 );
 
-export function TextButton({ label, ...rest }: TextButtonProps) {
+export function TextButton({
+  label,
+  variant = 'body',
+  ...rest
+}: TextButtonProps) {
   return (
     // eslint-disable-next-line react/jsx-props-no-spreading
     <StyledButton {...rest}>
-      <Text as="span" variant="body">
+      <Text as="span" variant={variant}>
         {label}
       </Text>
     </StyledButton>

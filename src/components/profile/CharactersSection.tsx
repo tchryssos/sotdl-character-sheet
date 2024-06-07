@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 
-import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
 
 import { FormSection } from '../form/containers/FormSection';
@@ -25,24 +24,23 @@ export function CharactersSection({
   characters,
   isInactive,
 }: CharactersSectionProps) {
-  const greaterThanXxs = useBreakpointsIsGreaterThan('xxs');
-  const greaterThanSm = useBreakpointsIsGreaterThan('sm');
-
   if (isInactive && !characters.length) {
     return null;
   }
 
   return (
     <Section
-      // eslint-disable-next-line no-nested-ternary
-      columns={greaterThanXxs ? (greaterThanSm ? 3 : 2) : 1}
+      columns={{ base: 1, sm: 2, md: 3 }}
       isCollapsible={false}
       title={`${isInactive ? 'Inactive ' : ''}Characters`}
     >
       {characters.length ? (
         characters.map((c) => (
           <ListItem key={c.id}>
-            <ProfileCharacterListItem character={c} />
+            <ProfileCharacterListItem
+              character={c}
+              isInactive={Boolean(isInactive)}
+            />
           </ListItem>
         ))
       ) : (
