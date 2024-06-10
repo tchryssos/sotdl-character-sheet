@@ -153,7 +153,7 @@ export const getServerSideProps: GetServerSideProps<
             id: parseInt(params.id as string, 10),
           },
         });
-        if (!dbCharacter?.deleted) {
+        if (!dbCharacter?.deleted && !dbCharacter?.inactive) {
           character = dbCharacter as StrictCharacter<CharacterData>;
         }
       }
