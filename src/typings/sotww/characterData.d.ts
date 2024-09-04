@@ -64,6 +64,8 @@ export type SotwwCharacterData = {
   level: number;
   ancestry: string;
   ancestry_traits: string;
+  boons_and_banes: string;
+  conditions: string;
   description: string;
   professions: string;
   languages: string;
