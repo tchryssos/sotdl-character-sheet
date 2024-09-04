@@ -9,6 +9,6 @@ export default LogoutPage;
 export const getServerSideProps: GetServerSideProps = async () => ({
   redirect: {
     destination: '/api/auth/logout',
-    permanent: true,
+    permanent: false,
   },
 });
