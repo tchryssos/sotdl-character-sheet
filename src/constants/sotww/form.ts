@@ -6,6 +6,8 @@ export const DEFAULT_VALUES: SotwwCharacterData = {
   level: 1,
   ancestry: '',
   ancestry_traits: '',
+  boons_and_banes: '',
+  conditions: '',
   description: '',
   professions: '',
   languages: '',
