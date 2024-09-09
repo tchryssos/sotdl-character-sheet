@@ -28,14 +28,14 @@ export function SaveButton({
   characterId = NEW_ID,
   rulebookName,
 }: SaveButtonProps) {
-  const [isSaving, setisSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
   const { getValues } = useFormContext();
 
   const { push } = useRouter();
 
   const onSave = async () => {
-    setisSaving(true);
+    setIsSaving(true);
     try {
       const resp = await saveCharacter({
         id: characterId as number | typeof NEW_ID,
@@ -66,7 +66,7 @@ export function SaveButton({
         ),
       ]);
     }
-    setisSaving(false);
+    setIsSaving(false);
   };
 
   return (

@@ -8,7 +8,7 @@ import { CwnCharacterData } from './cwn/characterData';
 
 export type CharacterSaveData = Omit<
   character,
-  'createdOn' | 'lastModifiedOn' | 'id' | 'deleted'
+  'createdOn' | 'lastModifiedOn' | 'id' | 'deleted' | 'inactive'
 > & {
   id: number | 'new';
 };

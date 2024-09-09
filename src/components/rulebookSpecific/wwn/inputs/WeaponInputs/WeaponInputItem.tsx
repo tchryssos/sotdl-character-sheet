@@ -13,7 +13,7 @@ import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
 import { Pill } from '~/components/pills/Pill';
-import { PropertyPills } from '~/components/pills/PropertyPills';
+import { PropertyPills } from '~/components/rulebookSpecific/sotww/inputs/WeaponInputs/PropertyPills';
 import { ATTRIBUTES, WEAPON_TRAITS, WeaponTrait } from '~/constants/wwn/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import {
