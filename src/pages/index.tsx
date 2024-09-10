@@ -7,7 +7,7 @@ import { AuthLink } from '~/components/AuthLink';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { TextButton } from '~/components/buttons/TextButton';
-import { Divider } from '~/components/Divider';
+import { Divider } from '~/components/divider/Divider';
 import { Link } from '~/components/Link';
 import { LoadingSpinner } from '~/components/LoadingSpinner';
 import { Layout } from '~/components/meta/Layout';

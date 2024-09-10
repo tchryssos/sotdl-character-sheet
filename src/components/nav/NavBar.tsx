@@ -16,6 +16,7 @@ import { LogoAscii } from '../ascii/LogoAscii';
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { GridBox } from '../box/GridBox';
+import { Divider } from '../divider/Divider';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { RpgIcon } from '../icons/RpgIcon';
@@ -77,6 +78,11 @@ const UserName = styled(Text)`
   white-space: nowrap;
 `;
 
+const VertDivider = styled(Divider)`
+  align-self: stretch;
+  height: unset;
+`;
+
 interface NavBarProps {
   title: string;
   setIconPortalNode: (node: HTMLDivElement) => void;
@@ -91,7 +97,7 @@ export function NavBar({
   dropdownMenuItems,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
-  const atLeastSm = useBreakpointsAtLeast('sm');
+  const atLeastMd = useBreakpointsAtLeast('md');
   const flexGap = isXxs ? 8 : 16;
   const { user } = useUser();
   const userName = getNameFromUser(user as StrictSessionUser);
@@ -114,27 +120,30 @@ export function NavBar({
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            {userName && atLeastSm && (
-              <Link
-                href={createUsersRoute((user as StrictSessionUser).id)}
-                isInternal
-              >
-                <GridBox
-                  alignItems="center"
-                  gap={8}
-                  gridTemplateColumns="auto 1fr"
-                  maxWidth={pxToRem(200)}
+            {userName && atLeastMd && (
+              <>
+                <VertDivider color="accentLight" vertical />
+                <Link
+                  href={createUsersRoute((user as StrictSessionUser).id)}
+                  isInternal
                 >
-                  <Box height={pxToRem(18)} width={pxToRem(18)}>
-                    <RpgIcon
-                      iconIndex={getIconFromUser(user as StrictSessionUser)}
-                    />
-                  </Box>
-                  <UserName as="p" overflow="hidden" textOverflow="ellipsis">
-                    {userName}
-                  </UserName>
-                </GridBox>
-              </Link>
+                  <GridBox
+                    alignItems="center"
+                    gap={8}
+                    gridTemplateColumns="auto 1fr"
+                    maxWidth={pxToRem(200)}
+                  >
+                    <Box height={pxToRem(18)} width={pxToRem(18)}>
+                      <RpgIcon
+                        iconIndex={getIconFromUser(user as StrictSessionUser)}
+                      />
+                    </Box>
+                    <UserName as="p" overflow="hidden" textOverflow="ellipsis">
+                      {userName}
+                    </UserName>
+                  </GridBox>
+                </Link>
+              </>
             )}
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>

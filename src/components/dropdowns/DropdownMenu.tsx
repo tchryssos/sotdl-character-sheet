@@ -5,7 +5,7 @@ import { MouseEventHandler, useState } from 'react';
 
 import { FlexBox } from '../box/FlexBox';
 import { TextButton } from '../buttons/TextButton';
-import { Divider } from '../Divider';
+import { Divider } from '../divider/Divider';
 import { Link } from '../Link';
 import { Pane } from '../Pane';
 import { Text } from '../Text';
