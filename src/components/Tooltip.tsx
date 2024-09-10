@@ -13,6 +13,8 @@ import {
 } from '@floating-ui/react';
 import { PropsWithChildren, useState } from 'react';
 
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
+
 import { Box } from './box/Box';
 
 interface TooltipProps {
@@ -26,7 +28,7 @@ const Target = styled.div``;
 const Tip = styled.span`
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
-  width: 200px;
+  width: ${pxToRem(200)};
   padding: ${({ theme }) => theme.spacing[8]};
   border: 1px solid ${({ theme }) => theme.colors.text};
 `;
