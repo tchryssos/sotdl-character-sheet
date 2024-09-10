@@ -16,7 +16,6 @@ import {
   SotwwWeaponTrait,
   WEAPON_PROPERTY_ABBREVIATIONS,
   WEAPON_TRAIT_KEYS,
-  WEAPON_TRAITS,
 } from '~/constants/sotww/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
