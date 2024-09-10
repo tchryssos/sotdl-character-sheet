@@ -10,6 +10,8 @@ import { FormNavBaseButtons } from '~/components/formNav/FormNavBaseButtons';
 import { Text } from '~/components/Text';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
+import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 interface FormNavProps {
@@ -23,14 +25,15 @@ interface CharacterHeaderProps {
 
 const HealthButton = styled(BaseButton)(({ theme }) => ({
   padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
+  minWidth: pxToRem(66),
 }));
 
 function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
-  const atLeastSm = useBreakpointsAtLeast('sm');
+  const atLeastXs = useBreakpointsAtLeast('xs');
   const { watch, setValue } = useFormContext<SotwwCharacterData>();
 
-  const currentHealth = watch('health_current');
-  const damage = watch('damage');
+  const currentHealth = guaranteeNumberValue(watch('health_current'));
+  const damage = guaranteeNumberValue(watch('damage'));
   const ancestry = watch('ancestry');
   const level = watch('level');
   const novicePath = watch('path_novice');
@@ -57,8 +60,12 @@ function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
               </Text>
             </FlexBox>
           </FlexBox>
-          {atLeastSm && (
-            <HealthButton title="Increment Damage" onClick={onHealthClick}>
+          {atLeastXs && (
+            <HealthButton
+              severity={damage >= currentHealth ? 'danger' : 'normal'}
+              title="Increment Damage"
+              onClick={onHealthClick}
+            >
               <FlexBox alignItems="center" flexDirection="column">
                 <Text as="p" variant="body-xs">
                   Damage

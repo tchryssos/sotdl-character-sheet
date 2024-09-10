@@ -11,19 +11,14 @@ import { SelectInput } from '~/components/form/SelectInput';
 import { TextAreaInput } from '~/components/form/TextAreaInput';
 import { TextInput } from '~/components/form/TextInput';
 import { SelectOption } from '~/components/form/typings';
-import { PropertyPills } from '~/components/pills/PropertyPills';
+import { PropertyPills } from '~/components/rulebookSpecific/sotww/inputs/WeaponInputs/PropertyPills';
 import {
   SotwwWeaponTrait,
-  WEAPON_ADVANTAGES,
-  WEAPON_DISADVANTAGES,
   WEAPON_PROPERTY_ABBREVIATIONS,
-  WEAPON_TRAITS,
+  WEAPON_TRAIT_KEYS,
 } from '~/constants/sotww/game';
 import { EditContext } from '~/logic/contexts/editContext';
-import {
-  useBreakpointsAtLeast,
-  useBreakpointsLessThan,
-} from '~/logic/hooks/useBreakpoints';
+import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { makeSimpleSelectOptionsFromArray } from '~/logic/utils/form/makeSimpleSelectOptionsFromArray';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import { SotwwCharacterData, SotwwWeapon } from '~/typings/sotww/characterData';
@@ -48,13 +43,7 @@ const weaponGripOptions: SelectOption<SotwwWeapon['weapon_grip']>[] = [
   },
 ];
 
-const weaponTraitOptions = makeSimpleSelectOptionsFromArray(WEAPON_TRAITS);
-
-const weaponAdvantageOptions =
-  makeSimpleSelectOptionsFromArray(WEAPON_ADVANTAGES);
-
-const weaponDisadvantageOptions =
-  makeSimpleSelectOptionsFromArray(WEAPON_DISADVANTAGES);
+const weaponTraitOptions = makeSimpleSelectOptionsFromArray(WEAPON_TRAIT_KEYS);
 
 export function WeaponInputItem({
   postSortIndex: index,
@@ -63,8 +52,6 @@ export function WeaponInputItem({
   const { isEditMode } = useContext(EditContext);
   const { watch } = useFormContext<SotwwCharacterData>();
   const isLessThanSm = useBreakpointsLessThan('sm');
-  const atLeastMd = useBreakpointsAtLeast('md');
-  const exactlySm = !isLessThanSm && !atLeastMd;
   const exactlyXss = useBreakpointsLessThan('xs');
 
   const weaponNameFieldName = createWeaponFieldName('weapon_name', index);
@@ -129,22 +116,6 @@ export function WeaponInputItem({
         name={weaponTraitsFieldName}
         options={weaponTraitOptions}
       />
-      <GridBox columns={!exactlySm && !exactlyXss ? 2 : 1}>
-        <SelectInput<SotwwCharacterData>
-          DisplayComponent={PropertyPills}
-          label="Advantages"
-          multiple
-          name={createWeaponFieldName('weapon_advantages', index)}
-          options={weaponAdvantageOptions}
-        />
-        <SelectInput<SotwwCharacterData>
-          DisplayComponent={PropertyPills}
-          label="Disadvantages"
-          multiple
-          name={createWeaponFieldName('weapon_disadvantages', index)}
-          options={weaponDisadvantageOptions}
-        />
-      </GridBox>
       <TextAreaInput<SotwwCharacterData>
         label="Description"
         name={createWeaponFieldName('weapon_description', index)}

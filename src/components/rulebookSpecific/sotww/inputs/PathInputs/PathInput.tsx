@@ -14,6 +14,7 @@ import { RpgIcons } from '~/constants/icons';
 import { SotwwPathType } from '~/constants/sotww/game';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import { makeNestedFieldNameFn } from '~/logic/utils/form/makeNestedFieldNameFn';
 import { SortableAddAnotherChildProps } from '~/typings/form';
 import {
   SotwwCharacterData,
@@ -40,17 +41,26 @@ function PathBenefitInput({
   pathType,
 }: PathBenefitInputProps) {
   const { isEditMode } = useContext(EditContext);
-  const { watch } = useFormContext();
+  const { watch } = useFormContext<SotwwCharacterData>();
 
-  const benefitName = watch(
-    `path_${pathType}_benefits.${postSortIndex}.path_benefit_name`
+  const pathBenefitName = `path_${pathType}_benefits` as const;
+
+  const makePathBenefitFieldName = makeNestedFieldNameFn<
+    SotwwCharacterData,
+    typeof pathBenefitName
+  >(pathBenefitName);
+
+  const benefitNameFieldName = makePathBenefitFieldName(
+    'path_benefit_name',
+    postSortIndex
   );
+
   return (
     <FormSection
       borderless
       columns={1}
       isNested
-      title={benefitName}
+      title={watch(benefitNameFieldName)}
       visibilityTitle={`${pathType}${postSortIndex}${postSortIndex}`}
     >
       <GridBox
@@ -60,7 +70,7 @@ function PathBenefitInput({
         <FlexBox flexDirection="column" gap={16}>
           <TextInput<SotwwCharacterData>
             label="Name"
-            name={`path_${pathType}_benefits.${postSortIndex}.path_benefit_name`}
+            name={benefitNameFieldName}
           />
         </FlexBox>
         {isEditMode && (
@@ -69,7 +79,10 @@ function PathBenefitInput({
       </GridBox>
       <TextAreaInput<SotwwCharacterData>
         label="Description"
-        name={`path_${pathType}_benefits.${postSortIndex}.path_benefit_description`}
+        name={makePathBenefitFieldName(
+          'path_benefit_description',
+          postSortIndex
+        )}
       />
     </FormSection>
   );

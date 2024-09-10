@@ -57,7 +57,7 @@ const darkModeFilters = {
 const lightModeColors: ColorModeColors = {
   primary: '#3C91E6',
   background: '#fafafa',
-  text: '#17242b',
+  text: '#41413e',
   textAccent: '#4d4d4c',
   success: '#00784e',
   warning: '#c29e3b',
