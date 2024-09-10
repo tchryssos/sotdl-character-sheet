@@ -32,7 +32,7 @@ export function PropertyPills({ name }: PropertyPillProps) {
       {weaponProperties.map((p) => {
         const tipId = `${p}-trait-tip`;
         return (
-          <Tooltip id={tipId} key={p} tipText={WEAPON_TRAITS[p]}>
+          <Tooltip id={tipId} isLabeled key={p} tipText={WEAPON_TRAITS[p]}>
             <TraitPill text={startCase(p)} />
           </Tooltip>
         );

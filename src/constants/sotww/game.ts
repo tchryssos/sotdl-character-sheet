@@ -5,6 +5,10 @@ export const PATH_TYPES = ['novice', 'expert', 'master'] as const;
 export type SotwwPathType = (typeof PATH_TYPES)[number];
 
 export const WEAPON_TRAITS = {
+  ammunition:
+    "You must have at least one piece of ammunition of the indicated kind to attack with this weapon. Ammunition, and a container to hold it (such as a quiver, case, or bag), is included in the weapon's price. You can recover spent ammunition after combat and make replacements while you rest.",
+  bludgeoning:
+    'When you attack with this weapon and get a critical success, the target becomes vulnerable until the end of your next turn.',
   brutal:
     'When rolling damage for an attack made using this weapon, you can reroll each die that comes up as 1 once. You must use the new number rolled, even if it is another 1.',
   disarming:

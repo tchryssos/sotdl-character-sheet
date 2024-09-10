@@ -1,24 +1,31 @@
 import styled from '@emotion/styled';
-import { PropsWithChildren, useRef, useState } from 'react';
-
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions,
+  useRole,
+} from '@floating-ui/react';
+import { PropsWithChildren, useState } from 'react';
 
 import { Box } from './box/Box';
 
 interface TooltipProps {
   id: string;
   tipText: string;
+  isLabeled: boolean;
 }
 
 const Target = styled.div``;
 
 const Tip = styled.span`
-  position: absolute;
-  z-index: 999;
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
-  top: 0;
-  transform: translateY(calc(-100% - ${({ theme }) => theme.spacing[8]}));
   width: 200px;
   padding: ${({ theme }) => theme.spacing[8]};
   border: 1px solid ${({ theme }) => theme.colors.text};
@@ -28,25 +35,49 @@ export function Tooltip({
   id,
   children,
   tipText,
+  isLabeled,
 }: PropsWithChildren<TooltipProps>) {
-  const targetRef = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
+  const { refs, floatingStyles, context } = useFloating({
+    open: show,
+    whileElementsMounted: autoUpdate,
+    onOpenChange: setShow,
+    middleware: [offset(10), flip(), shift()],
+  });
+
+  const hover = useHover(context, { move: false });
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context);
+  const role = useRole(context, {
+    role: isLabeled ? 'tooltip' : 'label',
+  });
+
+  // Merge all the interactions into prop getters
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss,
+    role,
+  ]);
 
   return (
     <Box position="relative">
       {show && (
-        <Tip id={id} role="tooltip">
+        <Tip
+          id={id}
+          ref={refs.setFloating}
+          role="tooltip"
+          style={floatingStyles}
+          {...getFloatingProps()}
+        >
           {tipText}
         </Tip>
       )}
       <Target
         aria-describedby={id}
-        ref={targetRef}
+        ref={refs.setReference}
         tabIndex={0}
-        onBlur={() => setShow(false)}
-        onFocus={() => setShow(true)}
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
+        {...getReferenceProps()}
       >
         {children}
       </Target>
