@@ -26,7 +26,7 @@ const HealthButton = styled(BaseButton)(({ theme }) => ({
 }));
 
 function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
-  const atLeastSm = useBreakpointsAtLeast('sm');
+  const atLeastXs = useBreakpointsAtLeast('xs');
   const { watch, setValue } = useFormContext<SotwwCharacterData>();
 
   const currentHealth = watch('health_current');
@@ -57,7 +57,7 @@ function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
               </Text>
             </FlexBox>
           </FlexBox>
-          {atLeastSm && (
+          {atLeastXs && (
             <HealthButton title="Increment Damage" onClick={onHealthClick}>
               <FlexBox alignItems="center" flexDirection="column">
                 <Text as="p" variant="body-xs">

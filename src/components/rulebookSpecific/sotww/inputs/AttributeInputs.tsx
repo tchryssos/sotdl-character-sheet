@@ -5,7 +5,6 @@ import { FormSection } from '~/components/form/containers/FormSection';
 import { NumberInputProps } from '~/components/form/typings';
 import { RpgIcons } from '~/constants/icons';
 import { ATTRIBUTES } from '~/constants/sotww/game';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 type AttributeInputProps<T> = Omit<NumberInputProps<T>, 'type' | 'name'> & {
@@ -37,10 +36,9 @@ function AttributeInput<T extends Record<string, unknown>>({
 }
 
 export function AttributeInputs() {
-  const isLessThanXs = useBreakpointsLessThan('xs');
   return (
     <FormSection
-      columns={isLessThanXs ? 2 : 4}
+      columns={{ base: 4, sm: 2, md: 4 }}
       icon={RpgIcons.Brain}
       title="Attributes"
     >

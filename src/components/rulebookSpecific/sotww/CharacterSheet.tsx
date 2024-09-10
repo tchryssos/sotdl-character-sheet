@@ -50,6 +50,10 @@ const tabLabels: TabLabelObject[] = [
     icon: RpgIcons.Scroll,
   },
   {
+    label: 'Stats',
+    icon: RpgIcons.Dice,
+  },
+  {
     label: 'Abilities',
     icon: RpgIcons.Ripple,
   },
@@ -122,11 +126,18 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
               </GridBox>
             </TabPanel>
 
+            {/* Stats */}
+            <TabPanel>
+              <GridBox columns={{ base: 1, sm: 2 }}>
+                <AttributeInputs />
+                <PhysicalTraitsInputs />
+              </GridBox>
+              <BoonBaneInputs />
+            </TabPanel>
+
             {/* Abilities */}
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
-                <AttributeInputs />
-                <BoonBaneInputs />
                 <PathInputs />
               </GridBox>
             </TabPanel>
@@ -134,10 +145,9 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
             {/* Combat */}
             <TabPanel>
               <GridBox columns={1} {...sharedGapProps}>
-                <GridBox columns={2}>
+                <GridBox columns={{ base: 1, sm: 2 }}>
                   <DefenseInputs />
                   <ConditionInputs />
-                  <PhysicalTraitsInputs />
                 </GridBox>
                 <WeaponInputs />
                 <ArmorInputs />

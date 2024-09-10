@@ -3,7 +3,10 @@ import styled from '@emotion/styled';
 
 import { HOME_ROUTE } from '~/constants/routing/client';
 import { createUsersRoute } from '~/constants/routing/shared';
-import { useBreakpointsLessThan } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsLessThan,
+} from '~/logic/hooks/useBreakpoints';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { getIconFromUser, getNameFromUser } from '~/logic/utils/user';
 import { Spacing } from '~/typings/theme';
@@ -88,6 +91,7 @@ export function NavBar({
   dropdownMenuItems,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
+  const atLeastSm = useBreakpointsAtLeast('sm');
   const flexGap = isXxs ? 8 : 16;
   const { user } = useUser();
   const userName = getNameFromUser(user as StrictSessionUser);
@@ -110,7 +114,7 @@ export function NavBar({
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
             <Portal flexGap={flexGap} ref={setIconPortalNode} />
-            {userName && !isXxs && (
+            {userName && atLeastSm && (
               <Link
                 href={createUsersRoute((user as StrictSessionUser).id)}
                 isInternal
