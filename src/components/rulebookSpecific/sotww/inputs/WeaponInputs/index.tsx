@@ -22,10 +22,8 @@ const HideCheckbox = styled(CheckboxInput)`
 
 const createDefaultWeapon = (): SotwwWeapon => ({
   weapon_name: 'Club',
-  weapon_advantages: [],
   weapon_damage: '1d6',
   weapon_description: '',
-  weapon_disadvantages: [],
   weapon_grip: 'one',
   weapon_traits: [],
   weapon_equipped: false,
