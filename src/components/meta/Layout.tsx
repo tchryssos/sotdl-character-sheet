@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
+import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
 import { FlexBox } from '../box/FlexBox';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
@@ -19,9 +20,9 @@ const PageWrapper = styled(FlexBox)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
   width: 100%;
   height: 100%;
-  padding-top: ${({ theme }) => theme.spacing[80]};
+  padding-top: ${pxToRem(128)};
   ${({ theme }) => theme.breakpoints.xs} {
-    padding-top: ${({ theme }) => theme.spacing[128]};
+    padding-top: ${pxToRem(148)};
   }
 `;
 

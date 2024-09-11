@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { trim } from 'lodash';
 import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -52,18 +53,22 @@ export function QuickAccess() {
         </FlexBox>
 
         <GridBox columns={{ base: 1, lg: 2 }} gap={{ base: 8, lg: 16 }}>
-          <FlexBox flexDirection="column">
-            <Text>Boons/Banes:</Text>
-            <LongEffect color="textAccent" variant="body-xs">
-              {boonBane}
-            </LongEffect>
-          </FlexBox>
-          <FlexBox flexDirection="column">
-            <Text>Conditions:</Text>
-            <LongEffect color="textAccent" variant="body-xs">
-              {conditions}
-            </LongEffect>
-          </FlexBox>
+          {trim(boonBane) && (
+            <FlexBox flexDirection="column">
+              <Text>Boons/Banes:</Text>
+              <LongEffect color="textAccent" variant="body-xs">
+                {boonBane}
+              </LongEffect>
+            </FlexBox>
+          )}
+          {trim(conditions) && (
+            <FlexBox flexDirection="column">
+              <Text>Conditions:</Text>
+              <LongEffect color="textAccent" variant="body-xs">
+                {conditions}
+              </LongEffect>
+            </FlexBox>
+          )}
         </GridBox>
       </GridBox>
     </FormSection>
