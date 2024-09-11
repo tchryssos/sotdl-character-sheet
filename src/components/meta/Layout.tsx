@@ -20,9 +20,9 @@ const PageWrapper = styled(FlexBox)`
   max-width: ${({ theme }) => theme.breakpointValues.lg}px;
   width: 100%;
   height: 100%;
-  padding-top: ${pxToRem(128)};
+  padding-top: ${pxToRem(120)};
   ${({ theme }) => theme.breakpoints.xs} {
-    padding-top: ${pxToRem(148)};
+    padding-top: ${pxToRem(140)};
   }
 `;
 
