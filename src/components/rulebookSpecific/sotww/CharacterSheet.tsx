@@ -1,7 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
@@ -35,6 +35,7 @@ import { MagicTraditionInputs } from './inputs/MagicInputs/MagicTraditionInputs'
 import { PathInputs } from './inputs/PathInputs/PathInputs';
 import { PhysicalTraitsInputs } from './inputs/PhysicalTraitsInputs';
 import { WeaponInputs } from './inputs/WeaponInputs';
+import { QuickAccess } from './QuickAccess';
 
 const SotwwCharacterSheet = styled(FormComponent)`
   padding-bottom: ${({ theme }) => theme.spacing[48]};
@@ -77,6 +78,8 @@ const sharedGapProps = {
 };
 
 export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
+  const [showQuickAccess, setShowQuickAccess] = useState(false);
+
   const { user } = useUser();
   const {
     isEditMode,
@@ -105,7 +108,14 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <DefenseProvider>
-          <FormNav isMyCharacter={isMyCharacter} />
+          <FormNav
+            isMyCharacter={isMyCharacter}
+            quickAccess={{
+              showQuickAccess,
+              setShowQuickAccess,
+            }}
+          />
+          {showQuickAccess && <QuickAccess />}
           <Tabs
             defaultTab={getTabIndex(tabLabels, queryTab)}
             tabLabels={tabLabels}

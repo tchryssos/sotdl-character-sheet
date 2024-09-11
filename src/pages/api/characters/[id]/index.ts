@@ -121,12 +121,6 @@ const handleRequest: NextApiHandler = async (req, res) => {
     default:
       returnErrorResponse(res, new Error(ErrorTypes.SomethingWentWrong));
   }
-
-  if (method === 'PATCH') {
-    await patchCharacter(req, res);
-  } else {
-    await getCharacter(req, res);
-  }
 };
 
 export default handleRequest;

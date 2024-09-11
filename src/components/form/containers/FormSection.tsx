@@ -155,7 +155,11 @@ export function FormSection({
   return (
     <Section className={className} flexDirection="column">
       <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
-        <ButtonTitleWrapper transparent onClick={onChangeExpanded}>
+        <ButtonTitleWrapper
+          buttonLike={!isCollapsible}
+          transparent
+          onClick={onChangeExpanded}
+        >
           <GridBox
             alignItems="flex-end"
             color={titleColor}
