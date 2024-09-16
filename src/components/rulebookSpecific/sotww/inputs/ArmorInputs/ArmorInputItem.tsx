@@ -28,7 +28,8 @@ export function ArmorInputItem({
   onDelete,
 }: ArmorInputItemProps) {
   const { isEditMode } = useContext(EditContext);
-  const { recalculateDefense, highestArmorId } = useContext(DefenseContext);
+  const { recalculateDefense, highestArmorId, totalDefense } =
+    useContext(DefenseContext);
   const { watch, register, setValue } = useFormContext<SotwwCharacterData>();
 
   const armorIdFieldName = createArmorFieldName('armor_id', index);
@@ -70,7 +71,7 @@ export function ArmorInputItem({
   };
 
   if (highestArmorId) {
-    if (armorId !== highestArmorId) {
+    if (armorId !== highestArmorId && armorScore < totalDefense) {
       relevantArmorBonus = {
         type: 'bonus',
         value: armorBonus,
