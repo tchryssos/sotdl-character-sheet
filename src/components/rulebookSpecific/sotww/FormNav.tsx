@@ -6,7 +6,10 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { BaseButton } from '~/components/buttons/BaseButton';
-import { FormNavBaseButtons } from '~/components/formNav/FormNavBaseButtons';
+import {
+  FormNavBaseButtons,
+  QuickAccessProps,
+} from '~/components/formNav/FormNavBaseButtons';
 import { Text } from '~/components/Text';
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
@@ -16,6 +19,7 @@ import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 interface FormNavProps {
   isMyCharacter: boolean;
+  quickAccess?: QuickAccessProps;
 }
 
 interface CharacterHeaderProps {
@@ -83,7 +87,7 @@ function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
   );
 }
 
-export function FormNav({ isMyCharacter }: FormNavProps) {
+export function FormNav({ isMyCharacter, quickAccess }: FormNavProps) {
   const { watch } = useFormContext<SotwwCharacterData>();
 
   const name = watch('name');
@@ -103,6 +107,7 @@ export function FormNav({ isMyCharacter }: FormNavProps) {
           <FormNavBaseButtons
             characterName={name}
             isMyCharacter={isMyCharacter}
+            quickAccess={quickAccess}
             rulebookName="sotww"
           />,
           iconPortalNode

@@ -1,6 +1,12 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import {
+  CSSProperties,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { RpgIcons } from '~/constants/icons';
 import { Theme } from '~/constants/theme';
@@ -16,14 +22,19 @@ import { CollapseButton } from '../../buttons/CollapseButton';
 import { RpgIcon } from '../../icons/RpgIcon';
 import { Text } from '../../Text';
 
-interface FormSectionProps {
+type BorderProperties = {
+  borderless?: boolean;
+  borderColor?: Color;
+  borderStyle?: CSSProperties['borderStyle'];
+};
+
+type FormSectionProps = {
   title: string;
   children: React.ReactNode | React.ReactNode[];
   columns?: GridBoxProps['columns'];
   isCollapsible?: boolean;
   className?: string;
   visibilityTitle?: string;
-  borderless?: boolean;
   gridTemplateColumns?: GridBoxProps['gridTemplateColumns'];
   defaultExpanded?: boolean;
   icon?: RpgIcons;
@@ -32,7 +43,7 @@ interface FormSectionProps {
   titleColor?: Color;
   onToggleOpen?: (nextOpenState: boolean) => void;
   linkId?: string;
-}
+} & BorderProperties;
 
 const TitleBox = styled(FlexBox)`
   position: relative;
@@ -56,23 +67,42 @@ const Section = styled(FlexBox)`
   height: 100%;
 `;
 
-const createCollapsibleStyles = (theme: Theme, borderless?: boolean) => css`
-  border-color: ${borderless ? 'transparent' : theme.colors.textAccent};
-  border-width: ${borderless ? 0 : theme.borderWidth[1]};
-  border-style: solid;
-`;
+const createCollapsibleStyles = (
+  theme: Theme,
+  borderProperties?: BorderProperties
+) => {
+  const {
+    borderless,
+    borderColor: pBorderColor,
+    borderStyle: pBorderStyle,
+  } = borderProperties || {};
 
-const Line = styled(Box)`
+  const borderColor = theme.colors[pBorderColor || 'textAccent'];
+  const borderStyle = pBorderStyle || 'solid';
+
+  return css`
+    border-color: ${borderless ? 'transparent' : borderColor};
+    border-width: ${borderless ? 0 : theme.borderWidth[1]};
+    border-style: ${borderStyle};
+  `;
+};
+
+const Line = styled(Box)<{ borderProperties?: BorderProperties }>`
   height: 0;
   width: 100%;
-  ${({ theme }) => createCollapsibleStyles(theme)};
+  ${({ theme, borderProperties }) =>
+    createCollapsibleStyles(theme, borderProperties)};
   border-bottom-width: 0;
   border-left-width: 0;
   border-right-width: 0;
 `;
 
-const Container = styled(GridBox)<{ isOpen?: boolean; borderless?: boolean }>`
-  ${({ theme, borderless }) => createCollapsibleStyles(theme, borderless)};
+const Container = styled(GridBox)<{
+  isOpen?: boolean;
+  borderProperties?: BorderProperties;
+}>`
+  ${({ theme, borderProperties }) =>
+    createCollapsibleStyles(theme, borderProperties)};
   border-top-width: 0;
   height: 100%;
   visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'collapse')};
@@ -125,6 +155,8 @@ export function FormSection({
   titleColor,
   onToggleOpen,
   linkId,
+  borderColor,
+  borderStyle,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -152,10 +184,23 @@ export function FormSection({
   }, [initIsExpanded]);
   // END - SECTION COLLAPSED STATUS - END
 
+  const borderProperties =
+    borderless || borderColor || borderStyle
+      ? {
+          borderless,
+          borderColor,
+          borderStyle,
+        }
+      : undefined;
+
   return (
     <Section className={className} flexDirection="column">
       <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
-        <ButtonTitleWrapper transparent onClick={onChangeExpanded}>
+        <ButtonTitleWrapper
+          buttonLike={!isCollapsible}
+          transparent
+          onClick={onChangeExpanded}
+        >
           <GridBox
             alignItems="flex-end"
             color={titleColor}
@@ -195,11 +240,11 @@ export function FormSection({
             )}
           </GridBox>
         </ButtonTitleWrapper>
-        {!borderless && <Line />}
+        {!borderless && <Line borderProperties={borderProperties} />}
       </GridBox>
       <Container
         alignContent="start"
-        borderless={borderless}
+        borderProperties={borderProperties}
         columns={columns}
         gridTemplateColumns={gridTemplateColumns}
         gridTemplateRows={gridTemplateRows}

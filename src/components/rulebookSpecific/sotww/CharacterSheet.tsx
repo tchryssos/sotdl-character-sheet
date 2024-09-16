@@ -1,8 +1,9 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
 import { Form as FormComponent } from '~/components/form/Form';
 import { TabPanel } from '~/components/tabs/TabPanel';
@@ -35,6 +36,7 @@ import { MagicTraditionInputs } from './inputs/MagicInputs/MagicTraditionInputs'
 import { PathInputs } from './inputs/PathInputs/PathInputs';
 import { PhysicalTraitsInputs } from './inputs/PhysicalTraitsInputs';
 import { WeaponInputs } from './inputs/WeaponInputs';
+import { QuickAccess } from './QuickAccess';
 
 const SotwwCharacterSheet = styled(FormComponent)`
   padding-bottom: ${({ theme }) => theme.spacing[48]};
@@ -77,6 +79,8 @@ const sharedGapProps = {
 };
 
 export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
+  const [showQuickAccess, setShowQuickAccess] = useState(false);
+
   const { user } = useUser();
   const {
     isEditMode,
@@ -105,70 +109,87 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
         onSubmit={() => undefined}
       >
         <DefenseProvider>
-          <FormNav isMyCharacter={isMyCharacter} />
-          <Tabs
-            defaultTab={getTabIndex(tabLabels, queryTab)}
-            tabLabels={tabLabels}
-            onChange={(index) =>
-              router.replace({
-                query: {
-                  ...router.query,
-                  tab: tabLabels[index].label.toLowerCase(),
-                },
-              })
-            }
-          >
-            {/* Description */}
-            <TabPanel>
-              <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
-                <BasicInfoInputs />
-                <BackgroundInputs />
-              </GridBox>
-            </TabPanel>
-
-            {/* Stats */}
-            <TabPanel>
-              <GridBox columns={{ base: 1, sm: 2 }}>
-                <AttributeInputs />
-                <PhysicalTraitsInputs />
-              </GridBox>
-              <BoonBaneInputs />
-            </TabPanel>
-
-            {/* Abilities */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <PathInputs />
-              </GridBox>
-            </TabPanel>
-
-            {/* Combat */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <GridBox columns={{ base: 1, sm: 2 }}>
-                  <DefenseInputs />
-                  <ConditionInputs />
+          <FlexBox flexDirection="column" gap={16}>
+            <FormNav
+              isMyCharacter={isMyCharacter}
+              quickAccess={{
+                showQuickAccess,
+                setShowQuickAccess,
+              }}
+            />
+            {showQuickAccess && <QuickAccess />}
+            <Tabs
+              defaultTab={getTabIndex(tabLabels, queryTab)}
+              tabLabels={tabLabels}
+              onChange={(index) =>
+                router.replace(
+                  {
+                    query: {
+                      ...router.query,
+                      tab: tabLabels[index].label.toLowerCase(),
+                    },
+                  },
+                  undefined,
+                  { scroll: !showQuickAccess }
+                )
+              }
+            >
+              {/* Description */}
+              <TabPanel>
+                <GridBox columns={isLessThanMd ? 1 : 2} {...sharedGapProps}>
+                  <BasicInfoInputs />
+                  <BackgroundInputs />
                 </GridBox>
-                <WeaponInputs />
-                <ArmorInputs />
-              </GridBox>
-            </TabPanel>
+              </TabPanel>
 
-            {/* Magic */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <MagicTraditionInputs />
-              </GridBox>
-            </TabPanel>
+              {/* Stats */}
+              <TabPanel>
+                <GridBox columns={{ base: 1, sm: 2 }}>
+                  <AttributeInputs />
+                  <PhysicalTraitsInputs />
+                </GridBox>
+                <BoonBaneInputs />
+              </TabPanel>
 
-            {/* Inventory */}
-            <TabPanel>
-              <GridBox columns={1} {...sharedGapProps}>
-                <EquipmentInputs />
-                <CurrencyInputs />
-              </GridBox>
-            </TabPanel>
-          </Tabs>
+              {/* Abilities */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <PathInputs />
+                </GridBox>
+              </TabPanel>
+
+              {/* Combat */}
+              <TabPanel>
+                <GridBox
+                  columnGap={0}
+                  columns={1}
+                  rowGap={sharedGapProps.rowGap}
+                >
+                  <GridBox columns={{ base: 1, sm: 2 }}>
+                    <DefenseInputs />
+                    <ConditionInputs />
+                  </GridBox>
+                  <WeaponInputs />
+                  <ArmorInputs />
+                </GridBox>
+              </TabPanel>
+
+              {/* Magic */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <MagicTraditionInputs />
+                </GridBox>
+              </TabPanel>
+
+              {/* Inventory */}
+              <TabPanel>
+                <GridBox columns={1} {...sharedGapProps}>
+                  <EquipmentInputs />
+                  <CurrencyInputs />
+                </GridBox>
+              </TabPanel>
+            </Tabs>
+          </FlexBox>
         </DefenseProvider>
       </SotwwCharacterSheet>
     </EditContext.Provider>

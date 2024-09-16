@@ -21,15 +21,16 @@ export function GridBox({
   columnGap,
   rowGap,
   gridTemplateColumns,
+  gap,
   ...rest
 }: PropsWithChildren<GridBoxProps>) {
   return (
     <Box
-      columnGap={columnGap || { base: 8, sm: 16 }}
+      columnGap={columnGap ?? gap ?? { base: 8, sm: 16 }}
       columns={gridTemplateColumns ? undefined : columns}
       display="grid"
       gridTemplateColumns={gridTemplateColumns}
-      rowGap={rowGap || { base: 8, sm: 16 }}
+      rowGap={rowGap ?? gap ?? { base: 8, sm: 16 }}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...rest}
     >

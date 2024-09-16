@@ -16,7 +16,6 @@ import { LogoAscii } from '../ascii/LogoAscii';
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
 import { GridBox } from '../box/GridBox';
-import { Divider } from '../divider/Divider';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { ProfileDropdown } from '../dropdowns/ProfileDropdown';
 import { RpgIcon } from '../icons/RpgIcon';
@@ -77,12 +76,6 @@ const Portal = styled.div<{ flexGap: Spacing }>`
 const UserName = styled(Text)`
   white-space: nowrap;
 `;
-
-const VertDivider = styled(Divider)`
-  align-self: stretch;
-  height: unset;
-`;
-
 interface NavBarProps {
   title: string;
   setIconPortalNode: (node: HTMLDivElement) => void;
@@ -97,15 +90,20 @@ export function NavBar({
   dropdownMenuItems,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
-  const atLeastMd = useBreakpointsAtLeast('md');
   const flexGap = isXxs ? 8 : 16;
   const { user } = useUser();
   const userName = getNameFromUser(user as StrictSessionUser);
+  const atLeastMd = useBreakpointsAtLeast('md');
 
   return (
-    <Toolbar center flex={1}>
+    <Toolbar center flex={1} flexDirection="column">
       <NavProgress />
-      <InnerToolbar alignItems="flex-end" flex={1} flexDirection="column">
+      <InnerToolbar
+        alignItems="flex-end"
+        flex={1}
+        flexDirection="column"
+        width="100%"
+      >
         <TopRow alignItems="center" justifyContent="space-between">
           <LogoTitleBox alignItems="center" gap={flexGap}>
             <HomeLink href={HOME_ROUTE}>
@@ -119,36 +117,35 @@ export function NavBar({
             )}
           </LogoTitleBox>
           <FlexBox alignItems="center" gap={flexGap}>
-            <Portal flexGap={flexGap} ref={setIconPortalNode} />
             {userName && atLeastMd && (
-              <>
-                <VertDivider color="accentLight" vertical />
-                <Link
-                  href={createUsersRoute((user as StrictSessionUser).id)}
-                  isInternal
+              <Link
+                href={createUsersRoute((user as StrictSessionUser).id)}
+                isInternal
+              >
+                <GridBox
+                  alignItems="center"
+                  gap={8}
+                  gridTemplateColumns="auto 1fr"
+                  maxWidth={pxToRem(200)}
                 >
-                  <GridBox
-                    alignItems="center"
-                    gap={8}
-                    gridTemplateColumns="auto 1fr"
-                    maxWidth={pxToRem(200)}
-                  >
-                    <Box height={pxToRem(18)} width={pxToRem(18)}>
-                      <RpgIcon
-                        iconIndex={getIconFromUser(user as StrictSessionUser)}
-                      />
-                    </Box>
-                    <UserName as="p" overflow="hidden" textOverflow="ellipsis">
-                      {userName}
-                    </UserName>
-                  </GridBox>
-                </Link>
-              </>
+                  <Box height={pxToRem(18)} width={pxToRem(18)}>
+                    <RpgIcon
+                      iconIndex={getIconFromUser(user as StrictSessionUser)}
+                    />
+                  </Box>
+                  <UserName as="p" overflow="hidden" textOverflow="ellipsis">
+                    {userName}
+                  </UserName>
+                </GridBox>
+              </Link>
             )}
             <ProfileDropdown dropdownMenuItems={dropdownMenuItems} />
           </FlexBox>
         </TopRow>
       </InnerToolbar>
+      <FlexBox flex={1} justifyContent="flex-end" marginTop={4} width="100%">
+        <Portal flexGap={flexGap} ref={setIconPortalNode} />
+      </FlexBox>
     </Toolbar>
   );
 }

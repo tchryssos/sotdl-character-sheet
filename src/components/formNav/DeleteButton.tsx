@@ -37,7 +37,10 @@ export function DeleteButton({ characterId, playerId }: DeleteButtonProps) {
   };
 
   return (
-    <>
+    // Focus trap on dialog adds two observer elements, but if those get caught in
+    // a flexbox with a gap or something, they shift the layout. This box makes sure
+    // that this whole button and dialog get treated as one element
+    <div>
       <ConfirmationDialog
         cancel={{ onClick: () => setIsConfirmModalOpen(false) }}
         confirm={{ onClick: onDelete, label: 'Delete', severity: 'danger' }}
@@ -50,6 +53,6 @@ export function DeleteButton({ characterId, playerId }: DeleteButtonProps) {
       <IconButton onClick={() => setIsConfirmModalOpen(true)}>
         <Delete color="text" title="Delete character" />
       </IconButton>
-    </>
+    </div>
   );
 }

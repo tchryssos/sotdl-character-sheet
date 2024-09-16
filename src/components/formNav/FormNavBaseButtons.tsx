@@ -1,4 +1,7 @@
 import { useUser } from '@auth0/nextjs-auth0';
+import { useTheme } from '@emotion/react';
+import { mdiStarBoxMultiple } from '@mdi/js';
+import Icon from '@mdi/react';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
@@ -13,21 +16,29 @@ import { IconButton } from '../buttons/IconButton';
 import { Pencil } from '../icons/Pencil';
 import { SaveButton } from './SaveButton';
 
-interface NavButtonsProps {
+export interface QuickAccessProps {
+  showQuickAccess: boolean;
+  setShowQuickAccess: (show: boolean) => void;
+}
+
+type NavButtonProps = {
   isMyCharacter: boolean;
   rulebookName: RulebookType;
   characterName: string;
-}
+  quickAccess?: QuickAccessProps;
+};
 
 export function FormNavBaseButtons({
   isMyCharacter,
   rulebookName,
   characterName,
-}: NavButtonsProps) {
+  quickAccess,
+}: NavButtonProps) {
   const { user } = useUser();
   const { isEditMode, setIsEditMode } = useContext(EditContext);
   const { query } = useRouter();
   const isNew = useIsNewCharacter();
+  const theme = useTheme();
 
   return (
     <>
@@ -63,6 +74,27 @@ export function FormNavBaseButtons({
           titleId="edit-pencil-icon"
         />
       </IconButton>
+      {quickAccess && (
+        <IconButton
+          onClick={() =>
+            quickAccess.setShowQuickAccess(!quickAccess.showQuickAccess)
+          }
+        >
+          <Icon
+            color={
+              quickAccess.showQuickAccess
+                ? theme.colors.success
+                : theme.colors.text
+            }
+            path={mdiStarBoxMultiple}
+            title={
+              quickAccess.showQuickAccess
+                ? 'Close Quick Access'
+                : 'Open Quick Access'
+            }
+          />
+        </IconButton>
+      )}
     </>
   );
 }
