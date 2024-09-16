@@ -1,6 +1,6 @@
 import { useUser } from '@auth0/nextjs-auth0';
 import { useTheme } from '@emotion/react';
-import { mdiArrowExpandDown, mdiArrowExpandUp } from '@mdi/js';
+import { mdiStarBoxMultiple } from '@mdi/js';
 import Icon from '@mdi/react';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
@@ -86,11 +86,7 @@ export function FormNavBaseButtons({
                 ? theme.colors.success
                 : theme.colors.text
             }
-            path={
-              quickAccess.showQuickAccess
-                ? mdiArrowExpandUp
-                : mdiArrowExpandDown
-            }
+            path={mdiStarBoxMultiple}
             title={
               quickAccess.showQuickAccess
                 ? 'Close Quick Access'

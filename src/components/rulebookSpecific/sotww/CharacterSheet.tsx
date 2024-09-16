@@ -130,7 +130,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
                     },
                   },
                   undefined,
-                  { scroll: false }
+                  { scroll: !showQuickAccess }
                 )
               }
             >
@@ -160,7 +160,11 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
 
               {/* Combat */}
               <TabPanel>
-                <GridBox columns={1} {...sharedGapProps}>
+                <GridBox
+                  columnGap={0}
+                  columns={1}
+                  rowGap={sharedGapProps.rowGap}
+                >
                   <GridBox columns={{ base: 1, sm: 2 }}>
                     <DefenseInputs />
                     <ConditionInputs />

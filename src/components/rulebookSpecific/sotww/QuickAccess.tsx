@@ -19,15 +19,25 @@ export function QuickAccess() {
   const { watch } = useFormContext<SotwwCharacterData>();
   const { totalDefense } = useContext(DefenseContext);
 
-  const weapons = watch('weapons');
-  const equippedWeapon = weapons.find((w) => w.weapon_equipped);
+  const equippedWeapon = watch('weapons').find((w) => w.weapon_equipped);
+  const weaponText = equippedWeapon
+    ? `${equippedWeapon.weapon_name} ${equippedWeapon.weapon_damage}`
+    : 'Unarmed 1d6';
+  const equippedArmor = watch('armors').filter((a) => a.armor_equipped);
+  const equippedArmorText = equippedArmor.map((a) => a.armor_name).join(', ');
   const damage = watch('damage');
   const health = watch('health_current');
   const conditions = watch('conditions');
   const boonBane = watch('boons_and_banes');
 
   return (
-    <FormSection columns={1} isCollapsible={false} title="Quick Access">
+    <FormSection
+      borderColor="primary"
+      // borderStyle="dotted"
+      columns={1}
+      isCollapsible={false}
+      title="Quick Access"
+    >
       <GridBox
         gap={8}
         gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr', lg: '1fr 2fr' }}
@@ -39,16 +49,14 @@ export function QuickAccess() {
               {damage}/{health}
             </Text>
           </Text>
-          {equippedWeapon && (
-            <Text>
-              Weapon:{' '}
-              <Text color="textAccent">
-                {equippedWeapon.weapon_name} {equippedWeapon.weapon_damage}
-              </Text>
-            </Text>
-          )}
           <Text>
-            Defense: <Text color="textAccent">{totalDefense}</Text>
+            Weapon: <Text color="textAccent">{weaponText}</Text>
+          </Text>
+          <Text>
+            Defense:{' '}
+            <Text color="textAccent">
+              {totalDefense} ({equippedArmorText || 'Natural Defense'})
+            </Text>
           </Text>
         </FlexBox>
 
