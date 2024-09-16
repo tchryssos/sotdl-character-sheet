@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { trim } from 'lodash';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -17,7 +17,7 @@ const LongEffect = styled(Text)`
 
 export function QuickAccess() {
   const { watch } = useFormContext<SotwwCharacterData>();
-  const { totalDefense } = useContext(DefenseContext);
+  const { totalDefense, recalculateDefense } = useContext(DefenseContext);
 
   const equippedWeapon = watch('weapons').find((w) => w.weapon_equipped);
   const weaponText = equippedWeapon
@@ -29,6 +29,10 @@ export function QuickAccess() {
   const health = watch('health_current');
   const conditions = watch('conditions');
   const boonBane = watch('boons_and_banes');
+
+  useEffect(() => {
+    recalculateDefense();
+  }, [recalculateDefense]);
 
   return (
     <FormSection
