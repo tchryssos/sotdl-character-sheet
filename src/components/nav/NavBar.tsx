@@ -1,4 +1,5 @@
 import { useUser } from '@auth0/nextjs-auth0';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { HOME_ROUTE } from '~/constants/routing/client';
@@ -81,6 +82,7 @@ interface NavBarProps {
   setIconPortalNode: (node: HTMLDivElement) => void;
   setHeaderPortalNode: (node: HTMLDivElement) => void;
   dropdownMenuItems: DropdownMenuProps['menuItems'];
+  hasPortalChildren: boolean;
 }
 
 export function NavBar({
@@ -88,12 +90,14 @@ export function NavBar({
   setIconPortalNode,
   setHeaderPortalNode,
   dropdownMenuItems,
+  hasPortalChildren,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
   const { user } = useUser();
   const userName = getNameFromUser(user as StrictSessionUser);
   const atLeastMd = useBreakpointsAtLeast('md');
+  const theme = useTheme();
 
   return (
     <Toolbar center flex={1} flexDirection="column">
@@ -143,8 +147,15 @@ export function NavBar({
           </FlexBox>
         </TopRow>
       </InnerToolbar>
-      <FlexBox flex={1} justifyContent="flex-end" marginTop={4} width="100%">
-        <Portal flexGap={flexGap} ref={setIconPortalNode} />
+
+      <FlexBox
+        marginTop={hasPortalChildren ? 4 : 0}
+        maxWidth={`${theme.breakpointValues.lg}px`}
+        width="100%"
+      >
+        <FlexBox flex={1} justifyContent="flex-end" width="100%">
+          <Portal flexGap={flexGap} ref={setIconPortalNode} />
+        </FlexBox>
       </FlexBox>
     </Toolbar>
   );
