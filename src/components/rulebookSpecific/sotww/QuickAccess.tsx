@@ -19,9 +19,11 @@ export function QuickAccess() {
   const { watch } = useFormContext<SotwwCharacterData>();
   const { totalDefense, recalculateDefense } = useContext(DefenseContext);
 
-  const equippedWeapon = watch('weapons').find((w) => w.weapon_equipped);
+  const equippedWeapon = watch('weapons').filter((w) => w.weapon_equipped);
   const weaponText = equippedWeapon
-    ? `${equippedWeapon.weapon_name} ${equippedWeapon.weapon_damage}`
+    ? equippedWeapon
+        .map((w) => `${w.weapon_name} ${w.weapon_damage}`)
+        .join(' / ')
     : 'Unarmed 1d6';
   const equippedArmor = watch('armors').filter((a) => a.armor_equipped);
   const equippedArmorText = equippedArmor.map((a) => a.armor_name).join(', ');
@@ -29,6 +31,7 @@ export function QuickAccess() {
   const health = watch('health_current');
   const conditions = watch('conditions');
   const boonBane = watch('boons_and_banes');
+  const bonusDamage = watch('bonus_attack_damage');
 
   useEffect(() => {
     recalculateDefense();
@@ -37,7 +40,6 @@ export function QuickAccess() {
   return (
     <FormSection
       borderColor="primary"
-      // borderStyle="dotted"
       columns={1}
       isCollapsible={false}
       title="Quick Access"
@@ -54,7 +56,10 @@ export function QuickAccess() {
             </Text>
           </Text>
           <Text>
-            Weapon: <Text color="textAccent">{weaponText}</Text>
+            Attack: <Text color="textAccent">{weaponText}</Text>
+            {bonusDamage && (
+              <Text color="textAccent"> + {bonusDamage} Bonus</Text>
+            )}
           </Text>
           <Text>
             Defense:{' '}
