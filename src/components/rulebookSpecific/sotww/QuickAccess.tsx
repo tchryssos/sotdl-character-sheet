@@ -15,13 +15,38 @@ const LongEffect = styled(Text)`
   white-space: pre-line;
 `;
 
+interface QuickKeyValProps {
+  label: string;
+  value: string;
+  longVal?: boolean;
+}
+function QuickKeyVal({ label, value, longVal }: QuickKeyValProps) {
+  if (longVal) {
+    return (
+      <FlexBox flexDirection="column">
+        <Text>{label}:</Text>
+        <LongEffect color="textAccent" variant="body-xs">
+          {value}
+        </LongEffect>
+      </FlexBox>
+    );
+  }
+  return (
+    <Text>
+      {label}: <Text color="textAccent">{value}</Text>
+    </Text>
+  );
+}
+
 export function QuickAccess() {
   const { watch } = useFormContext<SotwwCharacterData>();
   const { totalDefense, recalculateDefense } = useContext(DefenseContext);
 
-  const equippedWeapon = watch('weapons').find((w) => w.weapon_equipped);
+  const equippedWeapon = watch('weapons').filter((w) => w.weapon_equipped);
   const weaponText = equippedWeapon
-    ? `${equippedWeapon.weapon_name} ${equippedWeapon.weapon_damage}`
+    ? equippedWeapon
+        .map((w) => `${w.weapon_name} ${w.weapon_damage}`)
+        .join(' / ')
     : 'Unarmed 1d6';
   const equippedArmor = watch('armors').filter((a) => a.armor_equipped);
   const equippedArmorText = equippedArmor.map((a) => a.armor_name).join(', ');
@@ -29,6 +54,7 @@ export function QuickAccess() {
   const health = watch('health_current');
   const conditions = watch('conditions');
   const boonBane = watch('boons_and_banes');
+  const bonusDamage = watch('bonus_attack_damage');
 
   useEffect(() => {
     recalculateDefense();
@@ -37,7 +63,6 @@ export function QuickAccess() {
   return (
     <FormSection
       borderColor="primary"
-      // borderStyle="dotted"
       columns={1}
       isCollapsible={false}
       title="Quick Access"
@@ -47,39 +72,25 @@ export function QuickAccess() {
         gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr', lg: '1fr 2fr' }}
       >
         <FlexBox flexDirection="column" gap={8}>
-          <Text>
-            Damage:{' '}
-            <Text color="textAccent">
-              {damage}/{health}
-            </Text>
-          </Text>
-          <Text>
-            Weapon: <Text color="textAccent">{weaponText}</Text>
-          </Text>
-          <Text>
-            Defense:{' '}
-            <Text color="textAccent">
-              {totalDefense} ({equippedArmorText || 'Natural Defense'})
-            </Text>
-          </Text>
+          <QuickKeyVal label="Damage" value={`${damage}/${health}`} />
+          <QuickKeyVal label="Weapon" value={weaponText} />
+          {trim(bonusDamage) && (
+            <QuickKeyVal label="Bonus Atk Damage" value={`+${bonusDamage}`} />
+          )}
+          <QuickKeyVal
+            label="Defense"
+            value={`${totalDefense} (${
+              equippedArmorText || 'Natural Defense'
+            })`}
+          />
         </FlexBox>
 
         <GridBox columns={{ base: 1, lg: 2 }} gap={{ base: 8, lg: 16 }}>
           {trim(boonBane) && (
-            <FlexBox flexDirection="column">
-              <Text>Boons/Banes:</Text>
-              <LongEffect color="textAccent" variant="body-xs">
-                {boonBane}
-              </LongEffect>
-            </FlexBox>
+            <QuickKeyVal label="Boons/Banes" longVal value={boonBane} />
           )}
           {trim(conditions) && (
-            <FlexBox flexDirection="column">
-              <Text>Conditions:</Text>
-              <LongEffect color="textAccent" variant="body-xs">
-                {conditions}
-              </LongEffect>
-            </FlexBox>
+            <QuickKeyVal label="Conditions" longVal value={conditions} />
           )}
         </GridBox>
       </GridBox>

@@ -28,7 +28,7 @@ import { AttributeInputs } from './inputs/AttributeInputs';
 import { BackgroundInputs } from './inputs/BackgroundInputs';
 import { BasicInfoInputs } from './inputs/BasicInfoInputs';
 import { BoonBaneInputs } from './inputs/BoonBaneInputs';
-import { ConditionInputs } from './inputs/ConditionInputs';
+import { CombatModifierInputs } from './inputs/CombatModifierInputs';
 import { CurrencyInputs } from './inputs/CurrencyInputs';
 import { DefenseInputs } from './inputs/DefenseInputs';
 import { EquipmentInputs } from './inputs/EquipmentInputs';
@@ -167,7 +167,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
                 >
                   <GridBox columns={{ base: 1, sm: 2 }}>
                     <DefenseInputs />
-                    <ConditionInputs />
+                    <CombatModifierInputs />
                   </GridBox>
                   <WeaponInputs />
                   <ArmorInputs />
