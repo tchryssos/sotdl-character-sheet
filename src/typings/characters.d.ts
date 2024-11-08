@@ -30,3 +30,8 @@ export type StrictCharacter<T extends CharacterData> = Omit<
   characterData: T;
   rulebookName: RulebookType;
 };
+
+export interface LastSaved {
+  auto: boolean;
+  on: Date;
+}

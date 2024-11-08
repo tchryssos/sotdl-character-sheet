@@ -1,3 +1,4 @@
+import { minutesToMilliseconds } from 'date-fns';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -11,15 +12,21 @@ import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
 import { ErrorResponse } from '~/typings/api';
-import { CharacterData } from '~/typings/characters';
+import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { RulebookType } from '~/typings/rulebooks';
+
+import { FlexBox } from '../box/FlexBox';
 
 interface SaveButtonProps {
   playerId: number;
   characterName: string;
   characterId?: string;
   rulebookName: RulebookType;
+  onSaveSuccess?: (
+    char: StrictCharacter<CharacterData>,
+    autosave: boolean
+  ) => void;
 }
 
 export function SaveButton({
@@ -27,6 +34,7 @@ export function SaveButton({
   characterName,
   characterId = NEW_ID,
   rulebookName,
+  onSaveSuccess,
 }: SaveButtonProps) {
   const [isSaving, setIsSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
@@ -49,17 +57,17 @@ export function SaveButton({
           imageUrl: null,
         });
         if (isSuccessfulCharacterResponse(resp)) {
-          addNotifications([
-            createNotification(
-              SUCCESSES[
-                isAutosave
-                  ? SuccessTypes.CharacterAutosaved
-                  : SuccessTypes.CharacterSaved
-              ]
-            ),
-          ]);
-          if (isNewCharacter) {
-            push(createCharacterRoute(resp.id));
+          onSaveSuccess?.(
+            resp as StrictCharacter<CharacterData>,
+            Boolean(isAutosave)
+          );
+          if (!isAutosave) {
+            addNotifications([
+              createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
+            ]);
+            if (isNewCharacter) {
+              push(createCharacterRoute(resp.id));
+            }
           }
         } else {
           addNotifications([
@@ -90,6 +98,7 @@ export function SaveButton({
       playerId,
       push,
       rulebookName,
+      onSaveSuccess,
     ]
   );
 
@@ -98,14 +107,15 @@ export function SaveButton({
       if (!isNewCharacter) {
         onSave(true);
       }
-      // Autosave every 5 minutes
-    }, 300000);
+    }, minutesToMilliseconds(5));
     return () => clearInterval(interval);
   }, [onSave, isNewCharacter]);
 
   return (
-    <IconButton isLoading={isSaving} type="submit" onClick={() => onSave()}>
-      <Save title="Save character" titleId="save-character" />
-    </IconButton>
+    <FlexBox alignItems="flex-end">
+      <IconButton isLoading={isSaving} type="submit" onClick={() => onSave()}>
+        <Save title="Save character" titleId="save-character" />
+      </IconButton>
+    </FlexBox>
   );
 }

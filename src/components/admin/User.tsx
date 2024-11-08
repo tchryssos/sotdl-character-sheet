@@ -162,7 +162,11 @@ export function User() {
       noStyles
       onSubmit={onSubmit}
     >
-      <RolesSection columns={isLessThanSm ? 1 : 2} title="Edit User">
+      <RolesSection
+        columns={isLessThanSm ? 1 : 2}
+        overflow="visible"
+        title="Edit User"
+      >
         <FlexBox flexDirection="column" gap={8}>
           <UserSelect
             activeUser={activeUser}

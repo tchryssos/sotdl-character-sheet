@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 
-import { useBreakpointsIsGreaterThan } from '~/logic/hooks/useBreakpoints';
+import {
+  useBreakpointsAtLeast,
+  useBreakpointsIsGreaterThan,
+} from '~/logic/hooks/useBreakpoints';
 import { CharacterData, StrictCharacter } from '~/typings/characters';
 
 import { FormSection } from '../form/containers/FormSection';
@@ -21,16 +24,21 @@ interface CharactersSectionProps {
 }
 
 export function CharactersSection({ characters }: CharactersSectionProps) {
-  const greaterThanXxs = useBreakpointsIsGreaterThan('xxs');
   const greaterThanSm = useBreakpointsIsGreaterThan('sm');
+  const atLeastSm = useBreakpointsAtLeast('sm');
+
+  let columns = 1;
+
+  if (atLeastSm) {
+    if (greaterThanSm) {
+      columns = 3;
+    } else {
+      columns = 2;
+    }
+  }
 
   return (
-    <Section
-      // eslint-disable-next-line no-nested-ternary
-      columns={greaterThanXxs ? (greaterThanSm ? 3 : 2) : 1}
-      isCollapsible={false}
-      title="Characters"
-    >
+    <Section columns={columns} isCollapsible={false} title="Characters">
       {characters.length ? (
         characters.map((c) => (
           <ListItem key={c.id}>

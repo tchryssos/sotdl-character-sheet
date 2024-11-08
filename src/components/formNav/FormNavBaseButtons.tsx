@@ -9,6 +9,7 @@ import { CloneButton } from '~/components/formNav/CloneButton';
 import { DeleteButton } from '~/components/formNav/DeleteButton';
 import { EditContext } from '~/logic/contexts/editContext';
 import { useIsNewCharacter } from '~/logic/hooks/useIsNewCharacter';
+import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { RulebookType } from '~/typings/rulebooks';
 import { StrictSessionUser } from '~/typings/user';
 
@@ -26,6 +27,10 @@ type NavButtonProps = {
   rulebookName: RulebookType;
   characterName: string;
   quickAccess?: QuickAccessProps;
+  onSaveSuccess?: (
+    char: StrictCharacter<CharacterData>,
+    isAutosave: boolean
+  ) => void;
 };
 
 export function FormNavBaseButtons({
@@ -33,6 +38,7 @@ export function FormNavBaseButtons({
   rulebookName,
   characterName,
   quickAccess,
+  onSaveSuccess,
 }: NavButtonProps) {
   const { user } = useUser();
   const { isEditMode, setIsEditMode } = useContext(EditContext);
@@ -63,6 +69,7 @@ export function FormNavBaseButtons({
               characterName={characterName}
               playerId={(user as StrictSessionUser).id}
               rulebookName={rulebookName}
+              onSaveSuccess={onSaveSuccess}
             />
           )}
         </>

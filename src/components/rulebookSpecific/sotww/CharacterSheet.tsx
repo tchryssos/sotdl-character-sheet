@@ -9,6 +9,8 @@ import { Form as FormComponent } from '~/components/form/Form';
 import { TabPanel } from '~/components/tabs/TabPanel';
 import { Tabs } from '~/components/tabs/Tabs';
 import { TabLabelObject } from '~/components/tabs/types';
+import { Text } from '~/components/Text';
+import { SHY } from '~/constants/characterEntities';
 import { RpgIcons } from '~/constants/icons';
 import { DEFAULT_VALUES } from '~/constants/sotww/form';
 import { FORM_COLUMN_GAP, FORM_ROW_GAP } from '~/constants/styles';
@@ -18,7 +20,7 @@ import { useSheetHotkeys } from '~/logic/hooks/useSheetHotkeys';
 import { useSheetState } from '~/logic/hooks/useSheetState';
 import { getTabIndex } from '~/logic/utils/getTabIndex';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
-import { StrictCharacter } from '~/typings/characters';
+import { LastSaved, StrictCharacter } from '~/typings/characters';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 import { DefenseProvider } from './DefenseProvider';
@@ -78,8 +80,25 @@ const sharedGapProps = {
   rowGap: pxToRem(FORM_ROW_GAP),
 };
 
+interface AutosaveTextProps {
+  lastSaved: LastSaved | null;
+}
+function AutosaveText({ lastSaved }: AutosaveTextProps) {
+  const text = lastSaved
+    ? `Last ${lastSaved.auto ? 'auto' : ''}saved ${new Date(
+        lastSaved.on
+      ).toLocaleTimeString()}`
+    : SHY;
+  return (
+    <Text color="textAccent" variant="body-xs">
+      {text}
+    </Text>
+  );
+}
+
 export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
   const [showQuickAccess, setShowQuickAccess] = useState(false);
+  const [lastSaved, setLastSaved] = useState<LastSaved | null>(null);
 
   const { user } = useUser();
   const {
@@ -116,8 +135,10 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
                 showQuickAccess,
                 setShowQuickAccess,
               }}
+              setLastSaved={setLastSaved}
             />
             {showQuickAccess && <QuickAccess />}
+            <AutosaveText lastSaved={lastSaved} />
             <Tabs
               defaultTab={getTabIndex(tabLabels, queryTab)}
               tabLabels={tabLabels}
