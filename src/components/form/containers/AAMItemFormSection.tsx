@@ -5,12 +5,11 @@ import { FormSection } from './FormSection';
 interface AAMItemFormSectionProps
   extends Pick<
     ComponentProps<typeof FormSection>,
-    'title' | 'visibilityTitle' | 'columns' | 'titleColor' | 'linkId'
+    'title' | 'columns' | 'titleColor' | 'linkId'
   > {}
 
 export function AAMItemFormSection({
   title,
-  visibilityTitle,
   columns = 1,
   children,
   titleColor,
@@ -24,7 +23,6 @@ export function AAMItemFormSection({
       linkId={linkId}
       title={title}
       titleColor={titleColor}
-      visibilityTitle={visibilityTitle}
     >
       {children}
     </FormSection>

@@ -4,7 +4,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { Box } from '../box/Box';
 import { FlexBox } from '../box/FlexBox';
-import { VisibilityContextProvider } from '../providers/VisibilityContextProvider';
 
 type FormProps<T> = {
   onSubmit: (values: T) => void;
@@ -45,19 +44,17 @@ export function Form<T extends Record<string, unknown>>({
   });
 
   return (
-    <VisibilityContextProvider>
-      <FormWrapper center>
-        <StyledForm
-          className={className}
-          noStyles={noStyles}
-          onSubmit={formMethods.handleSubmit(
-            onSubmit as (v: { [k: string]: any }) => void
-          )}
-        >
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          <FormProvider {...formMethods}>{children}</FormProvider>
-        </StyledForm>
-      </FormWrapper>
-    </VisibilityContextProvider>
+    <FormWrapper center>
+      <StyledForm
+        className={className}
+        noStyles={noStyles}
+        onSubmit={formMethods.handleSubmit(
+          onSubmit as (v: { [k: string]: any }) => void
+        )}
+      >
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <FormProvider {...formMethods}>{children}</FormProvider>
+      </StyledForm>
+    </FormWrapper>
   );
 }

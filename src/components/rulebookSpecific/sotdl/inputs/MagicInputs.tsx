@@ -91,7 +91,6 @@ function SpellField({
       borderless
       gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}
       title={sectionTitle}
-      visibilityTitle={`spell${index}`}
     >
       <GridBox columns={1} rowGap={16}>
         <GridBox gridTemplateColumns={isLessThanSm ? '1fr 1fr' : '2fr 1fr'}>

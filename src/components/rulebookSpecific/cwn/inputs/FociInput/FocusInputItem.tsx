@@ -32,10 +32,7 @@ export function FocusInputItem({
   const focusName = watch(focusNameFieldName);
 
   return (
-    <AAMItemFormSection
-      title={focusName as string}
-      visibilityTitle={`focus${focusName}${index}`}
-    >
+    <AAMItemFormSection title={focusName as string}>
       <AAMItemTitleAndDelete<CwnCharacterData>
         index={index}
         label="Name"

@@ -35,7 +35,7 @@ function FocusItem({ index, onDelete }: FocusItemProps) {
   )}`;
 
   return (
-    <AAMItemFormSection title={sectionTitle} visibilityTitle={`focus${index}`}>
+    <AAMItemFormSection title={sectionTitle}>
       <AAMItemTitleAndDelete<WwnCharacterData>
         index={index}
         label="Name"

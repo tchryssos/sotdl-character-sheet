@@ -76,7 +76,6 @@ export function WeaponInputItem({
       linkId={id}
       title={title}
       titleColor={readied ? 'text' : 'textAccent'}
-      visibilityTitle={`${name}${index}`}
     >
       <GridBox
         alignItems="start"

@@ -20,10 +20,7 @@ export function EdgeInputItem({ onDelete, postSortIndex }: EdgeInputProps) {
   const nameFieldName = createEdgeFieldName('name', postSortIndex);
   const name = watch(nameFieldName);
   return (
-    <AAMItemFormSection
-      title={name}
-      visibilityTitle={`${name}${postSortIndex}`}
-    >
+    <AAMItemFormSection title={name}>
       <AAMItemTitleAndDelete<CwnCharacterData>
         index={postSortIndex}
         label="Edge Name"

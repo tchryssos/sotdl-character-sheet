@@ -41,13 +41,7 @@ function ClassAbilityField({ index, onDelete }: ClassAbilityFieldProps) {
     `Class Ability ${index + 1}`;
 
   return (
-    <FormSection
-      borderless
-      columns={1}
-      isNested
-      title={name}
-      visibilityTitle={`ability${index}`}
-    >
+    <FormSection borderless columns={1} isNested title={name}>
       <GridBox
         alignItems="end"
         gridTemplateColumns={isEditMode ? '1fr auto' : '1fr'}

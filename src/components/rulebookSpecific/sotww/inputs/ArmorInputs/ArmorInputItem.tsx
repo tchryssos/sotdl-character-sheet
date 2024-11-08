@@ -100,7 +100,6 @@ export function ArmorInputItem({
       isNested
       title={title}
       titleColor={armorEquipped ? 'text' : 'textAccent'}
-      visibilityTitle={`armors${index}`}
     >
       <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>
         <CheckboxInput<SotwwCharacterData>
