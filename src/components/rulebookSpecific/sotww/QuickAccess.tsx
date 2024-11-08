@@ -111,9 +111,8 @@ export function QuickAccess() {
 
   const getAndSetHeight = useMemo(
     () =>
-      throttle((bonus?: number) => {
-        const h =
-          (document.getElementById(qaId)?.clientHeight || 0) + (bonus || 0);
+      throttle(() => {
+        const h = document.getElementById(qaId)?.clientHeight || 0;
         setHeight(h);
       }, 250),
     []
@@ -131,6 +130,15 @@ export function QuickAccess() {
     conditions,
     fixed,
   ]);
+
+  useEffect(() => {
+    if (fixed) {
+      window.addEventListener('resize', getAndSetHeight);
+    }
+    return () => {
+      window.removeEventListener('resize', getAndSetHeight);
+    };
+  }, [getAndSetHeight, fixed]);
 
   return (
     <>
