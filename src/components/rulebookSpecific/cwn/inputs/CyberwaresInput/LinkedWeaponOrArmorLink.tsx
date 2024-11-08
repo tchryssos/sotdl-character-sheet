@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 
 import { Link } from '~/components/Link';
-import { SetTabContext } from '~/components/tabs/Tabs';
+import { SetTabContext } from '~/components/tabs/SetTabContextProvider';
 import { Text } from '~/components/Text';
 import { CWN_TAB_LABELS, DEFAULT_VALUES, TabLabel } from '~/constants/cwn/form';
 import { CyberwareAs } from '~/constants/cwn/game';
@@ -18,7 +18,7 @@ export function LinkedWeaponOrArmorLink({
   cyberwareAs,
 }: LinkedWeaponOrArmorLinkProps) {
   const { asPath } = useRouter();
-  const setTab = useContext(SetTabContext);
+  const { setTab } = useContext(SetTabContext);
 
   if (!cyberwareAs) {
     return null;

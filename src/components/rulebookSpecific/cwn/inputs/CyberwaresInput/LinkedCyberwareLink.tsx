@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Link } from '~/components/Link';
-import { SetTabContext } from '~/components/tabs/Tabs';
+import { SetTabContext } from '~/components/tabs/SetTabContextProvider';
 import { Text } from '~/components/Text';
 import { CWN_TAB_LABELS, DEFAULT_VALUES, TabLabel } from '~/constants/cwn/form';
 import { CwnCharacterData, CwnCyberware } from '~/typings/cwn/characterData';
@@ -19,7 +19,7 @@ export function LinkedCyberwareLink({
   cyberware,
 }: LinkedCyberwareLinkProps) {
   const { asPath } = useRouter();
-  const setTab = useContext(SetTabContext);
+  const { setTab } = useContext(SetTabContext);
   const { getValues } = useFormContext<CwnCharacterData>();
   let linkedCyberware = cyberware;
 

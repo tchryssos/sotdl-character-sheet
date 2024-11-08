@@ -130,7 +130,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
                     },
                   },
                   undefined,
-                  { scroll: !showQuickAccess }
+                  { scroll: !showQuickAccess, shallow: true }
                 )
               }
             >

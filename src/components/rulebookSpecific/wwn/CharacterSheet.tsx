@@ -121,12 +121,16 @@ export function CharacterSheet({ character }: WwnCharacterSheetProps) {
               defaultTab={getTabIndex(tabLabels, queryTab)}
               tabLabels={tabLabels}
               onChange={(index) =>
-                router.replace({
-                  query: {
-                    ...router.query,
-                    tab: tabLabels[index].label.toLowerCase(),
+                router.replace(
+                  {
+                    query: {
+                      ...router.query,
+                      tab: tabLabels[index].label.toLowerCase(),
+                    },
                   },
-                })
+                  undefined,
+                  { shallow: true }
+                )
               }
             >
               {/* Description */}
