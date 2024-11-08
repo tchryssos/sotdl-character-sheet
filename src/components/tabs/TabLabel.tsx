@@ -23,6 +23,9 @@ const Tab = styled(MuiTab)(({ theme }) => ({
   [`&.${tabClasses.selected}`]: {
     backgroundColor: theme.colors.accentHeavy,
   },
+  '&:hover': {
+    backgroundColor: theme.colors.smudge,
+  },
 }));
 
 interface TabLabelProps {

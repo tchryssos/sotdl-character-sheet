@@ -136,7 +136,7 @@ export const filterCssProps = (props: Record<string, any>, theme: Theme) => {
       // Create a copy of the propObj so we don't mutate it
       let nextPropObj = { ...propObj } as CssPropObj;
       const propValue = props[currPropKey];
-      if (propValue) {
+      if (propValue !== undefined) {
         // Check if the current prop is a style-by-breakpoint object
         if (isStyleByBreakpointObj(propValue)) {
           const breakpoints = Object.keys(propValue) as StyleByBreakpointKeys[];

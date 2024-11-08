@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
-import { trim } from 'lodash';
-import { useContext, useEffect, useState } from 'react';
+import { throttle, trim } from 'lodash';
+import {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
@@ -8,6 +14,7 @@ import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
 import { FormSection } from '~/components/form/containers/FormSection';
 import { Pin } from '~/components/icons/Pin';
+import { BodyContainer } from '~/components/meta/BodyContainer';
 import { Text } from '~/components/Text';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
@@ -26,13 +33,10 @@ const PinButton = styled(IconButton)`
 
 const QuickSection = styled(FormSection, {
   shouldForwardProp: (prop) => prop !== 'fixed',
-})<{ fixed: boolean }>(({ fixed, theme }) => ({
-  position: fixed ? 'fixed' : 'relative',
+})(({ theme }) => ({
   backgroundImage: `linear-gradient(to bottom, transparent 0, ${theme.colors.background} 10%, ${theme.colors.background} 100%)`,
-  zIndex: 2,
+
   height: 'fit-content',
-  paddingRight: fixed ? theme.spacing['8'] : 0,
-  paddingBottom: fixed ? theme.spacing['8'] : 0,
   width: '100%',
 }));
 
@@ -61,6 +65,26 @@ function QuickKeyVal({ label, value, longVal }: QuickKeyValProps) {
 
 const qaId = 'quick-access';
 
+function FixedWrapper({
+  children,
+  fixed,
+}: PropsWithChildren<{ fixed: boolean }>) {
+  if (fixed) {
+    return (
+      <BodyContainer
+        left={0}
+        position="fixed"
+        right={0}
+        width="100%"
+        zIndex={2}
+      >
+        {children}
+      </BodyContainer>
+    );
+  }
+  return <>{children}</>;
+}
+
 export function QuickAccess() {
   const { watch } = useFormContext<SotwwCharacterData>();
   const { totalDefense, recalculateDefense } = useContext(DefenseContext);
@@ -85,53 +109,80 @@ export function QuickAccess() {
     recalculateDefense();
   }, [recalculateDefense]);
 
+  const getAndSetHeight = useMemo(
+    () =>
+      throttle((bonus?: number) => {
+        const h =
+          (document.getElementById(qaId)?.clientHeight || 0) + (bonus || 0);
+        setHeight(h);
+      }, 250),
+    []
+  );
+
+  useEffect(() => {
+    if (fixed) {
+      getAndSetHeight();
+    }
+  }, [
+    getAndSetHeight,
+    weaponText,
+    equippedArmorText,
+    boonBane,
+    conditions,
+    fixed,
+  ]);
+
   return (
     <>
       {fixed && <div style={{ height }} />}
-      <QuickSection
-        borderColor="primary"
-        columns={1}
-        fixed={fixed}
-        id={qaId}
-        isCollapsible={false}
-        title="Quick Access"
-      >
-        <GridBox
-          gap={8}
-          gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr', lg: '1fr 2fr' }}
+      <FixedWrapper fixed={fixed}>
+        <QuickSection
+          borderColor="primary"
+          columns={1}
+          id={qaId}
+          isCollapsible={false}
+          title="Quick Access"
         >
-          <FlexBox flexDirection="column" gap={8}>
-            <QuickKeyVal label="Damage" value={`${damage}/${health}`} />
-            <QuickKeyVal label="Weapon" value={weaponText} />
-            {trim(bonusDamage) && (
-              <QuickKeyVal label="Bonus Atk Damage" value={`+${bonusDamage}`} />
-            )}
-            <QuickKeyVal
-              label="Defense"
-              value={`${totalDefense} (${
-                equippedArmorText || 'Natural Defense'
-              })`}
-            />
-          </FlexBox>
+          <GridBox
+            gap={8}
+            gridTemplateColumns={{ base: '1fr', sm: '1fr 1fr', lg: '1fr 2fr' }}
+          >
+            <FlexBox flexDirection="column" gap={8}>
+              <QuickKeyVal label="Damage" value={`${damage}/${health}`} />
+              <QuickKeyVal label="Weapon" value={weaponText} />
+              {trim(bonusDamage) && (
+                <QuickKeyVal
+                  label="Bonus Atk Damage"
+                  value={`+${bonusDamage}`}
+                />
+              )}
+              <QuickKeyVal
+                label="Defense"
+                value={`${totalDefense} (${
+                  equippedArmorText || 'Natural Defense'
+                })`}
+              />
+            </FlexBox>
 
-          <GridBox columns={{ base: 1, lg: 2 }} gap={{ base: 8, lg: 16 }}>
-            {trim(boonBane) && (
-              <QuickKeyVal label="Boons/Banes" longVal value={boonBane} />
-            )}
-            {trim(conditions) && (
-              <QuickKeyVal label="Conditions" longVal value={conditions} />
-            )}
+            <GridBox columns={{ base: 1, lg: 2 }} gap={{ base: 8, lg: 16 }}>
+              {trim(boonBane) && (
+                <QuickKeyVal label="Boons/Banes" longVal value={boonBane} />
+              )}
+              {trim(conditions) && (
+                <QuickKeyVal label="Conditions" longVal value={conditions} />
+              )}
+            </GridBox>
           </GridBox>
-        </GridBox>
-        <PinButton
-          onClick={() => {
-            setHeight(document.getElementById(qaId)?.clientHeight || 0);
-            setFixed(!fixed);
-          }}
-        >
-          <Pin color={fixed ? 'primary' : 'text'} title="Pin Quick Access" />
-        </PinButton>
-      </QuickSection>
+          <PinButton
+            onClick={() => {
+              getAndSetHeight();
+              setFixed(!fixed);
+            }}
+          >
+            <Pin color={fixed ? 'primary' : 'text'} title="Pin Quick Access" />
+          </PinButton>
+        </QuickSection>
+      </FixedWrapper>
     </>
   );
 }
