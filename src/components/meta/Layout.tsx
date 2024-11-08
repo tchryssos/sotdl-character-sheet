@@ -53,14 +53,12 @@ export function Layout({ children, title, meta }: LayoutProps) {
     [iconPortalNode, headerPortalNode]
   );
 
-  const hasPortalChildren = Boolean(iconPortalNode?.childElementCount);
-
   return (
     <NavContext.Provider value={layoutContextValue}>
       <Head meta={meta} title={docTitle} />
       <NavBar
         dropdownMenuItems={dropdownItems}
-        hasPortalChildren={hasPortalChildren}
+        iconPortalNode={iconPortalNode}
         setHeaderPortalNode={setHeaderPortalNodeCallback}
         setIconPortalNode={setIconPortalNodeCallback}
         title={navTitle}

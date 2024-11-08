@@ -82,7 +82,7 @@ interface NavBarProps {
   setIconPortalNode: (node: HTMLDivElement) => void;
   setHeaderPortalNode: (node: HTMLDivElement) => void;
   dropdownMenuItems: DropdownMenuProps['menuItems'];
-  hasPortalChildren: boolean;
+  iconPortalNode?: HTMLDivElement;
 }
 
 export function NavBar({
@@ -90,7 +90,7 @@ export function NavBar({
   setIconPortalNode,
   setHeaderPortalNode,
   dropdownMenuItems,
-  hasPortalChildren,
+  iconPortalNode,
 }: NavBarProps) {
   const isXxs = useBreakpointsLessThan('xs');
   const flexGap = isXxs ? 8 : 16;
@@ -98,6 +98,11 @@ export function NavBar({
   const userName = getNameFromUser(user as StrictSessionUser);
   const atLeastMd = useBreakpointsAtLeast('md');
   const theme = useTheme();
+
+  // iconPortalNode is indeed the div below, but I was having issues with props
+  // not updating when I tried to pass values FROM the node vs the node itself
+  // so now we're calculating this in NavBar instead of Layout
+  const hasPortalChildren = Boolean(iconPortalNode?.childElementCount);
 
   return (
     <Toolbar center flex={1} flexDirection="column">

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 import { Box } from '../box/Box';
 
@@ -21,6 +22,9 @@ export function CharacterPortrait({
   className,
   borderless,
 }: CharacterPortraitProps) {
+  const [hasError, setHasError] = useState(false);
+  const [loaded, setHasLoaded] = useState(false);
+
   return (
     <Box
       borderColor="textAccent"
@@ -29,7 +33,6 @@ export function CharacterPortrait({
       className={className}
       height="fit-content"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <Portrait
         alt={alt}
         decoding="async"
@@ -37,6 +40,9 @@ export function CharacterPortrait({
         height={height}
         loading="lazy"
         src={src}
+        width={hasError || !loaded ? height : undefined}
+        onError={() => setHasError(true)}
+        onLoad={() => setHasLoaded(true)}
       />
     </Box>
   );
