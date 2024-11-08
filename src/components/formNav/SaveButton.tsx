@@ -49,17 +49,13 @@ export function SaveButton({
           imageUrl: null,
         });
         if (isSuccessfulCharacterResponse(resp)) {
-          addNotifications([
-            createNotification(
-              SUCCESSES[
-                isAutosave
-                  ? SuccessTypes.CharacterAutosaved
-                  : SuccessTypes.CharacterSaved
-              ]
-            ),
-          ]);
-          if (isNewCharacter) {
-            push(createCharacterRoute(resp.id));
+          if (!isAutosave) {
+            addNotifications([
+              createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
+            ]);
+            if (isNewCharacter) {
+              push(createCharacterRoute(resp.id));
+            }
           }
         } else {
           addNotifications([

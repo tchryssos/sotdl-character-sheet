@@ -92,4 +92,5 @@ export type SotwwCharacterData = {
   currency_silver: number;
   currency_gold: number;
   magic_traditions: SotwwMagicTradition[];
+  image_url: string;
 };

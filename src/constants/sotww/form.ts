@@ -36,4 +36,5 @@ export const DEFAULT_VALUES: SotwwCharacterData = {
   currency_gold: 0,
   currency_silver: 0,
   magic_traditions: [],
+  image_url: '',
 };
