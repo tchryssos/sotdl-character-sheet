@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { IconButton } from '~/components/buttons/IconButton';
@@ -34,43 +34,77 @@ export function SaveButton({
 
   const { push } = useRouter();
 
-  const onSave = async () => {
-    setIsSaving(true);
-    try {
-      const resp = await saveCharacter({
-        id: characterId as number | typeof NEW_ID,
-        characterData: getValues() as CharacterData,
-        playerId,
-        rulebookName,
-        name: characterName,
-        imageUrl: null,
-      });
-      if (isSuccessfulCharacterResponse(resp)) {
-        addNotifications([
-          createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
-        ]);
-        if (characterId === NEW_ID) {
-          push(createCharacterRoute(resp.id));
+  const isNewCharacter = characterId === NEW_ID;
+
+  const onSave = useCallback(
+    async (isAutosave?: boolean) => {
+      setIsSaving(true);
+      try {
+        const resp = await saveCharacter({
+          id: characterId as number | typeof NEW_ID,
+          characterData: getValues() as CharacterData,
+          playerId,
+          rulebookName,
+          name: characterName,
+          imageUrl: null,
+        });
+        if (isSuccessfulCharacterResponse(resp)) {
+          addNotifications([
+            createNotification(
+              SUCCESSES[
+                isAutosave
+                  ? SuccessTypes.CharacterAutosaved
+                  : SuccessTypes.CharacterSaved
+              ]
+            ),
+          ]);
+          if (isNewCharacter) {
+            push(createCharacterRoute(resp.id));
+          }
+        } else {
+          addNotifications([
+            createNotification(
+              ERRORS[(resp as ErrorResponse).error as ErrorTypes]
+            ),
+          ]);
         }
-      } else {
+      } catch (e) {
         addNotifications([
           createNotification(
-            ERRORS[(resp as ErrorResponse).error as ErrorTypes]
+            ERRORS[
+              isAutosave
+                ? ErrorTypes.CharacterAutosaveFailure
+                : ErrorTypes.CharacterSaveFailure
+            ]
           ),
         ]);
       }
-    } catch (e) {
-      addNotifications([
-        createNotification(
-          ERRORS['Something went wrong saving your character']
-        ),
-      ]);
-    }
-    setIsSaving(false);
-  };
+      setIsSaving(false);
+    },
+    [
+      addNotifications,
+      characterId,
+      characterName,
+      getValues,
+      isNewCharacter,
+      playerId,
+      push,
+      rulebookName,
+    ]
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isNewCharacter) {
+        onSave(true);
+      }
+      // Autosave every 5 minutes
+    }, 300000);
+    return () => clearInterval(interval);
+  }, [onSave, isNewCharacter]);
 
   return (
-    <IconButton isLoading={isSaving} type="submit" onClick={onSave}>
+    <IconButton isLoading={isSaving} type="submit" onClick={() => onSave()}>
       <Save title="Save character" titleId="save-character" />
     </IconButton>
   );
