@@ -61,7 +61,6 @@ function PathBenefitInput({
       columns={1}
       isNested
       title={watch(benefitNameFieldName)}
-      visibilityTitle={`${pathType}${postSortIndex}${postSortIndex}`}
     >
       <GridBox
         alignItems="end"

@@ -44,7 +44,6 @@ export function ContactInputItem({
   return (
     <AAMItemFormSection
       title={`${contactName} - ${capitalize(contactRelationship)}`}
-      visibilityTitle={`${contactName}${index}`}
     >
       <AAMItemTitleAndDelete<CwnCharacterData>
         index={index}

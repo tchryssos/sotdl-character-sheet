@@ -122,7 +122,6 @@ export function WeaponInputItem({
       isNested
       title={sectionTitle}
       titleColor={weaponReadied ? 'text' : 'textAccent'}
-      visibilityTitle={`weapon${index}`}
     >
       <GridBox columns={1}>
         <GridBox gridTemplateColumns={isXxs ? '1fr' : 'auto 1fr'}>

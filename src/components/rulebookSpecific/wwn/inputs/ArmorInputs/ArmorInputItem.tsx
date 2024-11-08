@@ -87,7 +87,6 @@ export function ArmorInputItem({
       isNested
       title={sectionTitle}
       titleColor={armorReadied ? 'text' : 'textAccent'}
-      visibilityTitle={`armors${index}`}
     >
       <GridBox columns={1}>
         <GridBox gridTemplateColumns={{ base: '1fr', xs: 'auto 1fr' }}>

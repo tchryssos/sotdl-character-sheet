@@ -62,7 +62,6 @@ export function EquipmentInputItem({
       isNested
       title={equipmentName as string}
       titleColor={equipmentReadied ? 'text' : 'textAccent'}
-      visibilityTitle={`equipment${index}`}
     >
       <GridBox gridTemplateColumns="auto 1fr">
         <CheckboxInput<WwnCharacterData>

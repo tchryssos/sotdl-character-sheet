@@ -1,16 +1,9 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import {
-  CSSProperties,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { CSSProperties, PropsWithChildren, useState } from 'react';
 
 import { RpgIcons } from '~/constants/icons';
 import { Theme } from '~/constants/theme';
-import { VisibilityContext } from '~/logic/contexts/visibilityContext';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { Color } from '~/typings/theme';
 
@@ -34,7 +27,6 @@ type FormSectionProps = {
   columns?: GridBoxProps['columns'];
   isCollapsible?: boolean;
   className?: string;
-  visibilityTitle?: string;
   gridTemplateColumns?: GridBoxProps['gridTemplateColumns'];
   defaultExpanded?: boolean;
   icon?: RpgIcons;
@@ -147,7 +139,6 @@ export function FormSection({
   columns,
   isCollapsible = true,
   className,
-  visibilityTitle,
   borderless,
   gridTemplateColumns,
   defaultExpanded = true,
@@ -161,11 +152,6 @@ export function FormSection({
   borderStyle,
   id,
 }: FormSectionProps) {
-  const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
-    useContext(VisibilityContext);
-  const { isExpanded: initIsExpanded } =
-    getSectionVisibilityInfo(visibilityTitle || title) || {};
-
   // START - SECTION EXPANDED STATUS - START
   const [isOpen, setIsOpen] = useState(defaultExpanded);
 
@@ -173,18 +159,7 @@ export function FormSection({
     const nextOpenState = !isOpen;
     onToggleOpen?.(nextOpenState);
     setIsOpen(nextOpenState);
-    setSectionVisibilityInfo(
-      visibilityTitle || title,
-      'isExpanded',
-      nextOpenState
-    );
   };
-
-  useEffect(() => {
-    if (initIsExpanded !== undefined) {
-      setIsOpen(initIsExpanded);
-    }
-  }, [initIsExpanded]);
   // END - SECTION COLLAPSED STATUS - END
 
   const borderProperties =

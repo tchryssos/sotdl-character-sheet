@@ -154,7 +154,6 @@ export function ArmorInputItem({
       linkId={id}
       title={title}
       titleColor={readied ? 'text' : 'textAccent'}
-      visibilityTitle={`${name}${index}`}
     >
       <FlexBox flexDirection="column" gap={{ base: 16, xs: 24 }}>
         <GridBox

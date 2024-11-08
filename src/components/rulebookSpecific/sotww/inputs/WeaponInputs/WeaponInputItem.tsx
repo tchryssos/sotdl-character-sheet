@@ -85,7 +85,6 @@ export function WeaponInputItem({
       isNested
       title={sectionTitle}
       titleColor={weaponEquipped ? 'text' : 'textAccent'}
-      visibilityTitle={`weapon${index}`}
     >
       <GridBox gridTemplateColumns={exactlyXss ? '1fr' : 'auto 1fr'}>
         <CheckboxInput<SotwwCharacterData>

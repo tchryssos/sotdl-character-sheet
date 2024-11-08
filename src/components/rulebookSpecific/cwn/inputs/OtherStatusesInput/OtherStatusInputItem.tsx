@@ -25,7 +25,7 @@ export function OtherStatusInputItem({
   const name = watch(nameFieldName);
 
   return (
-    <AAMItemFormSection title={name} visibilityTitle={`status${name}${index}`}>
+    <AAMItemFormSection title={name}>
       <AAMItemTitleAndDelete<CwnCharacterData>
         index={index}
         label="Name"
