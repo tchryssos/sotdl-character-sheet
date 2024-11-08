@@ -16,11 +16,17 @@ import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 import { guaranteeNumberValue } from '~/logic/utils/form/guaranteeNumberValue';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
+import {
+  CharacterData,
+  LastSaved,
+  StrictCharacter,
+} from '~/typings/characters';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 interface FormNavProps {
   isMyCharacter: boolean;
   quickAccess?: QuickAccessProps;
+  setLastSaved: (ls: LastSaved) => void;
 }
 
 interface CharacterHeaderProps {
@@ -100,7 +106,11 @@ function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
   );
 }
 
-export function FormNav({ isMyCharacter, quickAccess }: FormNavProps) {
+export function FormNav({
+  isMyCharacter,
+  quickAccess,
+  setLastSaved,
+}: FormNavProps) {
   const { watch } = useFormContext<SotwwCharacterData>();
 
   const name = watch('name');
@@ -113,16 +123,29 @@ export function FormNav({ isMyCharacter, quickAccess }: FormNavProps) {
     setDocTitle(title);
   }, [name, setDocTitle]);
 
+  const onSaveSuccess = (
+    char: StrictCharacter<CharacterData>,
+    auto: boolean
+  ) => {
+    setLastSaved({
+      auto,
+      on: char.lastModifiedOn,
+    });
+  };
+
   return (
     <>
       {iconPortalNode &&
         createPortal(
-          <FormNavBaseButtons
-            characterName={name}
-            isMyCharacter={isMyCharacter}
-            quickAccess={quickAccess}
-            rulebookName="sotww"
-          />,
+          <>
+            <FormNavBaseButtons
+              characterName={name}
+              isMyCharacter={isMyCharacter}
+              quickAccess={quickAccess}
+              rulebookName="sotww"
+              onSaveSuccess={onSaveSuccess}
+            />
+          </>,
           iconPortalNode
         )}
       {headerPortalNode && (

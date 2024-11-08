@@ -1,4 +1,3 @@
-import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -13,18 +12,21 @@ import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
 import { ErrorResponse } from '~/typings/api';
-import { CharacterData } from '~/typings/characters';
+import { CharacterData, StrictCharacter } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { RulebookType } from '~/typings/rulebooks';
 
 import { FlexBox } from '../box/FlexBox';
-import { Text } from '../Text';
 
 interface SaveButtonProps {
   playerId: number;
   characterName: string;
   characterId?: string;
   rulebookName: RulebookType;
+  onSaveSuccess?: (
+    char: StrictCharacter<CharacterData>,
+    autosave: boolean
+  ) => void;
 }
 
 export function SaveButton({
@@ -32,17 +34,11 @@ export function SaveButton({
   characterName,
   characterId = NEW_ID,
   rulebookName,
+  onSaveSuccess,
 }: SaveButtonProps) {
   const [isSaving, setIsSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
   const { getValues } = useFormContext();
-  const [lastSaved, setLastSaved] = useState<{
-    auto: boolean;
-    date: Date | null;
-  }>({
-    auto: false,
-    date: null,
-  });
 
   const { push } = useRouter();
 
@@ -61,10 +57,10 @@ export function SaveButton({
           imageUrl: null,
         });
         if (isSuccessfulCharacterResponse(resp)) {
-          setLastSaved({
-            auto: Boolean(isAutosave),
-            date: new Date(),
-          });
+          onSaveSuccess?.(
+            resp as StrictCharacter<CharacterData>,
+            Boolean(isAutosave)
+          );
           if (!isAutosave) {
             addNotifications([
               createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
@@ -102,6 +98,7 @@ export function SaveButton({
       playerId,
       push,
       rulebookName,
+      onSaveSuccess,
     ]
   );
 
@@ -114,20 +111,8 @@ export function SaveButton({
     return () => clearInterval(interval);
   }, [onSave, isNewCharacter]);
 
-  const savedText = lastSaved.date
-    ? capitalize(
-        `${lastSaved.auto ? 'auto' : ''}saved
-        ${lastSaved.date.toLocaleTimeString()}`
-      )
-    : '';
-
   return (
-    <FlexBox alignItems="flex-end" gap={4}>
-      {savedText && (
-        <Text color="textAccent" marginBottom={4} variant="body-xs">
-          {savedText}
-        </Text>
-      )}
+    <FlexBox alignItems="flex-end">
       <IconButton isLoading={isSaving} type="submit" onClick={() => onSave()}>
         <Save title="Save character" titleId="save-character" />
       </IconButton>
