@@ -1,3 +1,4 @@
+import { capitalize } from 'lodash';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -15,6 +16,9 @@ import { CharacterData } from '~/typings/characters';
 import { isSuccessfulCharacterResponse } from '~/typings/characters.guards';
 import { RulebookType } from '~/typings/rulebooks';
 
+import { FlexBox } from '../box/FlexBox';
+import { Text } from '../Text';
+
 interface SaveButtonProps {
   playerId: number;
   characterName: string;
@@ -31,6 +35,13 @@ export function SaveButton({
   const [isSaving, setIsSaving] = useState(false);
   const { addNotifications } = useContext(NotificationsContext);
   const { getValues } = useFormContext();
+  const [lastSaved, setLastSaved] = useState<{
+    auto: boolean;
+    date: Date | null;
+  }>({
+    auto: false,
+    date: null,
+  });
 
   const { push } = useRouter();
 
@@ -49,6 +60,10 @@ export function SaveButton({
           imageUrl: null,
         });
         if (isSuccessfulCharacterResponse(resp)) {
+          setLastSaved({
+            auto: Boolean(isAutosave),
+            date: new Date(),
+          });
           if (!isAutosave) {
             addNotifications([
               createNotification(SUCCESSES[SuccessTypes.CharacterSaved]),
@@ -99,9 +114,23 @@ export function SaveButton({
     return () => clearInterval(interval);
   }, [onSave, isNewCharacter]);
 
+  const savedText = lastSaved.date
+    ? capitalize(
+        `${lastSaved.auto ? 'auto' : ''}saved
+        ${lastSaved.date.toLocaleTimeString()}`
+      )
+    : '';
+
   return (
-    <IconButton isLoading={isSaving} type="submit" onClick={() => onSave()}>
-      <Save title="Save character" titleId="save-character" />
-    </IconButton>
+    <FlexBox alignItems="flex-end" gap={4}>
+      {savedText && (
+        <Text color="textAccent" marginBottom={4} variant="body-xs">
+          {savedText}
+        </Text>
+      )}
+      <IconButton isLoading={isSaving} type="submit" onClick={() => onSave()}>
+        <Save title="Save character" titleId="save-character" />
+      </IconButton>
+    </FlexBox>
   );
 }
