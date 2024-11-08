@@ -2,13 +2,14 @@ import styled from '@emotion/styled';
 import { Tabs as MuiTabs, TabsList } from '@mui/base';
 import {
   ComponentProps,
-  createContext,
   PropsWithChildren,
   useCallback,
+  useContext,
   useEffect,
   useState,
 } from 'react';
 
+import { SetTabContext } from './SetTabContextProvider';
 import { TabLabel } from './TabLabel';
 import type { TabLabelObject } from './types';
 
@@ -24,17 +25,15 @@ const LabelsContainer = styled(TabsList)(({ theme }) => ({
   flexWrap: 'wrap',
 }));
 
-type SetTabContext = (_: unknown, index: number) => void;
-
-export const SetTabContext = createContext<SetTabContext>(() => null);
-
 export function Tabs({
   tabLabels,
   defaultTab = 0,
-  children,
   onChange,
+  children,
 }: PropsWithChildren<TabsProps>) {
   const [tabIndex, setTabIndex] = useState(defaultTab);
+
+  const { setSetTab } = useContext(SetTabContext);
 
   const onTabChange = useCallback(
     (_: unknown, i: number) => {
@@ -43,6 +42,13 @@ export function Tabs({
     },
     [onChange]
   );
+
+  // There are a few places where we
+  // link from one tab to the other, but want to navigate without
+  // reloading the page; this is a way to expose the setTab function
+  useEffect(() => {
+    setSetTab(onTabChange);
+  }, [onTabChange, setSetTab]);
 
   useEffect(() => {
     setTabIndex(defaultTab);
@@ -59,9 +65,7 @@ export function Tabs({
           <TabLabel index={index} key={label.label} label={label} />
         ))}
       </LabelsContainer>
-      <SetTabContext.Provider value={onTabChange}>
-        {children}
-      </SetTabContext.Provider>
+      {children}
     </MuiTabs>
   );
 }
