@@ -24,5 +24,10 @@
     "unequip",
     "unequips",
     "Unreadied"
-  ]
+  ],
+  "files.associations": {
+    "*.env*": "env",
+    "*.env.development": "env",
+    "*.env.production": "env"
+  }
 }
