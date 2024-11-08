@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { min, startCase } from 'lodash';
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useFormContext } from 'react-hook-form';
 
@@ -123,15 +123,15 @@ export function FormNav({
     setDocTitle(title);
   }, [name, setDocTitle]);
 
-  const onSaveSuccess = (
-    char: StrictCharacter<CharacterData>,
-    auto: boolean
-  ) => {
-    setLastSaved({
-      auto,
-      on: char.lastModifiedOn,
-    });
-  };
+  const onSaveSuccess = useCallback(
+    (char: StrictCharacter<CharacterData>, auto: boolean) => {
+      setLastSaved({
+        auto,
+        on: char.lastModifiedOn,
+      });
+    },
+    [setLastSaved]
+  );
 
   return (
     <>

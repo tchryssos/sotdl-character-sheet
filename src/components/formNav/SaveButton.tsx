@@ -1,3 +1,4 @@
+import { minutesToMilliseconds } from 'date-fns';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -7,7 +8,6 @@ import { Save } from '~/components/icons/Save';
 import { ERRORS, ErrorTypes } from '~/constants/notifications/errors';
 import { SUCCESSES, SuccessTypes } from '~/constants/notifications/successes';
 import { createCharacterRoute, NEW_ID } from '~/constants/routing/shared';
-import { FIVE_MINUTES_IN_MS } from '~/constants/time';
 import { saveCharacter } from '~/logic/api/client/saveCharacter';
 import { NotificationsContext } from '~/logic/contexts/notificationsContext';
 import { createNotification } from '~/logic/utils/notifications';
@@ -107,7 +107,7 @@ export function SaveButton({
       if (!isNewCharacter) {
         onSave(true);
       }
-    }, FIVE_MINUTES_IN_MS);
+    }, minutesToMilliseconds(0.25));
     return () => clearInterval(interval);
   }, [onSave, isNewCharacter]);
 

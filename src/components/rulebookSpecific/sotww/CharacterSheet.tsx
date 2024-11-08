@@ -10,6 +10,7 @@ import { TabPanel } from '~/components/tabs/TabPanel';
 import { Tabs } from '~/components/tabs/Tabs';
 import { TabLabelObject } from '~/components/tabs/types';
 import { Text } from '~/components/Text';
+import { SHY } from '~/constants/characterEntities';
 import { RpgIcons } from '~/constants/icons';
 import { DEFAULT_VALUES } from '~/constants/sotww/form';
 import { FORM_COLUMN_GAP, FORM_ROW_GAP } from '~/constants/styles';
@@ -79,6 +80,22 @@ const sharedGapProps = {
   rowGap: pxToRem(FORM_ROW_GAP),
 };
 
+interface AutosaveTextProps {
+  lastSaved: LastSaved | null;
+}
+function AutosaveText({ lastSaved }: AutosaveTextProps) {
+  const text = lastSaved
+    ? `Last ${lastSaved.auto ? 'auto' : ''}saved ${new Date(
+        lastSaved.on
+      ).toLocaleTimeString()}`
+    : SHY;
+  return (
+    <Text color="textAccent" variant="body-xs">
+      {text}
+    </Text>
+  );
+}
+
 export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
   const [showQuickAccess, setShowQuickAccess] = useState(false);
   const [lastSaved, setLastSaved] = useState<LastSaved | null>(null);
@@ -121,6 +138,7 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
               setLastSaved={setLastSaved}
             />
             {showQuickAccess && <QuickAccess />}
+            <AutosaveText lastSaved={lastSaved} />
             <Tabs
               defaultTab={getTabIndex(tabLabels, queryTab)}
               tabLabels={tabLabels}
@@ -194,13 +212,6 @@ export function CharacterSheet({ character }: SotwwCharacterSheetProps) {
             </Tabs>
           </FlexBox>
         </DefenseProvider>
-        {lastSaved && (
-          <Text color="textAccent" variant="body-sm">
-            {`Last ${lastSaved.auto ? 'auto' : ''}saved ${new Date(
-              lastSaved.on
-            ).toLocaleTimeString()}`}
-          </Text>
-        )}
       </SotwwCharacterSheet>
     </EditContext.Provider>
   );
