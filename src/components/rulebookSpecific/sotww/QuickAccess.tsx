@@ -16,7 +16,6 @@ import { FormSection } from '~/components/form/containers/FormSection';
 import { Pin } from '~/components/icons/Pin';
 import { BodyContainer } from '~/components/meta/BodyContainer';
 import { Text } from '~/components/Text';
-import { pxToRem } from '~/logic/utils/styles/pxToRem';
 import { SotwwCharacterData } from '~/typings/sotww/characterData';
 
 import { DefenseContext } from './DefenseProvider';
@@ -27,8 +26,8 @@ const LongEffect = styled(Text)`
 
 const PinButton = styled(IconButton)`
   position: absolute;
-  top: ${pxToRem(40)};
-  right: ${pxToRem(8)};
+  top: ${({ theme }) => theme.spacing[40]};
+  right: ${({ theme }) => theme.spacing[8]};
 `;
 
 const QuickSection = styled(FormSection, {
@@ -187,7 +186,10 @@ export function QuickAccess() {
               setFixed(!fixed);
             }}
           >
-            <Pin color={fixed ? 'primary' : 'text'} title="Pin Quick Access" />
+            <Pin
+              color={fixed ? 'primary' : 'text'}
+              title={`${fixed ? 'Unpin' : 'Pin'} Quick Access`}
+            />
           </PinButton>
         </QuickSection>
       </FixedWrapper>
