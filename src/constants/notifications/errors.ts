@@ -5,6 +5,7 @@ export enum ErrorTypes {
   NotAuthorizedGeneric = 'Not authorized',
   FreeCharacterLimit = 'Free user character limit',
   CharacterSaveFailure = 'Something went wrong saving your character',
+  CharacterAutosaveFailure = 'Your character could not be autosaved',
   CharacterNotFound = 'Character not found',
 }
 
@@ -33,6 +34,10 @@ export const ERRORS: Record<ErrorTypes, ErrorNotificationBody> = {
   },
   [ErrorTypes.CharacterNotFound]: {
     title: ErrorTypes.CharacterNotFound,
+    type: 'error',
+  },
+  [ErrorTypes.CharacterAutosaveFailure]: {
+    title: ErrorTypes.CharacterAutosaveFailure,
     type: 'error',
   },
 };

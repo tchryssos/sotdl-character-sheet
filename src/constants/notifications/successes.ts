@@ -3,6 +3,7 @@ import { NotificationBody } from '~/typings/notifications';
 export enum SuccessTypes {
   CharacterCloned = 'Character cloned successfully',
   CharacterSaved = 'Character saved successfully',
+  CharacterAutosaved = 'Character automatically saved',
   CharacterDeleted = 'Character deleted successfully',
 }
 
@@ -21,6 +22,10 @@ export const SUCCESSES: Record<SuccessTypes, SuccessNotificationBody> = {
   },
   [SuccessTypes.CharacterDeleted]: {
     title: SuccessTypes.CharacterDeleted,
+    type: 'success',
+  },
+  [SuccessTypes.CharacterAutosaved]: {
+    title: SuccessTypes.CharacterAutosaved,
     type: 'success',
   },
 };
