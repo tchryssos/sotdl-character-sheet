@@ -9,6 +9,7 @@ import { SotwwCharacterData } from '~/typings/sotww/characterData';
 import { WwnCharacterData } from '~/typings/wwn/characterData';
 
 import { FlexBox } from '../box/FlexBox';
+import { CharacterPortrait } from '../form/CharacterPortrait';
 import { Link } from '../Link';
 import { Text } from '../Text';
 
@@ -39,6 +40,7 @@ export function ProfileCharacterListItem({
   } = character;
 
   let characterDescriptor = '';
+  let imageUrl = '';
 
   switch (type) {
     case 'sotdl': {
@@ -52,11 +54,13 @@ export function ProfileCharacterListItem({
       characterDescriptor = (characterData as WwnCharacterData).class_name;
       break;
     case 'sotww': {
-      const { path_novice, path_expert, path_master, ancestry } =
+      const { path_novice, path_expert, path_master, ancestry, image_url } =
         characterData as SotwwCharacterData;
 
       characterDescriptor =
         path_master || path_expert || path_novice || ancestry || '';
+
+      imageUrl = image_url;
       break;
     }
     case 'cwn': {
@@ -71,18 +75,21 @@ export function ProfileCharacterListItem({
 
   return (
     <CharacterLink href={createCharacterRoute(id, rulebookName)}>
-      <FlexBox flexDirection="column">
-        <FlexBox>
+      <FlexBox alignItems="center" gap={8}>
+        {imageUrl && (
+          <CharacterPortrait alt={name} height={40} src={imageUrl} />
+        )}
+        <FlexBox flexDirection="column">
           <Text as="span" variant="body">
             {name}
           </Text>
+          <Text as="p" color="textAccent" variant="body-sm">
+            <Caps>{rulebookName}</Caps>
+            {level !== undefined || characterDescriptor ? ' - ' : ''}
+            {level !== undefined ? `Level ${level} ` : ''}
+            {characterDescriptor}
+          </Text>
         </FlexBox>
-        <Text as="p" variant="body-sm">
-          <Caps>{rulebookName}</Caps>
-          {level !== undefined || characterDescriptor ? ' - ' : ''}
-          {level !== undefined ? `Level ${level} ` : ''}
-          {characterDescriptor}
-        </Text>
       </FlexBox>
     </CharacterLink>
   );

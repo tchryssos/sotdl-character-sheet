@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { Box } from '~/components/box/Box';
 import { FlexBox } from '~/components/box/FlexBox';
 import { GridBox } from '~/components/box/GridBox';
+import { CharacterPortrait } from '~/components/form/CharacterPortrait';
 import { FormSection } from '~/components/form/containers/FormSection';
 import { ImageUrlInput } from '~/components/form/ImageUrlInput';
 import { NumberInput } from '~/components/form/NumberInput';
@@ -40,13 +41,9 @@ export function BasicInfoInputs() {
         >
           {showImageInline && (
             <Box alignItems="center" display="flex">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <CharacterPortrait
                 alt={watch('name')}
-                decoding="async"
-                fetchPriority="low"
                 height={imageSize}
-                loading="lazy"
                 src={imageUrl}
               />
             </Box>

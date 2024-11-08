@@ -6,6 +6,7 @@ import { useFormContext } from 'react-hook-form';
 
 import { FlexBox } from '~/components/box/FlexBox';
 import { BaseButton } from '~/components/buttons/BaseButton';
+import { CharacterPortrait } from '~/components/form/CharacterPortrait';
 import {
   FormNavBaseButtons,
   QuickAccessProps,
@@ -32,6 +33,14 @@ const HealthButton = styled(BaseButton)(({ theme }) => ({
   minWidth: pxToRem(66),
 }));
 
+const ClampedText = styled(Text)`
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
   const atLeastXs = useBreakpointsAtLeast('xs');
   const { watch, setValue } = useFormContext<SotwwCharacterData>();
@@ -43,6 +52,7 @@ function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
   const novicePath = watch('path_novice');
   const expertPath = watch('path_expert');
   const masterPath = watch('path_master');
+  const imageUrl = watch('image_url');
 
   const currentPath = startCase(masterPath || expertPath || novicePath);
 
@@ -53,15 +63,18 @@ function CharacterHeader({ headerPortalNode, name }: CharacterHeaderProps) {
   return (
     <>
       {createPortal(
-        <FlexBox alignItems="center" gap={16}>
+        <FlexBox alignItems="center" gap={atLeastXs ? 16 : 8}>
+          {!atLeastXs && imageUrl && (
+            <CharacterPortrait alt={name} height={36} src={imageUrl} />
+          )}
           <FlexBox flexDirection="column">
-            <Text as="h2" fontWeight="bold" variant="body-lg">
+            <ClampedText as="h2" fontWeight="bold" variant="body-lg">
               {name}
-            </Text>
+            </ClampedText>
             <FlexBox>
-              <Text as="p" color="textAccent" variant="body-xs">
+              <ClampedText as="p" color="textAccent" variant="body-xs">
                 Level {level} {ancestry} {currentPath}
-              </Text>
+              </ClampedText>
             </FlexBox>
           </FlexBox>
           {atLeastXs && (
