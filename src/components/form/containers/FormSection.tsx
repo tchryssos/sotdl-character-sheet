@@ -36,6 +36,7 @@ type FormSectionProps = {
   onToggleOpen?: (nextOpenState: boolean) => void;
   linkId?: string;
   id?: string;
+  overflow?: 'visible' | 'hidden';
 } & BorderProperties;
 
 const TitleBox = styled(FlexBox)`
@@ -56,7 +57,6 @@ const FormTitle = styled(Text)<Pick<FormSectionProps, 'isCollapsible'>>(
 );
 
 const Section = styled(FlexBox)`
-  overflow: hidden;
   height: 100%;
   position: relative;
 `;
@@ -103,7 +103,6 @@ const Container = styled(GridBox)<{
   padding: ${({ isOpen }) => (isOpen ? '' : 0)};
   height: ${({ isOpen }) => (isOpen ? '' : 0)};
   align-items: start;
-  overflow: hidden;
 `;
 
 const CollapseToggle = styled(CollapseButton)`
@@ -151,6 +150,7 @@ export function FormSection({
   borderColor,
   borderStyle,
   id,
+  overflow = 'hidden',
 }: FormSectionProps) {
   // START - SECTION EXPANDED STATUS - START
   const [isOpen, setIsOpen] = useState(defaultExpanded);
@@ -172,7 +172,12 @@ export function FormSection({
       : undefined;
 
   return (
-    <Section className={className} flexDirection="column" id={id}>
+    <Section
+      className={className}
+      flexDirection="column"
+      id={id}
+      overflow={overflow}
+    >
       <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
         <ButtonTitleWrapper
           buttonLike={!isCollapsible}
@@ -227,6 +232,7 @@ export function FormSection({
         gridTemplateColumns={gridTemplateColumns}
         gridTemplateRows={gridTemplateRows}
         isOpen={isOpen}
+        overflow={overflow}
         paddingX={20}
         paddingY={borderless ? 12 : 20}
       >
