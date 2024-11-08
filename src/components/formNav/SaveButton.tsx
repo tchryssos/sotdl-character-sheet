@@ -107,7 +107,7 @@ export function SaveButton({
       if (!isNewCharacter) {
         onSave(true);
       }
-    }, minutesToMilliseconds(0.25));
+    }, minutesToMilliseconds(5));
     return () => clearInterval(interval);
   }, [onSave, isNewCharacter]);
 
