@@ -1,13 +1,12 @@
-import styled from '@emotion/styled';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { NavContext } from '~/logic/contexts/navContext';
 import { useBreakpointsAtLeast } from '~/logic/hooks/useBreakpoints';
 import { pxToRem } from '~/logic/utils/styles/pxToRem';
 
-import { FlexBox } from '../box/FlexBox';
 import { DropdownMenuProps } from '../dropdowns/DropdownMenu';
 import { NavBar } from '../nav/NavBar';
+import { BodyContainer } from './BodyContainer';
 import { Head } from './Head';
 
 type LayoutProps = {
@@ -15,16 +14,6 @@ type LayoutProps = {
   title: string;
   meta: string;
 };
-
-const PageWrapper = styled(FlexBox)`
-  max-width: ${({ theme }) => theme.breakpointValues.lg}px;
-  width: 100%;
-  height: 100%;
-  padding-top: ${pxToRem(120)};
-  ${({ theme }) => theme.breakpoints.xs} {
-    padding-top: ${pxToRem(140)};
-  }
-`;
 
 const emptyArr: DropdownMenuProps['menuItems'] = [];
 
@@ -76,16 +65,12 @@ export function Layout({ children, title, meta }: LayoutProps) {
         setIconPortalNode={setIconPortalNodeCallback}
         title={navTitle}
       />
-      <FlexBox
-        flex={1}
-        justifyContent="center"
+      <BodyContainer
         paddingBottom={8}
-        paddingX={isAtLeastXs ? 32 : 16}
+        paddingTop={isAtLeastXs ? pxToRem(140) : pxToRem(120)}
       >
-        <PageWrapper alignItems="center" flexDirection="column">
-          {children}
-        </PageWrapper>
-      </FlexBox>
+        {children}
+      </BodyContainer>
     </NavContext.Provider>
   );
 }

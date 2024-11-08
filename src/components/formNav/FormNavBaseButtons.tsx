@@ -69,7 +69,7 @@ export function FormNavBaseButtons({
       )}
       <IconButton onClick={() => setIsEditMode(!isEditMode)}>
         <Pencil
-          color={isEditMode ? 'success' : 'text'}
+          color={isEditMode ? 'primary' : 'text'}
           title="Edit pencil"
           titleId="edit-pencil-icon"
         />
@@ -83,7 +83,7 @@ export function FormNavBaseButtons({
           <Icon
             color={
               quickAccess.showQuickAccess
-                ? theme.colors.success
+                ? theme.colors.primary
                 : theme.colors.text
             }
             path={mdiStarBoxMultiple}

@@ -43,6 +43,7 @@ type FormSectionProps = {
   titleColor?: Color;
   onToggleOpen?: (nextOpenState: boolean) => void;
   linkId?: string;
+  id?: string;
 } & BorderProperties;
 
 const TitleBox = styled(FlexBox)`
@@ -65,6 +66,7 @@ const FormTitle = styled(Text)<Pick<FormSectionProps, 'isCollapsible'>>(
 const Section = styled(FlexBox)`
   overflow: hidden;
   height: 100%;
+  position: relative;
 `;
 
 const createCollapsibleStyles = (
@@ -157,6 +159,7 @@ export function FormSection({
   linkId,
   borderColor,
   borderStyle,
+  id,
 }: FormSectionProps) {
   const { getSectionVisibilityInfo, setSectionVisibilityInfo } =
     useContext(VisibilityContext);
@@ -194,7 +197,7 @@ export function FormSection({
       : undefined;
 
   return (
-    <Section className={className} flexDirection="column">
+    <Section className={className} flexDirection="column" id={id}>
       <GridBox alignItems="end" gridTemplateColumns="auto 1fr">
         <ButtonTitleWrapper
           buttonLike={!isCollapsible}
