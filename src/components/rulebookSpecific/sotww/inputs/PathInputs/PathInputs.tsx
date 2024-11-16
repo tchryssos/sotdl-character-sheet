@@ -16,16 +16,23 @@ const iconMap: Record<SotwwPathType, RpgIcons> = {
 
 export function PathInputs() {
   const { watch } = useFormContext<SotwwCharacterData>();
-  const level = watch('level');
   const { isEditMode } = useContext(EditContext);
+
+  const expertPath = watch('path_expert');
+  const expertPathDetails = watch('path_expert_benefits');
+  const masterPath = watch('path_master');
+  const masterPathDetails = watch('path_master_benefits');
+
+  const showExpert = Boolean(expertPath || expertPathDetails.length);
+  const showMaster = Boolean(masterPath || masterPathDetails.length);
 
   return (
     <>
       <PathInput icon={iconMap.novice} pathType="novice" />
-      {(level >= 3 || isEditMode) && (
+      {(showExpert || isEditMode) && (
         <PathInput icon={iconMap.expert} pathType="expert" />
       )}
-      {(level >= 7 || isEditMode) && (
+      {(showMaster || isEditMode) && (
         <PathInput icon={iconMap.master} pathType="master" />
       )}
     </>
