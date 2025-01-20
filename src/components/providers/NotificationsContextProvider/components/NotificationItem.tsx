@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useContext, useEffect, useRef } from 'react';
 
 import { FlexBox } from '~/components/box/FlexBox';
-import { GridBox } from '~/components/box/GridBox';
 import { IconButton } from '~/components/buttons/IconButton';
 import { Close } from '~/components/icons/Close';
 import { Text } from '~/components/Text';
@@ -20,7 +19,7 @@ interface NotificationItemProps {
   index: number;
 }
 
-const Item = styled(GridBox)`
+const Item = styled(FlexBox)`
   box-shadow: 6px 4px ${({ theme }) => theme.colors.smudge};
 `;
 
@@ -57,31 +56,31 @@ export function NotificationItem({
       borderColor="text"
       borderStyle="solid"
       borderWidth={1}
-      columnGap={16}
-      gridTemplateColumns="auto 1fr auto"
+      flexDirection="column"
+      gap={16}
       padding={16}
       role="dialog"
       width={pxToRem(380)}
     >
-      <NotificationIcon type={notification.type} />
-      <FlexBox flexDirection="column" gap={4}>
+      <FlexBox alignItems="center" gap={16}>
+        <NotificationIcon type={notification.type} />
         <Text as="h3" id={titleId} variant="body">
           {title}
         </Text>
-        {message && (
-          <Text as="p" color="textAccent" id={descriptionId} variant="body-sm">
-            {message}
-          </Text>
-        )}
-        {createdOn && (
-          <Text as="p" color="textAccent" variant="body-xs">
-            {timeAgo(createdOn)}
-          </Text>
-        )}
+        <IconButton ref={buttonRef} onClick={removeNotification}>
+          <Close title="Remove notification" />
+        </IconButton>
       </FlexBox>
-      <IconButton ref={buttonRef} onClick={removeNotification}>
-        <Close title="Remove notification" />
-      </IconButton>
+      {message && (
+        <Text as="p" color="textAccent" id={descriptionId} variant="body-sm">
+          {message}
+        </Text>
+      )}
+      {createdOn && (
+        <Text as="p" color="textAccent" variant="body-xs">
+          {timeAgo(createdOn)}
+        </Text>
+      )}
     </Item>
   );
 }
