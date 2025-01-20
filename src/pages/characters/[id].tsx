@@ -1,3 +1,4 @@
+import { useUser } from '@auth0/nextjs-auth0';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -74,6 +75,8 @@ function CharacterSheetPage({
   character,
   availableRulebooks,
 }: CharacterSheetPageProps) {
+  const { user, isLoading } = useUser();
+
   const [rulebook, setRulebook] = useState<RulebookType | null | undefined>(
     undefined
   );
@@ -123,6 +126,23 @@ function CharacterSheetPage({
     availableRulebooks,
     addNotifications,
   ]);
+
+  useEffect(() => {
+    if (!user && !isLoading) {
+      const alreadySeen = sessionStorage.getItem('not-logged-in-character');
+      if (!alreadySeen) {
+        addNotifications([
+          createNotification({
+            type: 'info',
+            title: "You're not logged in, don't lose data!",
+            message:
+              "You can view character sheets while logged out, but changes won't be saved. Log in before playing to avoid losing data.",
+          }),
+        ]);
+        sessionStorage.setItem('not-logged-in-character', 'true');
+      }
+    }
+  }, [user, isLoading, addNotifications]);
 
   if (rulebook === undefined) {
     return null;
